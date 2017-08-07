@@ -34,3 +34,5 @@ Domki/OBJ
 *.exe
 *.out
 *.app
+
+Domki\.VC\.db

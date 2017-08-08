@@ -12,7 +12,7 @@ int main()
 	shape2.setFillColor(sf::Color::Red);
 
 	sf::Texture texture;
-	if (!texture.loadFromFile("C:\\Users\\Szpieg\\Desktop\\SuperDomki\\Domki-master\\Grafika\\znaczek.bmp"))
+	if (!texture.loadFromFile("Grafika\\znaczek.bmp"))
 	{
 		int dukpa = 3;
 		// error...
@@ -20,7 +20,7 @@ int main()
 
 
 	sf::Texture backtexture;
-	if (!backtexture.loadFromFile("C:\\Users\\Szpieg\\Desktop\\SuperDomki\\Domki-master\\Grafika\\kafle.jpg"))
+	if (!backtexture.loadFromFile("Grafika\\kafle.jpg"))
 	{
 
 	}
@@ -31,7 +31,7 @@ int main()
 	shape.setTexture(&texture); // texture is a sf::Texture
 	shape.setTextureRect(sf::IntRect(10, 10, 100, 100));
 
-	double speed = 0.1;
+	double speed = 0.2;
 	double speedAngle = 0.1;
 	while (window.isOpen())
 	{

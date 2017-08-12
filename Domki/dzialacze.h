@@ -51,4 +51,5 @@ public:
 	string Skorka;
 private:
 	Rozgrywka& rozgrywka;
+	map<Twor*, sf::CircleShape> wyglad_tworow;
 };

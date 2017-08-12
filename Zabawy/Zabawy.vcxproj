@@ -20,8 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{F45B812D-B8C1-4931-AB22-A8AC650CF562}</ProjectGuid>
-    <RootNamespace>Domki</RootNamespace>
+    <ProjectGuid>{2D5223A5-7ED0-46E7-9833-E63210B56B6A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Zabawy</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

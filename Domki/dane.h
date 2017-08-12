@@ -1,0 +1,49 @@
+#pragma once
+
+#include<vector>
+using namespace std; // pozwala pisaæ vector<int> zamiast std::vector<int>
+
+typedef pair<double, double> PD; // skrót dla typu oznaczaj¹cego parê liczb
+
+struct Gracz
+{
+	int numer;
+	string nazwa;
+};
+
+enum Wyglad
+{
+	kNieznany = 0,
+	kDomek = 1,
+	kDomekWybrany = 2,
+	kLudek = 3
+};
+
+struct Twor
+{
+	PD polozenie;
+	double rozmiar; // promien
+	Wyglad wyglad; // liczba okreœlajaca jak powinien twór siê prezentowaæ
+	Gracz* gracz; // do kogo nale¿y; neutralny te¿ jest graczem
+};
+
+struct Ludek : Twor
+{
+	Ludek(Twor& cel) : cel(cel) {}
+	Twor& cel; // do kogo (domka) stara siê dotrzeæ
+	int liczebnosc; // powinna byæ zwi¹zana z jego rozmiarem
+};
+
+struct Domek : Twor
+{
+	double produkcja;
+	double liczebnosc; // liczba aktualnie istniej¹cych ludków
+	int max_liczebnosc;
+};
+
+struct Rozgrywka
+{
+	vector<Gracz> gracze;
+	vector<Domek> domki;
+	vector<Ludek> armie;
+};

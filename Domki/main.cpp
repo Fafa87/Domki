@@ -41,21 +41,31 @@ Rozgrywka prosta_rozgrywka()
 	domek2.rozmiar = 10;
 	domek2.wyglad = Wyglad::kDomek;
 
+	gra.domki.push_back(Domek());
+	Domek& domek3 = gra.domki.back();
+	domek3.gracz = &gracz2;
+	domek3.polozenie = { 530.0, 400.0 };
+	domek3.liczebnosc = 7;
+	domek3.produkcja = 0.5;
+	domek3.max_liczebnosc = 30;
+	domek3.rozmiar = 10;
+	domek3.wyglad = Wyglad::kDomek;
+
 	// armie
 	gra.armie.push_back(Ludek(domek2));
 	Ludek& armia1 = gra.armie.back();
 	armia1.gracz = &gracz1;
 	armia1.polozenie = { 150.0, 110.0 };
-	armia1.liczebnosc = 5;
-	armia1.rozmiar = 5;
+	armia1.liczebnosc = 6;
+	armia1.rozmiar = 3;
 	armia1.wyglad = Wyglad::kLudek;
 
 	gra.armie.push_back(Ludek(domek1));
 	Ludek& armia2 = gra.armie.back();
 	armia2.gracz = &gracz2;
-	armia2.polozenie = { 800.0, 400.0 };
-	armia2.liczebnosc = 35;
-	armia2.rozmiar = 35;
+	armia2.polozenie = { 200.0, 400.0 };
+	armia2.liczebnosc = 30;
+	armia2.rozmiar = 15;
 	armia2.wyglad = Wyglad::kLudek;
 
 	return gra;

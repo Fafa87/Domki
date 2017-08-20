@@ -25,10 +25,26 @@ Ruszacz::Ruszacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 
 void Ruszacz::Ruszaj()
 {
+	PrzesuwajLudkow();
+	WalczLudkami();
+	Produkuj();
 }
 
 void Ruszacz::PrzesuwajLudkow()
 {
+	double przesuniecie = szybkosc * szybkosc_ruchu;
+	for (Ludek& armia : rozgrywka.armie)
+	{
+		PD polozenie_cel = armia.cel.polozenie;
+		PD polozenie_teraz = armia.polozenie;
+
+		PD wektor_do_celu = (polozenie_cel - polozenie_teraz);
+		double dlugosc = sqrt(wektor_do_celu.x * wektor_do_celu.x + wektor_do_celu.y * wektor_do_celu.y);
+		PD jednostkowy = wektor_do_celu / dlugosc;
+		jednostkowy *= przesuniecie;
+
+		armia.polozenie += jednostkowy;
+	}
 }
 
 void Ruszacz::WalczLudkami()
@@ -71,7 +87,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 	for (auto& twor : wszystkie_obiekty)
 	{
 		auto wyglad = wyglad_tworow[twor];
-		wyglad.setPosition(twor->polozenie.first, twor->polozenie.second);
+		wyglad.setPosition(twor->polozenie.x, twor->polozenie.y);
 		wyglad.setRadius(twor->rozmiar);
 		wyglad.setOrigin(twor->rozmiar, twor->rozmiar);
 		wyglad.setFillColor(twor->gracz->numer == 1 ? sf::Color::Green : sf::Color::Red);

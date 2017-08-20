@@ -34,6 +34,7 @@ public:
 	void Ruszaj();
 
 	double szybkosc = 1.0 / 30;
+	double szybkosc_ruchu = 15.0;
 private:
 	void PrzesuwajLudkow();
 	void WalczLudkami();

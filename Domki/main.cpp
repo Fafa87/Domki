@@ -25,48 +25,43 @@ Rozgrywka prosta_rozgrywka()
 	Domek& domek1 = gra.domki.back();
 	domek1.gracz = &gracz1;
 	domek1.polozenie = { 100.0, 100.0 };
-	domek1.liczebnosc = 4;
 	domek1.produkcja = 0.2;
 	domek1.max_liczebnosc = 100;
-	domek1.rozmiar = 20;
 	domek1.wyglad = Wyglad::kDomek;
+	gra.ZmienLiczebnosc(domek1, 40);
 	
 	gra.domki.push_back(Domek());
 	Domek& domek2 = gra.domki.back();
 	domek2.gracz = &gracz2;
 	domek2.polozenie = { 500.0, 300.0 };
-	domek2.liczebnosc = 10;
 	domek2.produkcja = 0.5;
 	domek2.max_liczebnosc = 30;
-	domek2.rozmiar = 10;
 	domek2.wyglad = Wyglad::kDomek;
+	gra.ZmienLiczebnosc(domek2, 20);
 
 	gra.domki.push_back(Domek());
 	Domek& domek3 = gra.domki.back();
 	domek3.gracz = &gracz2;
 	domek3.polozenie = { 530.0, 400.0 };
-	domek3.liczebnosc = 7;
 	domek3.produkcja = 0.5;
 	domek3.max_liczebnosc = 30;
-	domek3.rozmiar = 10;
 	domek3.wyglad = Wyglad::kDomek;
+	gra.ZmienLiczebnosc(domek3, 20);
 
 	// armie
 	gra.armie.push_back(Ludek(domek2));
 	Ludek& armia1 = gra.armie.back();
 	armia1.gracz = &gracz1;
 	armia1.polozenie = { 150.0, 110.0 };
-	armia1.liczebnosc = 6;
-	armia1.rozmiar = 3;
 	armia1.wyglad = Wyglad::kLudek;
+	gra.ZmienLiczebnosc(armia1, 6);
 
 	gra.armie.push_back(Ludek(domek1));
 	Ludek& armia2 = gra.armie.back();
 	armia2.gracz = &gracz2;
 	armia2.polozenie = { 200.0, 400.0 };
-	armia2.liczebnosc = 30;
-	armia2.rozmiar = 15;
 	armia2.wyglad = Wyglad::kLudek;
+	gra.ZmienLiczebnosc(armia2, 30);
 
 	return gra;
 }
@@ -89,6 +84,7 @@ int main()
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
 	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.gracze[0]);
+	MyszDecydent myszkaGracza2(rozgrywka, rozgrywka.gracze[1]);
 	Ruszacz ruszacz(rozgrywka);
 	
 	while (window.isOpen())
@@ -96,9 +92,11 @@ int main()
 		sf::Event event;
 
 		myszkaGracza.Przetworz(); // puste
+		myszkaGracza2.Przetworz(); // puste
 		while (window.pollEvent(event))
 		{
 			myszkaGracza.Przetworz(event); // pewnie tutaj mo¿na z³apaæ, ¿e naciœniêta zosta³a myszka
+			myszkaGracza2.Przetworz(event); // pewnie tutaj mo¿na z³apaæ, ¿e naciœniêta zosta³a myszka
 			switch (event.type)
 			{
 			case sf::Event::KeyReleased:
@@ -120,6 +118,7 @@ int main()
 		}
 
 		myszkaGracza.WykonajRuch();
+		myszkaGracza2.WykonajRuch();
 		ruszacz.Ruszaj();
 
 		window.clear();

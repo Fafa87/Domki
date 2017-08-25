@@ -41,10 +41,3 @@ struct Domek : Twor
 	double liczebnosc; // liczba aktualnie istniej¹cych ludków
 	int max_liczebnosc;
 };
-
-struct Rozgrywka
-{
-	vector<Gracz> gracze;
-	vector<Domek> domki;
-	vector<Ludek> armie;
-};

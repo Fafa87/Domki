@@ -11,10 +11,39 @@ void MyszDecydent::Klik(double x, double y)
 
 void MyszDecydent::Przetworz(sf::Event zdarzenie)
 {
+	if (zdarzenie.type == sf::Event::MouseButtonPressed && zdarzenie.mouseButton.button == sf::Mouse::Left)
+	{
+		Twor* klikniety = rozgrywka.Zlokalizuj(zdarzenie.mouseButton.x, zdarzenie.mouseButton.y);
+		if (klikniety != nullptr && IsType<Domek>(klikniety))
+		{
+			if (wybrany == nullptr && klikniety->gracz->numer == gracz.numer)
+				wybrany = (Domek*)klikniety;
+			else if (wybrany != nullptr)
+				cel = (Domek*)klikniety;
+		}
+	}
 }
 
 void MyszDecydent::WykonajRuch()
 {
+	if (cel != nullptr)
+	{
+		auto liczba = int(wybrany->liczebnosc / 4);
+		if (liczba > 0)
+		{
+			rozgrywka.ZmienLiczebnosc(*wybrany, wybrany->liczebnosc - liczba);
+
+			rozgrywka.armie.push_back(Ludek(*cel));
+			Ludek& nowaArmia = rozgrywka.armie.back();
+			nowaArmia.gracz = &gracz;
+			nowaArmia.polozenie = wybrany->polozenie;
+			nowaArmia.wyglad = Wyglad::kLudek;
+			rozgrywka.ZmienLiczebnosc(nowaArmia, liczba);
+		}
+
+		wybrany = nullptr;
+		cel = nullptr;
+	}
 }
 
 
@@ -90,7 +119,10 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		wyglad.setPosition(twor->polozenie.x, twor->polozenie.y);
 		wyglad.setRadius(twor->rozmiar);
 		wyglad.setOrigin(twor->rozmiar, twor->rozmiar);
-		wyglad.setFillColor(twor->gracz->numer == 1 ? sf::Color::Green : sf::Color::Red);
+		if (twor->wyglad == Wyglad::kDomek)
+			wyglad.setFillColor(twor->gracz->numer == 1 ? sf::Color::Green : sf::Color::Red);
+		else if (twor->wyglad == Wyglad::kLudek)
+			wyglad.setFillColor(twor->gracz->numer == 1 ? sf::Color::Color(10, 150, 50) : sf::Color::Color(150, 10, 50));
 		okno.draw(wyglad);
 	}
 }

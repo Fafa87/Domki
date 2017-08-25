@@ -21,12 +21,18 @@
     <ClCompile Include="dzialacze.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rozgrywka.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dzialacze.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rozgrywka.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

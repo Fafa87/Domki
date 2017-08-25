@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "dane.h"
+#include "rozgrywka.h"
 
 class Decydent // wprowadza rozkazy graczy
 {
@@ -22,6 +23,7 @@ public:
 
 	virtual void WykonajRuch();
 private:
+	Domek* cel;
 	Domek* wybrany;
 	Rozgrywka& rozgrywka;
 	Gracz& gracz;
@@ -34,7 +36,7 @@ public:
 	void Ruszaj();
 
 	double szybkosc = 1.0 / 30;
-	double szybkosc_ruchu = 15.0;
+	double szybkosc_ruchu = 1.0;
 private:
 	void PrzesuwajLudkow();
 	void WalczLudkami();

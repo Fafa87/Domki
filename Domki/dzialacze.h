@@ -55,4 +55,5 @@ public:
 private:
 	Rozgrywka& rozgrywka;
 	map<Twor*, sf::CircleShape> wyglad_tworow;
+	map<Wyglad, sf::Texture*> obrazek_tworow;
 };

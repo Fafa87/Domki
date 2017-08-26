@@ -86,7 +86,13 @@ void Ruszacz::Produkuj()
 
 Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 {
-	
+	obrazek_tworow[Wyglad::kDomek] = new sf::Texture();
+	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\domek.png");
+	obrazek_tworow[Wyglad::kDomek]->setSmooth(true);
+
+	obrazek_tworow[Wyglad::kLudek] = new sf::Texture();
+	obrazek_tworow[Wyglad::kLudek]->loadFromFile("Grafika\\ludek.png");
+	obrazek_tworow[Wyglad::kLudek]->setSmooth(true);
 }
 
 void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
@@ -120,9 +126,14 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		wyglad.setRadius(twor->rozmiar);
 		wyglad.setOrigin(twor->rozmiar, twor->rozmiar);
 		if (twor->wyglad == Wyglad::kDomek)
-			wyglad.setFillColor(twor->gracz->numer == 1 ? sf::Color::Green : sf::Color::Red);
+			wyglad.setFillColor(twor->gracz->numer == 1 ? sf::Color::Color(0, 255, 0, 255) : sf::Color::Color(255, 0, 0, 255));
 		else if (twor->wyglad == Wyglad::kLudek)
-			wyglad.setFillColor(twor->gracz->numer == 1 ? sf::Color::Color(10, 150, 50) : sf::Color::Color(150, 10, 50));
+			wyglad.setFillColor(twor->gracz->numer == 1 ? sf::Color::Color(10, 150, 50, 255) : sf::Color::Color(150, 10, 50, 255));
+
+		if (twor->wyglad == Wyglad::kDomek || twor->wyglad == Wyglad::kLudek)
+		{
+			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
+		}
 		okno.draw(wyglad);
 	}
 }

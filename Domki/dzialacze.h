@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Main.hpp>
 
 #include "dane.h"
 #include "rozgrywka.h"
@@ -54,6 +55,9 @@ public:
 	string Skorka;
 private:
 	Rozgrywka& rozgrywka;
-	map<Twor*, sf::CircleShape> wyglad_tworow;
+	// TODO trzeba dodaæ tutaj czcionkê, aby siê czyta³o raz
+	// trzeba to poszerzyæ o resztê obiektów, które s¹ wyœwietlane - np. sf::Text, podpis
+	map<Twor*, sf::CircleShape> wyglad_tworow; 
 	map<Wyglad, sf::Texture*> obrazek_tworow;
+	sf::Font czcionka;
 };

@@ -1,5 +1,6 @@
 #include "dzialacze.h"
 #include <set>
+#include <string>
 
 MyszDecydent::MyszDecydent(Rozgrywka & rozgrywka, Gracz & gracz) : rozgrywka(rozgrywka), gracz(gracz)
 {
@@ -29,7 +30,7 @@ void MyszDecydent::WykonajRuch()
 	if (cel != nullptr)
 	{
 		auto liczba = int(wybrany->liczebnosc / 4);
-		if (liczba > 0)
+		if (liczba > 0 && cel != wybrany)
 		{
 			rozgrywka.ZmienLiczebnosc(*wybrany, wybrany->liczebnosc - liczba);
 
@@ -93,6 +94,8 @@ Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 	obrazek_tworow[Wyglad::kLudek] = new sf::Texture();
 	obrazek_tworow[Wyglad::kLudek]->loadFromFile("Grafika\\ludek.png");
 	obrazek_tworow[Wyglad::kLudek]->setSmooth(true);
+
+	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
 }
 
 void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
@@ -125,15 +128,28 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		wyglad.setPosition(twor->polozenie.x, twor->polozenie.y);
 		wyglad.setRadius(twor->rozmiar);
 		wyglad.setOrigin(twor->rozmiar, twor->rozmiar);
-		if (twor->wyglad == Wyglad::kDomek)
-			wyglad.setFillColor(twor->gracz->numer == 1 ? sf::Color::Color(0, 255, 0, 255) : sf::Color::Color(255, 0, 0, 255));
-		else if (twor->wyglad == Wyglad::kLudek)
-			wyglad.setFillColor(twor->gracz->numer == 1 ? sf::Color::Color(10, 150, 50, 255) : sf::Color::Color(150, 10, 50, 255));
-
+		wyglad.setFillColor(twor->gracz->kolor);
 		if (twor->wyglad == Wyglad::kDomek || twor->wyglad == Wyglad::kLudek)
 		{
 			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
 		}
+
+		sf::Text podpis;
+		int liczba = 0;
+		if (IsType<Domek>(twor))
+			liczba = ((Domek*)twor)->liczebnosc;
+		else if (IsType<Ludek>(twor))
+			liczba = ((Ludek*)twor)->liczebnosc;
+		podpis.setFont(czcionka);
+		podpis.setCharacterSize(13);
+		podpis.setString(std::to_string(liczba));
+		podpis.setStyle(sf::Text::Bold);
+		podpis.setFillColor(twor->gracz->kolor);
+		podpis.move(twor->polozenie.x, twor->polozenie.y + twor->rozmiar);
+
+
+
+		okno.draw(podpis);
 		okno.draw(wyglad);
 	}
 }

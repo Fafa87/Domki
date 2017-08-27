@@ -10,6 +10,7 @@ struct Gracz
 {
 	int numer;
 	string nazwa;
+	sf::Color kolor;
 };
 
 enum Wyglad
@@ -26,6 +27,8 @@ struct Twor
 	double rozmiar; // promien
 	Wyglad wyglad; // liczba okreœlajaca jak powinien twór siê prezentowaæ
 	Gracz* gracz; // do kogo nale¿y; neutralny te¿ jest graczem
+
+	virtual ~Twor() {}
 };
 
 struct Ludek : Twor

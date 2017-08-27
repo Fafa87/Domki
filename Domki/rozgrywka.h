@@ -11,7 +11,7 @@ using namespace std;
 template <class DstType, class SrcType>
 bool IsType(const SrcType* src)
 {
-	return static_cast<const DstType*>(src) != 0;
+	return dynamic_cast<const DstType*>(src) != 0;
 }
 
 struct Rozgrywka

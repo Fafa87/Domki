@@ -15,10 +15,17 @@ Rozgrywka prosta_rozgrywka()
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz1 = gra.gracze[0];
 	gracz1.numer = 1; gracz1.nazwa = "Stasio";
+	gracz1.kolor = sf::Color::Green;
 
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz2 = gra.gracze[1];
 	gracz2.numer = 2; gracz2.nazwa = "Tomek";
+	gracz2.kolor = sf::Color::Red;
+
+	gra.gracze.push_back(Gracz());
+	Gracz& gracz3 = gra.gracze[2];
+	gracz3.numer = 0; gracz2.nazwa = "Nikt";
+	gracz3.kolor = sf::Color::Color(80, 80, 80);
 
 	// domki
 	gra.domki.push_back(Domek());
@@ -47,6 +54,15 @@ Rozgrywka prosta_rozgrywka()
 	domek3.max_liczebnosc = 30;
 	domek3.wyglad = Wyglad::kDomek;
 	gra.ZmienLiczebnosc(domek3, 20);
+
+	gra.domki.push_back(Domek());
+	Domek& domek4 = gra.domki.back();
+	domek4.gracz = &gracz3;
+	domek4.polozenie = { 290.0, 600.0 };
+	domek4.produkcja = 0.2;
+	domek4.max_liczebnosc = 100;
+	domek4.wyglad = Wyglad::kDomek;
+	gra.ZmienLiczebnosc(domek4, 30);
 
 	// armie
 	gra.armie.push_back(Ludek(domek2));

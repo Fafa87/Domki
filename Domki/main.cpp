@@ -85,7 +85,7 @@ Rozgrywka prosta_rozgrywka()
 int main()
 {
 	auto videoMode = sf::VideoMode(1600, 800);
-	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Default);
+	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Fullscreen);
 
 	// ustawiamy t³o
 	sf::Texture backtexture;
@@ -119,13 +119,7 @@ int main()
 				switch (event.key.code)
 				{
 				case sf::Keyboard::Escape:
-					window.create(videoMode, "Hej!", sf::Style::Default);
-					background.setTextureRect({ 0, 0, (int)window.getSize().x, (int)window.getSize().y });
-					break;
-				case sf::Keyboard::Return:
-					window.create(videoMode, "Ho!", sf::Style::Fullscreen);
-					background.setTextureRect({ 0, 0, (int)window.getSize().x, (int)window.getSize().y });
-					break;
+					return 0;
 				}
 				break;
 			}

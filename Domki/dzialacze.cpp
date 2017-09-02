@@ -3,6 +3,11 @@
 #include <string>
 #include<ctime>
 
+void Komputer::WykonajRuch()
+{
+	//WYKONUJ CO JAKIS CZAS
+}
+
 MyszDecydent::MyszDecydent(Rozgrywka & rozgrywka, Gracz & gracz) : rozgrywka(rozgrywka), gracz(gracz)
 {
 }
@@ -30,7 +35,7 @@ void MyszDecydent::WykonajRuch()
 {
 	if (cel != nullptr)
 	{
-		auto liczba = int(wybrany->liczebnosc / 4);
+		auto liczba = int(wybrany->liczebnosc / 2);
 		if (liczba > 0 && cel != wybrany)
 		{
 			rozgrywka.ZmienLiczebnosc(*wybrany, wybrany->liczebnosc - liczba);

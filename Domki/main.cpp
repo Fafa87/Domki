@@ -156,7 +156,8 @@ int main()
 	podpis.setStyle(sf::Text::Bold);
 	podpis.setFillColor(sf::Color::Green);
 	podpis.move(300,0);
-	
+
+
 	// tworzymy rozgrywke
 	//Rozgrywka rozgrywka = prosta_rozgrywka();
 	Rozgrywka rozgrywka = zwarcie_rozgrywka();
@@ -170,7 +171,9 @@ int main()
 	czasomierz = clock();
 	int czasik = 0;
 	float czas;
-
+	//APM
+	long long akcje = 0;
+	float czas_przeminal = clock();
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -180,7 +183,8 @@ int main()
 		while (window.pollEvent(event))
 		{
 			myszkaGracza.Przetworz(event); // pewnie tutaj mo¿na z³apaæ, ¿e naciœniêta zosta³a myszka
-			myszkaGracza2.Przetworz(event); // pewnie tutaj mo¿na z³apaæ, ¿e naciœniêta zosta³a myszka
+			myszkaGracza2.Przetworz(event); // pewnie tutaj mo¿na z³apaæ, ¿e naciœniêta zosta³1a myszka
+			if (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::KeyReleased)akcje++;
 			switch (event.type)
 			{
 			case sf::Event::KeyReleased:
@@ -195,14 +199,11 @@ int main()
 				window.close();
 		}
 
+		
+		
+		
 		///FPSY
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
-		czasik =(int)(1.0/czas+0.5);
-		podpis.setString("FPSY: "+std::to_string(czasik));
-		
-		//ruszacz
-		///FPSY
-
 		myszkaGracza.WykonajRuch();
 		//myszkaGracza2.WykonajRuch();
 		ruszacz.Ruszaj(czas);
@@ -210,7 +211,18 @@ int main()
 		window.clear();
 		window.draw(background);
 
+		///FPSY
+		
+		czasik = (int)(1.0 / czas + 0.5);
+		podpis.setString("FPSY: " + std::to_string(czasik));
+		podpis.setPosition(300, 0);
 		window.draw(podpis);//FPSY
+
+		///APM
+		podpis.setPosition(700, 0);
+		czas_przeminal = (double)(clock() - czas_przeminal) / CLOCKS_PER_SEC;
+		podpis.setString("APM: " + std::to_string((int)(60 * akcje / czas_przeminal)));
+		window.draw(podpis); //APM
 
 		wyswietlacz.Wyswietlaj(window);
 		window.display();

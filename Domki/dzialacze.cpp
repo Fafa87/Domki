@@ -57,7 +57,7 @@ Ruszacz::Ruszacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 void Ruszacz::Ruszaj(float czas)
 {
 	PrzesuwajLudkow(czas);
-	WalczLudkami();
+	WalczLudkami(czas);
 	Produkuj(czas);
 }
 
@@ -76,13 +76,10 @@ void Ruszacz::PrzesuwajLudkow(float czas)
 		jednostkowy *= przesuniecie*czas;
 
 		armia.polozenie += jednostkowy;
-		//X(do ustalenia) W PIONIE I W POZIOMIE NA SEKUNDE
-		//armia.polozenie.x += szybkosc*czas;
-		//armia.polozenie.y += szybkosc*czas;
 	}
 }
 
-void Ruszacz::WalczLudkami()
+void Ruszacz::WalczLudkami(float czas)
 {
 	for (Ludek& armia : rozgrywka.armie)
 	{
@@ -105,7 +102,18 @@ void Ruszacz::WalczLudkami()
 					}
 					rozgrywka.ZmienLiczebnosc(cel, std::abs(nowa_liczebnosc));
 				}
-				//std::remove(rozgrywka.armie.begin(), rozgrywka.armie.end(), armia);
+				rozgrywka.ZmienLiczebnosc(armia, std::abs(0));
+				/*list<Ludek>::iterator do_usuniecia;
+				for (auto it = rozgrywka.armie.begin(); it != rozgrywka.armie.end(); it++)
+				{
+					if (&(*it) == &armia)
+					{
+						do_usuniecia = it;
+						break;
+					}
+				}
+				rozgrywka.armie.erase(do_usuniecia);
+				break;*/
 			}
 			// jak to nie jest domek to nic nie róbmy, mo¿e kiedyœ bêdziemy?
 		}

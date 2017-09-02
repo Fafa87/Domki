@@ -6,19 +6,19 @@
 Rozgrywka zwarcie_rozgrywka()
 {
 	Rozgrywka gra;
-	//rezerwa pamieci
-	gra.gracze.reserve(100);
-	gra.domki.reserve(100);
-	gra.armie.reserve(100);
+	////rezerwa pamieci
+	//gra.gracze.reserve(100);
+	//gra.domki.reserve(100);
+	//gra.armie.reserve(100);
 	//gracze
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz1 = gra.gracze[0];
+	Gracz& gracz1 = gra.gracze.front();
 	gracz1.numer = 1; gracz1.nazwa = "GRACZ";
 	gracz1.kolor = sf::Color::Red;
 	gracz1.aktywny = true;
 
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz2 = gra.gracze[1];
+	Gracz& gracz2 = gra.gracze.back();
 	gracz2.numer = 2; gracz2.nazwa = "GRA";
 	gracz2.kolor = sf::Color::White;
 	gracz2.aktywny = false;
@@ -49,24 +49,24 @@ Rozgrywka zwarcie_rozgrywka()
 Rozgrywka prosta_rozgrywka()
 {
 	Rozgrywka gra;
-	// wa¿ne aby vector nie zmienia³ po³o¿enia obiektów
-	gra.gracze.reserve(100); 	
-	gra.domki.reserve(100);
-	gra.armie.reserve(100);
+	// waï¿½ne aby vector nie zmieniaï¿½ poï¿½oï¿½enia obiektï¿½w
+	//gra.gracze.reserve(100); 	
+	//gra.domki.reserve(100);
+	//gra.armie.reserve(100);
 
 	// gracze
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz1 = gra.gracze[0];
+	Gracz& gracz1 = gra.gracze.back();
 	gracz1.numer = 1; gracz1.nazwa = "Stasio";
 	gracz1.kolor = sf::Color::Green;
 
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz2 = gra.gracze[1];
+	Gracz& gracz2 = gra.gracze.back();
 	gracz2.numer = 2; gracz2.nazwa = "Tomek";
 	gracz2.kolor = sf::Color::Red;
 
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz3 = gra.gracze[2];
+	Gracz& gracz3 = gra.gracze.back();
 	gracz3.numer = 0; gracz2.nazwa = "Nikt";
 	gracz3.kolor = sf::Color::Color(80, 80, 80);
 
@@ -139,7 +139,7 @@ int main()
 	auto videoMode = sf::VideoMode(1600, 800);
 	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Fullscreen);
 
-	// ustawiamy t³o
+	// ustawiamy tï¿½o
 	sf::Texture backtexture;
 	backtexture.loadFromFile("Grafika\\kafle.jpg");
 	backtexture.setRepeated(true);
@@ -162,8 +162,8 @@ int main()
 	Rozgrywka rozgrywka = zwarcie_rozgrywka();
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
-	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.gracze[0]);
-	MyszDecydent myszkaGracza2(rozgrywka, rozgrywka.gracze[1]);
+	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.gracze.front());
+	MyszDecydent myszkaGracza2(rozgrywka, rozgrywka.gracze.back());
 	Ruszacz ruszacz(rozgrywka);
 	//czasomierz
 	clock_t czasomierz;
@@ -179,8 +179,8 @@ int main()
 		myszkaGracza2.Przetworz(); // puste
 		while (window.pollEvent(event))
 		{
-			myszkaGracza.Przetworz(event); // pewnie tutaj mo¿na z³apaæ, ¿e naciœniêta zosta³a myszka
-			myszkaGracza2.Przetworz(event); // pewnie tutaj mo¿na z³apaæ, ¿e naciœniêta zosta³a myszka
+			myszkaGracza.Przetworz(event); // pewnie tutaj moï¿½na zï¿½apaï¿½, ï¿½e naciï¿½niï¿½ta zostaï¿½a myszka
+			myszkaGracza2.Przetworz(event); // pewnie tutaj moï¿½na zï¿½apaï¿½, ï¿½e naciï¿½niï¿½ta zostaï¿½a myszka
 			switch (event.type)
 			{
 			case sf::Event::KeyReleased:

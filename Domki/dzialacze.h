@@ -40,7 +40,7 @@ public:
 	double szybkosc_ruchu = 200.0/3;
 private:
 	void PrzesuwajLudkow(float czas);
-	void WalczLudkami();
+	void WalczLudkami(float czas);
 	void Produkuj(float czas);
 
 	Rozgrywka& rozgrywka;
@@ -55,8 +55,7 @@ public:
 	string Skorka;
 private:
 	Rozgrywka& rozgrywka;
-	// TODO trzeba dodaæ tutaj czcionkê, aby siê czyta³o raz
-	// trzeba to poszerzyæ o resztê obiektów, które s¹ wyœwietlane - np. sf::Text, podpis
+	// TODO trzeba to poszerzyï¿½ o resztï¿½ obiektï¿½w, ktï¿½re sï¿½ wyï¿½wietlane - np. sf::Text, podpis
 	map<Twor*, sf::CircleShape> wyglad_tworow; 
 	map<Wyglad, sf::Texture*> obrazek_tworow;
 	sf::Font czcionka;

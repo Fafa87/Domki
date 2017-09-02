@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <list>
 #include <cmath>
 
 #include <SFML/Graphics.hpp>
@@ -17,9 +18,9 @@ bool IsType(const SrcType* src)
 
 struct Rozgrywka
 {
-	vector<Gracz> gracze;
-	vector<Domek> domki;
-	vector<Ludek> armie;
+	list<Gracz> gracze;
+	list<Domek> domki;
+	list<Ludek> armie;
 
 	void ZmienLiczebnosc(Domek& domek, double nowa);
 	void ZmienLiczebnosc(Ludek& ludek, double nowa);

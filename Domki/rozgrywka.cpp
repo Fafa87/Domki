@@ -9,7 +9,7 @@ void Rozgrywka::ZmienLiczebnosc(Domek & domek, double nowa)
 void Rozgrywka::ZmienLiczebnosc(Ludek & ludek, double nowa)
 {
 	ludek.liczebnosc = nowa;
-	ludek.rozmiar = 5 + ludek.liczebnosc / 2;
+	ludek.rozmiar = 10 + ludek.liczebnosc / 2;
 }
 
 double Rozgrywka::Odleglosc(const Twor& twor1, const Twor& twor2)

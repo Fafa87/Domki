@@ -42,7 +42,7 @@ Rozgrywka prosta_rozgrywka()
 	Domek& domek1b = gra.domki.back();
 	domek1b.gracz = &gracz1;
 	domek1b.polozenie = { 100.0, 200.0 };
-	domek1b.produkcja = 0.2;
+	domek1b.produkcja = 2;
 	domek1b.max_liczebnosc = 100;
 	domek1b.wyglad = Wyglad::kDomek;
 	gra.ZmienLiczebnosc(domek1b, 20);
@@ -51,7 +51,7 @@ Rozgrywka prosta_rozgrywka()
 	Domek& domek2 = gra.domki.back();
 	domek2.gracz = &gracz2;
 	domek2.polozenie = { 500.0, 300.0 };
-	domek2.produkcja = 0.5;
+	domek2.produkcja = 5;
 	domek2.max_liczebnosc = 30;
 	domek2.wyglad = Wyglad::kDomek;
 	gra.ZmienLiczebnosc(domek2, 20);
@@ -60,7 +60,7 @@ Rozgrywka prosta_rozgrywka()
 	Domek& domek3 = gra.domki.back();
 	domek3.gracz = &gracz2;
 	domek3.polozenie = { 530.0, 400.0 };
-	domek3.produkcja = 0.5;
+	domek3.produkcja = 5;
 	domek3.max_liczebnosc = 30;
 	domek3.wyglad = Wyglad::kDomek;
 	gra.ZmienLiczebnosc(domek3, 20);
@@ -69,7 +69,7 @@ Rozgrywka prosta_rozgrywka()
 	Domek& domek4 = gra.domki.back();
 	domek4.gracz = &gracz3;
 	domek4.polozenie = { 290.0, 600.0 };
-	domek4.produkcja = 0.2;
+	domek4.produkcja = 2;
 	domek4.max_liczebnosc = 100;
 	domek4.wyglad = Wyglad::kDomek;
 	gra.ZmienLiczebnosc(domek4, 30);

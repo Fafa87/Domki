@@ -36,8 +36,8 @@ public:
 	Ruszacz(Rozgrywka& rozgrywka);
 	void Ruszaj(float czas);
 
-	double szybkosc = 2000.0 / 30;
-	double szybkosc_ruchu = 1.0;
+	double szybkosc = 1;
+	double szybkosc_ruchu = 200.0/3;
 private:
 	void PrzesuwajLudkow(float czas);
 	void WalczLudkami();

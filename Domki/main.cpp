@@ -172,6 +172,7 @@ int main()
 	Wyswietlacz wyswietlacz(rozgrywka);
 	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.gracze[0]);
 	MyszDecydent myszkaGracza2(rozgrywka, rozgrywka.gracze[1]);
+	Komputer kompiuter;
 	Ruszacz ruszacz(rozgrywka);
 	//czasomierz
 	clock_t czasomierz;
@@ -213,6 +214,8 @@ int main()
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
 		myszkaGracza.WykonajRuch();
 		//myszkaGracza2.WykonajRuch();
+		kompiuter.czas = czas;
+		kompiuter.WykonajRuch();
 		ruszacz.Ruszaj(czas);
 
 		window.clear();

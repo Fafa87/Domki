@@ -13,6 +13,13 @@ public:
 	virtual void Przetworz() {}
 };
 
+class Komputer : public Decydent
+{
+public:
+	float czas;
+	virtual void WykonajRuch();
+};
+
 class MyszDecydent : public Decydent
 {
 public:

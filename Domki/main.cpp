@@ -2,6 +2,7 @@
 
 #include "dane.h"
 #include "dzialacze.h"
+#include<windows.h>
 
 Rozgrywka prosta_rozgrywka()
 {
@@ -102,8 +103,19 @@ int main()
 	backtexture.setRepeated(true);
 	sf::Sprite background(backtexture);
 	background.setTextureRect({ 0, 0, (int)window.getSize().x, (int)window.getSize().y });
+
+	// fpsy
+	sf::Font czcionka;
+	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
+
+	sf::Text podpis;
+	podpis.setFont(czcionka);
+	podpis.setCharacterSize(50);
+	podpis.setStyle(sf::Text::Bold);
+	podpis.setFillColor(sf::Color::Green);
+	podpis.move(300,0);
 	
-	// tworzymy rozgrywkê
+	// tworzymy rozgrywke
 	Rozgrywka rozgrywka = prosta_rozgrywka();
 
 	// przygotowujemy dzialaczy
@@ -111,7 +123,9 @@ int main()
 	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.gracze[0]);
 	MyszDecydent myszkaGracza2(rozgrywka, rozgrywka.gracze[1]);
 	Ruszacz ruszacz(rozgrywka);
-	
+	clock_t czasomierz;
+	czasomierz = clock();
+	double czasik = 0;
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -140,11 +154,19 @@ int main()
 		myszkaGracza2.WykonajRuch();
 		ruszacz.Ruszaj();
 
+		czasomierz = clock() - czasomierz;
+		czasik = (double)czasomierz / CLOCKS_PER_SEC;
+		podpis.setString("FPSY: "+std::to_string((int)(1.0/czasik+0.5)));
+		czasomierz = clock();
+
 		window.clear();
 		window.draw(background);
+		window.draw(podpis);//FPSY
+
 		wyswietlacz.Wyswietlaj(window);
 		window.display();
+		Sleep(500);
+		
 	}
-
 	return 0;
 }

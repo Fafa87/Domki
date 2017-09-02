@@ -1,6 +1,7 @@
 #include "dzialacze.h"
 #include <set>
 #include <string>
+#include<ctime>
 
 MyszDecydent::MyszDecydent(Rozgrywka & rozgrywka, Gracz & gracz) : rozgrywka(rozgrywka), gracz(gracz)
 {
@@ -109,6 +110,7 @@ void Ruszacz::WalczLudkami()
 
 void Ruszacz::Produkuj()
 {
+
 }
 
 Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)

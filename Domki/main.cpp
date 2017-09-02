@@ -7,10 +7,6 @@
 Rozgrywka zwarcie_rozgrywka()
 {
 	Rozgrywka gra;
-	////rezerwa pamieci
-	//gra.gracze.reserve(100);
-	//gra.domki.reserve(100);
-	//gra.armie.reserve(100);
 	//gracze
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz1 = gra.gracze.front();
@@ -18,12 +14,12 @@ Rozgrywka zwarcie_rozgrywka()
 	gracz1.kolor = sf::Color::Red;
 
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz2 = gra.gracze[1];
+	Gracz& gracz2 = *(++gra.gracze.begin());
 	gracz2.numer = 2; gracz2.nazwa = "KOMPUTER";
 	gracz2.kolor = sf::Color::Blue;
 
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz3 = gra.gracze[2];
+	Gracz& gracz3 = *(++(++gra.gracze.begin()));
 	gracz3.numer = 3; gracz3.nazwa = "GRA";
 	gracz3.kolor = sf::Color::White;
 	gracz3.aktywny = false;

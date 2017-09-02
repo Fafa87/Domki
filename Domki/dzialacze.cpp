@@ -136,7 +136,7 @@ void Ruszacz::Produkuj(float czas)
 Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 {
 	obrazek_tworow[Wyglad::kDomek] = new sf::Texture();
-	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\domek.png");
+	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\domek_fala.gif");
 	obrazek_tworow[Wyglad::kDomek]->setSmooth(true);
 
 	obrazek_tworow[Wyglad::kLudek] = new sf::Texture();

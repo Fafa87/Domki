@@ -116,7 +116,7 @@ void Ruszacz::Produkuj(float czas)
 {
 	for (Domek& domek : rozgrywka.domki)
 	{
-		rozgrywka.ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja);
+		if(domek.gracz->aktywny)rozgrywka.ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja);
 	}
 }
 

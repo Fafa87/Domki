@@ -34,14 +34,14 @@ class Ruszacz // wykonuje zaplanowane kroki symulacji
 {
 public:
 	Ruszacz(Rozgrywka& rozgrywka);
-	void Ruszaj();
+	void Ruszaj(float czas);
 
-	double szybkosc = 1.0 / 30;
+	double szybkosc = 2000.0 / 30;
 	double szybkosc_ruchu = 1.0;
 private:
-	void PrzesuwajLudkow();
+	void PrzesuwajLudkow(float czas);
 	void WalczLudkami();
-	void Produkuj();
+	void Produkuj(float czas);
 
 	Rozgrywka& rozgrywka;
 };

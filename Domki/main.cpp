@@ -123,9 +123,12 @@ int main()
 	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.gracze[0]);
 	MyszDecydent myszkaGracza2(rozgrywka, rozgrywka.gracze[1]);
 	Ruszacz ruszacz(rozgrywka);
+	//czasomierz
 	clock_t czasomierz;
 	czasomierz = clock();
-	double czasik = 0;
+	int czasik = 0;
+	float czas;
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -150,23 +153,29 @@ int main()
 				window.close();
 		}
 
+		///FPSY
+		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
+		czasik =(int)(1.0/czas+0.5);
+		podpis.setString("FPSY: "+std::to_string(czasik));
+		
+		//ruszacz
+		///FPSY
+
 		myszkaGracza.WykonajRuch();
 		myszkaGracza2.WykonajRuch();
-		ruszacz.Ruszaj();
-
-		czasomierz = clock() - czasomierz;
-		czasik = (double)czasomierz / CLOCKS_PER_SEC;
-		podpis.setString("FPSY: "+std::to_string((int)(1.0/czasik+0.5)));
-		czasomierz = clock();
+		ruszacz.Ruszaj(czas);
 
 		window.clear();
 		window.draw(background);
+
 		window.draw(podpis);//FPSY
 
 		wyswietlacz.Wyswietlaj(window);
 		window.display();
-		Sleep(500);
-		
+
+		czasomierz = clock();
+
+		Sleep(16);
 	}
 	return 0;
 }

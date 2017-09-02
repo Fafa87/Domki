@@ -54,27 +54,31 @@ Ruszacz::Ruszacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 {
 }
 
-void Ruszacz::Ruszaj()
+void Ruszacz::Ruszaj(float czas)
 {
-	PrzesuwajLudkow();
+	PrzesuwajLudkow(czas);
 	WalczLudkami();
-	Produkuj();
+	Produkuj(czas);
 }
 
-void Ruszacz::PrzesuwajLudkow()
+void Ruszacz::PrzesuwajLudkow(float czas)
 {
 	double przesuniecie = szybkosc * szybkosc_ruchu;
 	for (Ludek& armia : rozgrywka.armie)
 	{
+		
 		PD polozenie_cel = armia.cel.polozenie;
 		PD polozenie_teraz = armia.polozenie;
 
 		PD wektor_do_celu = (polozenie_cel - polozenie_teraz);
 		double dlugosc = sqrt(wektor_do_celu.x * wektor_do_celu.x + wektor_do_celu.y * wektor_do_celu.y);
 		PD jednostkowy = wektor_do_celu / dlugosc;
-		jednostkowy *= przesuniecie;
+		jednostkowy *= przesuniecie*czas;
 
 		armia.polozenie += jednostkowy;
+		//X(do ustalenia) W PIONIE I W POZIOMIE NA SEKUNDE
+		//armia.polozenie.x += szybkosc*czas;
+		//armia.polozenie.y += szybkosc*czas;
 	}
 }
 
@@ -108,7 +112,7 @@ void Ruszacz::WalczLudkami()
 	}
 }
 
-void Ruszacz::Produkuj()
+void Ruszacz::Produkuj(float czas)
 {
 
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <cmath>
 
 #include <SFML/Graphics.hpp>
 
@@ -22,5 +23,6 @@ struct Rozgrywka
 
 	void ZmienLiczebnosc(Domek& domek, double nowa);
 	void ZmienLiczebnosc(Ludek& ludek, double nowa);
+	double Odleglosc(const Twor& twor1, const Twor& twor2);
 	Twor* Zlokalizuj(int x, int y);
 };

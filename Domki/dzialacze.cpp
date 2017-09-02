@@ -79,6 +79,32 @@ void Ruszacz::PrzesuwajLudkow()
 
 void Ruszacz::WalczLudkami()
 {
+	for (Ludek& armia : rozgrywka.armie)
+	{
+		double odleglosc = rozgrywka.Odleglosc(armia, armia.cel);
+		if (odleglosc < armia.cel.rozmiar)
+		{
+			if (IsType<Domek>(&armia.cel))
+			{
+				Domek& cel = (Domek&)armia.cel;
+				if (armia.gracz == armia.cel.gracz)
+				{
+					rozgrywka.ZmienLiczebnosc(cel, armia.liczebnosc + cel.liczebnosc);
+				}
+				else
+				{
+					double nowa_liczebnosc = cel.liczebnosc - armia.liczebnosc;
+					if (nowa_liczebnosc < 0)
+					{
+						cel.gracz = armia.gracz;
+					}
+					rozgrywka.ZmienLiczebnosc(cel, std::abs(nowa_liczebnosc));
+				}
+				//std::remove(rozgrywka.armie.begin(), rozgrywka.armie.end(), armia);
+			}
+			// jak to nie jest domek to nic nie róbmy, mo¿e kiedyœ bêdziemy?
+		}
+	}
 }
 
 void Ruszacz::Produkuj()

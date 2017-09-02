@@ -36,6 +36,15 @@ Rozgrywka prosta_rozgrywka()
 	domek1.max_liczebnosc = 100;
 	domek1.wyglad = Wyglad::kDomek;
 	gra.ZmienLiczebnosc(domek1, 40);
+
+	gra.domki.push_back(Domek());
+	Domek& domek1b = gra.domki.back();
+	domek1b.gracz = &gracz1;
+	domek1b.polozenie = { 100.0, 200.0 };
+	domek1b.produkcja = 0.2;
+	domek1b.max_liczebnosc = 100;
+	domek1b.wyglad = Wyglad::kDomek;
+	gra.ZmienLiczebnosc(domek1b, 20);
 	
 	gra.domki.push_back(Domek());
 	Domek& domek2 = gra.domki.back();

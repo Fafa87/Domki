@@ -3,7 +3,49 @@
 #include "dane.h"
 #include "dzialacze.h"
 #include<windows.h>
+Rozgrywka zwarcie_rozgrywka()
+{
+	Rozgrywka gra;
+	//rezerwa pamieci
+	gra.gracze.reserve(100);
+	gra.domki.reserve(100);
+	gra.armie.reserve(100);
+	//gracze
+	gra.gracze.push_back(Gracz());
+	Gracz& gracz1 = gra.gracze[0];
+	gracz1.numer = 1; gracz1.nazwa = "GRACZ";
+	gracz1.kolor = sf::Color::Red;
+	gracz1.aktywny = true;
 
+	gra.gracze.push_back(Gracz());
+	Gracz& gracz2 = gra.gracze[1];
+	gracz2.numer = 2; gracz2.nazwa = "GRA";
+	gracz2.kolor = sf::Color::White;
+	gracz2.aktywny = false;
+	//domki
+	double x=200.0, y=300.0;
+	for(int a=0;a<5;a++)
+		for(int b=0;b<5;b++)
+			{
+			gra.domki.push_back(Domek());
+			Domek& domek = gra.domki.back();
+			if(a==0)domek.gracz = &gracz1;
+			else domek.gracz = &gracz2;
+			domek.polozenie = { x, y };
+			domek.produkcja = 2;
+			domek.max_liczebnosc = 500;
+			domek.wyglad = Wyglad::kDomek;
+			gra.ZmienLiczebnosc(domek, 10);
+			if (b == 4)
+				{
+				y += 100.0;
+				x = 200.0;
+				}
+			else x += 100.0;
+
+			}
+	return gra;
+}
 Rozgrywka prosta_rozgrywka()
 {
 	Rozgrywka gra;
@@ -116,8 +158,8 @@ int main()
 	podpis.move(300,0);
 	
 	// tworzymy rozgrywke
-	Rozgrywka rozgrywka = prosta_rozgrywka();
-
+	//Rozgrywka rozgrywka = prosta_rozgrywka();
+	Rozgrywka rozgrywka = zwarcie_rozgrywka();
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
 	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.gracze[0]);
@@ -162,7 +204,7 @@ int main()
 		///FPSY
 
 		myszkaGracza.WykonajRuch();
-		myszkaGracza2.WykonajRuch();
+		//myszkaGracza2.WykonajRuch();
 		ruszacz.Ruszaj(czas);
 
 		window.clear();

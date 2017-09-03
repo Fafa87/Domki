@@ -187,6 +187,23 @@ int main()
 
 	//PRYGOTOWANIE ROZGRYWKI
 	Ruszacz ruszacz(rozgrywka);
+	//Przygotuj sie
+	podpis.setCharacterSize(250);
+	for(int a=3;a>=0;a--)
+		{ 
+		window.clear();
+		window.draw(background);
+		if(a>0)podpis.setString(std::to_string(a));
+		else podpis.setString("RUSZAJ!");
+		if(a>0)podpis.setPosition(400,200);
+		else podpis.setPosition(200, 200);
+		wyswietlacz.Wyswietlaj(window);
+		window.draw(podpis);
+		window.display();
+		if (a > 0)Sleep(1000);
+		else Sleep(250);
+		}
+	podpis.setCharacterSize(50);
 	//czasomierz
 	clock_t czasomierz;
 	czasomierz = clock();

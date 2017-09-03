@@ -16,7 +16,11 @@ public:
 class Komputer : public Decydent
 {
 public:
-	float czas;
+	Komputer(Rozgrywka& rozgrywka,Gracz& gracz);
+	Rozgrywka& rozgrywka;
+	Gracz& gracz;
+	float czas=0.0,
+		szybkosc_komputera=3.0;
 	virtual void WykonajRuch();
 };
 

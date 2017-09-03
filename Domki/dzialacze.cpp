@@ -3,9 +3,36 @@
 #include <string>
 #include<ctime>
 
+Komputer::Komputer(Rozgrywka & rozgrywka, Gracz & gracz) : rozgrywka(rozgrywka), gracz(gracz)
+{
+}
+
 void Komputer::WykonajRuch()
 {
-	//WYKONUJ CO JAKIS CZAS
+	if(czas>=3.0)
+		{
+		czas -= 3.0;
+		bool ruch = false;
+		for (Domek& domek1 : rozgrywka.domki)
+			if(!ruch&&domek1.gracz->numer==2)
+				for(Domek& domek2 : rozgrywka.domki)
+					if (!ruch&&domek2.gracz->numer != 2 && domek1.liczebnosc / 2 -5>=domek2.liczebnosc)
+						{
+						Domek* wybrany = &domek1;
+						Domek* cel = &domek2;
+						auto liczba = int(wybrany->liczebnosc / 2);
+						if (liczba > 0 && cel != wybrany)
+							{
+							rozgrywka.ZmienLiczebnosc(*wybrany, wybrany->liczebnosc - liczba);
+							rozgrywka.armie.push_back(Ludek(*cel));
+							Ludek& nowaArmia = rozgrywka.armie.back();
+							nowaArmia.gracz = &gracz;
+							nowaArmia.polozenie = wybrany->polozenie;
+							nowaArmia.wyglad = Wyglad::kLudek;
+							rozgrywka.ZmienLiczebnosc(nowaArmia, liczba);
+							}
+						}
+		}
 }
 
 MyszDecydent::MyszDecydent(Rozgrywka & rozgrywka, Gracz & gracz) : rozgrywka(rozgrywka), gracz(gracz)

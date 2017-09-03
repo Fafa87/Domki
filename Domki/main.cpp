@@ -9,27 +9,27 @@ Rozgrywka zwarcie_rozgrywka()
 	Rozgrywka gra;
 	//gracze
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz1 = gra.gracze.front();
+	Gracz& gracz1 = gra.gracze.back();
 	gracz1.numer = 1; gracz1.nazwa = "GRACZ";
 	gracz1.kolor = sf::Color::Yellow;
 
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz2 = *(++gra.gracze.begin());
+	Gracz& gracz2 = gra.gracze.back();
 	gracz2.numer = 2; gracz2.nazwa = "KOMPUTER1";
 	gracz2.kolor = sf::Color::Red;
 
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz3 = *(++(++gra.gracze.begin()));
+	Gracz& gracz3 = gra.gracze.back();
 	gracz3.numer = 3; gracz3.nazwa = "KOMPUTER2";
 	gracz3.kolor = sf::Color::Blue;
 
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz4 = *(++(++(++gra.gracze.begin())));
+	Gracz& gracz4 = gra.gracze.back();
 	gracz4.numer =4; gracz4.nazwa = "KOMPUTER3";
 	gracz4.kolor = sf::Color::Green;
 
 	gra.gracze.push_back(Gracz());
-	Gracz& gracz5 = *(++(++(++(++gra.gracze.begin()))));
+	Gracz& gracz5 = gra.gracze.back();
 	gracz5.numer = 5; gracz5.nazwa = "GRA";
 	gracz5.kolor = sf::Color::White;
 	gracz5.aktywny = false;
@@ -50,7 +50,7 @@ Rozgrywka zwarcie_rozgrywka()
 				else if (znak == '3')domek.gracz = &gracz3;
 				else if (znak == '4')domek.gracz = &gracz4;
 				else if (znak == '5')domek.gracz = &gracz5;
-				domek.polozenie = { (float)(200+b*100),(float)(300+a*100) };
+				domek.polozenie = { (float)(200+b*150),(float)(300+a*150) };
 				domek.produkcja = 2;
 				domek.max_liczebnosc = 100;
 				domek.wyglad = Wyglad::kDomek;
@@ -178,12 +178,11 @@ int main()
 	Rozgrywka rozgrywka = zwarcie_rozgrywka();
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
-	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.gracze.front());
-	MyszDecydent myszkaGracza2(rozgrywka, rozgrywka.gracze.back());
+	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.Gracz(0));
 	//KOMPUTEROWIE
-	Komputer kompiuter1(rozgrywka, (*(++rozgrywka.gracze.begin())));
-	Komputer kompiuter2(rozgrywka, (*(++(++rozgrywka.gracze.begin()))));
-	Komputer kompiuter3(rozgrywka, (*(++(++(++rozgrywka.gracze.begin())))));
+	Komputer kompiuter1(rozgrywka, rozgrywka.Gracz(1));
+	Komputer kompiuter2(rozgrywka, rozgrywka.Gracz(2));
+	Komputer kompiuter3(rozgrywka, rozgrywka.Gracz(3));
 
 	//PRYGOTOWANIE ROZGRYWKI
 	Ruszacz ruszacz(rozgrywka);
@@ -217,11 +216,9 @@ int main()
 		sf::Event event;
 
 		myszkaGracza.Przetworz(); // puste
-		myszkaGracza2.Przetworz(); // puste
 		while (window.pollEvent(event))
 		{
-			myszkaGracza.Przetworz(event); // pewnie tutaj mo�na z�apa�, �e naci�ni�ta zosta�a myszka
-			myszkaGracza2.Przetworz(event); // pewnie tutaj mo�na z�apa�, �e naci�ni�ta zosta�1a myszka
+			myszkaGracza.Przetworz(event); 
 			if (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::KeyReleased)akcje++;
 			switch (event.type)
 			{
@@ -243,7 +240,6 @@ int main()
 		///FPSY
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
 		myszkaGracza.WykonajRuch();
-		//myszkaGracza2.WykonajRuch();
 		kompiuter1.czas += czas;
 		kompiuter1.WykonajRuch();
 		kompiuter2.czas += czas;

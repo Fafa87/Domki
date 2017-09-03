@@ -22,6 +22,7 @@ struct Rozgrywka
 	list<Domek> domki;
 	list<Ludek> armie;
 
+	Gracz& Gracz(int numer);
 	void ZmienLiczebnosc(Domek& domek, double nowa);
 	void ZmienLiczebnosc(Ludek& ludek, double nowa);
 	double Odleglosc(const Twor& twor1, const Twor& twor2);

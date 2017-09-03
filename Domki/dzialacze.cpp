@@ -259,7 +259,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		else if (IsType<Ludek>(twor))
 			liczba = ((Ludek*)twor)->liczebnosc;
 		podpis.setFont(czcionka);
-		podpis.setCharacterSize(13);
+		podpis.setCharacterSize(18);
 		podpis.setString(std::to_string(liczba));
 		podpis.setStyle(sf::Text::Bold);
 		podpis.setFillColor(twor->gracz->kolor);

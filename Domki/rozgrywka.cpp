@@ -1,5 +1,12 @@
 #include "rozgrywka.h"
 
+Gracz & Rozgrywka::Gracz(int numer)
+{
+	auto it = gracze.begin();
+	std::advance(it, numer);
+	return *it;
+}
+
 void Rozgrywka::ZmienLiczebnosc(Domek & domek, double nowa)
 {
 	domek.liczebnosc = std::min((double)domek.max_liczebnosc, nowa);

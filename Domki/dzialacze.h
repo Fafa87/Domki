@@ -35,6 +35,8 @@ public:
 
 	virtual void WykonajRuch();
 private:
+	vector<int> klikniecia;
+
 	Domek* cel;
 	Domek* wybrany;
 	Rozgrywka& rozgrywka;

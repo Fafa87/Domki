@@ -73,17 +73,37 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 		{
 			if (wybrany == nullptr && klikniety->gracz->numer == gracz.numer)
 				wybrany = (Domek*)klikniety;
-			else if (wybrany != nullptr)
-				cel = (Domek*)klikniety;
+			else if (wybrany != nullptr && wybrany != klikniety)
+			{
+				if (cel != klikniety)
+				{
+					klikniecia.clear();
+					cel = (Domek*)klikniety;
+				}
+				klikniecia.push_back(clock());
+			}
 		}
 	}
 }
 
 void MyszDecydent::WykonajRuch()
 {
-	if (cel != nullptr)
+	if (wybrany != nullptr && wybrany->gracz != &gracz)
 	{
-		auto liczba = int(wybrany->liczebnosc / 2);
+		cel = nullptr;
+		wybrany = nullptr;
+	}
+
+	// po 0.5 sekundy wysy³ane s¹ ludki
+	if (cel != nullptr && clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
+	{
+		double frakcja = 1;
+		if (klikniecia.size() == 1)
+			frakcja = 0.333;
+		else if (klikniecia.size() == 2)
+			frakcja = 0.666;
+
+		auto liczba = int(wybrany->liczebnosc * frakcja);
 		if (liczba > 0 && cel != wybrany)
 		{
 			rozgrywka.ZmienLiczebnosc(*wybrany, wybrany->liczebnosc - liczba);
@@ -98,6 +118,7 @@ void MyszDecydent::WykonajRuch()
 
 		wybrany = nullptr;
 		cel = nullptr;
+		klikniecia.clear();
 	}
 }
 

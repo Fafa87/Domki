@@ -24,6 +24,9 @@
     <ClCompile Include="rozgrywka.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="wyswietlacze.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">
@@ -33,6 +36,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rozgrywka.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wyswietlacze.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

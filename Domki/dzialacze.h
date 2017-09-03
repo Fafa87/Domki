@@ -34,13 +34,14 @@ public:
 	void Przetworz(sf::Event zdarzenie);
 
 	virtual void WykonajRuch();
+
+	Domek* wybrany;
+	Gracz& gracz;
+
 private:
 	vector<int> klikniecia;
-
 	Domek* cel;
-	Domek* wybrany;
 	Rozgrywka& rozgrywka;
-	Gracz& gracz;
 };
 
 class Ruszacz // wykonuje zaplanowane kroki symulacji
@@ -57,19 +58,4 @@ private:
 	void Produkuj(float czas);
 
 	Rozgrywka& rozgrywka;
-};
-
-class Wyswietlacz
-{
-public:
-	Wyswietlacz(Rozgrywka& rozgrywka);
-	void Wyswietlaj(sf::RenderWindow& okno);
-
-	string Skorka;
-private:
-	Rozgrywka& rozgrywka;
-	// TODO trzeba to poszerzy� o reszt� obiekt�w, kt�re s� wy�wietlane - np. sf::Text, podpis
-	map<Twor*, sf::CircleShape> wyglad_tworow; 
-	map<Wyglad, sf::Texture*> obrazek_tworow;
-	sf::Font czcionka;
 };

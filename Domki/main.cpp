@@ -2,6 +2,8 @@
 
 #include "dane.h"
 #include "dzialacze.h"
+#include "wyswietlacze.h"
+
 #include<windows.h>
 #include<fstream>
 Rozgrywka zwarcie_rozgrywka()
@@ -151,8 +153,11 @@ Rozgrywka prosta_rozgrywka()
 
 int main()
 {
+	sf::ContextSettings ustawienia;
+	ustawienia.antialiasingLevel = 8;
+
 	auto videoMode = sf::VideoMode(1600, 800);
-	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Fullscreen);
+	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Fullscreen, ustawienia);
 
 	// ustawiamy t�o
 	sf::Texture backtexture;
@@ -179,6 +184,7 @@ int main()
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
 	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.Gracz(0));
+	OznaczaczWyborow ruchGracza(myszkaGracza);
 	//KOMPUTEROWIE
 	Komputer kompiuter1(rozgrywka, rozgrywka.Gracz(1));
 	Komputer kompiuter2(rozgrywka, rozgrywka.Gracz(2));
@@ -264,6 +270,7 @@ int main()
 		podpis.setString("APM: " + std::to_string((int)(60 * akcje / czas_przeminal)));
 		window.draw(podpis); //APM
 
+		ruchGracza.Wyswietlaj(window);
 		wyswietlacz.Wyswietlaj(window);
 		window.display();
 

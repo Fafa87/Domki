@@ -165,11 +165,13 @@
     <ClCompile Include="dzialacze.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="rozgrywka.cpp" />
+    <ClCompile Include="wyswietlacze.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h" />
     <ClInclude Include="dzialacze.h" />
     <ClInclude Include="rozgrywka.h" />
+    <ClInclude Include="wyswietlacze.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

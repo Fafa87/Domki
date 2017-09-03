@@ -11,24 +11,34 @@ Rozgrywka zwarcie_rozgrywka()
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz1 = gra.gracze.front();
 	gracz1.numer = 1; gracz1.nazwa = "GRACZ";
-	gracz1.kolor = sf::Color::Red;
+	gracz1.kolor = sf::Color::Yellow;
 
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz2 = *(++gra.gracze.begin());
-	gracz2.numer = 2; gracz2.nazwa = "KOMPUTER";
-	gracz2.kolor = sf::Color::Blue;
+	gracz2.numer = 2; gracz2.nazwa = "KOMPUTER1";
+	gracz2.kolor = sf::Color::Red;
 
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz3 = *(++(++gra.gracze.begin()));
-	gracz3.numer = 3; gracz3.nazwa = "GRA";
-	gracz3.kolor = sf::Color::White;
-	gracz3.aktywny = false;
+	gracz3.numer = 3; gracz3.nazwa = "KOMPUTER2";
+	gracz3.kolor = sf::Color::Blue;
+
+	gra.gracze.push_back(Gracz());
+	Gracz& gracz4 = *(++(++(++gra.gracze.begin())));
+	gracz4.numer =4; gracz4.nazwa = "KOMPUTER3";
+	gracz4.kolor = sf::Color::Green;
+
+	gra.gracze.push_back(Gracz());
+	Gracz& gracz5 = *(++(++(++(++gra.gracze.begin()))));
+	gracz5.numer = 5; gracz5.nazwa = "GRA";
+	gracz5.kolor = sf::Color::White;
+	gracz5.aktywny = false;
 	//domki
 	ifstream plikmapa;
 	plikmapa.open("Plansza\\tomek_test.txt");
 	char znak;
 	for (int a = 0; a < 4; a++)
-		for (int b = 0; b < 7; b++)
+		for (int b = 0; b < 9; b++)
 			{
 			plikmapa >> znak;
 			if (znak != '.')
@@ -38,11 +48,13 @@ Rozgrywka zwarcie_rozgrywka()
 				if(znak=='1')domek.gracz = &gracz1;
 				else if (znak == '2')domek.gracz = &gracz2;
 				else if (znak == '3')domek.gracz = &gracz3;
+				else if (znak == '4')domek.gracz = &gracz4;
+				else if (znak == '5')domek.gracz = &gracz5;
 				domek.polozenie = { (float)(200+b*100),(float)(300+a*100) };
 				domek.produkcja = 2;
 				domek.max_liczebnosc = 100;
 				domek.wyglad = Wyglad::kDomek;
-				if (znak == '3')gra.ZmienLiczebnosc(domek, 25);
+				if (znak == '5')gra.ZmienLiczebnosc(domek, 25);
 				else gra.ZmienLiczebnosc(domek, 50);
 				}
 			}
@@ -168,8 +180,12 @@ int main()
 	Wyswietlacz wyswietlacz(rozgrywka);
 	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.gracze.front());
 	MyszDecydent myszkaGracza2(rozgrywka, rozgrywka.gracze.back());
-	Komputer kompiuter(rozgrywka, (*(++rozgrywka.gracze.begin())));
-	
+	//KOMPUTEROWIE
+	Komputer kompiuter1(rozgrywka, (*(++rozgrywka.gracze.begin())));
+	Komputer kompiuter2(rozgrywka, (*(++(++rozgrywka.gracze.begin()))));
+	Komputer kompiuter3(rozgrywka, (*(++(++(++rozgrywka.gracze.begin())))));
+
+	//PRYGOTOWANIE ROZGRYWKI
 	Ruszacz ruszacz(rozgrywka);
 	//czasomierz
 	clock_t czasomierz;
@@ -211,8 +227,12 @@ int main()
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
 		myszkaGracza.WykonajRuch();
 		//myszkaGracza2.WykonajRuch();
-		kompiuter.czas += czas;
-		kompiuter.WykonajRuch();
+		kompiuter1.czas += czas;
+		kompiuter1.WykonajRuch();
+		kompiuter2.czas += czas;
+		kompiuter2.WykonajRuch();
+		kompiuter3.czas += czas;
+		kompiuter3.WykonajRuch();
 		ruszacz.Ruszaj(czas);
 
 		window.clear();

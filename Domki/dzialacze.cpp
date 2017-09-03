@@ -202,7 +202,7 @@ void Ruszacz::Produkuj(float czas)
 Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 {
 	obrazek_tworow[Wyglad::kDomek] = new sf::Texture();
-	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\domek_fala.gif");
+	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\domek_fala.png");
 	obrazek_tworow[Wyglad::kDomek]->setSmooth(true);
 
 	obrazek_tworow[Wyglad::kLudek] = new sf::Texture();
@@ -247,7 +247,14 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		wyglad.setRadius(twor->rozmiar);
 		wyglad.setOrigin(twor->rozmiar, twor->rozmiar);
 		wyglad.setFillColor(twor->gracz->kolor);
-		if (twor->wyglad == Wyglad::kDomek || twor->wyglad == Wyglad::kLudek)
+		if (twor->wyglad == Wyglad::kDomek)
+		{
+			int ramka_numer = ((clock() * 12 / CLOCKS_PER_SEC)) % 8;
+			int ramka = 4 - abs(ramka_numer - 4);
+			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
+			wyglad.setTextureRect({ 400 * ramka, 0, 400, 400 });
+		}
+		else if(twor->wyglad == Wyglad::kLudek)
 		{
 			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
 		}
@@ -263,9 +270,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		podpis.setString(std::to_string(liczba));
 		podpis.setStyle(sf::Text::Bold);
 		podpis.setFillColor(twor->gracz->kolor);
-		podpis.move(twor->polozenie.x, twor->polozenie.y + twor->rozmiar);
-
-
+		podpis.move(twor->polozenie.x - 18 * podpis.getString().getSize() / 2, twor->polozenie.y + twor->rozmiar);
 
 		okno.draw(podpis);
 		okno.draw(wyglad);

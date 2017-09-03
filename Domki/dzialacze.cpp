@@ -134,8 +134,10 @@ void Ruszacz::PrzesuwajLudkow(float czas)
 
 void Ruszacz::WalczLudkami(float czas)
 {
-	for (Ludek& armia : rozgrywka.armie)
+	vector<list<Ludek>::iterator> do_usuniecia;
+	for (auto it = rozgrywka.armie.begin(); it != rozgrywka.armie.end(); it++)
 	{
+		Ludek& armia = *it;
 		double odleglosc = rozgrywka.Odleglosc(armia, armia.cel);
 		if (odleglosc < armia.cel.rozmiar)
 		{
@@ -156,20 +158,15 @@ void Ruszacz::WalczLudkami(float czas)
 					rozgrywka.ZmienLiczebnosc(cel, std::abs(nowa_liczebnosc));
 				}
 				rozgrywka.ZmienLiczebnosc(armia, std::abs(0));
-				/*list<Ludek>::iterator do_usuniecia;
-				for (auto it = rozgrywka.armie.begin(); it != rozgrywka.armie.end(); it++)
-				{
-					if (&(*it) == &armia)
-					{
-						do_usuniecia = it;
-						break;
-					}
-				}
-				rozgrywka.armie.erase(do_usuniecia);
-				break;*/
+				do_usuniecia.push_back(it);
 			}
 			// jak to nie jest domek to nic nie róbmy, mo¿e kiedyœ bêdziemy?
 		}
+	}
+
+	for (auto usunieta : do_usuniecia)
+	{
+		rozgrywka.armie.erase(usunieta);
 	}
 }
 
@@ -203,9 +200,13 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		wszystkie_obiekty.insert(&lud);
 
 	// usuñ wygl¹dy których ju¿ nie ma
+	vector<Twor*> do_usuniecia;
 	for (auto& wyg_map : wyglad_tworow)
 		if (!wszystkie_obiekty.count(wyg_map.first))
-			wyglad_tworow.erase(wyg_map.first);
+			do_usuniecia.push_back(wyg_map.first);
+
+	for (auto twor : do_usuniecia)
+		wyglad_tworow.erase(twor);
 
 	// dodaj wygl¹dy których brakuje
 	for (auto& twor : wszystkie_obiekty)

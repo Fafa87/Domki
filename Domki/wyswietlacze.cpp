@@ -8,11 +8,11 @@
 Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 {
 	obrazek_tworow[Wyglad::kDomek] = new sf::Texture();
-	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\domek_fala.png");
+	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\kamienica.png");
 	obrazek_tworow[Wyglad::kDomek]->setSmooth(true);
 
 	obrazek_tworow[Wyglad::kLudek] = new sf::Texture();
-	obrazek_tworow[Wyglad::kLudek]->loadFromFile("Grafika\\ludek.png");
+	obrazek_tworow[Wyglad::kLudek]->loadFromFile("Grafika\\krasnal.png");
 	obrazek_tworow[Wyglad::kLudek]->setSmooth(true);
 
 	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
@@ -41,7 +41,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		if (!wyglad_tworow.count(twor))
 		{
 			// brakuje wiêc utworz nowy obiekt do wyœwietlania
-			sf::CircleShape kolo(twor->rozmiar);
+			sf::RectangleShape kolo(sf::Vector2f(twor->rozmiar, twor->rozmiar));
 		}
 	}
 
@@ -50,18 +50,24 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 	{
 		auto wyglad = wyglad_tworow[twor];
 		wyglad.setPosition(twor->polozenie.x, twor->polozenie.y);
-		wyglad.setRadius(twor->rozmiar);
-		wyglad.setOrigin(twor->rozmiar, twor->rozmiar);
+		int wysokosc = twor->rozmiar * 640 / 400;  // trzeba to gdzieœ potem wyci¹gnaæ
+		wyglad.setSize(sf::Vector2f(twor->rozmiar * 2, wysokosc * 2));
+		wyglad.setOrigin(twor->rozmiar, wysokosc);
 		wyglad.setFillColor(twor->gracz->kolor);
 		if (twor->wyglad == Wyglad::kDomek)
 		{
-			int ramka_numer = ((clock() * 12 / CLOCKS_PER_SEC)) % 8;
-			int ramka = 4 - abs(ramka_numer - 4);
+			int ramka_numer = ((clock() * 12 / CLOCKS_PER_SEC)) % 6;
+			int ramka = 3 - abs(ramka_numer - 3);
 			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
-			wyglad.setTextureRect({ 400 * ramka, 0, 400, 400 });
+			wyglad.setTextureRect({ 400 * ramka, 0, 400, 640 });
 		}
 		else if (twor->wyglad == Wyglad::kLudek)
 		{
+			int ramka_numer = ((clock() * 6 / CLOCKS_PER_SEC)) % 2;
+			int ramka = 1 - abs(ramka_numer - 1);
+			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
+			wyglad.setTextureRect({ 400 * ramka, 0, 400, 640 });
+
 			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
 		}
 
@@ -75,8 +81,10 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		podpis.setCharacterSize(18);
 		podpis.setString(std::to_string(liczba));
 		podpis.setStyle(sf::Text::Bold);
+		podpis.setOutlineColor(sf::Color::Black);
+		podpis.setOutlineThickness(2);
 		podpis.setFillColor(twor->gracz->kolor);
-		podpis.move(twor->polozenie.x - 18 * podpis.getString().getSize() / 2, twor->polozenie.y + twor->rozmiar);
+		podpis.move(twor->polozenie.x - 15 * podpis.getString().getSize() / 2, twor->polozenie.y + wysokosc);
 
 		okno.draw(podpis);
 		okno.draw(wyglad);

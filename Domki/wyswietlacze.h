@@ -16,7 +16,7 @@ public:
 	string Skorka;
 private:
 	Rozgrywka& rozgrywka;
-	map<Twor*, sf::CircleShape> wyglad_tworow;
+	map<Twor*, sf::RectangleShape> wyglad_tworow;
 	map<Wyglad, sf::Texture*> obrazek_tworow;
 	sf::Font czcionka;
 };

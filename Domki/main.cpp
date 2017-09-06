@@ -161,7 +161,7 @@ int main()
 
 	// ustawiamy t�o
 	sf::Texture backtexture;
-	backtexture.loadFromFile("Grafika\\kafle.jpg");
+	backtexture.loadFromFile("Grafika\\bruk.png");
 	backtexture.setRepeated(true);
 	sf::Sprite background(backtexture);
 	background.setTextureRect({ 0, 0, (int)window.getSize().x, (int)window.getSize().y });
@@ -174,7 +174,7 @@ int main()
 	podpis.setFont(czcionka);
 	podpis.setCharacterSize(50);
 	podpis.setStyle(sf::Text::Bold);
-	podpis.setFillColor(sf::Color::Green);
+	podpis.setFillColor(sf::Color::Red);
 	podpis.move(300,0);
 
 
@@ -240,9 +240,6 @@ int main()
 				window.close();
 		}
 
-		
-		
-		
 		///FPSY
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
 		myszkaGracza.WykonajRuch();

@@ -7,6 +7,9 @@
 
 #include<windows.h>
 #include<fstream>
+
+string poziomy_trudnosci[] = { "stara", "nowa" };
+
 Rozgrywka zwarcie_rozgrywka(string sciezka)
 {
 	Rozgrywka gra;

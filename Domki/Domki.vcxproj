@@ -175,6 +175,7 @@ xcopy /i /y "$(SolutionDir)\Plansza" "$(OutDir)\Plansza"</Command>
     <ClInclude Include="dane.h" />
     <ClInclude Include="dzialacze.h" />
     <ClInclude Include="misja.h" />
+    <ClInclude Include="os.h" />
     <ClInclude Include="rozgrywka.h" />
     <ClInclude Include="wyswietlacze.h" />
   </ItemGroup>

@@ -1,0 +1,8 @@
+
+Window > * > * > Label {
+	FontSize: 28;
+}
+
+Window > * > Label {
+	FontSize: 28;
+}

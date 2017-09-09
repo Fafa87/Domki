@@ -4,66 +4,95 @@
 #include <SFML/Graphics.hpp>
 
 #include "misja.h"
+#include "os.h"
+
+vector<string> wczytaj_liste_plansz()
+{
+	return get_all_files_names_within_folder("Plansza");
+}
 
 int main() {
-
-	// Create SFML's window.
-	sf::RenderWindow render_window(sf::VideoMode(800, 600), "Domki menu!", sf::Style::None);
 	sfg::SFGUI sfgui;
 
-	// Create the label.
-	auto label = sfg::Label::Create("Hello world!");
+	sf::RenderWindow okno_menu(sf::VideoMode(800, 600), "Domki menu!", sf::Style::None);
+	okno_menu.resetGLStates();
 
-	// Create a simple button and connect the click signal.
-	auto button = sfg::Button::Create("Greet SFGUI!");
-	button->GetSignal(sfg::Widget::OnLeftClick).Connect([label] { 
+	sf::Texture backtexture;
+	backtexture.loadFromFile("Grafika\\bruk.png");
+	backtexture.setRepeated(true);
+	sf::Sprite background(backtexture);
+	background.setTextureRect({ 0, 0, 800, 600 });
 
-		label->SetText("Hello SFGUI, pleased to meet you!"); 
-		//render_window
-		misja("Plansza\\tomek_test.txt");
+	sfg::Desktop desktop;
+	desktop.LoadThemeFromFile("Grafika\\bazowy.theme");
+
+	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND);
+	okno->SetRequisition(sf::Vector2f(500,500));
+	okno->SetPosition(sf::Vector2f(150, 50));
+
+	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
+	auto tytul = sfg::Label::Create("DOMKI 0.1");
+	auto tabelka = sfg::Table::Create();
+
+	auto wybor_etykieta = sfg::Label::Create("Misja: ");
+	auto separator = sfg::Label::Create("");
+	auto wybor_lista = sfg::ComboBox::Create();
+	for (auto l : wczytaj_liste_plansz())
+		wybor_lista->AppendItem(l);
+	wybor_lista->SelectItem(0);
+
+	auto trudnosc_etykieta = sfg::Label::Create("Poziom: ");
+	auto trudnosc_lista = sfg::ComboBox::Create();
+	for (auto l : poziomy_trudnosci)
+		trudnosc_lista->AppendItem(l);
+	trudnosc_lista->SelectItem(0);
+
+	auto uruchom = sfg::Button::Create("Uruchom");
+	uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect([&wybor_lista] {
+		misja("Plansza\\" + wybor_lista->GetSelectedText());
 	});
 
-	// Create a vertical box layouter with 5 pixels spacing and add the label
-	// and button to it.
-	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 5.0f);
-	box->Pack(label);
-	box->Pack(button, false);
+	tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 0, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+	tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(0, 1, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
+	tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 2, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+	tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(0, 3, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 4, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 40.f));
+	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(0, 5, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 
-	// Create a window and add the box layouter to it. Also set the window's title.
-	auto window = sfg::Window::Create();
-	window->SetTitle("Hello world!");
-	window->Add(box);
+	box->Pack(tytul, false);
+	box->Pack(tabelka, false);
+	okno->Add(box);
 
-	// Create a desktop and add the window to it.
-	sfg::Desktop desktop;
-	desktop.Add(window);
+	desktop.Add(okno);
 
-	// We're not using SFML to render anything in this program, so reset OpenGL
-	// states. Otherwise we wouldn't see anything.
-	render_window.resetGLStates();
-
-	// Main loop!
 	sf::Event event;
 	sf::Clock clock;
 
-	while (render_window.isOpen()) {
-		// Event processing.
-		while (render_window.pollEvent(event)) {
+	while (okno_menu.isOpen()) {
+		while (okno_menu.pollEvent(event)) 
+		{
 			desktop.HandleEvent(event);
 
-			// If window is about to be closed, leave program.
-			if (event.type == sf::Event::Closed) {
-				return 0;
+			switch (event.type)
+			{
+				case sf::Event::KeyReleased:
+					switch (event.key.code)
+					{
+					case sf::Keyboard::Escape:
+						return 0;
+					}
+					break;
+				case sf::Event::Closed:
+					return 0;
 			}
 		}
 
-		// Update SFGUI with elapsed seconds since last call.
 		desktop.Update(clock.restart().asSeconds());
 
-		// Rendering.
-		render_window.clear();
-		sfgui.Display(render_window);
-		render_window.display();
+		okno_menu.clear();
+		okno_menu.draw(background);
+		sfgui.Display(okno_menu);
+		okno_menu.display();
 	}
 
 	return 0;

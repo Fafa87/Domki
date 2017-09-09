@@ -39,6 +39,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 	gracz5.numer = 5; gracz5.nazwa = "GRA";
 	gracz5.kolor = sf::Color::White;
 	gracz5.aktywny = false;
+	gra.liczba_aktywnych_graczy = 5;
 	//domki
 	ifstream plikmapa;
 	plikmapa.open(sciezka);
@@ -56,6 +57,11 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 				else if (znak == '3')domek.gracz = &gracz3;
 				else if (znak == '4')domek.gracz = &gracz4;
 				else if (znak == '5')domek.gracz = &gracz5;
+				if (znak == '1')gracz1.liczba_tworow++;
+				else if (znak == '2')gracz2.liczba_tworow++;
+				else if (znak == '3')gracz3.liczba_tworow++;
+				else if (znak == '4')gracz4.liczba_tworow++;
+				else if (znak == '5')gracz5.liczba_tworow++;
 				domek.polozenie = { (float)(200 + b * 150),(float)(300 + a * 150) };
 				domek.produkcja = 2;
 				domek.max_liczebnosc = 100;
@@ -68,7 +74,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 	return gra;
 }
 
-int misja(string sciezka)
+int misja(string sciezka,string trudnosc)
 {
 	sf::ContextSettings ustawienia;
 	ustawienia.antialiasingLevel = 8;
@@ -160,12 +166,17 @@ int misja(string sciezka)
 		///FPSY
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
 		myszkaGracza.WykonajRuch();
+
 		kompiuter1.czas += czas;
-		kompiuter1.WykonajRuch();
+		if(trudnosc==poziomy_trudnosci[0])kompiuter1.WykonajRuchTestowka();
+		else if(trudnosc== poziomy_trudnosci[1])kompiuter1.WykonajRuchSilver();
 		kompiuter2.czas += czas;
-		kompiuter2.WykonajRuch();
+		if (trudnosc == poziomy_trudnosci[0])kompiuter2.WykonajRuchTestowka();
+		else if (trudnosc == poziomy_trudnosci[1])kompiuter2.WykonajRuchSilver();
 		kompiuter3.czas += czas;
-		kompiuter3.WykonajRuch();
+		if (trudnosc == poziomy_trudnosci[0])kompiuter3.WykonajRuchTestowka();
+		else if (trudnosc == poziomy_trudnosci[1])kompiuter3.WykonajRuchSilver();
+
 		ruszacz.Ruszaj(czas);
 
 		window.clear();
@@ -186,6 +197,18 @@ int misja(string sciezka)
 
 		ruchGracza.Wyswietlaj(window);
 		wyswietlacz.Wyswietlaj(window);
+		//ZAKONCZENIE GRY
+		if ((rozgrywka.liczba_aktywnych_graczy == 2&&rozgrywka.Gracz(4).aktywny==true)||!rozgrywka.Gracz(0).liczba_tworow)
+			{
+			podpis.setCharacterSize(75);
+			podpis.setPosition(100,200);
+			if(rozgrywka.Gracz(0).liczba_tworow)podpis.setString("GRATULACJE DLA GRACZA  ");
+			else podpis.setString("TYM RAZEM ZWYCIEZYLA SI (LESZCZU!)");
+			window.draw(podpis);
+			window.display();
+			Sleep(3000);
+			window.close();
+			}
 		window.display();
 
 		czasomierz = clock();

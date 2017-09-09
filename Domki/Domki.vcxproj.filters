@@ -41,5 +41,8 @@
     <ClInclude Include="wyswietlacze.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="misja.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

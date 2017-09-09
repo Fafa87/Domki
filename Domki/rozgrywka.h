@@ -21,7 +21,7 @@ struct Rozgrywka
 	list<Gracz> gracze;
 	list<Domek> domki;
 	list<Ludek> armie;
-
+	int liczba_aktywnych_graczy=0;
 	Gracz& Gracz(int numer);
 	void ZmienLiczebnosc(Domek& domek, double nowa);
 	void ZmienLiczebnosc(Ludek& ludek, double nowa);

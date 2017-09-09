@@ -50,6 +50,7 @@ void Komputer::WykonajRuch()
 						nowaArmia.polozenie = wybrany->polozenie;
 						nowaArmia.wyglad = Wyglad::kLudek;
 						rozgrywka.ZmienLiczebnosc(nowaArmia, liczba);
+						domek1.gracz->liczba_tworow++;
 					}
 				}
 			}
@@ -110,9 +111,9 @@ void MyszDecydent::WykonajRuch()
 	{
 		double frakcja = 1;
 		if (klikniecia.size() == 1)
-			frakcja = 0.333;
+			frakcja = 0.5;
 		else if (klikniecia.size() == 2)
-			frakcja = 0.666;
+			frakcja = 1;
 
 		auto liczba = int(wybrany->liczebnosc * frakcja);
 		if (liczba > 0 && cel != wybrany)
@@ -125,6 +126,7 @@ void MyszDecydent::WykonajRuch()
 			nowaArmia.polozenie = wybrany->polozenie;
 			nowaArmia.wyglad = Wyglad::kLudek;
 			rozgrywka.ZmienLiczebnosc(nowaArmia, liczba);
+			gracz.liczba_tworow++;
 		}
 
 		wybrany = nullptr;
@@ -185,10 +187,15 @@ void Ruszacz::WalczLudkami(float czas)
 					double nowa_liczebnosc = cel.liczebnosc - armia.liczebnosc;
 					if (nowa_liczebnosc < 0)
 					{
+						cel.gracz->liczba_tworow--;
+						if (cel.gracz->liczba_tworow == 0)rozgrywka.liczba_aktywnych_graczy--;
 						cel.gracz = armia.gracz;
+						armia.gracz->liczba_tworow++;						
 					}
 					rozgrywka.ZmienLiczebnosc(cel, std::abs(nowa_liczebnosc));
 				}
+				armia.gracz->liczba_tworow--;
+				if (armia.gracz->liczba_tworow == 0)rozgrywka.liczba_aktywnych_graczy--;
 				rozgrywka.ZmienLiczebnosc(armia, std::abs(0));
 				do_usuniecia.push_back(it);
 			}

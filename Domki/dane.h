@@ -8,7 +8,7 @@ typedef sf::Vector2<double> PD; // skrót dla typu oznaczaj¹cego parê liczb
 
 struct Gracz
 {
-	int numer;
+	int numer,liczba_tworow=0;
 	bool aktywny=true;
 	string nazwa;
 	sf::Color kolor;

@@ -3,24 +3,28 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "misja.h"
+
 int main() {
+
+	misja("Plansza\\tomek_test.txt");
+
+	return 0;
 	// Create SFML's window.
-	sf::View view(sf::FloatRect(0, 0, 1300, 700));
-	
-
-
 	sf::RenderWindow render_window(sf::VideoMode(800, 600), "Hello world!", sf::Style::Default);
 	sfg::SFGUI sfgui;
 
-	view.setViewport(sf::FloatRect(0.25f, 0.25, 0.5f, 0.5f));
-	render_window.setView(view);
 
 	// Create the label.
 	auto label = sfg::Label::Create("Hello world!");
 
 	// Create a simple button and connect the click signal.
 	auto button = sfg::Button::Create("Greet SFGUI!");
-	button->GetSignal(sfg::Widget::OnLeftClick).Connect([label] { label->SetText("Hello SFGUI, pleased to meet you!"); });
+	button->GetSignal(sfg::Widget::OnLeftClick).Connect([label] { 
+
+		label->SetText("Hello SFGUI, pleased to meet you!"); 
+		misja("Plansza\\tomek_test.txt");
+	});
 
 	// Create a vertical box layouter with 5 pixels spacing and add the label
 	// and button to it.
@@ -65,21 +69,5 @@ int main() {
 		render_window.display();
 	}
 
-	return 0;
-}
-
-
-
-
-
-#include "misja.h"
-int main()
-{
-
-
-
-
-
-	misja("Plansza\\tomek_test.txt");
 	return 0;
 }

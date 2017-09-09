@@ -98,7 +98,7 @@ int misja(string sciezka)
 	Rozgrywka rozgrywka = zwarcie_rozgrywka(sciezka);
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
-	MyszDecydent myszkaGracza(rozgrywka, rozgrywka.Gracz(0));
+	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(0));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 	//KOMPUTEROWIE
 	Komputer kompiuter1(rozgrywka, rozgrywka.Gracz(1));

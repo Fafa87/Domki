@@ -27,7 +27,7 @@ public:
 class MyszDecydent : public Decydent
 {
 public:
-	MyszDecydent(Rozgrywka& rozgrywka, Gracz& gracz);
+	MyszDecydent(sf::RenderWindow& okno, Rozgrywka& rozgrywka, Gracz& gracz);
 	void Klik(double x, double y);
 
 	virtual void Przetworz() {}
@@ -39,6 +39,7 @@ public:
 	Gracz& gracz;
 
 private:
+	sf::RenderWindow & okno;
 	vector<int> klikniecia;
 	Domek* cel;
 	Rozgrywka& rozgrywka;

@@ -56,7 +56,7 @@ void Komputer::WykonajRuch()
 	}
 }
 
-MyszDecydent::MyszDecydent(Rozgrywka & rozgrywka, Gracz & gracz) : rozgrywka(rozgrywka), gracz(gracz)
+MyszDecydent::MyszDecydent(sf::RenderWindow & okno, Rozgrywka & rozgrywka, Gracz & gracz) : okno(okno), rozgrywka(rozgrywka), gracz(gracz)
 {
 }
 
@@ -70,7 +70,9 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 	{
 		if (zdarzenie.mouseButton.button == sf::Mouse::Left)
 		{
-			Twor* klikniety = rozgrywka.Zlokalizuj(zdarzenie.mouseButton.x, zdarzenie.mouseButton.y);
+			sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
+			auto polozenie_kliku = okno.mapPixelToCoords(pixelPos);
+			Twor* klikniety = rozgrywka.Zlokalizuj(polozenie_kliku.x, polozenie_kliku.y);
 			if (klikniety != nullptr && IsType<Domek>(klikniety))
 			{
 				if (wybrany == nullptr && klikniety->gracz->numer == gracz.numer)

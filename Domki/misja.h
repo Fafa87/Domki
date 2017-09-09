@@ -7,6 +7,9 @@
 
 #include<windows.h>
 #include<fstream>
+
+string poziomy_trudnosci[] = { "stary","nowy" };
+
 Rozgrywka zwarcie_rozgrywka(string sciezka)
 {
 	Rozgrywka gra;
@@ -71,7 +74,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 	return gra;
 }
 
-int misja(string sciezka)
+int misja(string sciezka,string trudnosc)
 {
 	sf::ContextSettings ustawienia;
 	ustawienia.antialiasingLevel = 8;
@@ -163,12 +166,17 @@ int misja(string sciezka)
 		///FPSY
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
 		myszkaGracza.WykonajRuch();
+
 		kompiuter1.czas += czas;
-		kompiuter1.WykonajRuch();
+		if(trudnosc==poziomy_trudnosci[0])kompiuter1.WykonajRuchTestowka();
+		else if(trudnosc== poziomy_trudnosci[1])kompiuter1.WykonajRuchSilver();
 		kompiuter2.czas += czas;
-		kompiuter2.WykonajRuch();
+		if (trudnosc == poziomy_trudnosci[0])kompiuter2.WykonajRuchTestowka();
+		else if (trudnosc == poziomy_trudnosci[1])kompiuter2.WykonajRuchSilver();
 		kompiuter3.czas += czas;
-		kompiuter3.WykonajRuch();
+		if (trudnosc == poziomy_trudnosci[0])kompiuter3.WykonajRuchTestowka();
+		else if (trudnosc == poziomy_trudnosci[1])kompiuter3.WykonajRuchSilver();
+
 		ruszacz.Ruszaj(czas);
 
 		window.clear();

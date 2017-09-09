@@ -21,7 +21,8 @@ public:
 	Gracz& gracz;
 	float czas=0.0,
 		szybkosc_komputera=3.0;
-	virtual void WykonajRuch();
+	virtual void WykonajRuchTestowka();
+	virtual void WykonajRuchSilver();
 };
 
 class MyszDecydent : public Decydent

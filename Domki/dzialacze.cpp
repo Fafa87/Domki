@@ -15,7 +15,7 @@ double licz_przyrost(double odleglosc)
 	return przyrostarmii*odleglosc / przesuniecie;
 }
 
-void Komputer::WykonajRuch()
+void Komputer::WykonajRuchTestowka()
 {
 	if (czas >= 3.0)
 	{

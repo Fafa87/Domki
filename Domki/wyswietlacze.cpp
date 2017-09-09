@@ -1,3 +1,4 @@
+#include "Narzedzia\AnimatedSprite.hpp"
 #include "wyswietlacze.h"
 
 #include<set>
@@ -7,15 +8,29 @@
 
 Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 {
+	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
+}
+
+void Wyswietlacz::Zaladuj(string wybrana_skora)
+{
+	skorka = wybrana_skora;
 	obrazek_tworow[Wyglad::kDomek] = new sf::Texture();
-	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\kamienica.png");
+	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\" + skorka + "\\kamienica.png");
 	obrazek_tworow[Wyglad::kDomek]->setSmooth(true);
 
 	obrazek_tworow[Wyglad::kLudek] = new sf::Texture();
-	obrazek_tworow[Wyglad::kLudek]->loadFromFile("Grafika\\krasnal.png");
+	obrazek_tworow[Wyglad::kLudek]->loadFromFile("Grafika\\" + skorka + "\\krasnal.png");
 	obrazek_tworow[Wyglad::kLudek]->setSmooth(true);
 
-	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
+	obrazek_tla.loadFromFile("Grafika\\" + skorka + "\\bruk.png");
+	obrazek_tla.setRepeated(true);
+}
+
+void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
+{
+	sf::Sprite wyglad_tlo(obrazek_tla);
+	wyglad_tlo.setTextureRect({ 0, 0, 1600, 900 });
+	okno.draw(wyglad_tlo);
 }
 
 void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)

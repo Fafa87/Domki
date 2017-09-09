@@ -12,13 +12,19 @@ class Wyswietlacz
 public:
 	Wyswietlacz(Rozgrywka& rozgrywka);
 	void Wyswietlaj(sf::RenderWindow& okno);
+	void WyswietlTlo(sf::RenderWindow& okno);
 
-	string Skorka;
+	void Zaladuj(string wybrana_skora);
+
 private:
 	Rozgrywka& rozgrywka;
 	map<Twor*, sf::RectangleShape> wyglad_tworow;
 	map<Wyglad, sf::Texture*> obrazek_tworow;
+
+	sf::Texture obrazek_tla;
 	sf::Font czcionka;
+
+	string skorka;
 };
 
 class OznaczaczWyborow

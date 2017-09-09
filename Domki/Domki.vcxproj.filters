@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\narzedzia">
+      <UniqueIdentifier>{14f72aea-358f-4717-aef3-a74fb188d5bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\narzedzia">
+      <UniqueIdentifier>{6112cce1-5d36-4201-99bb-7a029055f73f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,6 +32,12 @@
     </ClCompile>
     <ClCompile Include="wyswietlacze.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Narzedzia\AnimatedSprite.cpp">
+      <Filter>Source Files\narzedzia</Filter>
+    </ClCompile>
+    <ClCompile Include="Narzedzia\Animation.cpp">
+      <Filter>Source Files\narzedzia</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +57,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="os.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\narzedzia</Filter>
+    </ClInclude>
+    <ClInclude Include="Narzedzia\AnimatedSprite.hpp">
+      <Filter>Header Files\narzedzia</Filter>
+    </ClInclude>
+    <ClInclude Include="Narzedzia\Animation.hpp">
+      <Filter>Header Files\narzedzia</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

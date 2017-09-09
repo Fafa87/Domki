@@ -168,6 +168,8 @@ xcopy /i /y "$(SolutionDir)\Plansza" "$(OutDir)\Plansza"</Command>
   <ItemGroup>
     <ClCompile Include="dzialacze.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Narzedzia\AnimatedSprite.cpp" />
+    <ClCompile Include="Narzedzia\Animation.cpp" />
     <ClCompile Include="rozgrywka.cpp" />
     <ClCompile Include="wyswietlacze.cpp" />
   </ItemGroup>
@@ -175,6 +177,8 @@ xcopy /i /y "$(SolutionDir)\Plansza" "$(OutDir)\Plansza"</Command>
     <ClInclude Include="dane.h" />
     <ClInclude Include="dzialacze.h" />
     <ClInclude Include="misja.h" />
+    <ClInclude Include="Narzedzia\AnimatedSprite.hpp" />
+    <ClInclude Include="Narzedzia\Animation.hpp" />
     <ClInclude Include="os.h" />
     <ClInclude Include="rozgrywka.h" />
     <ClInclude Include="wyswietlacze.h" />

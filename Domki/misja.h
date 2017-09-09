@@ -83,12 +83,6 @@ int misja(string sciezka,string trudnosc)
 	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Fullscreen, ustawienia);
 	sf::View view(sf::FloatRect(0,0, 1600, 900));
 	window.setView(view);
-	// ustawiamy t?o
-	sf::Texture backtexture;
-	backtexture.loadFromFile("Grafika\\bruk.png");
-	backtexture.setRepeated(true);
-	sf::Sprite background(backtexture);
-	background.setTextureRect({ 0, 0, 1600, 900 });
 
 	// fpsy
 	sf::Font czcionka;
@@ -101,12 +95,12 @@ int misja(string sciezka,string trudnosc)
 	podpis.setFillColor(sf::Color::Red);
 	podpis.move(300, 0);
 
-
 	// tworzymy rozgrywke
 	//Rozgrywka rozgrywka = prosta_rozgrywka();
 	Rozgrywka rozgrywka = zwarcie_rozgrywka(sciezka);
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
+	wyswietlacz.Zaladuj("wroclaw");
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(0));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 	//KOMPUTEROWIE
@@ -121,7 +115,7 @@ int misja(string sciezka,string trudnosc)
 	for (int a = 3; a >= 0; a--)
 	{
 		window.clear();
-		window.draw(background);
+		wyswietlacz.WyswietlTlo(window);
 		if (a>0)podpis.setString(std::to_string(a));
 		else podpis.setString("RUSZAJ!");
 		if (a>0)podpis.setPosition(400, 200);
@@ -180,8 +174,7 @@ int misja(string sciezka,string trudnosc)
 		ruszacz.Ruszaj(czas);
 
 		window.clear();
-		window.draw(background);
-
+		wyswietlacz.WyswietlTlo(window);
 		///FPSY
 
 		czasik = (int)(1.0 / czas + 0.5);
@@ -189,7 +182,7 @@ int misja(string sciezka,string trudnosc)
 		podpis.setPosition(300, 0);
 		window.draw(podpis);//FPSY
 
-							///APM
+		///APM
 		podpis.setPosition(700, 0);
 		czas_przeminal = (double)(clock() - czas_przeminal) / CLOCKS_PER_SEC;
 		podpis.setString("APM: " + std::to_string((int)(60 * akcje / czas_przeminal)));

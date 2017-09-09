@@ -70,9 +70,9 @@ int misja(string sciezka)
 	sf::ContextSettings ustawienia;
 	ustawienia.antialiasingLevel = 8;
 
-	auto videoMode = sf::VideoMode(1600, 900);
+	auto videoMode = sf::VideoMode(1600, 899);
 	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Fullscreen, ustawienia);
-	sf::View view(sf::FloatRect(00,00, 1600, 900));
+	sf::View view(sf::FloatRect(0,0, 1600, 900));
 	window.setView(view);
 	// ustawiamy t?o
 	sf::Texture backtexture;

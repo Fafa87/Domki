@@ -7,13 +7,9 @@
 
 int main() {
 
-	misja("Plansza\\tomek_test.txt");
-
-	return 0;
 	// Create SFML's window.
-	sf::RenderWindow render_window(sf::VideoMode(800, 600), "Hello world!", sf::Style::Default);
+	sf::RenderWindow render_window(sf::VideoMode(800, 600), "Domki menu!", sf::Style::None);
 	sfg::SFGUI sfgui;
-
 
 	// Create the label.
 	auto label = sfg::Label::Create("Hello world!");
@@ -23,6 +19,7 @@ int main() {
 	button->GetSignal(sfg::Widget::OnLeftClick).Connect([label] { 
 
 		label->SetText("Hello SFGUI, pleased to meet you!"); 
+		//render_window
 		misja("Plansza\\tomek_test.txt");
 	});
 

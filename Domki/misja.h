@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <SFML/Graphics.hpp>
 
 #include "dane.h"
@@ -70,15 +70,16 @@ int misja(string sciezka)
 	sf::ContextSettings ustawienia;
 	ustawienia.antialiasingLevel = 8;
 
-	auto videoMode = sf::VideoMode(1600, 800);
+	auto videoMode = sf::VideoMode(1600, 900);
 	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Fullscreen, ustawienia);
-
+	sf::View view(sf::FloatRect(00,00, 1600, 900));
+	window.setView(view);
 	// ustawiamy t?o
 	sf::Texture backtexture;
 	backtexture.loadFromFile("Grafika\\bruk.png");
 	backtexture.setRepeated(true);
 	sf::Sprite background(backtexture);
-	background.setTextureRect({ 0, 0, (int)window.getSize().x, (int)window.getSize().y });
+	background.setTextureRect({ 0, 0, 1600, 900 });
 
 	// fpsy
 	sf::Font czcionka;
@@ -153,7 +154,6 @@ int misja(string sciezka)
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
-
 		///FPSY
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
 		myszkaGracza.WykonajRuch();

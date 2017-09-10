@@ -26,6 +26,11 @@ void Wyswietlacz::Zaladuj(string wybrana_skora)
 	obrazek_tla.setRepeated(true);
 }
 
+void Wyswietlacz::ZaladujInne()
+{
+	this->Zaladuj(next_folder_within_folder("Grafika\\" + skorka));
+}
+
 void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
 {
 	sf::Sprite wyglad_tlo(obrazek_tla);
@@ -69,16 +74,18 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		wyglad.setSize(sf::Vector2f(twor->rozmiar * 2, wysokosc * 2));
 		wyglad.setOrigin(twor->rozmiar, wysokosc);
 		wyglad.setFillColor(twor->gracz->kolor);
+
+		int ziarno = ((unsigned int)twor) % 100;
 		if (twor->wyglad == Wyglad::kDomek)
 		{
-			int ramka_numer = ((clock() * 12 / CLOCKS_PER_SEC)) % 6;
+			int ramka_numer = ((clock() * 9 / CLOCKS_PER_SEC) + ziarno) % 6;
 			int ramka = 3 - abs(ramka_numer - 3);
 			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
 			wyglad.setTextureRect({ 400 * ramka, 0, 400, 640 });
 		}
 		else if (twor->wyglad == Wyglad::kLudek)
 		{
-			int ramka_numer = ((clock() * 6 / CLOCKS_PER_SEC)) % 2;
+			int ramka_numer = ((clock() * 6 / CLOCKS_PER_SEC) + ziarno) % 2;
 			int ramka = 1 - abs(ramka_numer - 1);
 			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
 			wyglad.setTextureRect({ 400 * ramka, 0, 400, 640 });

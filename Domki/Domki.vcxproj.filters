@@ -39,6 +39,9 @@
     <ClCompile Include="Narzedzia\Animation.cpp">
       <Filter>Source Files\narzedzia</Filter>
     </ClCompile>
+    <ClCompile Include="os.cpp">
+      <Filter>Source Files\narzedzia</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">

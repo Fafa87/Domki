@@ -151,6 +151,9 @@ int misja(string sciezka,string trudnosc)
 				{
 				case sf::Keyboard::Escape:
 					return 0;
+				case sf::Keyboard::F3:
+					wyswietlacz.ZaladujInne();
+					break;
 				}
 				break;
 			}

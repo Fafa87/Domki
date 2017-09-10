@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Main.hpp>
 
+#include "os.h"
 #include "dane.h"
 #include "rozgrywka.h"
 #include "dzialacze.h"
@@ -15,6 +16,7 @@ public:
 	void WyswietlTlo(sf::RenderWindow& okno);
 
 	void Zaladuj(string wybrana_skora);
+	void ZaladujInne();
 
 private:
 	Rozgrywka& rozgrywka;

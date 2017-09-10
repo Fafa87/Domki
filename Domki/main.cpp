@@ -8,7 +8,7 @@
 
 vector<string> wczytaj_liste_plansz()
 {
-	return get_all_files_names_within_folder("Plansza");
+	return get_all_names_within_folder("Plansza");
 }
 
 int main() {

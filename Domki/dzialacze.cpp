@@ -106,7 +106,7 @@ void MyszDecydent::WykonajRuch()
 		wybrany = nullptr;
 	}
 
-	// po 0.5 sekundy wysy³ane s¹ ludki
+	// po 0.5 sekundy wysyï¿½ane sï¿½ ludki
 	if (cel != nullptr && clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
 	{
 		double frakcja = 1;
@@ -199,7 +199,7 @@ void Ruszacz::WalczLudkami(float czas)
 				rozgrywka.ZmienLiczebnosc(armia, std::abs(0));
 				do_usuniecia.push_back(it);
 			}
-			// jak to nie jest domek to nic nie róbmy, mo¿e kiedyœ bêdziemy?
+			// jak to nie jest domek to nic nie rï¿½bmy, moï¿½e kiedyï¿½ bï¿½dziemy?
 		}
 	}
 

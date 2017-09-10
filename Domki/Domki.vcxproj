@@ -170,6 +170,7 @@ xcopy /i /y "$(SolutionDir)\Plansza" "$(OutDir)\Plansza"</Command>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Narzedzia\AnimatedSprite.cpp" />
     <ClCompile Include="Narzedzia\Animation.cpp" />
+    <ClCompile Include="os.cpp" />
     <ClCompile Include="rozgrywka.cpp" />
     <ClCompile Include="wyswietlacze.cpp" />
   </ItemGroup>

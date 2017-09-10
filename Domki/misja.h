@@ -95,7 +95,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 	return gra;
 }
 
-int misja(string sciezka,string trudnosc)
+int misja(string sciezka,string trudnosc, double predkosc)
 {
 	sf::ContextSettings ustawienia;
 	ustawienia.antialiasingLevel = 8;
@@ -142,6 +142,7 @@ int misja(string sciezka,string trudnosc)
 	}
 	//PRYGOTOWANIE ROZGRYWKI
 	Ruszacz ruszacz(rozgrywka);
+	ruszacz.szybkosc *= predkosc;
 	//Przygotuj sie
 	podpis.setCharacterSize(250);
 	for (int a = 3; a >= 0; a--)

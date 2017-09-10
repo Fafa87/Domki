@@ -47,17 +47,23 @@ int main() {
 		trudnosc_lista->AppendItem(l);
 	trudnosc_lista->SelectItem(0);
 
+	auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
+	auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
+	szybkosc_pasek->SetValue(1.0);
+
 	auto uruchom = sfg::Button::Create("Uruchom");
 	uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
-		misja("Plansza\\" + wybor_lista->GetSelectedText(), trudnosc_lista->GetSelectedText());
+		misja("Plansza\\" + wybor_lista->GetSelectedText(), trudnosc_lista->GetSelectedText(), szybkosc_pasek->GetValue());
 	});
 
 	tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 0, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 	tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(0, 1, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
 	tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 2, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 	tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(0, 3, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
-	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 4, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 40.f));
-	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(0, 5, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+	tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, 4, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+	tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(0, 5, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 6, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 40.f));
+	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(0, 7, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 
 	box->Pack(tytul, false);
 	box->Pack(tabelka, false);

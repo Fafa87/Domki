@@ -18,6 +18,18 @@ void Wyswietlacz::Zaladuj(string wybrana_skora)
 	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\" + skorka + "\\kamienica.png");
 	obrazek_tworow[Wyglad::kDomek]->setSmooth(true);
 
+	/*Animation walkingAnimationDown;
+	walkingAnimationDown.setSpriteSheet(texture);
+	walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
+
+	AnimatedSprite animatedSprite(sf::seconds(0.2), true, false);
+	animatedSprite.setPosition(sf::Vector2f(screenDimensions / 2));
+
+	animatedSprite.play(*currentAnimation);
+	animatedSprite.move(movement * frameTime.asSeconds());
+
+	animatedSprite.update(frameTime);*/
+
 	obrazek_tworow[Wyglad::kLudek] = new sf::Texture();
 	obrazek_tworow[Wyglad::kLudek]->loadFromFile("Grafika\\" + skorka + "\\krasnal.png");
 	obrazek_tworow[Wyglad::kLudek]->setSmooth(true);
@@ -89,8 +101,6 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 			int ramka = 1 - abs(ramka_numer - 1);
 			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
 			wyglad.setTextureRect({ 400 * ramka, 0, 400, 640 });
-
-			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
 		}
 
 		sf::Text podpis;

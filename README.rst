@@ -5,9 +5,9 @@ Walka domków o życie!
 
 Ściągnij 
 ------------
-1.0.56
+1.0.76
 
-https://ci.appveyor.com/api/buildjobs/58ueg2072p9owshv/artifacts/Domki.zip
+https://ci.appveyor.com/api/buildjobs/exmg0f191j4oefep/artifacts/Domki.zip
 
 Zobacz
 ------------

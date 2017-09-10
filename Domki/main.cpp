@@ -18,7 +18,7 @@ int main() {
 	okno_menu.resetGLStates();
 
 	sf::Texture backtexture;
-	backtexture.loadFromFile("Grafika\\bruk.png");
+	backtexture.loadFromFile("Grafika\\menu_tlo.png");
 	backtexture.setRepeated(true);
 	sf::Sprite background(backtexture);
 	background.setTextureRect({ 0, 0, 800, 600 });

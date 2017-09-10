@@ -39,8 +39,11 @@
     <ClCompile Include="Narzedzia\Animation.cpp">
       <Filter>Source Files\narzedzia</Filter>
     </ClCompile>
+    <ClCompile Include="si.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="os.cpp">
-      <Filter>Source Files\narzedzia</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,31 +62,17 @@
     <ClInclude Include="misja.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="os.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Narzedzia\AnimatedSprite.hpp">
       <Filter>Header Files\narzedzia</Filter>
     </ClInclude>
     <ClInclude Include="Narzedzia\Animation.hpp">
       <Filter>Header Files\narzedzia</Filter>
     </ClInclude>
+    <ClInclude Include="si.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="os.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
-<<<<<<< HEAD
-    <ClCompile Include="si.cpp">
-      <Filter>Source Files</Filter>
-=======
-    <ClCompile Include="Narzedzia\AnimatedSprite.cpp">
-      <Filter>Source Files\narzedzia</Filter>
-    </ClCompile>
-    <ClCompile Include="Narzedzia\Animation.cpp">
-      <Filter>Source Files\narzedzia</Filter>
->>>>>>> master
-    </ClCompile>
-    <ClCompile Include="Narzedzia\AnimatedSprite.cpp">
-      <Filter>Source Files\narzedzia</Filter>
-    </ClCompile>
-    <ClCompile Include="Narzedzia\Animation.cpp">
-      <Filter>Source Files\narzedzia</Filter>
-    </ClCompile>

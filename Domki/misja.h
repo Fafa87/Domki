@@ -150,7 +150,7 @@ int misja(string sciezka,string trudnosc)
 		wyswietlacz.WyswietlTlo(window);
 		if (a>0)podpis.setString(std::to_string(a));
 		else podpis.setString("RUSZAJ!");
-		if (a>0)podpis.setPosition(400, 200);
+		if (a>0)podpis.setPosition(700, 200);
 		else podpis.setPosition(200, 200);
 		wyswietlacz.Wyswietlaj(window);
 		window.draw(podpis);

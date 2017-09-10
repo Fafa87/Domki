@@ -135,14 +135,22 @@ void Ruszacz::WalczLudkami(float czas)
 					if (nowa_liczebnosc < 0)
 					{
 						cel.gracz->liczba_tworow--;
-						if (cel.gracz->liczba_tworow == 0)rozgrywka.liczba_aktywnych_graczy--;
+						if (cel .gracz->liczba_tworow == 0)
+						{
+							rozgrywka.liczba_aktywnych_graczy--;
+							cel.gracz->aktywny = false;
+						}
 						cel.gracz = armia.gracz;
 						armia.gracz->liczba_tworow++;						
 					}
 					rozgrywka.ZmienLiczebnosc(cel, std::abs(nowa_liczebnosc));
 				}
 				armia.gracz->liczba_tworow--;
-				if (armia.gracz->liczba_tworow == 0)rozgrywka.liczba_aktywnych_graczy--;
+				if (armia.gracz->liczba_tworow == 0)
+				{
+					rozgrywka.liczba_aktywnych_graczy--;
+					armia.gracz->aktywny = false;
+				}
 				rozgrywka.ZmienLiczebnosc(armia, std::abs(0));
 				do_usuniecia.push_back(it);
 			}

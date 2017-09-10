@@ -15,5 +15,7 @@ public:
 
 class KomputerSilver : public Komputer
 {
+public:
+	KomputerSilver(Rozgrywka& rozgrywka, Gracz& gracz);
 	virtual void WykonajRuch();
 };

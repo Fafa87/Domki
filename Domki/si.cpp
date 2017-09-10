@@ -1,4 +1,5 @@
 #include "dzialacze.h"
+#include"si.h"
 #include <set>
 #include <string>
 #include<ctime>
@@ -57,7 +58,11 @@ void Komputer::WykonajRuch()
 	}
 }
 
-void Komputer::WykonajRuchSilver()
+KomputerSilver::KomputerSilver(Rozgrywka & rozgrywka, Gracz & gracz) : Komputer(rozgrywka, gracz)
+{
+}
+
+void KomputerSilver::WykonajRuch()
 {
 	
 }

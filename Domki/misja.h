@@ -40,7 +40,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 	gracz5.numer = 5; gracz5.nazwa = "GRA";
 	gracz5.kolor = sf::Color::White;
 	gracz5.aktywny = false;
-	gra.liczba_aktywnych_graczy = 5;
+	gra.liczba_aktywnych_graczy = 4;
 	//domki
 	ifstream plikmapa;
 	plikmapa.open(sciezka);
@@ -71,6 +71,26 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 				else gra.ZmienLiczebnosc(domek, 50);
 			}
 		}
+	if (gracz1.liczba_tworow == 0)
+	{
+		gracz1.aktywny = false;
+		gra.liczba_aktywnych_graczy--;
+	}
+	else if (gracz2.liczba_tworow == 0)
+	{
+		gracz2.aktywny = false;
+		gra.liczba_aktywnych_graczy--;
+	}
+	else if (gracz3.liczba_tworow == 0)
+	{
+		gracz3.aktywny = false;
+		gra.liczba_aktywnych_graczy--;
+	}
+	else if (gracz4.liczba_tworow == 0)
+	{
+		gracz4.aktywny = false;
+		gra.liczba_aktywnych_graczy--;
+	}
 	plikmapa.close();
 	return gra;
 }
@@ -105,10 +125,21 @@ int misja(string sciezka,string trudnosc)
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(0));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 	//KOMPUTEROWIE
-	KomputerSilver kompiuter1(rozgrywka, rozgrywka.Gracz(1));
-	KomputerSilver kompiuter2(rozgrywka, rozgrywka.Gracz(2));
-	KomputerSilver kompiuter3(rozgrywka, rozgrywka.Gracz(3));
-
+	Komputer* kompiuter1 = NULL; 
+	Komputer* kompiuter2 = NULL;
+	Komputer* kompiuter3 = NULL;
+	if (poziomy_trudnosci[0] == trudnosc)
+	{
+		kompiuter1 = new Komputer(rozgrywka, rozgrywka.Gracz(1));
+		kompiuter2 = new Komputer(rozgrywka, rozgrywka.Gracz(2));
+		kompiuter3 = new Komputer(rozgrywka, rozgrywka.Gracz(3));
+	}
+	else if (poziomy_trudnosci[1] == trudnosc)
+	{
+		kompiuter1 = new KomputerSilver(rozgrywka, rozgrywka.Gracz(1));
+		kompiuter2 = new KomputerSilver(rozgrywka, rozgrywka.Gracz(2));
+		kompiuter3 = new KomputerSilver(rozgrywka, rozgrywka.Gracz(3));
+	}
 	//PRYGOTOWANIE ROZGRYWKI
 	Ruszacz ruszacz(rozgrywka);
 	//Przygotuj sie
@@ -162,15 +193,12 @@ int misja(string sciezka,string trudnosc)
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
 		myszkaGracza.WykonajRuch();
 
-		kompiuter1.czas += czas;
-		if(trudnosc==poziomy_trudnosci[0])kompiuter1.WykonajRuchTestowka();
-		else if(trudnosc== poziomy_trudnosci[1])kompiuter1.WykonajRuchSilver();
-		kompiuter2.czas += czas;
-		if (trudnosc == poziomy_trudnosci[0])kompiuter2.WykonajRuchTestowka();
-		else if (trudnosc == poziomy_trudnosci[1])kompiuter2.WykonajRuchSilver();
-		kompiuter3.czas += czas;
-		if (trudnosc == poziomy_trudnosci[0])kompiuter3.WykonajRuchTestowka();
-		else if (trudnosc == poziomy_trudnosci[1])kompiuter3.WykonajRuchSilver();
+		kompiuter1->czas += czas;
+		kompiuter1->WykonajRuch();
+		kompiuter2->czas += czas;
+		kompiuter2->WykonajRuch();
+		kompiuter3->czas += czas;
+		kompiuter3->WykonajRuch();
 
 		ruszacz.Ruszaj(czas);
 
@@ -192,17 +220,24 @@ int misja(string sciezka,string trudnosc)
 		ruchGracza.Wyswietlaj(window);
 		wyswietlacz.Wyswietlaj(window);
 		//ZAKONCZENIE GRY
-		if ((rozgrywka.liczba_aktywnych_graczy == 2&&rozgrywka.Gracz(4).aktywny==true)||!rozgrywka.Gracz(0).liczba_tworow)
+		if (!rozgrywka.Gracz(0).aktywny||rozgrywka.liczba_aktywnych_graczy==1)
 			{
 			podpis.setCharacterSize(75);
 			podpis.setPosition(100,200);
-			if(rozgrywka.Gracz(0).liczba_tworow)podpis.setString("GRATULACJE DLA GRACZA  ");
+			if(rozgrywka.Gracz(0).aktywny)podpis.setString("GRATULACJE DLA GRACZA  ");
 			else podpis.setString("TYM RAZEM ZWYCIEZYLA SI (LESZCZU!)");
 			window.draw(podpis);
 			window.display();
 			Sleep(3000);
 			window.close();
 			}
+		else
+		{
+				podpis.setCharacterSize(50);
+				podpis.setPosition(1200, 0);
+				podpis.setString(std::to_string(rozgrywka.liczba_aktywnych_graczy));
+				window.draw(podpis);
+		}
 		window.display();
 
 		czasomierz = clock();

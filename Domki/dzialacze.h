@@ -13,18 +13,6 @@ public:
 	virtual void Przetworz() {}
 };
 
-class Komputer : public Decydent
-{
-public:
-	Komputer(Rozgrywka& rozgrywka,Gracz& gracz);
-	Rozgrywka& rozgrywka;
-	Gracz& gracz;
-	float czas=0.0,
-		szybkosc_komputera=3.0;
-	virtual void WykonajRuchTestowka();
-	virtual void WykonajRuchSilver();
-};
-
 class MyszDecydent : public Decydent
 {
 public:

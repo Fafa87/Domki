@@ -33,12 +33,6 @@
     <ClCompile Include="wyswietlacze.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Narzedzia\AnimatedSprite.cpp">
-      <Filter>Source Files\narzedzia</Filter>
-    </ClCompile>
-    <ClCompile Include="Narzedzia\Animation.cpp">
-      <Filter>Source Files\narzedzia</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">
@@ -57,7 +51,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="os.h">
-      <Filter>Header Files\narzedzia</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Narzedzia\AnimatedSprite.hpp">
       <Filter>Header Files\narzedzia</Filter>
@@ -67,3 +61,20 @@
     </ClInclude>
   </ItemGroup>
 </Project>
+<<<<<<< HEAD
+    <ClCompile Include="si.cpp">
+      <Filter>Source Files</Filter>
+=======
+    <ClCompile Include="Narzedzia\AnimatedSprite.cpp">
+      <Filter>Source Files\narzedzia</Filter>
+    </ClCompile>
+    <ClCompile Include="Narzedzia\Animation.cpp">
+      <Filter>Source Files\narzedzia</Filter>
+>>>>>>> master
+    </ClCompile>
+    <ClCompile Include="Narzedzia\AnimatedSprite.cpp">
+      <Filter>Source Files\narzedzia</Filter>
+    </ClCompile>
+    <ClCompile Include="Narzedzia\Animation.cpp">
+      <Filter>Source Files\narzedzia</Filter>
+    </ClCompile>

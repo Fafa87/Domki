@@ -4,6 +4,7 @@
 #include "dane.h"
 #include "dzialacze.h"
 #include "wyswietlacze.h"
+#include"si.h"
 
 #include<windows.h>
 #include<fstream>
@@ -104,9 +105,9 @@ int misja(string sciezka,string trudnosc)
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(0));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 	//KOMPUTEROWIE
-	Komputer kompiuter1(rozgrywka, rozgrywka.Gracz(1));
-	Komputer kompiuter2(rozgrywka, rozgrywka.Gracz(2));
-	Komputer kompiuter3(rozgrywka, rozgrywka.Gracz(3));
+	KomputerSilver kompiuter1(rozgrywka, rozgrywka.Gracz(1));
+	KomputerSilver kompiuter2(rozgrywka, rozgrywka.Gracz(2));
+	KomputerSilver kompiuter3(rozgrywka, rozgrywka.Gracz(3));
 
 	//PRYGOTOWANIE ROZGRYWKI
 	Ruszacz ruszacz(rozgrywka);

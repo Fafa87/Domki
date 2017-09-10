@@ -171,6 +171,7 @@ xcopy /i /y "$(SolutionDir)\Plansza" "$(OutDir)\Plansza"</Command>
     <ClCompile Include="Narzedzia\AnimatedSprite.cpp" />
     <ClCompile Include="Narzedzia\Animation.cpp" />
     <ClCompile Include="rozgrywka.cpp" />
+    <ClCompile Include="si.cpp" />
     <ClCompile Include="wyswietlacze.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@ xcopy /i /y "$(SolutionDir)\Plansza" "$(OutDir)\Plansza"</Command>
     <ClInclude Include="Narzedzia\Animation.hpp" />
     <ClInclude Include="os.h" />
     <ClInclude Include="rozgrywka.h" />
+    <ClInclude Include="si.h" />
     <ClInclude Include="wyswietlacze.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

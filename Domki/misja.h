@@ -76,17 +76,17 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 		gracz1.aktywny = false;
 		gra.liczba_aktywnych_graczy--;
 	}
-	else if (gracz2.liczba_tworow == 0)
+	if (gracz2.liczba_tworow == 0)
 	{
 		gracz2.aktywny = false;
 		gra.liczba_aktywnych_graczy--;
 	}
-	else if (gracz3.liczba_tworow == 0)
+	if (gracz3.liczba_tworow == 0)
 	{
 		gracz3.aktywny = false;
 		gra.liczba_aktywnych_graczy--;
 	}
-	else if (gracz4.liczba_tworow == 0)
+	if (gracz4.liczba_tworow == 0)
 	{
 		gracz4.aktywny = false;
 		gra.liczba_aktywnych_graczy--;

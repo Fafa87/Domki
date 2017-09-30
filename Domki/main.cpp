@@ -11,10 +11,66 @@ vector<string> wczytaj_liste_plansz()
 	return get_all_names_within_folder("Plansza");
 }
 
+
+void start_serwer(sfg::Desktop& pulpit)
+{
+	auto okno = sfg::Window::Create(sfg::Window::Style::TOPLEVEL);
+	okno->SetRequisition(sf::Vector2f(300, 300));
+	okno->SetPosition(sf::Vector2f(150, 50));
+
+	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 10.0f);
+	auto tytul = sfg::Label::Create("SERWER MULTI");
+
+	auto scrolledwindow = sfg::ScrolledWindow::Create();
+	scrolledwindow->SetScrollbarPolicy(sfg::ScrolledWindow::HORIZONTAL_AUTOMATIC | sfg::ScrolledWindow::VERTICAL_AUTOMATIC);
+
+	auto historia = sfg::Label::Create("");
+	historia->SetRequisition(sf::Vector2f(100.f, 100.f));
+	auto tekst = sfg::Entry::Create("");
+	
+	auto wyslij = sfg::Button::Create("Wyslij");
+	wyslij->GetSignal(sfg::Widget::OnLeftClick).Connect([tekst, historia, scrolledwindow] {
+		historia->SetText(historia->GetText() + tekst->GetText() + "\n");
+		tekst->SetText("");
+	});
+
+	wyslij->GetSignal(sfg::Widget::OnExpose).Connect([tekst, historia, scrolledwindow] {
+		historia->SetText(historia->GetText() + tekst->GetText() + "\n");
+		tekst->SetText("");
+	});
+
+	box->Pack(tytul, false);
+	scrolledwindow->AddWithViewport(historia);
+	scrolledwindow->SetRequisition(sf::Vector2f(100.f, 100.f));
+	box->Pack(scrolledwindow, true);
+	box->Pack(tekst, false);
+	box->Pack(wyslij, false);
+	okno->Add(box);
+
+	pulpit.Add(okno);
+}
+
+void start_klient(sfg::Desktop& pulpit)
+{
+	auto okno = sfg::Window::Create(sfg::Window::Style::TOPLEVEL);
+	okno->SetRequisition(sf::Vector2f(300, 300));
+	okno->SetPosition(sf::Vector2f(150, 50));
+
+	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
+	auto tytul = sfg::Label::Create("KLIENT MULTI");
+	auto tabelka = sfg::Table::Create();
+
+	box->Pack(tytul, false);
+	box->Pack(tabelka, false);
+	okno->Add(box);
+
+	pulpit.Add(okno);
+}
+
 int main() {
 	sfg::SFGUI sfgui;
 
-	sf::RenderWindow okno_menu(sf::VideoMode(800, 600), "Domki menu!", sf::Style::None);
+	sf::RenderWindow okno_menu(sf::VideoMode(1400, 900), "Domki menu!", sf::Style::None);
 	okno_menu.resetGLStates();
 
 	sf::Texture backtexture;
@@ -23,11 +79,11 @@ int main() {
 	sf::Sprite background(backtexture);
 	background.setTextureRect({ 0, 0, 800, 600 });
 
-	sfg::Desktop desktop;
-	desktop.LoadThemeFromFile("Grafika\\bazowy.theme");
+	sfg::Desktop pulpit;
+	pulpit.LoadThemeFromFile("Grafika\\bazowy.theme");
 
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND);
-	okno->SetRequisition(sf::Vector2f(500,500));
+	okno->SetRequisition(sf::Vector2f(1400,900));
 	okno->SetPosition(sf::Vector2f(150, 50));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
@@ -60,6 +116,18 @@ int main() {
 		misja(ustawienia);
 	});
 
+	// multi
+	auto serwer = sfg::Button::Create("Serwer");
+	serwer->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
+		start_serwer(pulpit);
+	});
+
+	auto klient = sfg::Button::Create("Klient");
+	klient->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
+		start_klient(pulpit);
+	});
+
+
 	tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 0, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 	tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(0, 1, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
 	tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 2, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
@@ -69,11 +137,14 @@ int main() {
 	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 6, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 40.f));
 	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(0, 7, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 
+	tabelka->Attach(serwer, sf::Rect<sf::Uint32>(0, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+	tabelka->Attach(klient, sf::Rect<sf::Uint32>(1, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+
 	box->Pack(tytul, false);
 	box->Pack(tabelka, false);
 	okno->Add(box);
 
-	desktop.Add(okno);
+	pulpit.Add(okno);
 
 	sf::Event event;
 	sf::Clock clock;
@@ -81,7 +152,7 @@ int main() {
 	while (okno_menu.isOpen()) {
 		while (okno_menu.pollEvent(event)) 
 		{
-			desktop.HandleEvent(event);
+			pulpit.HandleEvent(event);
 
 			switch (event.type)
 			{
@@ -97,7 +168,7 @@ int main() {
 			}
 		}
 
-		desktop.Update(clock.restart().asSeconds());
+		pulpit.Update(clock.restart().asSeconds());
 
 		okno_menu.clear();
 		okno_menu.draw(background);

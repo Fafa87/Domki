@@ -22,6 +22,9 @@
     <Filter Include="Header Files\multi">
       <UniqueIdentifier>{c23b9dea-06a5-4e67-9692-1bb10b35adb5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\multi">
+      <UniqueIdentifier>{e08137f4-2af9-4b0d-bbda-9dbc10b3f3fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="misja.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="serwer.cpp">
+      <Filter>Source Files\multi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

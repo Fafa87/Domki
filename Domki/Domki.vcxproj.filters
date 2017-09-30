@@ -19,6 +19,9 @@
     <Filter Include="Source Files\narzedzia">
       <UniqueIdentifier>{6112cce1-5d36-4201-99bb-7a029055f73f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\multi">
+      <UniqueIdentifier>{c23b9dea-06a5-4e67-9692-1bb10b35adb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -43,6 +46,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="os.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="misja.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -73,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="os.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="serwer.h">
+      <Filter>Header Files\multi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

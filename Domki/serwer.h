@@ -2,6 +2,9 @@
 
 #include <string>
 #include <vector>
+
+#include "misja.h"
+
 using namespace std;
 
 // KROKI DO WYKONANIA:
@@ -14,9 +17,12 @@ using namespace std;
 // 7. Serwer oczekuje na rozkazy od klientów i aplikuje je do swojej rozgrywki.
 // 8. Sukces??
 
-// uruchamianie misji musi siê odbywaæ przez:
-// Misja<TRozgrywka>, która opisze klasê rozgrywki
-// - lokalna, serwerowa
+
+
+// Na serwerze:
+//	Rozgrywka normalna, decydenci stworzeni na podstawie pod³¹czonych ludzi.
+// Na kliencie:
+//  RozgrywkaSluga, poza wykonaniem ruchu przesy³any jest rozkaz do serwera. 
 
 // 
 // nowa klasa RozgrywkaSerwerowa, gdzie zamiast wykonywaæ ruchy przesy³a siê je do serwera
@@ -24,15 +30,10 @@ using namespace std;
 // ale to w kliencie, tutaj bêdziemy mieli zwyk³¹ rozgrywkê tylko, ¿e rozkazy bêd¹ przychodziæ ze œmiesznych decydentów
 // s³ychaj¹cych tcp
 
+// Misji musi siê odbywaæ przez:
+//		Misja<TRozgrywka>, która opisze klasê rozgrywki - lokalna, serwerowa
 
-// rozgrywka musi byæ lepiej konfigurowalna (sam proces rozgrywki niezale¿ny od decydentów?) - podczepienie graczy giêtkie
-// do przeniesienia do misja.h i u¿ycia w g³ównym kodzie
-struct MisjaUstawienia
-{
-	string nazwa;
-	double szybkosc;
-	string trudnosc;
-};
+// Rozgrywka musi byæ lepiej konfigurowalna (sam proces rozgrywki niezale¿ny od decydentów?) - podczepienie graczy giêtkie
 
 struct Adres {
 	string ip;

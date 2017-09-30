@@ -53,7 +53,11 @@ int main() {
 
 	auto uruchom = sfg::Button::Create("Uruchom");
 	uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
-		misja("Plansza\\" + wybor_lista->GetSelectedText(), trudnosc_lista->GetSelectedText(), szybkosc_pasek->GetValue());
+		MisjaUstawienia ustawienia;
+		ustawienia.nazwa = wybor_lista->GetSelectedText();
+		ustawienia.szybkosc = szybkosc_pasek->GetValue();
+		ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
+		misja(ustawienia);
 	});
 
 	tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 0, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));

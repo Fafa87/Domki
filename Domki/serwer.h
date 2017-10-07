@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include <SFML/Network.hpp>
+
 #include "misja.h"
 
 using namespace std;
@@ -11,8 +13,8 @@ namespace multi
 {
 
 	// KROKI DO WYKONANIA:
-	// 1. Ustanowienie komunikacji
-	// 2. Projekt serwer i projekt klient podpiêci przez tcp i potrafi¹ do siebie pisaæ.
+	//+ 1. Ustanowienie komunikacji
+	//+ 2. Projekt serwer i projekt klient podpiêci przez tcp i potrafi¹ do siebie pisaæ.
 	// 3. Serwer potrafi uruchomiæ Rozgrywkê (widaæ j¹, a nadal mo¿na w konsoli rozmawiaæ), Klient te¿ uruchamia rozgrywkê (ta same ustawienia, ale ustawiaj¹c siebie jako odpowiedniego gracza)
 	// 4. Rozgrywka potrafi siê serializowaæ i deserializowaæ. (tu bêdzie trochê tych danych... -> cereal, czy ten drugi?) --> cereal bo tam s¹ cykle z referencji
 	// 5. Rozgrywka potrafi wykonaæ podany Rozgrywka::Ruch, który te¿ jest serializowalny i deserializowalny
@@ -39,6 +41,9 @@ namespace multi
 	// Rozgrywka musi byæ lepiej konfigurowalna (sam proces rozgrywki niezale¿ny od decydentów?) - podczepienie graczy giêtkie
 
 	struct Adres {
+		Adres() {}
+		Adres(string ip, int port) : ip(ip), port(port) {}
+
 		string ip;
 		int port;
 	};
@@ -46,16 +51,11 @@ namespace multi
 	struct Gracz {
 		Adres adres;
 		string nazwa;
-		// TODO po³¹czenie TCP
+		sf::TcpSocket* wtyk;
 	};
 
-	class Komunikacja
-	{
-
-
-
-
-	};
+	vector<string> Pobierz(sf::TcpSocket& wtyk);
+	void Wyslij(sf::TcpSocket& wtyk, string dane);
 
 	class Serwer
 	{
@@ -67,8 +67,12 @@ namespace multi
 
 		// za³aduj i odpal misjê z podanym generycznym TRozgrywkê, który
 		void Start(MisjaUstawienia ustawienia);
+
+		void Rozeslij(string dane);
+		vector<vector<string>> Odbierz();
 	private:
 		vector<Gracz> ludzie;
+		sf::TcpListener listener;
 	};
 
 
@@ -78,7 +82,9 @@ namespace multi
 		Klient(string nazwa);
 
 		void Podlacz(Adres serwer);
+		void OczekujNaStart();
 
-
+		string nazwa;
+		sf::TcpSocket* wtyk;
 	};
 }

@@ -6,7 +6,7 @@
 #include "../Domki/misja.h"
 #include "../Domki/os.h"
 
-#include "../Domki/serwer.h"
+#include "../Domki/multi.h"
 
 using namespace std;
 using namespace multi;
@@ -43,10 +43,11 @@ int main() {
 		if (zadanie == "serwer")
 		{
 			serwer = new Serwer();
-			auto adres = serwer->Przygotuj();
+			auto adres = serwer->Postaw();
 			printf("%s:%d\n", adres.ip.c_str(), adres.port);
 
-			serwer->OczekujNaGraczy(2);
+			serwer->OczekujNaGracza();
+			serwer->OczekujNaGracza();
 		}
 		if (zadanie.find("klient") == 0)
 		{
@@ -60,11 +61,52 @@ int main() {
 			Adres adres(ip_port[0], stoi(ip_port[1]));
 			klient->Podlacz(adres);
 		}
+		if (zadanie.find("start") == 0)
+		{
+			MisjaUstawienia misja;
+			misja.nazwa = "misyjka";
+			serwer->Start(misja);
+
+			serwer->ludzie[0].wtyk->setBlocking(false);
+			serwer->ludzie[1].wtyk->setBlocking(false);
+
+			string test = "Rozgrywka:A";
+			while (1)
+			{
+				auto& res = serwer->Odbierz();
+				for(auto s : res)
+					printf("odebralem: %s\n", s.c_str());
+
+				Sleep(400);
+				serwer->Rozeslij(test);
+				test[10] = (test[10] + 1) % 150;
+			}
+		}
+		if (zadanie.find("gotowy") == 0)
+		{
+			auto res = klient->OczekujNaStart();
+			printf("startuje misje %s\n", res.second.nazwa.c_str());
+			
+			string test = "A";
+			klient->wtyk->setBlocking(false);
+			while (1)
+			{
+				auto& res = klient->Odbierz();
+				if (res.first)
+				{
+					printf("sync rozgr: %s\n", res.second.c_str());
+				}
+
+				Sleep(600);
+				klient->Wyslij(test);
+				test[0] = (test[0] + 1) % 150;
+			}
+		}
 		if (zadanie.find("odbierz") == 0)
 		{
 			vector<vector<string>> wiad;
-			if (serwer != NULL)
-				wiad = serwer->Odbierz();
+			/*if (serwer != NULL)
+				wiad = serwer->Odbierz();*/
 			if (klient != NULL)
 				wiad.push_back(Pobierz(*klient->wtyk));
 			printf("Odebralem:\n");

@@ -158,14 +158,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Domki\serwer.h" />
+    <ClInclude Include="..\Domki\multi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Domki\dzialacze.cpp" />
     <ClCompile Include="..\Domki\misja.cpp" />
     <ClCompile Include="..\Domki\os.cpp" />
     <ClCompile Include="..\Domki\rozgrywka.cpp" />
-    <ClCompile Include="..\Domki\serwer.cpp" />
+    <ClCompile Include="..\Domki\multi.cpp" />
     <ClCompile Include="..\Domki\si.cpp" />
     <ClCompile Include="..\Domki\wyswietlacze.cpp" />
     <ClCompile Include="main.cpp" />

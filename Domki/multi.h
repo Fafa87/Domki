@@ -57,24 +57,26 @@ namespace multi
 	vector<string> Pobierz(sf::TcpSocket& wtyk);
 	void Wyslij(sf::TcpSocket& wtyk, string dane);
 
+	typedef string MRozgrywka;
+	typedef string MRozkaz;
+
 	class Serwer
 	{
 	public:
-		Adres Przygotuj();
+		Adres Postaw();
 
-		// oczekuje graczy na pod³¹czenie siê i podanie danych, które wyl¹duj¹ w ludzie
-		void OczekujNaGraczy(int ilu);
+		// oczekuje na pod³¹czenie siê gracza i podanie danych
+		void OczekujNaGracza();
 
-		// za³aduj i odpal misjê z podanym generycznym TRozgrywkê, który
+		// wyœlij info o starcie do graczy
 		void Start(MisjaUstawienia ustawienia);
+		void Rozeslij(MRozgrywka stan);
+		vector<MRozkaz> Odbierz();
 
-		void Rozeslij(string dane);
-		vector<vector<string>> Odbierz();
-	private:
 		vector<Gracz> ludzie;
-		sf::TcpListener listener;
+	private:
+		sf::TcpListener nasluchiwacz;
 	};
-
 
 	class Klient
 	{
@@ -82,7 +84,10 @@ namespace multi
 		Klient(string nazwa);
 
 		void Podlacz(Adres serwer);
-		void OczekujNaStart();
+
+		pair<bool, MisjaUstawienia> OczekujNaStart();
+		void Wyslij(MRozkaz rozkaz);
+		pair<bool, MRozgrywka> Odbierz();
 
 		string nazwa;
 		sf::TcpSocket* wtyk;

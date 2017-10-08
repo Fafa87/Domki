@@ -54,7 +54,7 @@
     <ClCompile Include="misja.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="serwer.cpp">
+    <ClCompile Include="multi.cpp">
       <Filter>Source Files\multi</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,7 +86,7 @@
     <ClInclude Include="os.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="serwer.h">
+    <ClInclude Include="multi.h">
       <Filter>Header Files\multi</Filter>
     </ClInclude>
   </ItemGroup>

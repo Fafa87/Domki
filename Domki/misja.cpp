@@ -142,10 +142,12 @@ void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswiet
 
 	//ZMIEN NAZWY GRACZ�	if (misja_ustawienia.nazwy_graczow.size())
 	if (misja_ustawienia.nazwy_graczow.size())
-		for (int i=0;i<misja_ustawienia.nazwy_graczow.size();i++)
+	{
+		for (int i = 0; i < misja_ustawienia.nazwy_graczow.size(); i++)
 		{
 			rozgrywka.Gracz(i).nazwa = misja_ustawienia.nazwy_graczow[i];
 		}
+	}
 	
 	//KOMPUTEROWIE
 	vector<Komputer*> kompiutery;

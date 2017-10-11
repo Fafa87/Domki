@@ -83,8 +83,7 @@ void MyszDecydent::WykonajRuch()
 }
 
 
-
-Ruszacz::Ruszacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
+Ruszacz::Ruszacz()
 {
 }
 
@@ -98,7 +97,7 @@ void Ruszacz::Ruszaj(float czas)
 void Ruszacz::PrzesuwajLudkow(float czas)
 {
 	double przesuniecie = szybkosc * szybkosc_ruchu;
-	for (Ludek& armia : rozgrywka.armie)
+	for (Ludek& armia : rozgrywka->armie)
 	{
 		
 		PD polozenie_cel = armia.cel.polozenie;
@@ -116,10 +115,10 @@ void Ruszacz::PrzesuwajLudkow(float czas)
 void Ruszacz::WalczLudkami(float czas)
 {
 	vector<list<Ludek>::iterator> do_usuniecia;
-	for (auto it = rozgrywka.armie.begin(); it != rozgrywka.armie.end(); it++)
+	for (auto it = rozgrywka->armie.begin(); it != rozgrywka->armie.end(); it++)
 	{
 		Ludek& armia = *it;
-		double odleglosc = rozgrywka.Odleglosc(armia, armia.cel);
+		double odleglosc = rozgrywka->Odleglosc(armia, armia.cel);
 		if (odleglosc < armia.cel.rozmiar)
 		{
 			if (IsType<Domek>(&armia.cel))
@@ -127,7 +126,7 @@ void Ruszacz::WalczLudkami(float czas)
 				Domek& cel = (Domek&)armia.cel;
 				if (armia.gracz == armia.cel.gracz)
 				{
-					rozgrywka.ZmienLiczebnosc(cel, armia.liczebnosc + cel.liczebnosc);
+					rozgrywka->ZmienLiczebnosc(cel, armia.liczebnosc + cel.liczebnosc);
 				}
 				else
 				{
@@ -137,21 +136,21 @@ void Ruszacz::WalczLudkami(float czas)
 						cel.gracz->liczba_tworow--;
 						if (cel .gracz->liczba_tworow == 0)
 						{
-							if (cel.gracz->aktywny)rozgrywka.liczba_aktywnych_graczy--;
+							if (cel.gracz->aktywny)rozgrywka->liczba_aktywnych_graczy--;
 							cel.gracz->aktywny = false;
 						}
 						cel.gracz = armia.gracz;
 						armia.gracz->liczba_tworow++;						
 					}
-					rozgrywka.ZmienLiczebnosc(cel, std::abs(nowa_liczebnosc));
+					rozgrywka->ZmienLiczebnosc(cel, std::abs(nowa_liczebnosc));
 				}
 				armia.gracz->liczba_tworow--;
 				if (armia.gracz->liczba_tworow == 0)
 				{
-					if(armia.gracz->aktywny)rozgrywka.liczba_aktywnych_graczy--;
+					if(armia.gracz->aktywny)rozgrywka->liczba_aktywnych_graczy--;
 					armia.gracz->aktywny = false;
 				}
-				rozgrywka.ZmienLiczebnosc(armia, std::abs(0));
+				rozgrywka->ZmienLiczebnosc(armia, std::abs(0));
 				do_usuniecia.push_back(it);
 			}
 			// jak to nie jest domek to nic nie r�bmy, mo�e kiedy� b�dziemy?
@@ -160,14 +159,14 @@ void Ruszacz::WalczLudkami(float czas)
 
 	for (auto usunieta : do_usuniecia)
 	{
-		rozgrywka.armie.erase(usunieta);
+		rozgrywka->armie.erase(usunieta);
 	}
 }
 
 void Ruszacz::Produkuj(float czas)
 {
-	for (Domek& domek : rozgrywka.domki)
+	for (Domek& domek : rozgrywka->domki)
 	{
-		if(domek.gracz->aktywny)rozgrywka.ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja);
+		if(domek.gracz->aktywny)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja);
 	}
 }

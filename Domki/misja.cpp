@@ -106,6 +106,8 @@ void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswiet
 
 }
 
+
+int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 {
 	string sciezka = "Plansza\\" + misja_ustawienia.nazwa;
 	string trudnosc = misja_ustawienia.trudnosc;
@@ -140,7 +142,7 @@ void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswiet
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 
-	//ZMIEN NAZWY GRACZï¿½	if (misja_ustawienia.nazwy_graczow.size())
+	//ZMIEN NAZWY GRACZÓW
 	if (misja_ustawienia.nazwy_graczow.size())
 	{
 		for (int i = 0; i < misja_ustawienia.nazwy_graczow.size(); i++)
@@ -161,7 +163,7 @@ void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswiet
 			kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr)));
 	}
 
-	Ruszacz ruszacz(rozgrywka);
+	ruszacz.rozgrywka = &rozgrywka;
 	ruszacz.szybkosc *= predkosc;
 	
 	//PRYGOTOWANIE ROZGRYWKI
@@ -255,4 +257,10 @@ void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswiet
 		Sleep(16);
 	}
 	return 0;
+}
+
+int misja(MisjaUstawienia misja_ustawienia)
+{
+	Ruszacz ruszacz;
+	return misja(misja_ustawienia, ruszacz);
 }

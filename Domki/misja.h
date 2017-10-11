@@ -13,15 +13,17 @@ const string poziomy_trudnosci[] = { "stara", "nowa" };
 
 struct MisjaUstawienia
 {
-	string nazwa = "GRACZ";
+	string nazwa = "";
 	double szybkosc = 1;
 	string trudnosc = "stara";
 
-	int nr_gracza = 0; // -1 jeśli nie ma gracza, którym ruszamy
+	int nr_gracza = 0;
 	vector<string> nazwy_graczow;
 	vector<int> komputery = { 1, 2, 3 };
 };
 
 Rozgrywka zwarcie_rozgrywka(string sciezka);
+
+int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz);
 
 int misja(MisjaUstawienia misja_ustawienia);

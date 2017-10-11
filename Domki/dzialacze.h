@@ -24,13 +24,13 @@ public:
 
 	virtual void WykonajRuch();
 
-	Domek* wybrany;
+	Domek* wybrany = nullptr;
 	Gracz& gracz;
 
 private:
 	sf::RenderWindow & okno;
 	vector<int> klikniecia;
-	Domek* cel;
+	Domek* cel = nullptr;
 	Rozgrywka& rozgrywka;
 };
 

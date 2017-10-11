@@ -84,11 +84,33 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 	return gra;
 }
 
-int misja(MisjaUstawienia misja_ustawienia)
+void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
+{
+	//Przygotuj sie
+	podpis.setCharacterSize(250);
+	for (int a = 3; a >= 0; a--)
+	{
+		window.clear();
+		wyswietlacz.WyswietlTlo(window);
+		if (a>0)podpis.setString(std::to_string(a));
+		else podpis.setString("RUSZAJ!");
+		if (a>0)podpis.setPosition(700, 200);
+		else podpis.setPosition(200, 200);
+		wyswietlacz.Wyswietlaj(window);
+		window.draw(podpis);
+		window.display();
+		if (a > 0)Sleep(1000);
+		else Sleep(250);
+	}
+	podpis.setCharacterSize(50);
+
+}
+
 {
 	string sciezka = "Plansza\\" + misja_ustawienia.nazwa;
 	string trudnosc = misja_ustawienia.trudnosc;
 	double predkosc = misja_ustawienia.szybkosc;
+	int nr_gracza = misja_ustawienia.nr_gracza;
 
 	sf::ContextSettings ustawienia;
 	ustawienia.antialiasingLevel = 8;
@@ -115,44 +137,34 @@ int misja(MisjaUstawienia misja_ustawienia)
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
 	wyswietlacz.Zaladuj("wroclaw");
-	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(0));
+	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
+
+	//ZMIEN NAZWY GRACZ�	if (misja_ustawienia.nazwy_graczow.size())
+	if (misja_ustawienia.nazwy_graczow.size())
+		for (int i=0;i<misja_ustawienia.nazwy_graczow.size();i++)
+		{
+			rozgrywka.Gracz(i).nazwa = misja_ustawienia.nazwy_graczow[i];
+		}
+	
 	//KOMPUTEROWIE
-	Komputer* kompiuter1 = NULL;
-	Komputer* kompiuter2 = NULL;
-	Komputer* kompiuter3 = NULL;
-	if (poziomy_trudnosci[0] == trudnosc)
+	vector<Komputer*> kompiutery;
+	int nr_kompa = 1;
+	for (auto nr : misja_ustawienia.komputery)
 	{
-		kompiuter1 = new Komputer(rozgrywka, rozgrywka.Gracz(1));
-		kompiuter2 = new Komputer(rozgrywka, rozgrywka.Gracz(2));
-		kompiuter3 = new Komputer(rozgrywka, rozgrywka.Gracz(3));
+		rozgrywka.Gracz(nr).nazwa = "KOMPUTER" + nr;
+		if (poziomy_trudnosci[0] == trudnosc)
+			kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr)));
+		else if (poziomy_trudnosci[1] == trudnosc)
+			kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr)));
 	}
-	else if (poziomy_trudnosci[1] == trudnosc)
-	{
-		kompiuter1 = new KomputerSilver(rozgrywka, rozgrywka.Gracz(1));
-		kompiuter2 = new KomputerSilver(rozgrywka, rozgrywka.Gracz(2));
-		kompiuter3 = new KomputerSilver(rozgrywka, rozgrywka.Gracz(3));
-	}
-	//PRYGOTOWANIE ROZGRYWKI
+
 	Ruszacz ruszacz(rozgrywka);
 	ruszacz.szybkosc *= predkosc;
-	//Przygotuj sie
-	podpis.setCharacterSize(250);
-	for (int a = 3; a >= 0; a--)
-	{
-		window.clear();
-		wyswietlacz.WyswietlTlo(window);
-		if (a>0)podpis.setString(std::to_string(a));
-		else podpis.setString("RUSZAJ!");
-		if (a>0)podpis.setPosition(700, 200);
-		else podpis.setPosition(200, 200);
-		wyswietlacz.Wyswietlaj(window);
-		window.draw(podpis);
-		window.display();
-		if (a > 0)Sleep(1000);
-		else Sleep(250);
-	}
-	podpis.setCharacterSize(50);
+	
+	//PRYGOTOWANIE ROZGRYWKI
+	odliczanie(podpis, window, wyswietlacz);
+
 	//czasomierz
 	clock_t czasomierz;
 	czasomierz = clock();
@@ -190,12 +202,11 @@ int misja(MisjaUstawienia misja_ustawienia)
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
 		myszkaGracza.WykonajRuch();
 
-		kompiuter1->czas += czas;
-		kompiuter1->WykonajRuch();
-		kompiuter2->czas += czas;
-		kompiuter2->WykonajRuch();
-		kompiuter3->czas += czas;
-		kompiuter3->WykonajRuch();
+		for (auto& komp : kompiutery)
+		{
+			komp->czas += czas;
+			komp->WykonajRuch();
+		}
 
 		ruszacz.Ruszaj(czas);
 
@@ -217,11 +228,11 @@ int misja(MisjaUstawienia misja_ustawienia)
 		ruchGracza.Wyswietlaj(window);
 		wyswietlacz.Wyswietlaj(window);
 		//ZAKONCZENIE GRY
-		if (!rozgrywka.Gracz(0).aktywny || rozgrywka.liczba_aktywnych_graczy == 1)
+		if (!rozgrywka.Gracz(nr_gracza).aktywny || rozgrywka.liczba_aktywnych_graczy == 1)
 		{
 			podpis.setCharacterSize(75);
 			podpis.setPosition(100, 200);
-			if (rozgrywka.Gracz(0).aktywny)podpis.setString("GRATULACJE DLA GRACZA  ");
+			if (rozgrywka.Gracz(nr_gracza).aktywny)podpis.setString("GRATULACJE DLA GRACZA  ");
 			else podpis.setString("TYM RAZEM ZWYCIEZYLA SI (LESZCZU!)");
 			window.draw(podpis);
 			window.display();

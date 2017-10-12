@@ -204,12 +204,14 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 		}
 		///FPSY
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
-		myszkaGracza.WykonajRuch();
+		auto& ruchy = myszkaGracza.WykonajRuch();
+		ruszacz.PrzyjmijRuch(ruchy);
 
 		for (auto& komp : kompiutery)
 		{
 			komp->czas += czas;
-			komp->WykonajRuch();
+			auto& ruchy = komp->WykonajRuch();
+			ruszacz.PrzyjmijRuch(ruchy);
 		}
 
 		ruszacz.Ruszaj(czas);

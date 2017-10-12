@@ -178,6 +178,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="misja.cpp" />
     <ClCompile Include="multi.cpp" />
+    <ClCompile Include="multi_dzialacze.cpp" />
     <ClCompile Include="Narzedzia\AnimatedSprite.cpp" />
     <ClCompile Include="Narzedzia\Animation.cpp" />
     <ClCompile Include="os.cpp" />
@@ -190,10 +191,12 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClInclude Include="dzialacze.h" />
     <ClInclude Include="misja.h" />
     <ClInclude Include="multi.h" />
+    <ClInclude Include="multi_dzialacze.h" />
     <ClInclude Include="Narzedzia\AnimatedSprite.hpp" />
     <ClInclude Include="Narzedzia\Animation.hpp" />
     <ClInclude Include="os.h" />
     <ClInclude Include="rozgrywka.h" />
+    <ClInclude Include="ruszacze.h" />
     <ClInclude Include="si.h" />
     <ClInclude Include="wyswietlacze.h" />
   </ItemGroup>

@@ -45,8 +45,9 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 	}
 }
 
-void MyszDecydent::WykonajRuch()
+vector<Rozkaz*> MyszDecydent::WykonajRuch()
 {
+	vector<Rozkaz*> res;
 	if (wybrany != nullptr && wybrany->gracz != &gracz)
 	{
 		cel = nullptr;
@@ -62,24 +63,16 @@ void MyszDecydent::WykonajRuch()
 		else if (klikniecia.size() == 2)
 			frakcja = 1;
 
-		auto liczba = int(wybrany->liczebnosc * frakcja);
-		if (liczba > 0 && cel != wybrany)
-		{
-			rozgrywka.ZmienLiczebnosc(*wybrany, wybrany->liczebnosc - liczba);
-
-			rozgrywka.armie.push_back(Ludek(*cel));
-			Ludek& nowaArmia = rozgrywka.armie.back();
-			nowaArmia.gracz = &gracz;
-			nowaArmia.polozenie = wybrany->polozenie;
-			nowaArmia.wyglad = Wyglad::kLudek;
-			rozgrywka.ZmienLiczebnosc(nowaArmia, liczba);
-			gracz.liczba_tworow++;
-		}
+		// utworz i zwroc rozkaz 
+		auto r = new WymarszRozkaz(*wybrany, *cel);
+		r->ulamek = frakcja;
+		res.push_back(r);
 
 		wybrany = nullptr;
 		cel = nullptr;
 		klikniecia.clear();
 	}
+	return res;
 }
 
 
@@ -89,9 +82,42 @@ Ruszacz::Ruszacz()
 
 void Ruszacz::Ruszaj(float czas)
 {
+	WykonajRuchy();
 	PrzesuwajLudkow(czas);
 	WalczLudkami(czas);
 	Produkuj(czas);
+}
+
+void Ruszacz::PrzyjmijRuch(vector<Rozkaz*> rozkazy)
+{
+	kolejka_do_wykonania.insert(kolejka_do_wykonania.end(), rozkazy.begin(), rozkazy.end());
+}
+
+void Ruszacz::WykonajRuchy()
+{
+	for (auto r : kolejka_do_wykonania)
+	{
+		if (IsType<WymarszRozkaz>(r))
+		{
+			auto& ruch = *(WymarszRozkaz*)r;
+
+			auto liczba = int(ruch.skad.liczebnosc * ruch.ulamek);
+			if (liczba > 0 && &ruch.skad != &ruch.dokad)
+			{
+				rozgrywka->ZmienLiczebnosc(ruch.skad, ruch.skad.liczebnosc - liczba);
+
+				rozgrywka->armie.push_back(Ludek(ruch.dokad));
+				Ludek& nowaArmia = rozgrywka->armie.back();
+				nowaArmia.gracz = ruch.skad.gracz;
+				nowaArmia.polozenie = ruch.skad.polozenie;
+				nowaArmia.wyglad = Wyglad::kLudek;
+				rozgrywka->ZmienLiczebnosc(nowaArmia, liczba);
+
+				ruch.skad.gracz->liczba_tworow++;
+			}
+		}
+	}
+	kolejka_do_wykonania.clear();
 }
 
 void Ruszacz::PrzesuwajLudkow(float czas)
@@ -134,7 +160,7 @@ void Ruszacz::WalczLudkami(float czas)
 					if (nowa_liczebnosc < 0)
 					{
 						cel.gracz->liczba_tworow--;
-						if (cel .gracz->liczba_tworow == 0)
+						if (cel.gracz->liczba_tworow == 0)
 						{
 							if (cel.gracz->aktywny)rozgrywka->liczba_aktywnych_graczy--;
 							cel.gracz->aktywny = false;
@@ -169,4 +195,8 @@ void Ruszacz::Produkuj(float czas)
 	{
 		if(domek.gracz->aktywny)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja);
 	}
+}
+
+WymarszRozkaz::WymarszRozkaz(Domek & skad, Domek & dokad) : skad(skad), dokad(dokad)
+{
 }

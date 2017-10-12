@@ -39,9 +39,15 @@
     <ClCompile Include="..\Domki\multi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Domki\multi_dzialacze.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Domki\multi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domki\multi_dzialacze.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -160,10 +160,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Domki\multi.h" />
+    <ClInclude Include="..\Domki\multi_dzialacze.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Domki\dzialacze.cpp" />
     <ClCompile Include="..\Domki\misja.cpp" />
+    <ClCompile Include="..\Domki\multi_dzialacze.cpp" />
     <ClCompile Include="..\Domki\os.cpp" />
     <ClCompile Include="..\Domki\rozgrywka.cpp" />
     <ClCompile Include="..\Domki\multi.cpp" />

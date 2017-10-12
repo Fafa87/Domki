@@ -57,8 +57,8 @@ namespace multi
 	vector<string> Pobierz(sf::TcpSocket& wtyk);
 	void Wyslij(sf::TcpSocket& wtyk, string dane);
 
-	typedef string MRozgrywka;
-	typedef string MRozkaz;
+	typedef Rozgrywka MRozgrywka;
+	typedef Rozkaz MRozkaz;
 
 	class Serwer
 	{
@@ -70,8 +70,8 @@ namespace multi
 
 		// wyœlij info o starcie do graczy
 		void Start(MisjaUstawienia ustawienia);
-		void Rozeslij(MRozgrywka stan);
-		vector<MRozkaz> Odbierz();
+		void Rozeslij(MRozgrywka& stan);
+		vector<MRozkaz*> Odbierz();
 
 		vector<Gracz> ludzie;
 	private:
@@ -86,7 +86,7 @@ namespace multi
 		void Podlacz(Adres serwer);
 
 		pair<bool, MisjaUstawienia> OczekujNaStart();
-		void Wyslij(MRozkaz rozkaz);
+		void Wyslij(vector<MRozkaz*> rozkazy);
 		pair<bool, MRozgrywka> Odbierz();
 
 		string nazwa;

@@ -7,6 +7,7 @@
 #include "../Domki/os.h"
 
 #include "../Domki/multi.h"
+#include "../Domki/multi_dzialacze.h"
 
 using namespace std;
 using namespace multi;
@@ -79,13 +80,15 @@ void wykonaj(string zadanie)
 
 		serwer->Start(ustawienia);
 
-		misja(ustawienia);
-
 		serwer->ludzie[0].wtyk->setBlocking(false);
 		serwer->ludzie[1].wtyk->setBlocking(false);
 
+		SerwerowyRuszacz ruszacz(*serwer);
+
+		misja(ustawienia, ruszacz);
+
 		string test = "Rozgrywka:A";
-		while (1)
+		/*while (1)
 		{
 			auto& res = serwer->Odbierz();
 			for (auto s : res)
@@ -94,7 +97,7 @@ void wykonaj(string zadanie)
 			Sleep(400);
 			serwer->Rozeslij(test);
 			test[10] = (test[10] + 1) % 150;
-		}
+		}*/
 	}
 	if (zadanie.find("gotowy") == 0)
 	{
@@ -103,7 +106,13 @@ void wykonaj(string zadanie)
 
 		string test = "A";
 		klient->wtyk->setBlocking(false);
-		while (1)
+
+		KlientowyRuszacz ruszacz(*klient);
+
+		res.second.komputery.clear();
+		misja(res.second, ruszacz);
+
+		/*while (1)
 		{
 			auto& res = klient->Odbierz();
 			if (res.first)
@@ -114,7 +123,7 @@ void wykonaj(string zadanie)
 			Sleep(600);
 			klient->Wyslij(test);
 			test[0] = (test[0] + 1) % 150;
-		}
+		}*/
 	}
 	if (zadanie.find("odbierz") == 0)
 	{
@@ -134,10 +143,10 @@ void wykonaj(string zadanie)
 	if (zadanie.find("napisz") == 0)
 	{
 		auto text = zadanie.substr(7);
-		if (serwer != NULL)
+		/*if (serwer != NULL)
 			serwer->Rozeslij(text);
 		if (klient != NULL)
-			Wyslij(*klient->wtyk, text);
+			Wyslij(*klient->wtyk, text);*/
 	}
 }
 

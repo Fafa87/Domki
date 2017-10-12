@@ -37,22 +37,22 @@ void multi::Serwer::Start(MisjaUstawienia ustawienia)
 	}
 }
 
-void multi::Serwer::Rozeslij(MRozgrywka stan)
+void multi::Serwer::Rozeslij(MRozgrywka& stan)
 {
 	for (int i = 0; i < ludzie.size(); i++)
 	{
-		multi::Wyslij(*ludzie[i].wtyk, stan);
+		//multi::Wyslij(*ludzie[i].wtyk, stan);
 	}
 }
 
-vector<MRozkaz> multi::Serwer::Odbierz()
+vector<MRozkaz*> multi::Serwer::Odbierz()
 {
-	vector<MRozkaz> res;
+	vector<MRozkaz*> res;
 	for (int i = 0; i < ludzie.size(); i++)
 	{
-		auto data = multi::Pobierz(*ludzie[i].wtyk);
+		/*auto data = multi::Pobierz(*ludzie[i].wtyk);
 		if (data.size())
-			res.push_back(data[0]);
+			res.push_back(data[0]);*/
 	}
 	return res;
 }
@@ -91,9 +91,9 @@ pair<bool, MisjaUstawienia> multi::Klient::OczekujNaStart()
 }
 
 
-void multi::Klient::Wyslij(MRozkaz rozkaz)
+void multi::Klient::Wyslij(vector<MRozkaz*> rozkazy)
 {
-	multi::Wyslij(*wtyk, rozkaz);
+	//multi::Wyslij(*wtyk, rozkaz);
 }
 
 
@@ -104,7 +104,7 @@ pair<bool, MRozgrywka> multi::Klient::Odbierz()
 	auto data = multi::Pobierz(*wtyk);
 	if (data.size())
 	{
-		res = data[0];
+		//res = data[0];
 		return { true, res };
 	}
 

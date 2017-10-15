@@ -44,8 +44,6 @@ struct Ludek : Twor
 	Twor* cel; // do kogo (domka) stara siê dotrzeæ
 	int ser_cel;
 	int liczebnosc; // powinna byæ zwi¹zana z jego rozmiarem
-
-	void UstawCel(Twor& twor) { }
 };
 
 struct Domek : Twor

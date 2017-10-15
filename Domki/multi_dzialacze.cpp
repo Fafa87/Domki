@@ -40,5 +40,6 @@ void KlientowyRuszacz::Ruszaj(float czas)
 	{
 		// uaktualnij rozgrywkê - zast¹p t¹ - przepisuj¹c, adres ma zostaæ ten sam
 		*rozgrywka = res.second;
+		multi::Podepnij(*rozgrywka);
 	}
 }

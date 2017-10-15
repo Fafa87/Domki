@@ -13,7 +13,7 @@ Adres multi::Serwer::Postaw()
 
 void multi::Serwer::OczekujNaGracza()
 {
-	Gracz gracz;
+	Zawodnik gracz;
 	gracz.wtyk = new sf::TcpSocket();
 	if (nasluchiwacz.accept(*gracz.wtyk) != sf::Socket::Done)
 	{
@@ -49,7 +49,12 @@ void multi::Serwer::Rozeslij(MRozgrywka& stan)
 {
 	for (int i = 0; i < ludzie.size(); i++)
 	{
-		//multi::Wyslij(*ludzie[i].wtyk, stan);
+		std::stringstream ss;
+		{
+			cereal::JSONOutputArchive archive(ss);
+			archive(stan);
+		}
+		multi::Wyslij(*ludzie[i].wtyk, ss.str());
 	}
 }
 
@@ -140,7 +145,11 @@ pair<bool, MRozgrywka> multi::Klient::Odbierz()
 	auto data = multi::Pobierz(*wtyk);
 	if (data.size())
 	{
-		//res = data[0];
+		std::stringstream ss(data[0]);
+		{
+			cereal::JSONInputArchive archive(ss);
+			archive(res);
+		}
 		return { true, res };
 	}
 
@@ -154,7 +163,6 @@ vector<string> multi::Pobierz(sf::TcpSocket& wtyk)
 	sf::Packet pakiet;
 	if (wtyk.receive(pakiet) != sf::Socket::Done)
 	{
-		//printf("Gracz::Pobierz buraka!");
 		return res;
 	}
 
@@ -177,6 +185,21 @@ void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
 		rozkaz->skad = rozgrywka.WskaznikDomek(rozkaz->ser_skad);
 	}
 }
+
+void multi::Podepnij(Rozgrywka& rozgrywka)
+{
+	for (auto& r : rozgrywka.domki)
+	{
+		r.gracz = &rozgrywka.Gracz(r.ser_gracz);
+	}
+
+	for (auto& r : rozgrywka.armie)
+	{
+		r.gracz = &rozgrywka.Gracz(r.ser_gracz);
+		r.cel = rozgrywka.WskaznikDomek(r.ser_cel);
+	}
+}
+
 
 void multi::Wyslij(sf::TcpSocket& wtyk, vector<string> dane)
 {

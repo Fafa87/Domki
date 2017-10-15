@@ -153,7 +153,6 @@ void wykonaj(string zadanie)
 int main(int argc, const char * argv[]) {
 	string zadanie;
 
-
 	if (argc > 1)
 		konfiguruj(int(argv[1][0] - '0'));
 

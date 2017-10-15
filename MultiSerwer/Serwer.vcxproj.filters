@@ -42,9 +42,6 @@
     <ClCompile Include="..\Domki\multi_dzialacze.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="multi_serializacja.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Domki\multi.h">

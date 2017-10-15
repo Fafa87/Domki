@@ -61,11 +61,12 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
 		auto data = multi::Pobierz(*ludzie[i].wtyk);
 		for (auto &d : data)
 		{
-			Rozkaz* rozkaz = new WymarszRozkaz(nullptr, nullptr);
+			// TODO zak³adamy tutaj, ¿e s¹ tylko rozkazy wymarszu
+			WymarszRozkaz* rozkaz = new WymarszRozkaz(nullptr, nullptr);
 			std::stringstream ss(d);
 			{
 				cereal::JSONInputArchive dearchive(ss);
-				dearchive(rozkaz);
+				dearchive(*rozkaz);
 			}
 
 			res.push_back(rozkaz);
@@ -121,8 +122,8 @@ void multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 		WymarszRozkaz* rozkaz = (WymarszRozkaz*)r;
 		std::stringstream ss;
 		{
-			cereal::JSONInputArchive archive(ss);
-			archive(*r);
+			cereal::JSONOutputArchive archive(ss);
+			archive(*rozkaz);
 		}
 
 		dane.push_back(ss.str());
@@ -164,6 +165,17 @@ vector<string> multi::Pobierz(sf::TcpSocket& wtyk)
 		res.push_back(tekst);
 	}
 	return res;
+}
+
+void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
+{
+	for (auto r : rozkazy)
+	{
+		// TODO zaklada ¿e jest tylko rozkaz wymarszu
+		WymarszRozkaz * rozkaz = (WymarszRozkaz*)r;
+		rozkaz->dokad = rozgrywka.WskaznikDomek(rozkaz->ser_dokad);
+		rozkaz->skad = rozgrywka.WskaznikDomek(rozkaz->ser_skad);
+	}
 }
 
 void multi::Wyslij(sf::TcpSocket& wtyk, vector<string> dane)

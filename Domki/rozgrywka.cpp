@@ -41,3 +41,15 @@ Twor * Rozgrywka::Zlokalizuj(int x, int y)
 	}
 	return nullptr;
 }
+
+Domek* Rozgrywka::WskaznikDomek(int uid)
+{
+	for (auto &dom : domki)
+	{
+		if (dom.uid == uid)
+		{
+			return &dom;
+		}
+	}
+	return nullptr;
+}

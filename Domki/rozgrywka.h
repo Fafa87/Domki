@@ -27,5 +27,6 @@ struct Rozgrywka
 	void ZmienLiczebnosc(Ludek& ludek, double nowa);
 	double Odleglosc(const Twor& twor1, const Twor& twor2);
 	Twor* Zlokalizuj(int x, int y);
-	void PodepnijWskazniki();
+	
+	Domek* WskaznikDomek(int uid);
 };

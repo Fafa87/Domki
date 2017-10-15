@@ -122,6 +122,9 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	sf::View view(sf::FloatRect(0, 0, 1600, 900));
 	window.setView(view);
 
+	if (misja_ustawienia.nr_gracza == 4)
+		window.setVisible(false);
+
 	// fpsy
 	sf::Font czcionka;
 	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
@@ -234,7 +237,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 		ruchGracza.Wyswietlaj(window);
 		wyswietlacz.Wyswietlaj(window);
 		//ZAKONCZENIE GRY
-		if (!rozgrywka.Gracz(nr_gracza).aktywny || rozgrywka.liczba_aktywnych_graczy == 1)
+		if (rozgrywka.liczba_aktywnych_graczy == 1)  // !rozgrywka.Gracz(nr_gracza).aktywny || 
 		{
 			podpis.setCharacterSize(75);
 			podpis.setPosition(100, 200);

@@ -33,14 +33,15 @@ void multi::Serwer::OczekujNaGracza()
 
 void multi::Serwer::Start(MisjaUstawienia ustawienia)
 {
-	std::stringstream ss;
-	{
-		cereal::JSONOutputArchive archive(ss);
-		archive(ustawienia);
-	}
-
 	for (int i = 0; i < ludzie.size(); i++)
 	{
+		ustawienia.nr_gracza = i; // TODO uproszczenie
+		std::stringstream ss;
+		{
+			cereal::BinaryOutputArchive archive(ss);
+			archive(ustawienia);
+		}
+
 		multi::Wyslij(*ludzie[i].wtyk, ss.str());
 	}
 }
@@ -51,7 +52,7 @@ void multi::Serwer::Rozeslij(MRozgrywka& stan)
 	{
 		std::stringstream ss;
 		{
-			cereal::JSONOutputArchive archive(ss);
+			cereal::BinaryOutputArchive archive(ss);
 			archive(stan);
 		}
 		multi::Wyslij(*ludzie[i].wtyk, ss.str());
@@ -70,7 +71,7 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
 			WymarszRozkaz* rozkaz = new WymarszRozkaz(nullptr, nullptr);
 			std::stringstream ss(d);
 			{
-				cereal::JSONInputArchive dearchive(ss);
+				cereal::BinaryInputArchive dearchive(ss);
 				dearchive(*rozkaz);
 			}
 
@@ -109,7 +110,7 @@ pair<bool, MisjaUstawienia> multi::Klient::OczekujNaStart()
 	{
 		std::stringstream ss(data[0]);
 		{
-			cereal::JSONInputArchive dearchive(ss);
+			cereal::BinaryInputArchive dearchive(ss);
 			dearchive(res);
 		}
 
@@ -127,7 +128,7 @@ void multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 		WymarszRozkaz* rozkaz = (WymarszRozkaz*)r;
 		std::stringstream ss;
 		{
-			cereal::JSONOutputArchive archive(ss);
+			cereal::BinaryOutputArchive archive(ss);
 			archive(*rozkaz);
 		}
 
@@ -147,7 +148,7 @@ pair<bool, MRozgrywka> multi::Klient::Odbierz()
 	{
 		std::stringstream ss(data[0]);
 		{
-			cereal::JSONInputArchive archive(ss);
+			cereal::BinaryInputArchive archive(ss);
 			archive(res);
 		}
 		return { true, res };

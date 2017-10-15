@@ -34,6 +34,7 @@ void KlientowyRuszacz::Ruszaj(float czas)
 	klient.Wyslij(kolejka_do_wykonania);
 
 	Ruszacz::Ruszaj(czas);
+	//kolejka_do_wykonania.clear();
 
 	auto& res = klient.Odbierz();
 	if (res.first)

@@ -77,6 +77,8 @@ void wykonaj(string zadanie)
 	{
 		MisjaUstawienia ustawienia;
 		ustawienia.nazwa = "mini.txt";
+		ustawienia.komputery.clear();
+		ustawienia.nr_gracza = 4;
 
 		serwer->Start(ustawienia);
 

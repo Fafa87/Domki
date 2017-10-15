@@ -9,6 +9,7 @@ void SerwerowyRuszacz::Ruszaj(float czas)
 {
 	// pobierz ruchy z klientów
 	auto& rozkazy = serwer.Odbierz();
+	// podepnij wskaŸniki TODO
 	PrzyjmijRuch(rozkazy);
 
 	Ruszacz::Ruszaj(czas);

@@ -4,10 +4,30 @@
 #include <vector>
 
 #include <SFML/Network.hpp>
+#include <cereal/types/unordered_map.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/archives/binary.hpp>
+#include <cereal/archives/json.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/map.hpp>
 
 #include "misja.h"
 
 using namespace std;
+
+template<class Archive>
+void serialize(Archive & archive,
+	MisjaUstawienia & m)
+{
+	archive(CEREAL_NVP(m.nazwa), CEREAL_NVP(m.szybkosc), CEREAL_NVP(m.trudnosc), CEREAL_NVP(m.nr_gracza), CEREAL_NVP(m.nazwy_graczow), CEREAL_NVP(m.komputery));
+}
+
+template<class Archive>
+void serialize(Archive & archive,
+	WymarszRozkaz & m)
+{
+	archive(CEREAL_NVP(m.skad->uid), CEREAL_NVP(m.dokad->uid), CEREAL_NVP(m.ulamek));
+}
 
 namespace multi
 {
@@ -56,9 +76,9 @@ namespace multi
 
 	vector<string> Pobierz(sf::TcpSocket& wtyk);
 	void Wyslij(sf::TcpSocket& wtyk, string dane);
+	void Wyslij(sf::TcpSocket& wtyk, vector<string> dane);
 
 	typedef Rozgrywka MRozgrywka;
-	typedef Rozkaz MRozkaz;
 
 	class Serwer
 	{
@@ -71,7 +91,7 @@ namespace multi
 		// wyœlij info o starcie do graczy
 		void Start(MisjaUstawienia ustawienia);
 		void Rozeslij(MRozgrywka& stan);
-		vector<MRozkaz*> Odbierz();
+		vector<Rozkaz*> Odbierz();
 
 		vector<Gracz> ludzie;
 	private:
@@ -86,7 +106,7 @@ namespace multi
 		void Podlacz(Adres serwer);
 
 		pair<bool, MisjaUstawienia> OczekujNaStart();
-		void Wyslij(vector<MRozkaz*> rozkazy);
+		void Wyslij(vector<Rozkaz*> rozkazy);
 		pair<bool, MRozgrywka> Odbierz();
 
 		string nazwa;

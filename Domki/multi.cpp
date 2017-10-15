@@ -1,5 +1,7 @@
 #include "multi.h"
 
+#include <fstream>
+
 using namespace multi;
 
 Adres multi::Serwer::Postaw()
@@ -31,9 +33,15 @@ void multi::Serwer::OczekujNaGracza()
 
 void multi::Serwer::Start(MisjaUstawienia ustawienia)
 {
+	std::stringstream ss;
+	{
+		cereal::JSONOutputArchive archive(ss);
+		archive(ustawienia);
+	}
+
 	for (int i = 0; i < ludzie.size(); i++)
 	{
-		multi::Wyslij(*ludzie[i].wtyk, "START GRACZ " + to_string(i));
+		multi::Wyslij(*ludzie[i].wtyk, ss.str());
 	}
 }
 
@@ -45,14 +53,23 @@ void multi::Serwer::Rozeslij(MRozgrywka& stan)
 	}
 }
 
-vector<MRozkaz*> multi::Serwer::Odbierz()
+vector<Rozkaz*> multi::Serwer::Odbierz()
 {
-	vector<MRozkaz*> res;
+	vector<Rozkaz*> res;
 	for (int i = 0; i < ludzie.size(); i++)
 	{
-		/*auto data = multi::Pobierz(*ludzie[i].wtyk);
-		if (data.size())
-			res.push_back(data[0]);*/
+		auto data = multi::Pobierz(*ludzie[i].wtyk);
+		for (auto &d : data)
+		{
+			Rozkaz* rozkaz = new WymarszRozkaz(nullptr, nullptr);
+			std::stringstream ss(d);
+			{
+				cereal::JSONInputArchive dearchive(ss);
+				dearchive(rozkaz);
+			}
+
+			res.push_back(rozkaz);
+		}
 	}
 	return res;
 }
@@ -84,16 +101,34 @@ pair<bool, MisjaUstawienia> multi::Klient::OczekujNaStart()
 	auto data = multi::Pobierz(*wtyk);
 	if (data.size())
 	{
-		res.nazwa = data[0];
+		std::stringstream ss(data[0]);
+		{
+			cereal::JSONInputArchive dearchive(ss);
+			dearchive(res);
+		}
+
 		return { true, res };
 	}
 	return { false, res };
 }
 
 
-void multi::Klient::Wyslij(vector<MRozkaz*> rozkazy)
+void multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 {
-	//multi::Wyslij(*wtyk, rozkaz);
+	vector<string> dane;
+	for (auto r : rozkazy)
+	{
+		WymarszRozkaz* rozkaz = (WymarszRozkaz*)r;
+		std::stringstream ss;
+		{
+			cereal::JSONInputArchive archive(ss);
+			archive(*r);
+		}
+
+		dane.push_back(ss.str());
+	}
+
+	multi::Wyslij(*wtyk, dane);
 }
 
 
@@ -129,6 +164,15 @@ vector<string> multi::Pobierz(sf::TcpSocket& wtyk)
 		res.push_back(tekst);
 	}
 	return res;
+}
+
+void multi::Wyslij(sf::TcpSocket& wtyk, vector<string> dane)
+{
+	sf::Packet pakiet;
+	for (auto& d : dane)
+		pakiet << d;
+	if (wtyk.send(pakiet) != sf::Socket::Done)
+		printf("Gracz::Wyslij buraka!");
 }
 
 void multi::Wyslij(sf::TcpSocket& wtyk, string dane)

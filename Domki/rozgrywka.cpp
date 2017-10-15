@@ -1,5 +1,7 @@
 #include "rozgrywka.h"
 
+int Twor::last_uid = 0;
+
 Gracz & Rozgrywka::Gracz(int numer)
 {
 	auto it = gracze.begin();

@@ -64,7 +64,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 			frakcja = 1;
 
 		// utworz i zwroc rozkaz 
-		auto r = new WymarszRozkaz(*wybrany, *cel);
+		auto r = new WymarszRozkaz(wybrany, cel);
 		r->ulamek = frakcja;
 		res.push_back(r);
 
@@ -101,19 +101,19 @@ void Ruszacz::WykonajRuchy()
 		{
 			auto& ruch = *(WymarszRozkaz*)r;
 
-			auto liczba = int(ruch.skad.liczebnosc * ruch.ulamek);
+			auto liczba = int(ruch.skad->liczebnosc * ruch.ulamek);
 			if (liczba > 0 && &ruch.skad != &ruch.dokad)
 			{
-				rozgrywka->ZmienLiczebnosc(ruch.skad, ruch.skad.liczebnosc - liczba);
+				rozgrywka->ZmienLiczebnosc(*ruch.skad, ruch.skad->liczebnosc - liczba);
 
-				rozgrywka->armie.push_back(Ludek(ruch.dokad));
+				rozgrywka->armie.push_back(Ludek(*ruch.dokad));
 				Ludek& nowaArmia = rozgrywka->armie.back();
-				nowaArmia.gracz = ruch.skad.gracz;
-				nowaArmia.polozenie = ruch.skad.polozenie;
+				nowaArmia.gracz = ruch.skad->gracz;
+				nowaArmia.polozenie = ruch.skad->polozenie;
 				nowaArmia.wyglad = Wyglad::kLudek;
 				rozgrywka->ZmienLiczebnosc(nowaArmia, liczba);
 
-				ruch.skad.gracz->liczba_tworow++;
+				ruch.skad->gracz->liczba_tworow++;
 			}
 		}
 	}
@@ -126,7 +126,7 @@ void Ruszacz::PrzesuwajLudkow(float czas)
 	for (Ludek& armia : rozgrywka->armie)
 	{
 		
-		PD polozenie_cel = armia.cel.polozenie;
+		PD polozenie_cel = armia.cel->polozenie;
 		PD polozenie_teraz = armia.polozenie;
 
 		PD wektor_do_celu = (polozenie_cel - polozenie_teraz);
@@ -144,31 +144,31 @@ void Ruszacz::WalczLudkami(float czas)
 	for (auto it = rozgrywka->armie.begin(); it != rozgrywka->armie.end(); it++)
 	{
 		Ludek& armia = *it;
-		double odleglosc = rozgrywka->Odleglosc(armia, armia.cel);
-		if (odleglosc < armia.cel.rozmiar)
+		double odleglosc = rozgrywka->Odleglosc(armia, *armia.cel);
+		if (odleglosc < armia.cel->rozmiar)
 		{
-			if (IsType<Domek>(&armia.cel))
+			if (IsType<Domek>(armia.cel))
 			{
-				Domek& cel = (Domek&)armia.cel;
-				if (armia.gracz == armia.cel.gracz)
+				Domek* cel = (Domek*)armia.cel;
+				if (armia.gracz == armia.cel->gracz)
 				{
-					rozgrywka->ZmienLiczebnosc(cel, armia.liczebnosc + cel.liczebnosc);
+					rozgrywka->ZmienLiczebnosc(*cel, armia.liczebnosc + cel->liczebnosc);
 				}
 				else
 				{
-					double nowa_liczebnosc = cel.liczebnosc - armia.liczebnosc;
+					double nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc;
 					if (nowa_liczebnosc < 0)
 					{
-						cel.gracz->liczba_tworow--;
-						if (cel.gracz->liczba_tworow == 0)
+						cel->gracz->liczba_tworow--;
+						if (cel->gracz->liczba_tworow == 0)
 						{
-							if (cel.gracz->aktywny)rozgrywka->liczba_aktywnych_graczy--;
-							cel.gracz->aktywny = false;
+							if (cel->gracz->aktywny)rozgrywka->liczba_aktywnych_graczy--;
+							cel->gracz->aktywny = false;
 						}
-						cel.gracz = armia.gracz;
+						cel->gracz = armia.gracz;
 						armia.gracz->liczba_tworow++;						
 					}
-					rozgrywka->ZmienLiczebnosc(cel, std::abs(nowa_liczebnosc));
+					rozgrywka->ZmienLiczebnosc(*cel, std::abs(nowa_liczebnosc));
 				}
 				armia.gracz->liczba_tworow--;
 				if (armia.gracz->liczba_tworow == 0)
@@ -197,6 +197,6 @@ void Ruszacz::Produkuj(float czas)
 	}
 }
 
-WymarszRozkaz::WymarszRozkaz(Domek & skad, Domek & dokad) : skad(skad), dokad(dokad)
+WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : skad(skad), dokad(dokad)
 {
 }

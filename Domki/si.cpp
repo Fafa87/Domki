@@ -44,7 +44,7 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 					Domek* cel = domekx;
 
 					// utworz i zwroc rozkaz 
-					auto r = new WymarszRozkaz(*wybrany, *cel);
+					auto r = new WymarszRozkaz(wybrany, cel);
 					r->ulamek = 0.5;
 					res.push_back(r);
 				}

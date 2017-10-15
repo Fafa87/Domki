@@ -14,9 +14,10 @@ struct Rozkaz
 
 struct WymarszRozkaz : Rozkaz
 {
-	WymarszRozkaz(Domek& skad, Domek& dokad);
+	WymarszRozkaz(Domek* skad, Domek* dokad);
 
-	Domek& skad, & dokad;
+	Domek * skad, * dokad;
+	int ser_skad, ser_dokad;
 	double ulamek = 1;
 };
 

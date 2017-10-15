@@ -24,19 +24,28 @@ enum Wyglad
 
 struct Twor
 {
+	Twor() { uid = last_uid++; }
+
+	static int last_uid;
+	int uid; // unikalny identifikator
 	PD polozenie;
 	double rozmiar; // promien
 	Wyglad wyglad; // liczba okreœlajaca jak powinien twór siê prezentowaæ
 	Gracz* gracz; // do kogo nale¿y; neutralny te¿ jest graczem
+	int ser_gracz;
 
 	virtual ~Twor() {}
 };
 
 struct Ludek : Twor
 {
-	Ludek(Twor& cel) : cel(cel) {}
-	Twor& cel; // do kogo (domka) stara siê dotrzeæ
+	Ludek() {}
+	Ludek(Twor& cel) : cel(&cel) {}
+	Twor* cel; // do kogo (domka) stara siê dotrzeæ
+	int ser_cel;
 	int liczebnosc; // powinna byæ zwi¹zana z jego rozmiarem
+
+	void UstawCel(Twor& twor) { }
 };
 
 struct Domek : Twor

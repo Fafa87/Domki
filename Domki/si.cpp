@@ -16,8 +16,9 @@ double licz_przyrost(double odleglosc)
 	return przyrostarmii*odleglosc / przesuniecie;
 }
 
-void Komputer::WykonajRuch()
+vector<Rozkaz*> Komputer::WykonajRuch()
 {
+	vector<Rozkaz*> res;
 	if (czas >= 3.0)
 	{
 		czas -= 3.0;
@@ -41,28 +42,23 @@ void Komputer::WykonajRuch()
 				{
 					Domek* wybrany = &domek1;
 					Domek* cel = domekx;
-					auto liczba = int(wybrany->liczebnosc / 2);
-					if (liczba > 0 && cel != wybrany)
-					{
-						rozgrywka.ZmienLiczebnosc(*wybrany, wybrany->liczebnosc - liczba);
-						rozgrywka.armie.push_back(Ludek(*cel));
-						Ludek& nowaArmia = rozgrywka.armie.back();
-						nowaArmia.gracz = &gracz;
-						nowaArmia.polozenie = wybrany->polozenie;
-						nowaArmia.wyglad = Wyglad::kLudek;
-						rozgrywka.ZmienLiczebnosc(nowaArmia, liczba);
-						domek1.gracz->liczba_tworow++;
-					}
+
+					// utworz i zwroc rozkaz 
+					auto r = new WymarszRozkaz(wybrany, cel);
+					r->ulamek = 0.5;
+					res.push_back(r);
 				}
 			}
 	}
+	return res;
 }
 
 KomputerSilver::KomputerSilver(Rozgrywka & rozgrywka, Gracz & gracz) : Komputer(rozgrywka, gracz)
 {
 }
 
-void KomputerSilver::WykonajRuch()
+vector<Rozkaz*> KomputerSilver::WykonajRuch()
 {
-	
+	vector<Rozkaz*> res;
+	return res;
 }

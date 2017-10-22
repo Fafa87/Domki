@@ -4,6 +4,9 @@ Domki/OBJ
 Domki\.VC\.db
 Zabawy/OBJ
 Zabawy\.VC\.db
+MultiSerwer/OBJ
+MultiSerwer/.VC/.db
+MultiSerwer/x64/**
 *.log
 
 Domki\.VC\.VC\.opendb

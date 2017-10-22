@@ -1,5 +1,7 @@
 #include "rozgrywka.h"
 
+int Twor::last_uid = 0;
+
 Gracz & Rozgrywka::Gracz(int numer)
 {
 	auto it = gracze.begin();
@@ -36,6 +38,18 @@ Twor * Rozgrywka::Zlokalizuj(int x, int y)
 		PD roz = punkt - dom.polozenie;
 		if (sqrt(roz.x * roz.x + roz.y * roz.y) < dom.rozmiar)
 			return &dom;
+	}
+	return nullptr;
+}
+
+Domek* Rozgrywka::WskaznikDomek(int uid)
+{
+	for (auto &dom : domki)
+	{
+		if (dom.uid == uid)
+		{
+			return &dom;
+		}
 	}
 	return nullptr;
 }

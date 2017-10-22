@@ -10,12 +10,12 @@ public:
 	Gracz& gracz;
 	float czas = 0.0,
 		szybkosc_komputera = 3.0;
-	virtual void WykonajRuch();
+	virtual vector<Rozkaz*> WykonajRuch();
 };
 
 class KomputerSilver : public Komputer
 {
 public:
 	KomputerSilver(Rozgrywka& rozgrywka, Gracz& gracz);
-	virtual void WykonajRuch();
+	virtual vector<Rozkaz*> WykonajRuch();
 };

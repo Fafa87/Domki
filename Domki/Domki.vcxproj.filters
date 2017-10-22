@@ -19,6 +19,12 @@
     <Filter Include="Source Files\narzedzia">
       <UniqueIdentifier>{6112cce1-5d36-4201-99bb-7a029055f73f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\multi">
+      <UniqueIdentifier>{c23b9dea-06a5-4e67-9692-1bb10b35adb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\multi">
+      <UniqueIdentifier>{e08137f4-2af9-4b0d-bbda-9dbc10b3f3fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -44,6 +50,15 @@
     </ClCompile>
     <ClCompile Include="os.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="misja.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="multi.cpp">
+      <Filter>Source Files\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="multi_dzialacze.cpp">
+      <Filter>Source Files\multi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +88,15 @@
     </ClInclude>
     <ClInclude Include="os.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="multi.h">
+      <Filter>Header Files\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="ruszacze.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="multi_dzialacze.h">
+      <Filter>Header Files\multi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -45,8 +45,9 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 	}
 }
 
-void MyszDecydent::WykonajRuch()
+vector<Rozkaz*> MyszDecydent::WykonajRuch()
 {
+	vector<Rozkaz*> res;
 	if (wybrany != nullptr && wybrany->gracz != &gracz)
 	{
 		cel = nullptr;
@@ -62,46 +63,70 @@ void MyszDecydent::WykonajRuch()
 		else if (klikniecia.size() == 2)
 			frakcja = 1;
 
-		auto liczba = int(wybrany->liczebnosc * frakcja);
-		if (liczba > 0 && cel != wybrany)
-		{
-			rozgrywka.ZmienLiczebnosc(*wybrany, wybrany->liczebnosc - liczba);
-
-			rozgrywka.armie.push_back(Ludek(*cel));
-			Ludek& nowaArmia = rozgrywka.armie.back();
-			nowaArmia.gracz = &gracz;
-			nowaArmia.polozenie = wybrany->polozenie;
-			nowaArmia.wyglad = Wyglad::kLudek;
-			rozgrywka.ZmienLiczebnosc(nowaArmia, liczba);
-			gracz.liczba_tworow++;
-		}
+		// utworz i zwroc rozkaz 
+		auto r = new WymarszRozkaz(wybrany, cel);
+		r->ulamek = frakcja;
+		res.push_back(r);
 
 		wybrany = nullptr;
 		cel = nullptr;
 		klikniecia.clear();
 	}
+	return res;
 }
 
 
-
-Ruszacz::Ruszacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
+Ruszacz::Ruszacz()
 {
 }
 
 void Ruszacz::Ruszaj(float czas)
 {
+	WykonajRuchy();
 	PrzesuwajLudkow(czas);
 	WalczLudkami(czas);
 	Produkuj(czas);
 }
 
+void Ruszacz::PrzyjmijRuch(vector<Rozkaz*> rozkazy)
+{
+	kolejka_do_wykonania.insert(kolejka_do_wykonania.end(), rozkazy.begin(), rozkazy.end());
+}
+
+void Ruszacz::WykonajRuchy()
+{
+	for (auto r : kolejka_do_wykonania)
+	{
+		if (IsType<WymarszRozkaz>(r))
+		{
+			auto& ruch = *(WymarszRozkaz*)r;
+
+			auto liczba = int(ruch.skad->liczebnosc * ruch.ulamek);
+			if (liczba > 0 && &ruch.skad != &ruch.dokad)
+			{
+				rozgrywka->ZmienLiczebnosc(*ruch.skad, ruch.skad->liczebnosc - liczba);
+
+				rozgrywka->armie.push_back(Ludek(*ruch.dokad));
+				Ludek& nowaArmia = rozgrywka->armie.back();
+				nowaArmia.gracz = ruch.skad->gracz;
+				nowaArmia.polozenie = ruch.skad->polozenie;
+				nowaArmia.wyglad = Wyglad::kLudek;
+				rozgrywka->ZmienLiczebnosc(nowaArmia, liczba);
+
+				ruch.skad->gracz->liczba_tworow++;
+			}
+		}
+	}
+	kolejka_do_wykonania.clear();
+}
+
 void Ruszacz::PrzesuwajLudkow(float czas)
 {
 	double przesuniecie = szybkosc * szybkosc_ruchu;
-	for (Ludek& armia : rozgrywka.armie)
+	for (Ludek& armia : rozgrywka->armie)
 	{
 		
-		PD polozenie_cel = armia.cel.polozenie;
+		PD polozenie_cel = armia.cel->polozenie;
 		PD polozenie_teraz = armia.polozenie;
 
 		PD wektor_do_celu = (polozenie_cel - polozenie_teraz);
@@ -116,42 +141,42 @@ void Ruszacz::PrzesuwajLudkow(float czas)
 void Ruszacz::WalczLudkami(float czas)
 {
 	vector<list<Ludek>::iterator> do_usuniecia;
-	for (auto it = rozgrywka.armie.begin(); it != rozgrywka.armie.end(); it++)
+	for (auto it = rozgrywka->armie.begin(); it != rozgrywka->armie.end(); it++)
 	{
 		Ludek& armia = *it;
-		double odleglosc = rozgrywka.Odleglosc(armia, armia.cel);
-		if (odleglosc < armia.cel.rozmiar)
+		double odleglosc = rozgrywka->Odleglosc(armia, *armia.cel);
+		if (odleglosc < armia.cel->rozmiar)
 		{
-			if (IsType<Domek>(&armia.cel))
+			if (IsType<Domek>(armia.cel))
 			{
-				Domek& cel = (Domek&)armia.cel;
-				if (armia.gracz == armia.cel.gracz)
+				Domek* cel = (Domek*)armia.cel;
+				if (armia.gracz == armia.cel->gracz)
 				{
-					rozgrywka.ZmienLiczebnosc(cel, armia.liczebnosc + cel.liczebnosc);
+					rozgrywka->ZmienLiczebnosc(*cel, armia.liczebnosc + cel->liczebnosc);
 				}
 				else
 				{
-					double nowa_liczebnosc = cel.liczebnosc - armia.liczebnosc;
+					double nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc;
 					if (nowa_liczebnosc < 0)
 					{
-						cel.gracz->liczba_tworow--;
-						if (cel .gracz->liczba_tworow == 0)
+						cel->gracz->liczba_tworow--;
+						if (cel->gracz->liczba_tworow == 0)
 						{
-							if (cel.gracz->aktywny)rozgrywka.liczba_aktywnych_graczy--;
-							cel.gracz->aktywny = false;
+							if (cel->gracz->aktywny)rozgrywka->liczba_aktywnych_graczy--;
+							cel->gracz->aktywny = false;
 						}
-						cel.gracz = armia.gracz;
+						cel->gracz = armia.gracz;
 						armia.gracz->liczba_tworow++;						
 					}
-					rozgrywka.ZmienLiczebnosc(cel, std::abs(nowa_liczebnosc));
+					rozgrywka->ZmienLiczebnosc(*cel, std::abs(nowa_liczebnosc));
 				}
 				armia.gracz->liczba_tworow--;
 				if (armia.gracz->liczba_tworow == 0)
 				{
-					if(armia.gracz->aktywny)rozgrywka.liczba_aktywnych_graczy--;
+					if(armia.gracz->aktywny)rozgrywka->liczba_aktywnych_graczy--;
 					armia.gracz->aktywny = false;
 				}
-				rozgrywka.ZmienLiczebnosc(armia, std::abs(0));
+				rozgrywka->ZmienLiczebnosc(armia, std::abs(0));
 				do_usuniecia.push_back(it);
 			}
 			// jak to nie jest domek to nic nie r�bmy, mo�e kiedy� b�dziemy?
@@ -160,14 +185,18 @@ void Ruszacz::WalczLudkami(float czas)
 
 	for (auto usunieta : do_usuniecia)
 	{
-		rozgrywka.armie.erase(usunieta);
+		rozgrywka->armie.erase(usunieta);
 	}
 }
 
 void Ruszacz::Produkuj(float czas)
 {
-	for (Domek& domek : rozgrywka.domki)
+	for (Domek& domek : rozgrywka->domki)
 	{
-		if(domek.gracz->aktywny)rozgrywka.ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja);
+		if(domek.gracz->aktywny)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja);
 	}
+}
+
+WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : skad(skad), dokad(dokad)
+{
 }

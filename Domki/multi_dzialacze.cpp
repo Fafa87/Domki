@@ -10,7 +10,6 @@ void SerwerowyRuszacz::Ruszaj(float czas)
 	// pobierz ruchy z klientów
 	auto& rozkazy = serwer.Odbierz();
 	multi::Podepnij(*rozgrywka, rozkazy);
-	// podepnij wskaŸniki TODO
 	PrzyjmijRuch(rozkazy);
 
 	Ruszacz::Ruszaj(czas);
@@ -33,8 +32,8 @@ void KlientowyRuszacz::Ruszaj(float czas)
 	// wyœlij swoje rozkazy
 	klient.Wyslij(kolejka_do_wykonania);
 
-	Ruszacz::Ruszaj(czas);
 	//kolejka_do_wykonania.clear();
+	Ruszacz::Ruszaj(czas);
 
 	auto& res = klient.Odbierz();
 	if (res.first)

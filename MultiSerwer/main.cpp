@@ -82,9 +82,9 @@ void wykonaj(string zadanie)
 
 		serwer->Start(ustawienia);
 
-		serwer->ludzie[0].wtyk->setBlocking(false);
-		serwer->ludzie[1].wtyk->setBlocking(false);
-
+		//serwer->ludzie[0].wtyk->setBlocking(false);
+		//serwer->ludzie[1].wtyk->setBlocking(false);
+		
 		SerwerowyRuszacz ruszacz(*serwer);
 
 		misja(ustawienia, ruszacz);

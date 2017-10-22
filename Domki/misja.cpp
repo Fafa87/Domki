@@ -117,9 +117,9 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	sf::ContextSettings ustawienia;
 	ustawienia.antialiasingLevel = 8;
 
-	auto videoMode = sf::VideoMode(1600, 899);
-	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Default, ustawienia);
-	sf::View view(sf::FloatRect(0, 0, 1600, 900));
+	auto videoMode = sf::VideoMode(800, 449); // 1600, 899);
+	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Fullscreen, ustawienia);
+	sf::View view(sf::FloatRect(0, 0, 1600, 900)); // 1600, 900));
 	window.setView(view);
 
 	if (misja_ustawienia.nr_gracza == 4)

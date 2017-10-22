@@ -138,6 +138,7 @@ namespace multi
 		vector<Zawodnik> ludzie;
 	private:
 		sf::TcpListener nasluchiwacz;
+		sf::SocketSelector wtykowiec;
 	};
 
 	class Klient

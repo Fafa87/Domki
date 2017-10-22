@@ -43,6 +43,7 @@ void multi::Serwer::Start(MisjaUstawienia ustawienia)
 		}
 
 		multi::Wyslij(*ludzie[i].wtyk, ss.str());
+		wtykowiec.add(*ludzie[i].wtyk);
 	}
 }
 
@@ -62,22 +63,31 @@ void multi::Serwer::Rozeslij(MRozgrywka& stan)
 vector<Rozkaz*> multi::Serwer::Odbierz()
 {
 	vector<Rozkaz*> res;
-	for (int i = 0; i < ludzie.size(); i++)
-	{
-		auto data = multi::Pobierz(*ludzie[i].wtyk);
-		for (auto &d : data)
-		{
-			// TODO zak³adamy tutaj, ¿e s¹ tylko rozkazy wymarszu
-			WymarszRozkaz* rozkaz = new WymarszRozkaz(nullptr, nullptr);
-			std::stringstream ss(d);
-			{
-				cereal::BinaryInputArchive dearchive(ss);
-				dearchive(*rozkaz);
-			}
 
-			res.push_back(rozkaz);
+	if (wtykowiec.wait(sf::seconds(0.01)))
+	{
+		for (int i = 0; i < ludzie.size(); i++)
+		{
+			if (wtykowiec.isReady(*ludzie[i].wtyk))
+			{
+				auto data = multi::Pobierz(*ludzie[i].wtyk);
+				for (auto &d : data)
+				{
+					// TODO zak³adamy tutaj, ¿e s¹ tylko rozkazy wymarszu
+					WymarszRozkaz* rozkaz = new WymarszRozkaz(nullptr, nullptr);
+					std::stringstream ss(d);
+					{
+						cereal::BinaryInputArchive dearchive(ss);
+						dearchive(*rozkaz);
+					}
+
+					res.push_back(rozkaz);
+					//MessageBox(0, "Odbierz", "Odbierz", MB_OK);
+				}
+			}
 		}
 	}
+	
 	return res;
 }
 
@@ -133,20 +143,31 @@ void multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 		}
 
 		dane.push_back(ss.str());
+
+		//MessageBox(0, "And text here", "MessageBox caption", MB_OK);
 	}
 
-	multi::Wyslij(*wtyk, dane);
+	if (dane.size() > 0)
+		multi::Wyslij(*wtyk, dane);
 }
 
 
 pair<bool, MRozgrywka> multi::Klient::Odbierz()
 {
 	MRozgrywka res;
+	string last;
+	vector<string> data;
 
-	auto data = multi::Pobierz(*wtyk);
-	if (data.size())
+	do 
 	{
-		std::stringstream ss(data[0]);
+		data = multi::Pobierz(*wtyk);
+		if (data.size())
+			last = data[0];
+	} while (data.size());
+
+	if (last.size())
+	{
+		std::stringstream ss(last);
 		{
 			cereal::BinaryInputArchive archive(ss);
 			archive(res);

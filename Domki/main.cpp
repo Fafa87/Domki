@@ -70,24 +70,24 @@ void start_klient(sfg::Desktop& pulpit)
 int main() {
 	sfg::SFGUI sfgui;
 
-	sf::RenderWindow okno_menu(sf::VideoMode(1400, 900), "Domki menu!", sf::Style::None);
+	sf::RenderWindow okno_menu(sf::VideoMode(1600, 900), "Domki menu!", sf::Style::None);
 	okno_menu.resetGLStates();
 
 	sf::Texture backtexture;
 	backtexture.loadFromFile("Grafika\\menu_tlo.png");
 	backtexture.setRepeated(true);
 	sf::Sprite background(backtexture);
-	background.setTextureRect({ 0, 0, 800, 600 });
+	background.setTextureRect({ 0, 0, 1600, 900 });
 
 	sfg::Desktop pulpit;
 	pulpit.LoadThemeFromFile("Grafika\\bazowy.theme");
 
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND);
-	okno->SetRequisition(sf::Vector2f(1400,900));
-	okno->SetPosition(sf::Vector2f(150, 50));
+	okno->SetRequisition(sf::Vector2f(600, 500));
+	okno->SetPosition(sf::Vector2f(1000, 400));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
-	auto tytul = sfg::Label::Create("DOMKI 0.1");
+	auto tytul = sfg::Label::Create("DOMKI 0.2");
 	auto tabelka = sfg::Table::Create();
 
 	auto wybor_etykieta = sfg::Label::Create("Misja: ");
@@ -137,8 +137,8 @@ int main() {
 	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 6, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 40.f));
 	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(0, 7, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 
-	tabelka->Attach(serwer, sf::Rect<sf::Uint32>(0, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
-	tabelka->Attach(klient, sf::Rect<sf::Uint32>(1, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+	//tabelka->Attach(serwer, sf::Rect<sf::Uint32>(0, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+	//tabelka->Attach(klient, sf::Rect<sf::Uint32>(1, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 
 	box->Pack(tytul, false);
 	box->Pack(tabelka, false);

@@ -34,6 +34,11 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 					}
 					klikniecia.push_back(clock());
 				}
+				else if (wybrany != nullptr && wybrany == klikniety)
+				{
+					klikniecia.clear();
+					cel = (Domek*)klikniety;
+				}
 			}
 		}
 		else
@@ -41,6 +46,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 			klikniecia.clear();
 			cel = nullptr;
 			wybrany = nullptr;
+			klikniecia.push_back(clock());
 		}
 	}
 }
@@ -53,9 +59,16 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		cel = nullptr;
 		wybrany = nullptr;
 	}
-
+	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&wybrany->liczebnosc>=50)
+		{
+		wybrany->liczebnosc -= 50;
+		wybrany->poziom++;
+		wybrany = nullptr;
+		cel = nullptr;
+		return;
+		}
 	// po 0.5 sekundy wysy�ane s� ludki
-	if (cel != nullptr && clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
+	if (cel != nullptr && cel != wybrany && clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
 	{
 		double frakcja = 1;
 		if (klikniecia.size() == 1)
@@ -193,7 +206,7 @@ void Ruszacz::Produkuj(float czas)
 {
 	for (Domek& domek : rozgrywka->domki)
 	{
-		if(domek.gracz->aktywny)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja);
+		if(domek.gracz->aktywny)rozgrywka.ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
 	}
 }
 

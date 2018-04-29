@@ -12,7 +12,7 @@ Gracz & Rozgrywka::Gracz(int numer)
 void Rozgrywka::ZmienLiczebnosc(Domek & domek, double nowa)
 {
 	domek.liczebnosc = std::min((double)domek.max_liczebnosc, nowa);
-	domek.rozmiar = 40 + nowa / 10;
+	domek.rozmiar = 10 + 10 * domek.poziom + nowa / 10;
 }
 
 void Rozgrywka::ZmienLiczebnosc(Ludek & ludek, double nowa)

@@ -65,7 +65,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		wybrany->poziom++;
 		wybrany = nullptr;
 		cel = nullptr;
-		return;
+		// TODO wrzuc rozkaz do res
 		}
 	// po 0.5 sekundy wysy�ane s� ludki
 	if (cel != nullptr && cel != wybrany && clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
@@ -206,7 +206,7 @@ void Ruszacz::Produkuj(float czas)
 {
 	for (Domek& domek : rozgrywka->domki)
 	{
-		if(domek.gracz->aktywny)rozgrywka.ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
+		if(domek.gracz->aktywny)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
 	}
 }
 

@@ -28,7 +28,7 @@ void multi::Serwer::OczekujNaGracza()
 
 		ludzie.emplace_back(gracz);
 	}
-	printf("gracze po³¹czeni w liczbie %d\n", ludzie.size());
+	printf("gracze poï¿½ï¿½czeni w liczbie %d\n", ludzie.size());
 }
 
 void multi::Serwer::Start(MisjaUstawienia ustawienia)
@@ -49,13 +49,14 @@ void multi::Serwer::Start(MisjaUstawienia ustawienia)
 
 void multi::Serwer::Rozeslij(MRozgrywka& stan)
 {
+	std::stringstream ss;
+	{
+		cereal::BinaryOutputArchive archive(ss);
+		archive(stan);
+	}
+
 	for (int i = 0; i < ludzie.size(); i++)
 	{
-		std::stringstream ss;
-		{
-			cereal::BinaryOutputArchive archive(ss);
-			archive(stan);
-		}
 		multi::Wyslij(*ludzie[i].wtyk, ss.str());
 	}
 }
@@ -63,7 +64,6 @@ void multi::Serwer::Rozeslij(MRozgrywka& stan)
 vector<Rozkaz*> multi::Serwer::Odbierz()
 {
 	vector<Rozkaz*> res;
-
 	if (wtykowiec.wait(sf::seconds(0.01)))
 	{
 		for (int i = 0; i < ludzie.size(); i++)
@@ -73,7 +73,7 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
 				auto data = multi::Pobierz(*ludzie[i].wtyk);
 				for (auto &d : data)
 				{
-					// TODO zak³adamy tutaj, ¿e s¹ tylko rozkazy wymarszu
+					// TODO zakï¿½adamy tutaj, ï¿½e sï¿½ tylko rozkazy wymarszu
 					WymarszRozkaz* rozkaz = new WymarszRozkaz(nullptr, nullptr);
 					std::stringstream ss(d);
 					{
@@ -201,7 +201,7 @@ void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
 {
 	for (auto r : rozkazy)
 	{
-		// TODO zaklada ¿e jest tylko rozkaz wymarszu
+		// TODO zaklada ï¿½e jest tylko rozkaz wymarszu
 		WymarszRozkaz * rozkaz = (WymarszRozkaz*)r;
 		rozkaz->dokad = rozgrywka.WskaznikDomek(rozkaz->ser_dokad);
 		rozkaz->skad = rozgrywka.WskaznikDomek(rozkaz->ser_skad);

@@ -145,7 +145,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 
-	//ZMIEN NAZWY GRACZÓW
+	//ZMIEN NAZWY GRACZï¿½W
 	if (misja_ustawienia.nazwy_graczow.size())
 	{
 		for (int i = 0; i < misja_ustawienia.nazwy_graczow.size(); i++)
@@ -173,8 +173,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	odliczanie(podpis, window, wyswietlacz);
 
 	//czasomierz
-	clock_t czasomierz;
-	czasomierz = clock();
+	auto czasomierz = clock();
 	int czasik = 0;
 	float czas;
 	//APM
@@ -207,6 +206,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 		}
 		///FPSY
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
+		czasomierz = clock();
 		auto& ruchy = myszkaGracza.WykonajRuch();
 		ruszacz.PrzyjmijRuch(ruchy);
 
@@ -256,8 +256,6 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 			window.draw(podpis);
 		}
 		window.display();
-
-		czasomierz = clock();
 
 		Sleep(16);
 	}

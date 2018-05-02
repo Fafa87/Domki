@@ -15,7 +15,7 @@ class SerwerowyRuszacz : public Ruszacz
 public:
 	SerwerowyRuszacz(multi::Serwer& serwer);
 	virtual void Ruszaj(float czas);
-	double okres_synchronizacji = 0.03;
+	double okres_synchronizacji = 0.1;
 
 private:
 	double czas_od_synchro = 0.0;

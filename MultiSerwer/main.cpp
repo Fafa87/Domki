@@ -76,9 +76,9 @@ void wykonaj(string zadanie)
 	if (zadanie.find("start") == 0)
 	{
 		MisjaUstawienia ustawienia;
-		ustawienia.nazwa = "mini.txt";
+		ustawienia.nazwa = "graf_testowy.txt";
 		ustawienia.komputery.clear();
-		ustawienia.nr_gracza = 4;
+		ustawienia.nr_gracza = 0;
 
 		serwer->Start(ustawienia);
 

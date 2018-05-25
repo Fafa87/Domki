@@ -73,21 +73,24 @@ template<class Archive>
 void save(Archive & archive,
 	Domek const & m)
 {
-	archive(m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.gracz->numer - 1, m.uid, m.wyglad);
+	vector<int> ser_drogi;
+	for (auto d : m.drogi)
+		ser_drogi.push_back(d->uid);
+	archive(m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.gracz->numer, m.uid, m.wyglad, ser_drogi);
 }
 
 template<class Archive>
 void load(Archive & archive,
 	Domek & m)
 {
-	archive(m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.ser_gracz, m.uid, m.wyglad);
+	archive(m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.ser_gracz, m.uid, m.wyglad, m.ser_drogi);
 }
 
 template<class Archive>
 void save(Archive & archive,
 	Ludek const & m)
 {
-	archive(m.cel->uid, m.gracz->numer - 1, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
+	archive(m.cel->uid, m.gracz->numer, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
 }
 
 template<class Archive>

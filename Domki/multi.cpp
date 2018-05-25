@@ -35,7 +35,7 @@ void multi::Serwer::Start(MisjaUstawienia ustawienia)
 {
 	for (int i = 0; i < ludzie.size(); i++)
 	{
-		ustawienia.nr_gracza = i; // TODO uproszczenie
+		ustawienia.nr_gracza = i + 1; // TODO uproszczenie
 		std::stringstream ss;
 		{
 			cereal::BinaryOutputArchive archive(ss);
@@ -213,6 +213,10 @@ void multi::Podepnij(Rozgrywka& rozgrywka)
 	for (auto& r : rozgrywka.domki)
 	{
 		r.gracz = &rozgrywka.Gracz(r.ser_gracz);
+		for (auto dokad : r.ser_drogi)
+		{
+			r.drogi.push_back(rozgrywka.WskaznikDomek(dokad));
+		}
 	}
 
 	for (auto& r : rozgrywka.armie)

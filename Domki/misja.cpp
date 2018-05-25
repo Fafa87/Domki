@@ -169,7 +169,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	sf::View view(sf::FloatRect(0, 0, 1600, 900)); // 1600, 900));
 	window.setView(view);
 
-	if (misja_ustawienia.nr_gracza == 4)
+	if (misja_ustawienia.nr_gracza == 0)
 		window.setVisible(false);
 
 	// fpsy

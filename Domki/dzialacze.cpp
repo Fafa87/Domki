@@ -59,10 +59,11 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		cel = nullptr;
 		wybrany = nullptr;
 	}
-	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&wybrany->liczebnosc>=50)
+	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&wybrany->liczebnosc>=wybrany->max_liczebnosc/2)
 		{
-		wybrany->liczebnosc -= 50;
+		wybrany->liczebnosc -= wybrany->max_liczebnosc/2;
 		wybrany->poziom++;
+		wybrany->max_liczebnosc = 2 * wybrany->max_liczebnosc;
 		wybrany = nullptr;
 		cel = nullptr;
 		// TODO wrzuc rozkaz do res
@@ -209,7 +210,9 @@ void Ruszacz::Produkuj(float czas)
 {
 	for (Domek& domek : rozgrywka->domki)
 	{
-		if(domek.gracz->aktywny)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
+		if (domek.gracz->aktywny&&domek.liczebnosc == domek.max_liczebnosc);
+		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
+		else if(domek.gracz->aktywny)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*5,(double)domek.max_liczebnosc));
 	}
 }
 

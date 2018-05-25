@@ -141,22 +141,24 @@ void Ruszacz::PrzesuwajLudkow(float czas)
 	double przesuniecie = szybkosc * szybkosc_ruchu;
 	for (Ludek& armia : rozgrywka->armie)
 	{
-		
-		PD polozenie_cel = armia.cel->polozenie;
-		PD polozenie_teraz = armia.polozenie;
+		if (rozgrywka->Spotkanie(armia) == NULL)
+		{
+			PD polozenie_cel = armia.cel->polozenie;
+			PD polozenie_teraz = armia.polozenie;
 
-		PD wektor_do_celu = (polozenie_cel - polozenie_teraz);
-		double dlugosc = sqrt(wektor_do_celu.x * wektor_do_celu.x + wektor_do_celu.y * wektor_do_celu.y);
-		PD jednostkowy = wektor_do_celu / dlugosc;
-		jednostkowy *= przesuniecie*czas;
+			PD wektor_do_celu = (polozenie_cel - polozenie_teraz);
+			double dlugosc = sqrt(wektor_do_celu.x * wektor_do_celu.x + wektor_do_celu.y * wektor_do_celu.y);
+			PD jednostkowy = wektor_do_celu / dlugosc;
+			jednostkowy *= przesuniecie*czas;
 
-		armia.polozenie += jednostkowy;
+			armia.polozenie += jednostkowy;
+		}
 	}
 }
 
 void Ruszacz::WalczLudkami(float czas)
 {
-	vector<list<Ludek>::iterator> do_usuniecia;
+	vector<Ludek*> do_usuniecia;
 	for (auto it = rozgrywka->armie.begin(); it != rozgrywka->armie.end(); it++)
 	{
 		Ludek& armia = *it;
@@ -175,33 +177,41 @@ void Ruszacz::WalczLudkami(float czas)
 					double nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc;
 					if (nowa_liczebnosc < 0)
 					{
-						cel->gracz->liczba_tworow--;
-						if (cel->gracz->liczba_tworow == 0)
-						{
-							if (cel->gracz->aktywny)rozgrywka->liczba_aktywnych_graczy--;
-							cel->gracz->aktywny = false;
-						}
+						rozgrywka->ZabierzTwor(cel);
 						cel->gracz = armia.gracz;
 						armia.gracz->liczba_tworow++;						
 					}
 					rozgrywka->ZmienLiczebnosc(*cel, std::abs(nowa_liczebnosc));
 				}
-				armia.gracz->liczba_tworow--;
-				if (armia.gracz->liczba_tworow == 0)
-				{
-					if(armia.gracz->aktywny)rozgrywka->liczba_aktywnych_graczy--;
-					armia.gracz->aktywny = false;
-				}
+
 				rozgrywka->ZmienLiczebnosc(armia, std::abs(0));
-				do_usuniecia.push_back(it);
+				do_usuniecia.push_back(&(*it));
 			}
 			// jak to nie jest domek to nic nie r�bmy, mo�e kiedy� b�dziemy?
+		}
+		else {
+			auto spotkanie = rozgrywka->Spotkanie(armia);
+			if (spotkanie != NULL && armia.gracz != spotkanie->gracz)
+			{
+				rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc - std::max(1.0, 5 * czas * szybkosc));
+				rozgrywka->ZmienLiczebnosc(*spotkanie, spotkanie->liczebnosc - std::max(1.0, 5 * czas * szybkosc));
+
+				if (armia.liczebnosc <= 0)
+				{
+					do_usuniecia.push_back(&(*it));
+				}
+
+				if (spotkanie->liczebnosc <= 0)
+				{
+					do_usuniecia.push_back(spotkanie);
+				}
+			}
 		}
 	}
 
 	for (auto usunieta : do_usuniecia)
 	{
-		rozgrywka->armie.erase(usunieta);
+		rozgrywka->ZniszczLudka(usunieta);
 	}
 }
 

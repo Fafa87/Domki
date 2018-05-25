@@ -21,7 +21,7 @@ template<class Archive>
 void serialize(Archive & archive,
 	MisjaUstawienia & m)
 {
-	archive(CEREAL_NVP(m.nazwa), CEREAL_NVP(m.szybkosc), CEREAL_NVP(m.trudnosc), CEREAL_NVP(m.nr_gracza), CEREAL_NVP(m.nazwy_graczow), CEREAL_NVP(m.komputery));
+	archive(CEREAL_NVP(m.nazwa), CEREAL_NVP(m.szybkosc), CEREAL_NVP(m.walka_w_polu), CEREAL_NVP(m.trudnosc), CEREAL_NVP(m.nr_gracza), CEREAL_NVP(m.nazwy_graczow), CEREAL_NVP(m.komputery));
 }
 
 template<class Archive>
@@ -42,7 +42,7 @@ template<class Archive>
 void serialize(Archive & archive,
 	Rozgrywka & m)
 {
-	archive(CEREAL_NVP(m.gracze), CEREAL_NVP(m.armie), CEREAL_NVP(m.domki), CEREAL_NVP(m.gracze), CEREAL_NVP(m.liczba_aktywnych_graczy));
+	archive(CEREAL_NVP(m.walka_w_polu), CEREAL_NVP(m.gracze), CEREAL_NVP(m.armie), CEREAL_NVP(m.domki), CEREAL_NVP(m.liczba_aktywnych_graczy));
 }
 
 namespace sf 

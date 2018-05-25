@@ -48,6 +48,21 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
 	sf::Sprite wyglad_tlo(obrazek_tla);
 	wyglad_tlo.setTextureRect({ 0, 0, 1600, 900 });
 	okno.draw(wyglad_tlo);
+
+	// namaluj drogi
+	for (auto dom : rozgrywka.domki)
+	{
+		for (auto dokad : dom.drogi)
+		{
+			sf::Vertex linia[] =
+			{
+				sf::Vertex(sf::Vector2f(dom.polozenie.x, dom.polozenie.y), sf::Color::Black),
+				sf::Vertex(sf::Vector2f(dokad->polozenie.x, dokad->polozenie.y), sf::Color::Black)
+			};
+
+			okno.draw(linia, 2, sf::Lines);
+		}
+	}
 }
 
 void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)

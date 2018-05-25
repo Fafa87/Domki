@@ -117,16 +117,19 @@ void Ruszacz::WykonajRuchy()
 			auto liczba = int(ruch.skad->liczebnosc * ruch.ulamek);
 			if (liczba > 0 && &ruch.skad != &ruch.dokad)
 			{
-				rozgrywka->ZmienLiczebnosc(*ruch.skad, ruch.skad->liczebnosc - liczba);
+				if (ruch.skad->drogi.size() == 0 || count(ruch.skad->drogi.begin(), ruch.skad->drogi.end(), ruch.dokad))
+				{
+					rozgrywka->ZmienLiczebnosc(*ruch.skad, ruch.skad->liczebnosc - liczba);
 
-				rozgrywka->armie.push_back(Ludek(*ruch.dokad));
-				Ludek& nowaArmia = rozgrywka->armie.back();
-				nowaArmia.gracz = ruch.skad->gracz;
-				nowaArmia.polozenie = ruch.skad->polozenie;
-				nowaArmia.wyglad = Wyglad::kLudek;
-				rozgrywka->ZmienLiczebnosc(nowaArmia, liczba);
+					rozgrywka->armie.push_back(Ludek(*ruch.dokad));
+					Ludek& nowaArmia = rozgrywka->armie.back();
+					nowaArmia.gracz = ruch.skad->gracz;
+					nowaArmia.polozenie = ruch.skad->polozenie;
+					nowaArmia.wyglad = Wyglad::kLudek;
+					rozgrywka->ZmienLiczebnosc(nowaArmia, liczba);
 
-				ruch.skad->gracz->liczba_tworow++;
+					ruch.skad->gracz->liczba_tworow++;
+				}
 			}
 		}
 	}

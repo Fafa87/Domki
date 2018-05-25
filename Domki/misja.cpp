@@ -5,61 +5,108 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 	Rozgrywka gra;
 	//gracze
 	gra.gracze.push_back(Gracz());
+	Gracz& gracz0 = gra.gracze.back();
+	gracz0.numer = 0; gracz0.nazwa = "NEUTRAL";
+	gracz0.kolor = sf::Color::White;
+	gracz0.aktywny = false;
+
+	gra.gracze.push_back(Gracz());
 	Gracz& gracz1 = gra.gracze.back();
-	gracz1.numer = 1; gracz1.nazwa = "GRACZ";
-	gracz1.kolor = sf::Color::Yellow;
+	gracz1.numer = 1; gracz1.nazwa = "GRACZ1";
+	gracz1.kolor = sf::Color::Red;
 
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz2 = gra.gracze.back();
-	gracz2.numer = 2; gracz2.nazwa = "KOMPUTER1";
-	gracz2.kolor = sf::Color::Red;
+	gracz2.numer = 2; gracz2.nazwa = "KOMPUTER2";
+	gracz2.kolor = sf::Color::Blue;
 
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz3 = gra.gracze.back();
-	gracz3.numer = 3; gracz3.nazwa = "KOMPUTER2";
-	gracz3.kolor = sf::Color::Blue;
+	gracz3.numer = 3; gracz3.nazwa = "KOMPUTER3";
+	gracz3.kolor = sf::Color::Green;
 
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz4 = gra.gracze.back();
-	gracz4.numer = 4; gracz4.nazwa = "KOMPUTER3";
-	gracz4.kolor = sf::Color::Green;
+	gracz4.numer = 4; gracz4.nazwa = "KOMPUTER4";
+	gracz4.kolor = sf::Color::Yellow;
 
-	gra.gracze.push_back(Gracz());
-	Gracz& gracz5 = gra.gracze.back();
-	gracz5.numer = 5; gracz5.nazwa = "GRA";
-	gracz5.kolor = sf::Color::White;
-	gracz5.aktywny = false;
 	gra.liczba_aktywnych_graczy = 4;
 	//domki
 	ifstream plikmapa;
 	plikmapa.open(sciezka);
-	char znak;
-	for (int a = 0; a < 4; a++)
-		for (int b = 0; b < 9; b++)
+	int liczba_domkow, numer_domku, liczba_parametrow;
+	string parametr;
+	plikmapa >> liczba_domkow;
+
+	//KOORDYNATY , DROGI , GRACZ
+
+	map<int, Domek*> domki_po_numerze;
+	vector<std::pair<int,int>> numery_domkow;
+	for (int a = 0; a < liczba_domkow; a++)
 		{
-			plikmapa >> znak;
-			if (znak != '.')
+		plikmapa >> numer_domku >> liczba_parametrow;
+		gra.domki.push_back(Domek());
+		Domek& domek = gra.domki.back();
+		domki_po_numerze[numer_domku] = &domek;
+		for (int b = 0; b < liczba_parametrow; b++)
 			{
-				gra.domki.push_back(Domek());
-				Domek& domek = gra.domki.back();
+			plikmapa >> parametr;
+			if (parametr == "koordynaty")
+				{
+				double x, y;
+				plikmapa >> x >> y;
+				domek.polozenie = {x,y};
+				}
+			else if (parametr == "drogi")
+				{
+				int ile,numer;
+				plikmapa >> ile;
+				for (int c = 0; c < ile; c++)
+					{
+					plikmapa >> numer;
+					numery_domkow.push_back(make_pair(numer_domku, numer));
+					}
+				}
+			else if (parametr == "gracz")
+				{
+				char znak;
+				plikmapa >> znak;
 				if (znak == '1')domek.gracz = &gracz1;
 				else if (znak == '2')domek.gracz = &gracz2;
 				else if (znak == '3')domek.gracz = &gracz3;
 				else if (znak == '4')domek.gracz = &gracz4;
-				else if (znak == '5')domek.gracz = &gracz5;
 				if (znak == '1')gracz1.liczba_tworow++;
 				else if (znak == '2')gracz2.liczba_tworow++;
 				else if (znak == '3')gracz3.liczba_tworow++;
 				else if (znak == '4')gracz4.liczba_tworow++;
-				else if (znak == '5')gracz5.liczba_tworow++;
-				domek.polozenie = { (float)(200 + b * 150),(float)(300 + a * 150) };
-				domek.produkcja = 2;
-				domek.max_liczebnosc = 100;
-				domek.wyglad = Wyglad::kDomek;
-				if (znak == '5')gra.ZmienLiczebnosc(domek, 25);
-				else gra.ZmienLiczebnosc(domek, 50);
+				}
 			}
+		domek.produkcja = 2;
+		domek.max_liczebnosc = 100;
+		domek.wyglad = Wyglad::kDomek;
+		if (domek.gracz == nullptr)
+		{
+			domek.gracz = &gracz0;
+			gra.ZmienLiczebnosc(domek, 25);
 		}
+		else gra.ZmienLiczebnosc(domek, 50);
+		}
+	for (auto para : numery_domkow)
+	{
+		Domek   *wksslask1,*wksslask2;
+		wksslask1 = domki_po_numerze[para.first];
+		wksslask2 = domki_po_numerze[para.second];
+		wksslask1->drogi.push_back(wksslask2);
+		wksslask2->drogi.push_back(wksslask1);
+	}
+
+
+
+
+
+
+
+
 	if (gracz1.liczba_tworow == 0)
 	{
 		gracz1.aktywny = false;

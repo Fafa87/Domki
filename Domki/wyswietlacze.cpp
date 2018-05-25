@@ -102,7 +102,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		wyglad.setOrigin(twor->rozmiar, wysokosc);
 		wyglad.setFillColor(twor->gracz->kolor);
 
-		int ziarno = ((unsigned int)twor) % 100;
+ 		int ziarno = ((unsigned int)twor) % 100;
 		if (twor->wyglad == Wyglad::kDomek)
 		{
 			int ramka_numer = ((clock() * 9 / CLOCKS_PER_SEC) + ziarno) % 6;

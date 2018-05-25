@@ -18,9 +18,9 @@ struct MisjaUstawienia
 	string trudnosc = "stara";
 	bool walka_w_polu = true;
 
-	int nr_gracza = 0;
+	int nr_gracza = 1;
 	vector<string> nazwy_graczow;
-	vector<int> komputery = { 1, 2, 3 };
+	vector<int> komputery = { 2, 3, 4 };
 };
 
 Rozgrywka zwarcie_rozgrywka(string sciezka);

@@ -107,12 +107,15 @@ int main() {
 	auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
 	szybkosc_pasek->SetValue(1.0);
 
+	auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
+
 	auto uruchom = sfg::Button::Create("Uruchom");
 	uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
 		MisjaUstawienia ustawienia;
 		ustawienia.nazwa = wybor_lista->GetSelectedText();
 		ustawienia.szybkosc = szybkosc_pasek->GetValue();
 		ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
+		ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
 		misja(ustawienia);
 	});
 
@@ -134,8 +137,9 @@ int main() {
 	tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(0, 3, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
 	tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, 4, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 	tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(0, 5, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
-	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 6, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 40.f));
-	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(0, 7, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+	tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(0, 6, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 7, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 20.f));
+	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(0, 8, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 
 	//tabelka->Attach(serwer, sf::Rect<sf::Uint32>(0, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 	//tabelka->Attach(klient, sf::Rect<sf::Uint32>(1, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));

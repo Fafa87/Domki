@@ -16,6 +16,7 @@ struct MisjaUstawienia
 	string nazwa = "";
 	double szybkosc = 1;
 	string trudnosc = "stara";
+	bool walka_w_polu = true;
 
 	int nr_gracza = 1;
 	vector<string> nazwy_graczow;

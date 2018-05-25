@@ -186,6 +186,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	// tworzymy rozgrywke
 	//Rozgrywka rozgrywka = prosta_rozgrywka();
 	Rozgrywka rozgrywka = zwarcie_rozgrywka(sciezka);
+	rozgrywka.walka_w_polu = misja_ustawienia.walka_w_polu;
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
 	wyswietlacz.Zaladuj("wroclaw");

@@ -9,6 +9,22 @@ Gracz & Rozgrywka::Gracz(int numer)
 	return *it;
 }
 
+void Rozgrywka::ZniszczLudka(Ludek* ludek)
+{
+	auto it = armie.begin();
+	for (; it != armie.end(); it++)
+	{
+		if (&(*it) == ludek)
+			break;
+	}
+
+	if (it != armie.end())
+	{
+		ZabierzTwor(ludek);
+		armie.erase(it);
+	}
+}
+
 void Rozgrywka::ZmienLiczebnosc(Domek & domek, double nowa)
 {
 	domek.liczebnosc = nowa;
@@ -21,6 +37,16 @@ void Rozgrywka::ZmienLiczebnosc(Ludek & ludek, double nowa)
 	ludek.rozmiar = 20 + ludek.liczebnosc / 25;
 }
 
+void Rozgrywka::ZabierzTwor(const Twor* twor)
+{
+	twor->gracz->liczba_tworow--;
+	if (twor->gracz->liczba_tworow == 0)
+	{
+		if (twor->gracz->aktywny) liczba_aktywnych_graczy--;
+		twor->gracz->aktywny = false;
+	}
+}
+
 double Rozgrywka::Odleglosc(const Twor& twor1, const Twor& twor2)
 {
 	PD polozenie_1 = twor1.polozenie;
@@ -28,6 +54,20 @@ double Rozgrywka::Odleglosc(const Twor& twor1, const Twor& twor2)
 
 	PD w = (polozenie_1 - polozenie_2);
 	return sqrt(w.x * w.x + w.y * w.y);
+}
+
+Ludek * Rozgrywka::Spotkanie(Ludek & ludek)
+{
+	if (walka_w_polu)
+	{
+		for (auto& armia : armie) if (&armia != &ludek)
+		{
+			double odl = Odleglosc(ludek, armia);
+			if (odl < (armia.rozmiar + ludek.rozmiar) / 2)
+				return &armia;
+		}
+	}
+	return nullptr;
 }
 
 Twor * Rozgrywka::Zlokalizuj(int x, int y)

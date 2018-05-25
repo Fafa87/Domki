@@ -18,6 +18,8 @@ bool IsType(const SrcType* src)
 
 struct Rozgrywka
 {
+	bool walka_w_polu;
+
 	list<Gracz> gracze;
 	list<Domek> domki;
 	list<Ludek> armie;
@@ -26,7 +28,11 @@ struct Rozgrywka
 	void ZmienLiczebnosc(Domek& domek, double nowa);
 	void ZmienLiczebnosc(Ludek& ludek, double nowa);
 	double Odleglosc(const Twor& twor1, const Twor& twor2);
+	Ludek* Spotkanie(Ludek& ludek);
 	Twor* Zlokalizuj(int x, int y);
+
+	void ZniszczLudka(Ludek* ludek);
+	void ZabierzTwor(const Twor* twor1);
 	
 	Domek* WskaznikDomek(int uid);
 };

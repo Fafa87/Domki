@@ -39,6 +39,20 @@ void load(Archive & archive,
 }
 
 template<class Archive>
+void save(Archive & archive,
+	UlepszRozkaz const & m)
+{
+	archive(m.kogo->uid);
+}
+
+template<class Archive>
+void load(Archive & archive,
+	UlepszRozkaz & m)
+{
+	archive(m.ser_kogo);
+}
+
+template<class Archive>
 void serialize(Archive & archive,
 	Rozgrywka & m)
 {
@@ -130,10 +144,10 @@ namespace multi
 	public:
 		Adres Postaw();
 
-		// oczekuje na pod³¹czenie siê gracza i podanie danych
+		// oczekuje na podï¿½ï¿½czenie siï¿½ gracza i podanie danych
 		void OczekujNaGracza();
 
-		// wyœlij info o starcie do graczy
+		// wyï¿½lij info o starcie do graczy
 		void Start(MisjaUstawienia ustawienia);
 		void Rozeslij(MRozgrywka& stan);
 		vector<Rozkaz*> Odbierz();

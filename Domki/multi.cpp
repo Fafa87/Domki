@@ -73,16 +73,26 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
 				auto data = multi::Pobierz(*ludzie[i].wtyk);
 				for (auto &d : data)
 				{
-					// TODO zak�adamy tutaj, �e s� tylko rozkazy wymarszu
-					WymarszRozkaz* rozkaz = new WymarszRozkaz(nullptr, nullptr);
-					std::stringstream ss(d);
+					auto rest = d.substr(1);
+
+					std::stringstream ss(rest);
 					{
 						cereal::BinaryInputArchive dearchive(ss);
-						dearchive(*rozkaz);
+						
+						Rozkaz * rozkaz;
+						if (d[0] == 'W')
+						{
+							rozkaz = new WymarszRozkaz(nullptr, nullptr);
+							dearchive(*(WymarszRozkaz*)rozkaz);
+						}
+						else if (d[0] == 'U')
+						{
+							rozkaz = new UlepszRozkaz(nullptr);
+							dearchive(*(UlepszRozkaz*)rozkaz);
+						}
+						
+						res.push_back(rozkaz);
 					}
-
-					res.push_back(rozkaz);
-					//MessageBox(0, "Odbierz", "Odbierz", MB_OK);
 				}
 			}
 		}
@@ -135,16 +145,25 @@ void multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 	vector<string> dane;
 	for (auto r : rozkazy)
 	{
-		WymarszRozkaz* rozkaz = (WymarszRozkaz*)r;
 		std::stringstream ss;
 		{
 			cereal::BinaryOutputArchive archive(ss);
-			archive(*rozkaz);
+			
+			if (IsType<WymarszRozkaz>(r))
+			{
+				ss << "W";
+				WymarszRozkaz* rozkaz = (WymarszRozkaz*)r;
+				archive(*rozkaz);
+			}
+			else if (IsType<UlepszRozkaz>(r))
+			{
+				ss << "U";
+				UlepszRozkaz* rozkaz = (UlepszRozkaz*)r;
+				archive(*rozkaz);
+			}
 		}
-
+		printf("%s\n", ss.str().c_str());
 		dane.push_back(ss.str());
-
-		//MessageBox(0, "And text here", "MessageBox caption", MB_OK);
 	}
 
 	if (dane.size() > 0)
@@ -201,10 +220,17 @@ void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
 {
 	for (auto r : rozkazy)
 	{
-		// TODO zaklada �e jest tylko rozkaz wymarszu
-		WymarszRozkaz * rozkaz = (WymarszRozkaz*)r;
-		rozkaz->dokad = rozgrywka.WskaznikDomek(rozkaz->ser_dokad);
-		rozkaz->skad = rozgrywka.WskaznikDomek(rozkaz->ser_skad);
+		if (IsType<WymarszRozkaz>(r))
+		{
+			WymarszRozkaz * rozkaz = (WymarszRozkaz*)r;
+			rozkaz->dokad = rozgrywka.WskaznikDomek(rozkaz->ser_dokad);
+			rozkaz->skad = rozgrywka.WskaznikDomek(rozkaz->ser_skad);
+		}
+		else if (IsType<UlepszRozkaz>(r))
+		{
+			UlepszRozkaz * rozkaz = (UlepszRozkaz*)r;
+			rozkaz->kogo = rozgrywka.WskaznikDomek(rozkaz->ser_kogo);
+		}
 	}
 }
 

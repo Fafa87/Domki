@@ -169,19 +169,20 @@ sf::View WysrodkowanyWidok(list<Domek> &domki)
 
 	for (auto& dom : domki)
 	{
-		dom.polozenie.x -= przesun_domek_X;
+		// TODO trzeba ustalić jak to ma działać ostatecznie
+		//dom.polozenie.x += przesun_domek_X;
 	}
 
 	minimalny_X = min(gui_min_X, minimalny_X);
 	minimalny_Y = min(gui_min_Y, minimalny_Y);
 	maksymalny_X = max(gui_min_X, maksymalny_X);
 	maksymalny_Y = max(gui_min_Y, maksymalny_Y);
-
+	
 	minimalny_X -= 100;
 	maksymalny_X += 100;
 
-	minimalny_Y -= 100;
-	maksymalny_Y += 100;
+	minimalny_Y -= 50;
+	maksymalny_Y += 50;
 
 	// przesun aby było większe niż zero
 	int przesun_X = max(0.0, -minimalny_X);
@@ -210,7 +211,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	ustawienia.antialiasingLevel = 8;
 
 	auto videoMode = sf::VideoMode(1600, 899);
-	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Fullscreen, ustawienia);
+	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::None, ustawienia);
 
 	if (misja_ustawienia.nr_gracza == 0)
 		window.setVisible(false);
@@ -334,8 +335,8 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 		if (rozgrywka.liczba_aktywnych_graczy == 1)  // !rozgrywka.Gracz(nr_gracza).aktywny || 
 		{
 			podpis.setCharacterSize(75);
-			podpis.setPosition(100, 200);
-			if (rozgrywka.Gracz(nr_gracza).aktywny)podpis.setString("GRATULACJE DLA GRACZA  ");
+			podpis.setPosition(300, 200);
+			if (rozgrywka.Gracz(nr_gracza).aktywny)podpis.setString("GRATULACJE DLA GRACZA");
 			else podpis.setString("TYM RAZEM ZWYCIEZYLA SI (LESZCZU!)");
 			window.draw(podpis);
 			window.display();

@@ -9,13 +9,13 @@
 #include<windows.h>
 #include<fstream>
 
-const string poziomy_trudnosci[] = { "stara", "nowa" };
+const string poziomy_trudnosci[] = { "podstawa", "rozszerzenie" };
 
 struct MisjaUstawienia
 {
 	string nazwa = "";
 	double szybkosc = 1;
-	string trudnosc = "stara";
+	string trudnosc = "podstawa";
 	bool walka_w_polu = true;
 
 	int nr_gracza = 1;

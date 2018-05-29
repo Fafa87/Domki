@@ -255,9 +255,11 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	{
 		rozgrywka.Gracz(nr).nazwa = "KOMPUTER" + nr;
 		if (poziomy_trudnosci[0] == trudnosc)
-			kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr)));
+			kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr),misja_ustawienia.szybkosc));
 		else if (poziomy_trudnosci[1] == trudnosc)
-			kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr)));
+			kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr),misja_ustawienia.szybkosc));
+
+		
 	}
 
 	ruszacz.rozgrywka = &rozgrywka;

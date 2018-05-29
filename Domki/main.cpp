@@ -74,17 +74,17 @@ int main() {
 	okno_menu.resetGLStates();
 
 	sf::Texture backtexture;
-	backtexture.loadFromFile("Grafika\\menu_tlo.png");
-	backtexture.setRepeated(true);
+	backtexture.loadFromFile("Grafika\\houseofhouses.png");
+	backtexture.setRepeated(false);
 	sf::Sprite background(backtexture);
 	background.setTextureRect({ 0, 0, 1600, 900 });
 
 	sfg::Desktop pulpit;
 	pulpit.LoadThemeFromFile("Grafika\\bazowy.theme");
 
-	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND);
-	okno->SetRequisition(sf::Vector2f(600, 500));
-	okno->SetPosition(sf::Vector2f(1000, 400));
+	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+	okno->SetRequisition(sf::Vector2f(600, 900));
+	okno->SetPosition(sf::Vector2f(1000, 0));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
 	auto tytul = sfg::Label::Create("DOMKI 0.2");
@@ -108,6 +108,7 @@ int main() {
 	szybkosc_pasek->SetValue(1.0);
 
 	auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
+	walka_w_polu_ptaszek->SetActive(true);
 
 	auto uruchom = sfg::Button::Create("Uruchom");
 	uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {

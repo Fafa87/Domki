@@ -100,13 +100,6 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 		wksslask2->drogi.push_back(wksslask1);
 	}
 
-
-
-
-
-
-
-
 	if (gracz1.liczba_tworow == 0)
 	{
 		gracz1.aktywny = false;
@@ -142,7 +135,7 @@ void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswiet
 		if (a>0)podpis.setString(std::to_string(a));
 		else podpis.setString("RUSZAJ!");
 		if (a>0)podpis.setPosition(700, 200);
-		else podpis.setPosition(200, 200);
+		else podpis.setPosition(300, 200);
 		wyswietlacz.Wyswietlaj(window);
 		window.draw(podpis);
 		window.display();
@@ -150,9 +143,61 @@ void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswiet
 		else Sleep(250);
 	}
 	podpis.setCharacterSize(50);
-
 }
 
+
+sf::View WysrodkowanyWidok(list<Domek> &domki)
+{
+	double gui_min_X = 300.0, gui_max_X = 800.0;
+	double gui_min_Y = 0, gui_max_Y = 200.0;
+
+	auto minimalny_X = 10000.0, maksymalny_X = 0.0;
+	auto minimalny_Y = 10000.0, maksymalny_Y = 0.0;
+
+	for (auto& dom : domki)
+	{
+		minimalny_X = min(minimalny_X, (double)dom.polozenie.x);
+		maksymalny_X = max(maksymalny_X, (double)dom.polozenie.x);
+
+		minimalny_Y = min(minimalny_Y, (double)dom.polozenie.y);
+		maksymalny_Y = max(maksymalny_Y, (double)dom.polozenie.y);
+	}
+
+	// centrum domkow
+	int centrum_X = (maksymalny_X + minimalny_X) / 2;
+	int przesun_domek_X = (300 + 800) / 2 - centrum_X;
+
+	for (auto& dom : domki)
+	{
+		dom.polozenie.x -= przesun_domek_X;
+	}
+
+	minimalny_X = min(gui_min_X, minimalny_X);
+	minimalny_Y = min(gui_min_Y, minimalny_Y);
+	maksymalny_X = max(gui_min_X, maksymalny_X);
+	maksymalny_Y = max(gui_min_Y, maksymalny_Y);
+
+	minimalny_X -= 100;
+	maksymalny_X += 100;
+
+	minimalny_Y -= 100;
+	maksymalny_Y += 100;
+
+	// przesun aby było większe niż zero
+	int przesun_X = max(0.0, -minimalny_X);
+	int przesun_Y = max(0.0, -minimalny_Y);
+	minimalny_X += przesun_X;
+	maksymalny_X += przesun_X;
+	minimalny_Y += przesun_Y;
+	maksymalny_Y += przesun_Y;
+
+	double stosunek = 1600 / 899.0;
+	auto maksymalny_X_z_Y = stosunek * maksymalny_Y;
+	maksymalny_X = max(maksymalny_X_z_Y, maksymalny_X);
+	maksymalny_Y = maksymalny_X / stosunek;
+
+	return sf::View(sf::FloatRect(minimalny_X, minimalny_Y, maksymalny_X - minimalny_X, maksymalny_Y - minimalny_Y));
+}
 
 int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 {
@@ -164,12 +209,10 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	sf::ContextSettings ustawienia;
 	ustawienia.antialiasingLevel = 8;
 
-	auto videoMode = sf::VideoMode(800, 449); // 1600, 899);
+	auto videoMode = sf::VideoMode(1600, 899);
 	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::Fullscreen, ustawienia);
-	sf::View view(sf::FloatRect(0, 0, 1600, 900)); // 1600, 900));
-	window.setView(view);
 
-	if (misja_ustawienia.nr_gracza == 4)
+	if (misja_ustawienia.nr_gracza == 0)
 		window.setVisible(false);
 
 	// fpsy
@@ -181,7 +224,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	podpis.setCharacterSize(50);
 	podpis.setStyle(sf::Text::Bold);
 	podpis.setFillColor(sf::Color::Red);
-	podpis.move(300, 0);
+	podpis.move(400, 0);
 
 	// tworzymy rozgrywke
 	//Rozgrywka rozgrywka = prosta_rozgrywka();
@@ -192,6 +235,9 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	wyswietlacz.Zaladuj("wroclaw");
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
+
+	sf::View view = WysrodkowanyWidok(rozgrywka.domki);
+	window.setView(view);
 
 	//ZMIEN NAZWY GRACZ�W
 	if (misja_ustawienia.nazwy_graczow.size())

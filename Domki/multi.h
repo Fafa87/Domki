@@ -39,6 +39,20 @@ void load(Archive & archive,
 }
 
 template<class Archive>
+void save(Archive & archive,
+	UlepszRozkaz const & m)
+{
+	archive(m.kogo->uid);
+}
+
+template<class Archive>
+void load(Archive & archive,
+	UlepszRozkaz & m)
+{
+	archive(m.ser_kogo);
+}
+
+template<class Archive>
 void serialize(Archive & archive,
 	Rozgrywka & m)
 {
@@ -73,21 +87,24 @@ template<class Archive>
 void save(Archive & archive,
 	Domek const & m)
 {
-	archive(m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.gracz->numer - 1, m.uid, m.wyglad);
+	vector<int> ser_drogi;
+	for (auto d : m.drogi)
+		ser_drogi.push_back(d->uid);
+	archive(m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.gracz->numer, m.uid, m.wyglad, ser_drogi);
 }
 
 template<class Archive>
 void load(Archive & archive,
 	Domek & m)
 {
-	archive(m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.ser_gracz, m.uid, m.wyglad);
+	archive(m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.ser_gracz, m.uid, m.wyglad, m.ser_drogi);
 }
 
 template<class Archive>
 void save(Archive & archive,
 	Ludek const & m)
 {
-	archive(m.cel->uid, m.gracz->numer - 1, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
+	archive(m.cel->uid, m.gracz->numer, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
 }
 
 template<class Archive>
@@ -127,10 +144,10 @@ namespace multi
 	public:
 		Adres Postaw();
 
-		// oczekuje na pod³¹czenie siê gracza i podanie danych
+		// oczekuje na podï¿½ï¿½czenie siï¿½ gracza i podanie danych
 		void OczekujNaGracza();
 
-		// wyœlij info o starcie do graczy
+		// wyï¿½lij info o starcie do graczy
 		void Start(MisjaUstawienia ustawienia);
 		void Rozeslij(MRozgrywka& stan);
 		vector<Rozkaz*> Odbierz();

@@ -60,14 +60,13 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		wybrany = nullptr;
 	}
 	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&wybrany->liczebnosc>=wybrany->max_liczebnosc/2)
-		{
-		wybrany->liczebnosc -= wybrany->max_liczebnosc/2;
-		wybrany->poziom++;
-		wybrany->max_liczebnosc = 2 * wybrany->max_liczebnosc;
+	{
+		auto r = new UlepszRozkaz(wybrany);
+		res.push_back(r);
+
 		wybrany = nullptr;
 		cel = nullptr;
-		// TODO wrzuc rozkaz do res
-		}
+	}
 	// po 0.5 sekundy wysy�ane s� ludki
 	if (cel != nullptr && cel != wybrany && clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
 	{
@@ -133,6 +132,14 @@ void Ruszacz::WykonajRuchy()
 				}
 			}
 		}
+		else if (IsType<UlepszRozkaz>(r))
+		{
+			auto ulepsz = (UlepszRozkaz*)r;
+
+			ulepsz->kogo->liczebnosc -= ulepsz->kogo->max_liczebnosc / 2;
+			ulepsz->kogo->poziom++;
+			ulepsz->kogo->max_liczebnosc = 2 * ulepsz->kogo->max_liczebnosc;
+		}
 	}
 	kolejka_do_wykonania.clear();
 }
@@ -192,7 +199,7 @@ void Ruszacz::WalczLudkami(float czas)
 		}
 		else {
 			auto spotkanie = rozgrywka->Spotkanie(armia);
-			if (spotkanie != NULL && armia.gracz != spotkanie->gracz)
+			if (spotkanie != NULL)
 			{
 				rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc - std::max(1.0, 5 * czas * szybkosc));
 				rozgrywka->ZmienLiczebnosc(*spotkanie, spotkanie->liczebnosc - std::max(1.0, 5 * czas * szybkosc));
@@ -227,5 +234,9 @@ void Ruszacz::Produkuj(float czas)
 }
 
 WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : skad(skad), dokad(dokad)
+{
+}
+
+UlepszRozkaz::UlepszRozkaz(Domek * kogo) : kogo(kogo)
 {
 }

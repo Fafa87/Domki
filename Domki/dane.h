@@ -51,5 +51,7 @@ struct Domek : Twor
 	double produkcja;
 	double liczebnosc; // liczba aktualnie istniej¹cych ludków
 	int max_liczebnosc, poziom = 1;
+
 	vector<Domek*> drogi;
+	vector<int> ser_drogi;
 };

@@ -22,8 +22,11 @@ struct WymarszRozkaz : Rozkaz
 };
 
 struct UlepszRozkaz : Rozkaz
-{ // TODO potem
-	Domek& kogo;
+{
+	UlepszRozkaz(Domek* kogo);
+
+	Domek * kogo;
+	int ser_kogo;
 };
 
 class Decydent // wprowadza rozkazy graczy

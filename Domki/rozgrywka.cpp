@@ -60,7 +60,7 @@ Ludek * Rozgrywka::Spotkanie(Ludek & ludek)
 {
 	if (walka_w_polu)
 	{
-		for (auto& armia : armie) if (&armia != &ludek)
+		for (auto& armia : armie) if (&armia != &ludek &&  armia.gracz != ludek.gracz)
 		{
 			double odl = Odleglosc(ludek, armia);
 			if (odl < (armia.rozmiar + ludek.rozmiar) / 2)

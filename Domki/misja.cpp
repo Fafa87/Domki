@@ -237,7 +237,8 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 
-	sf::View view = WysrodkowanyWidok(rozgrywka.domki);
+	// WysrodkowanyWidok zmienia proporcje i spłaszcza 
+	sf::View view = sf::View(sf::FloatRect(0,0,1600, 900));//   WysrodkowanyWidok(rozgrywka.domki);
 	window.setView(view);
 
 	//ZMIEN NAZWY GRACZ�W

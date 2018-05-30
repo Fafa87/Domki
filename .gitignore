@@ -7,6 +7,9 @@ Zabawy\.VC\.db
 MultiSerwer/OBJ
 MultiSerwer/.VC/.db
 MultiSerwer/x64/**
+Testowanie/OBJ
+Testowanie/.VC/.db
+Testowanie/x64/**
 *.log
 
 Domki\.VC\.VC\.opendb

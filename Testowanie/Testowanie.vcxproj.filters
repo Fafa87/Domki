@@ -16,6 +16,9 @@
     <Filter Include="Header Files\narzedzia">
       <UniqueIdentifier>{fa2144af-3600-4c69-a23a-f73a5e446a52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\narzedzia">
+      <UniqueIdentifier>{61bef005-858a-425b-8eb6-c2c5b5890ea3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Domki\dane.h">
@@ -73,6 +76,12 @@
     </ClCompile>
     <ClCompile Include="..\Domki\wyswietlacze.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domki\Narzedzia\AnimatedSprite.cpp">
+      <Filter>Source Files\narzedzia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domki\Narzedzia\Animation.cpp">
+      <Filter>Source Files\narzedzia</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

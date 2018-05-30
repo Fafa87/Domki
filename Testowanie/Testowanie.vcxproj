@@ -166,6 +166,8 @@
   <ItemGroup>
     <ClCompile Include="..\Domki\dzialacze.cpp" />
     <ClCompile Include="..\Domki\misja.cpp" />
+    <ClCompile Include="..\Domki\Narzedzia\AnimatedSprite.cpp" />
+    <ClCompile Include="..\Domki\Narzedzia\Animation.cpp" />
     <ClCompile Include="..\Domki\os.cpp" />
     <ClCompile Include="..\Domki\rozgrywka.cpp" />
     <ClCompile Include="..\Domki\si.cpp" />

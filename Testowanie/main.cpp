@@ -21,6 +21,17 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	domek.gracz = &g;
 	gra.ZmienLiczebnosc(domek, 50);
 
+	gra.domki.push_back(Domek());
+	Domek& domek2 = gra.domki.back();
+	domek2.polozenie = { x,y + 150};
+	domek2.produkcja = 2;
+	domek2.max_liczebnosc = 100;
+	domek2.wyglad = Wyglad::kDomek;
+	domek2.gracz = &g;
+	domek2.poziom = 3;
+	gra.ZmienLiczebnosc(domek2, 250);
+	domek2.drogi.push_back(&domek);
+
 	gra.armie.push_back(Ludek(domek));
 	Ludek & ludek = gra.armie.back();
 	ludek.polozenie = { x + 100,y };

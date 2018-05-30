@@ -11,28 +11,29 @@ Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
 }
 
+Animation Wyswietlacz::ZaladujAnimacje(string& sciezka)
+{
+	Animation res;
+	auto tekstura = new sf::Texture();
+	tekstura->loadFromFile(sciezka);
+	tekstura->setSmooth(true);
+
+	res.setSpriteSheet(*tekstura);
+
+	int dlugosc_klatki = 400;
+
+	int klatek = (tekstura->getSize().x + dlugosc_klatki / 2) / dlugosc_klatki;
+	for(int i = 0; i < klatek; i++) // TODO trzeba kiedyœ nauczyæ siê czytaæ te¿ w pionie
+		res.addFrame(sf::IntRect(dlugosc_klatki * i, 0, dlugosc_klatki, tekstura->getSize().y));
+
+	return res;
+}
+
 void Wyswietlacz::Zaladuj(string wybrana_skora)
 {
 	skorka = wybrana_skora;
-	obrazek_tworow[Wyglad::kDomek] = new sf::Texture();
-	obrazek_tworow[Wyglad::kDomek]->loadFromFile("Grafika\\" + skorka + "\\kamienica.png");
-	obrazek_tworow[Wyglad::kDomek]->setSmooth(true);
-
-	/*Animation walkingAnimationDown;
-	walkingAnimationDown.setSpriteSheet(texture);
-	walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
-
-	AnimatedSprite animatedSprite(sf::seconds(0.2), true, false);
-	animatedSprite.setPosition(sf::Vector2f(screenDimensions / 2));
-
-	animatedSprite.play(*currentAnimation);
-	animatedSprite.move(movement * frameTime.asSeconds());
-
-	animatedSprite.update(frameTime);*/
-
-	obrazek_tworow[Wyglad::kLudek] = new sf::Texture();
-	obrazek_tworow[Wyglad::kLudek]->loadFromFile("Grafika\\" + skorka + "\\krasnal.png");
-	obrazek_tworow[Wyglad::kLudek]->setSmooth(true);
+	obrazek_tworow[Wyglad::kDomek] = ZaladujAnimacje("Grafika\\" + skorka + "\\kamienica.png");
+	obrazek_tworow[Wyglad::kLudek] = ZaladujAnimacje("Grafika\\" + skorka + "\\krasnal.png");
 
 	obrazek_tla.loadFromFile("Grafika\\" + skorka + "\\bruk.png");
 	obrazek_tla.setRepeated(true);
@@ -103,20 +104,22 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		wyglad.setFillColor(twor->gracz->kolor);
 
  		int ziarno = ((unsigned int)twor) % 100;
+		int liczba_ramek = obrazek_tworow[twor->wyglad].getSize();
 		if (twor->wyglad == Wyglad::kDomek)
 		{
-			int ramka_numer = ((clock() * 9 / CLOCKS_PER_SEC) + ziarno) % 6;
-			int ramka = 3 - abs(ramka_numer - 3);
-			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
-			wyglad.setTextureRect({ 400 * ramka, 0, 400, 640 });
+			int ramka_numer = ((clock() * 9 / CLOCKS_PER_SEC) + ziarno) % liczba_ramek;
+			int ramka = liczba_ramek / 2 - abs(ramka_numer - liczba_ramek / 2);
+			wyglad.setTexture(obrazek_tworow[twor->wyglad].getSpriteSheet());
+			wyglad.setTextureRect(obrazek_tworow[twor->wyglad].getFrame(ramka));
 		}
 		else if (twor->wyglad == Wyglad::kLudek)
 		{
 			bool lustro = ((Ludek*)twor)->cel->polozenie.x < ((Ludek*)twor)->polozenie.x;
-			int ramka_numer = ((clock() * 6 / CLOCKS_PER_SEC) + ziarno) % 2;
-			int ramka = 1 - abs(ramka_numer - 1);
-			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
-			wyglad.setTextureRect({ 400 * ramka, 0, 400, 640 });
+			
+			int ramka_numer = ((clock() * 6 / CLOCKS_PER_SEC) + ziarno) % liczba_ramek;
+			int ramka = liczba_ramek / 2 - abs(ramka_numer - liczba_ramek / 2);
+			wyglad.setTexture(obrazek_tworow[twor->wyglad].getSpriteSheet());
+			wyglad.setTextureRect(obrazek_tworow[twor->wyglad].getFrame(ramka));
 			if (lustro)
 				wyglad.setScale(-1, 1);
 		}

@@ -47,7 +47,7 @@ struct Ludek : Twor
 	float szybkosc_ludka = 1.0;
 };
 
-enum typ_domku
+enum TypDomku
 {
 	kOsada = 0,
 	kZamek = 1,
@@ -60,7 +60,7 @@ struct Domek : Twor
 	double liczebnosc; // liczba aktualnie istniej¹cych ludków
 	int max_liczebnosc;
 	
-	typ_domku typdomku=kOsada;
+	TypDomku typdomku=kOsada;
 	int poziom = 1;
 	float szybkosc_ludkow=1.0;
 	float wzmocnienie_ludkow = 1.0;

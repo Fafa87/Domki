@@ -49,6 +49,19 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 			klikniecia.push_back(clock());
 		}
 	}
+
+	if (zdarzenie.type == sf::Event::KeyPressed)
+	{
+		if (wybrany != nullptr && wybrany->gracz == &gracz)
+		{
+			if (zdarzenie.key.code == sf::Keyboard::B)
+				nacisniety = 'B';
+			else if (zdarzenie.key.code == sf::Keyboard::Z)
+				nacisniety = 'Z';
+			else if (zdarzenie.key.code == sf::Keyboard::K)
+				nacisniety = 'K';
+		}
+	}
 }
 
 vector<Rozkaz*> MyszDecydent::WykonajRuch()
@@ -58,6 +71,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 	{
 		cel = nullptr;
 		wybrany = nullptr;
+		nacisniety = 0;
 	}
 	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&wybrany->liczebnosc>=wybrany->max_liczebnosc/2)
 	{
@@ -66,6 +80,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 
 		wybrany = nullptr;
 		cel = nullptr;
+		nacisniety = 0;
 	}
 	// po 0.5 sekundy wysy�ane s� ludki
 	if (cel != nullptr && cel != wybrany && clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
@@ -83,7 +98,27 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 
 		wybrany = nullptr;
 		cel = nullptr;
+		nacisniety = 0;
 		klikniecia.clear();
+	}
+
+	if (nacisniety != 0 && wybrany != nullptr)
+	{
+		switch (nacisniety)
+		{
+		case 'B':
+			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kOsada));
+			break;
+		case 'Z':
+			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kZamek));
+			break;
+		case 'K':
+			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kKuznia));
+			break;
+		}
+		wybrany = nullptr;
+		cel = nullptr;
+		nacisniety = 0;
 	}
 	return res;
 }
@@ -147,9 +182,18 @@ void Ruszacz::WykonajRuchy()
 		{
 			auto ulepsz = (UlepszRozkaz*)r;
 
+			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)
 			ulepsz->kogo->liczebnosc -= ulepsz->kogo->max_liczebnosc / 2;
 			ulepsz->kogo->poziom++;
 			ulepsz->kogo->max_liczebnosc = 2 * ulepsz->kogo->max_liczebnosc;
+		}
+		else if (IsType<PrzebudujRozkaz>(r))
+		{
+			auto przebuduj = (PrzebudujRozkaz*)r;
+
+			przebuduj->kogo->typdomku = przebuduj->naco;
+			przebuduj->kogo->poziom = 1;
+			// TODO ustaw odpowiednio wartości jeśli ulepszenie jest możliwe
 		}
 	}
 	kolejka_do_wykonania.clear();
@@ -269,5 +313,9 @@ WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : skad(skad), dokad(do
 }
 
 UlepszRozkaz::UlepszRozkaz(Domek * kogo) : kogo(kogo)
+{
+}
+
+PrzebudujRozkaz::PrzebudujRozkaz(Domek * kogo, TypDomku naco) : kogo(kogo), naco(naco)
 {
 }

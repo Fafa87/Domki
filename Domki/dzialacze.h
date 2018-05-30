@@ -29,6 +29,15 @@ struct UlepszRozkaz : Rozkaz
 	int ser_kogo;
 };
 
+struct PrzebudujRozkaz : Rozkaz
+{
+	PrzebudujRozkaz(Domek* kogo, TypDomku naco);
+
+	Domek * kogo;
+	TypDomku naco;
+	int ser_kogo;
+};
+
 class Decydent // wprowadza rozkazy graczy
 {
 public:
@@ -48,6 +57,7 @@ public:
 	virtual vector<Rozkaz*> WykonajRuch();
 
 	Domek* wybrany = nullptr;
+	char nacisniety = 0;
 	Gracz& gracz;
 
 private:

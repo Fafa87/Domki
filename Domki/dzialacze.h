@@ -78,4 +78,5 @@ private:
 	void PrzesuwajLudkow(float czas);
 	void WalczLudkami(float czas);
 	void Produkuj(float czas);
+	void Strzelaj(float czas);
 };

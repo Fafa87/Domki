@@ -43,14 +43,28 @@ struct Ludek : Twor
 	Ludek(Twor& cel) : cel(&cel) {}
 	Twor* cel; // do kogo (domka) stara siê dotrzeæ
 	int ser_cel;
-	int liczebnosc; // powinna byæ zwi¹zana z jego rozmiarem
+	int liczebnosc,tarcza=0; // powinna byæ zwi¹zana z jego rozmiarem
+	float szybkosc_ludka = 1.0;
+};
+
+enum typ_domku
+{
+	kOsada = 0,
+	kZamek = 1,
+	kKuznia = 2
 };
 
 struct Domek : Twor
 {
 	double produkcja;
 	double liczebnosc; // liczba aktualnie istniej¹cych ludków
-	int max_liczebnosc, poziom = 1;
+	int max_liczebnosc;
+	
+	typ_domku typdomku=kOsada;
+	int poziom = 1;
+	float szybkosc_ludkow=1.0;
+	float wzmocnienie_ludkow = 1.0;
+	int sila_ostrzalu = 10;
 
 	vector<Domek*> drogi;
 	vector<int> ser_drogi;

@@ -27,6 +27,7 @@ struct Rozgrywka
 	Gracz& Gracz(int numer);
 	void ZmienLiczebnosc(Domek& domek, double nowa);
 	void ZmienLiczebnosc(Ludek& ludek, double nowa);
+	void TracLudki(Ludek& ludek,double ile);
 	double Odleglosc(const Twor& twor1, const Twor& twor2);
 	Ludek* Spotkanie(Ludek& ludek);
 	Twor* Zlokalizuj(int x, int y);

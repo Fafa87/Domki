@@ -14,12 +14,14 @@ struct Gracz
 	sf::Color kolor;
 };
 
-enum Wyglad
+enum class Wyglad
 {
 	kNieznany = 0,
 	kDomek = 1,
 	kDomekWybrany = 2,
-	kLudek = 3
+	kLudek = 3,
+	kObrona = 4,
+	kUlepszacz = 5
 };
 
 struct Twor
@@ -47,7 +49,7 @@ struct Ludek : Twor
 	float szybkosc_ludka = 1.0;
 };
 
-enum TypDomku
+enum class TypDomku
 {
 	kOsada = 0,
 	kZamek = 1,
@@ -60,7 +62,7 @@ struct Domek : Twor
 	double liczebnosc; // liczba aktualnie istniej¹cych ludków
 	int max_liczebnosc;
 	
-	TypDomku typdomku=kOsada;
+	TypDomku typdomku=TypDomku::kOsada;
 	int poziom = 1;
 	float szybkosc_ludkow=1.0;
 	float wzmocnienie_ludkow = 1.0;

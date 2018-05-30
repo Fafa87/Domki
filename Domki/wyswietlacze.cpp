@@ -21,6 +21,8 @@ Animation Wyswietlacz::ZaladujAnimacje(string& sciezka)
 	res.setSpriteSheet(*tekstura);
 
 	int dlugosc_klatki = 400;
+	if (abs((int)tekstura->getSize().x % dlugosc_klatki) > 100)
+		dlugosc_klatki = 600;
 
 	int klatek = (tekstura->getSize().x + dlugosc_klatki / 2) / dlugosc_klatki;
 	for(int i = 0; i < klatek; i++) // TODO trzeba kiedyœ nauczyæ siê czytaæ te¿ w pionie
@@ -34,6 +36,9 @@ void Wyswietlacz::Zaladuj(string wybrana_skora)
 	skorka = wybrana_skora;
 	obrazek_tworow[Wyglad::kDomek] = ZaladujAnimacje("Grafika\\" + skorka + "\\kamienica.png");
 	obrazek_tworow[Wyglad::kLudek] = ZaladujAnimacje("Grafika\\" + skorka + "\\krasnal.png");
+
+	obrazek_tworow[Wyglad::kUlepszacz] = ZaladujAnimacje("Grafika\\" + skorka + "\\kuznia.png");
+	obrazek_tworow[Wyglad::kObrona] = ZaladujAnimacje("Grafika\\" + skorka + "\\zamek.png");
 
 	obrazek_tla.loadFromFile("Grafika\\" + skorka + "\\bruk.png");
 	obrazek_tla.setRepeated(true);
@@ -93,6 +98,17 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		}
 	}
 
+	// uaktualnij wygl¹dy domków
+	for (auto& dom : rozgrywka.domki)
+	{
+		if (dom.typdomku == TypDomku::kKuznia)
+			dom.wyglad = Wyglad::kUlepszacz;
+		else if (dom.typdomku == TypDomku::kOsada)
+			dom.wyglad = Wyglad::kDomek;
+		else if (dom.typdomku == TypDomku::kZamek)
+			dom.wyglad = Wyglad::kObrona;
+	}
+
 	// wygl¹d tworów zawiera dok³adnie to co chcemy wyœwietliæ, uaktualnijmy ich stan
 	for (auto& twor : wszystkie_obiekty)
 	{
@@ -101,27 +117,18 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		int wysokosc = twor->rozmiar * 640 / 400;  // trzeba to gdzieœ potem wyci¹gnaæ
 		wyglad.setSize(sf::Vector2f(twor->rozmiar * 2, wysokosc * 2));
 		wyglad.setOrigin(twor->rozmiar, wysokosc);
-		wyglad.setFillColor(twor->gracz->kolor);
+		//sf::Color polprzezroczysty = twor->gracz->kolor;
+		//polprzezroczysty.a = 128;
+		//wyglad.setFillColor(polprzezroczysty);
 
  		int ziarno = ((unsigned int)twor) % 100;
 		int liczba_ramek = obrazek_tworow[twor->wyglad].getSize();
-		if (twor->wyglad == Wyglad::kDomek)
+		if (liczba_ramek > 0)
 		{
-			int ramka_numer = ((clock() * 9 / CLOCKS_PER_SEC) + ziarno) % liczba_ramek;
+			int ramka_numer = ((clock() * liczba_ramek * 2 / CLOCKS_PER_SEC) + ziarno) % liczba_ramek;
 			int ramka = liczba_ramek / 2 - abs(ramka_numer - liczba_ramek / 2);
 			wyglad.setTexture(obrazek_tworow[twor->wyglad].getSpriteSheet());
 			wyglad.setTextureRect(obrazek_tworow[twor->wyglad].getFrame(ramka));
-		}
-		else if (twor->wyglad == Wyglad::kLudek)
-		{
-			bool lustro = ((Ludek*)twor)->cel->polozenie.x < ((Ludek*)twor)->polozenie.x;
-			
-			int ramka_numer = ((clock() * 6 / CLOCKS_PER_SEC) + ziarno) % liczba_ramek;
-			int ramka = liczba_ramek / 2 - abs(ramka_numer - liczba_ramek / 2);
-			wyglad.setTexture(obrazek_tworow[twor->wyglad].getSpriteSheet());
-			wyglad.setTextureRect(obrazek_tworow[twor->wyglad].getFrame(ramka));
-			if (lustro)
-				wyglad.setScale(-1, 1);
 		}
 
 		sf::Text podpis;

@@ -169,7 +169,7 @@ void Ruszacz::WykonajRuchy()
 					float wspolczynnik_walki=0.1,wspolczynnik_ruchu=0.1;
 					for (Domek& domekek : rozgrywka->domki)
 					{
-						if (domekek.gracz->numer == ruch.skad->gracz->numer&&domekek.typdomku == kKuznia)sila_ludkow += domekek.poziom;
+						if (domekek.gracz->numer == ruch.skad->gracz->numer&&domekek.typdomku == TypDomku::kKuznia)sila_ludkow += domekek.poziom;
 					}
 					nowaArmia.tarcza = (int)((float)sila_ludkow*wspolczynnik_walki*(float)liczba);
 					nowaArmia.szybkosc_ludka = sila_ludkow*wspolczynnik_ruchu + 1.0;
@@ -238,7 +238,7 @@ void Ruszacz::WalczLudkami(float czas)
 				else
 				{
 					double nowa_liczebnosc;
-					if (cel->typdomku == kZamek)
+					if (cel->typdomku == TypDomku::kZamek)
 						{
 						cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza/(double)cel->poziom);
 						nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc/(double)cel->poziom;
@@ -291,7 +291,7 @@ void Ruszacz::WalczLudkami(float czas)
 void Ruszacz::Produkuj(float czas)
 {
 	for (Domek& domek : rozgrywka->domki)
-		if(domek.typdomku==kOsada)
+		if(domek.typdomku==TypDomku::kOsada)
 	{
 		if (domek.gracz->aktywny&&domek.liczebnosc == domek.max_liczebnosc);
 		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);

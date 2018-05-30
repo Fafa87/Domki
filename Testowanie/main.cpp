@@ -32,18 +32,34 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	gra.ZmienLiczebnosc(domek2, 250);
 	domek2.drogi.push_back(&domek);
 
+	gra.domki.push_back(Domek());
+	Domek& domek3 = gra.domki.back();
+	domek3.polozenie = { x - 100 ,y + 150 };
+	domek3.typdomku = TypDomku::kKuznia;
+	domek3.gracz = &g;
+	gra.ZmienLiczebnosc(domek3, 50);
+	domek3.drogi.push_back(&domek);
+
+	gra.domki.push_back(Domek());
+	Domek& domek4 = gra.domki.back();
+	domek4.polozenie = { x + 100 ,y + 150 };
+	domek4.typdomku = TypDomku::kZamek;
+	domek4.gracz = &g;
+	gra.ZmienLiczebnosc(domek4, 50);
+	domek4.drogi.push_back(&domek);
+
 	gra.armie.push_back(Ludek(domek));
 	Ludek & ludek = gra.armie.back();
 	ludek.polozenie = { x + 100,y };
 	ludek.gracz = &g;
-	ludek.wyglad = kLudek;
+	ludek.wyglad = Wyglad::kLudek;
 	gra.ZmienLiczebnosc(ludek, 40);
 
 	gra.armie.push_back(Ludek(domek));
 	Ludek & ludek2 = gra.armie.back();
 	ludek2.polozenie = { x - 100,y };
 	ludek2.gracz = &g;
-	ludek2.wyglad = kLudek;
+	ludek2.wyglad = Wyglad::kLudek;
 	gra.ZmienLiczebnosc(ludek2, 240);
 }
 

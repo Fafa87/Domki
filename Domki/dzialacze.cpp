@@ -98,6 +98,7 @@ void Ruszacz::Ruszaj(float czas)
 	WykonajRuchy();
 	PrzesuwajLudkow(czas);
 	WalczLudkami(czas);
+	Strzelaj(czas);
 	Produkuj(czas);
 }
 
@@ -128,6 +129,16 @@ void Ruszacz::WykonajRuchy()
 					nowaArmia.wyglad = Wyglad::kLudek;
 					rozgrywka->ZmienLiczebnosc(nowaArmia, liczba);
 
+					//ZMIERZ SILE LUDKOW I NADAJ IM SZYBKOSC
+					int sila_ludkow=0;
+					float wspolczynnik_walki=0.1,wspolczynnik_ruchu=0.1;
+					for (Domek& domekek : rozgrywka->domki)
+					{
+						if (domekek.gracz->numer == ruch.skad->gracz->numer&&domekek.typdomku == kKuznia)sila_ludkow += domekek.poziom;
+					}
+					nowaArmia.tarcza = (int)((float)sila_ludkow*wspolczynnik_walki*(float)liczba);
+					nowaArmia.szybkosc_ludka = sila_ludkow*wspolczynnik_ruchu + 1.0;
+
 					ruch.skad->gracz->liczba_tworow++;
 				}
 			}
@@ -157,7 +168,7 @@ void Ruszacz::PrzesuwajLudkow(float czas)
 			PD wektor_do_celu = (polozenie_cel - polozenie_teraz);
 			double dlugosc = sqrt(wektor_do_celu.x * wektor_do_celu.x + wektor_do_celu.y * wektor_do_celu.y);
 			PD jednostkowy = wektor_do_celu / dlugosc;
-			jednostkowy *= przesuniecie*czas;
+			jednostkowy *= przesuniecie*armia.szybkosc_ludka*czas;
 
 			armia.polozenie += jednostkowy;
 		}
@@ -182,7 +193,17 @@ void Ruszacz::WalczLudkami(float czas)
 				}
 				else
 				{
-					double nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc;
+					double nowa_liczebnosc;
+					if (cel->typdomku == kZamek)
+						{
+						cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza/(double)cel->poziom);
+						nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc/(double)cel->poziom;
+						}
+					else
+						{
+						cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza);
+						nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc;
+						}
 					if (nowa_liczebnosc < 0)
 					{
 						rozgrywka->ZabierzTwor(cel);
@@ -201,9 +222,9 @@ void Ruszacz::WalczLudkami(float czas)
 			auto spotkanie = rozgrywka->Spotkanie(armia);
 			if (spotkanie != NULL)
 			{
-				rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc - std::max(1.0, 5 * czas * szybkosc));
-				rozgrywka->ZmienLiczebnosc(*spotkanie, spotkanie->liczebnosc - std::max(1.0, 5 * czas * szybkosc));
-
+				rozgrywka->TracLudki(armia, std::max(1.0, 5 * czas * szybkosc));
+				rozgrywka->TracLudki(*spotkanie, std::max(1.0, 5 * czas * szybkosc));
+		
 				if (armia.liczebnosc <= 0)
 				{
 					do_usuniecia.push_back(&(*it));
@@ -226,11 +247,21 @@ void Ruszacz::WalczLudkami(float czas)
 void Ruszacz::Produkuj(float czas)
 {
 	for (Domek& domek : rozgrywka->domki)
+		if(domek.typdomku==kOsada)
 	{
 		if (domek.gracz->aktywny&&domek.liczebnosc == domek.max_liczebnosc);
 		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
 		else if(domek.gracz->aktywny)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*5,(double)domek.max_liczebnosc));
 	}
+}
+
+void Ruszacz::Strzelaj(float czas)
+{
+	int sila_strzalu = 10;
+	//tego na razie nie ma
+
+
+
 }
 
 WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : skad(skad), dokad(dokad)

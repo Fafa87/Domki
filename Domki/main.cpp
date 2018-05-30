@@ -74,20 +74,28 @@ int main() {
 	okno_menu.resetGLStates();
 
 	sf::Texture backtexture;
-	backtexture.loadFromFile("Grafika\\menu_tlo.png");
-	backtexture.setRepeated(true);
+	backtexture.loadFromFile("Grafika\\houseofhouses.png");
+	backtexture.setRepeated(false);
 	sf::Sprite background(backtexture);
 	background.setTextureRect({ 0, 0, 1600, 900 });
 
 	sfg::Desktop pulpit;
 	pulpit.LoadThemeFromFile("Grafika\\bazowy.theme");
 
-	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND);
-	okno->SetRequisition(sf::Vector2f(600, 500));
-	okno->SetPosition(sf::Vector2f(1000, 400));
+	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+	pulpit.SetProperty("Window", "BackgroundColor", sf::Color(6, 4, 50));
+	pulpit.SetProperty("Label", "Color", sf::Color::White);
+	pulpit.SetProperty("Label", "FontSize", 28);
+	pulpit.SetProperty("Label#Naglowek", "FontSize", 48);
+	pulpit.SetProperty("ComboBox", "BackgroundColor", sf::Color(0, 50, 120));
+	pulpit.SetProperty("Button", "BackgroundColor", sf::Color(0, 50, 120));
+
+	okno->SetRequisition(sf::Vector2f(600, 900));
+	okno->SetPosition(sf::Vector2f(1000, 0));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
 	auto tytul = sfg::Label::Create("DOMKI 0.2");
+	tytul->SetId("Naglowek");
 	auto tabelka = sfg::Table::Create();
 
 	auto wybor_etykieta = sfg::Label::Create("Misja: ");
@@ -108,6 +116,7 @@ int main() {
 	szybkosc_pasek->SetValue(1.0);
 
 	auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
+	walka_w_polu_ptaszek->SetActive(true);
 
 	auto uruchom = sfg::Button::Create("Uruchom");
 	uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
@@ -130,17 +139,17 @@ int main() {
 		start_klient(pulpit);
 	});
 
-
-	tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 0, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
-	tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(0, 1, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
-	tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 2, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
-	tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(0, 3, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
-	tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, 4, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
-	tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(0, 5, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
-	tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(0, 6, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
-	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 7, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 20.f));
-	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(0, 8, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
-
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 0, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(1, 0, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(1, 1, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
+	tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(1, 2, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(1, 3, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
+	tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(1, 4, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 6, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(1, 7, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 20.f));
+	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 8, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(3, 0, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
 	//tabelka->Attach(serwer, sf::Rect<sf::Uint32>(0, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 	//tabelka->Attach(klient, sf::Rect<sf::Uint32>(1, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 

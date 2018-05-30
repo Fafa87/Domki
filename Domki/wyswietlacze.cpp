@@ -112,10 +112,13 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		}
 		else if (twor->wyglad == Wyglad::kLudek)
 		{
+			bool lustro = ((Ludek*)twor)->cel->polozenie.x < ((Ludek*)twor)->polozenie.x;
 			int ramka_numer = ((clock() * 6 / CLOCKS_PER_SEC) + ziarno) % 2;
 			int ramka = 1 - abs(ramka_numer - 1);
 			wyglad.setTexture(obrazek_tworow[twor->wyglad]);
 			wyglad.setTextureRect({ 400 * ramka, 0, 400, 640 });
+			if (lustro)
+				wyglad.setScale(-1, 1);
 		}
 
 		sf::Text podpis;

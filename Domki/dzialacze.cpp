@@ -190,9 +190,12 @@ void Ruszacz::WykonajRuchy()
 		else if (IsType<PrzebudujRozkaz>(r))
 		{
 			auto przebuduj = (PrzebudujRozkaz*)r;
-
-			przebuduj->kogo->typdomku = przebuduj->naco;
-			przebuduj->kogo->poziom = 1;
+			if (przebuduj->kogo->liczebnosc >= 50.0)
+			{
+				przebuduj->kogo->typdomku = przebuduj->naco;
+				przebuduj->kogo->poziom = 1;
+				przebuduj->kogo->liczebnosc -= 50.0;
+			}
 			// TODO ustaw odpowiednio wartości jeśli ulepszenie jest możliwe
 		}
 	}
@@ -291,11 +294,10 @@ void Ruszacz::WalczLudkami(float czas)
 void Ruszacz::Produkuj(float czas)
 {
 	for (Domek& domek : rozgrywka->domki)
-		if(domek.typdomku==TypDomku::kOsada)
 	{
 		if (domek.gracz->aktywny&&domek.liczebnosc == domek.max_liczebnosc);
-		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
-		else if(domek.gracz->aktywny)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*5,(double)domek.max_liczebnosc));
+		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc&&domek.typdomku == kOsada)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
+		else if(domek.gracz->aktywny&&domek.liczebnosc>domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*5,(double)domek.max_liczebnosc));
 	}
 }
 

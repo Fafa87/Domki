@@ -5,7 +5,7 @@ House of Houses aka Domki
 
 Walka domków o życie!
 
-[![Build Status](https://img.shields.io/appveyor/ci/fafa87/Domki/master.svg)](https://ci.appveyor.com/project/fafa87/Domki)
+.. image:: https://img.shields.io/appveyor/ci/fafa87/domki/master.svg
 
 Ściągnij 
 ------------

@@ -64,9 +64,6 @@ struct Domek : Twor
 	
 	TypDomku typdomku=TypDomku::kOsada;
 	int poziom = 1;
-	float szybkosc_ludkow=1.0;
-	float wzmocnienie_ludkow = 1.0;
-	int sila_ostrzalu = 10;
 
 	vector<Domek*> drogi;
 	vector<int> ser_drogi;

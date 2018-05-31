@@ -9,9 +9,12 @@ Walka domków o życie!
 
 Ściągnij 
 ------------
-1.0.111
 
-https://ci.appveyor.com/api/buildjobs/1ef1tch2ku3b378b/artifacts/Domki.zip
+`0.5.x
+<https://ci.appveyor.com/project/Fafa87/domki>`_
+
+`ZIP
+<https://ci.appveyor.com/api/projects/fafa87/domki/artifacts/Domki.zip?branch=master&job=Image%3A%20Visual%20Studio%202017>`_
  
 Zobacz
 ------------

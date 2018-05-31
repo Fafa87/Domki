@@ -21,7 +21,7 @@ template<class Archive>
 void serialize(Archive & archive,
 	MisjaUstawienia & m)
 {
-	archive(CEREAL_NVP(m.nazwa), CEREAL_NVP(m.szybkosc), CEREAL_NVP(m.walka_w_polu), CEREAL_NVP(m.trudnosc), CEREAL_NVP(m.nr_gracza), CEREAL_NVP(m.nazwy_graczow), CEREAL_NVP(m.komputery));
+	archive(CEREAL_NVP(m.nazwa), CEREAL_NVP(m.skorka), CEREAL_NVP(m.szybkosc), CEREAL_NVP(m.walka_w_polu), CEREAL_NVP(m.trudnosc), CEREAL_NVP(m.nr_gracza), CEREAL_NVP(m.nazwy_graczow), CEREAL_NVP(m.komputery));
 }
 
 template<class Archive>
@@ -50,6 +50,20 @@ void load(Archive & archive,
 	UlepszRozkaz & m)
 {
 	archive(m.ser_kogo);
+}
+
+template<class Archive>
+void save(Archive & archive,
+	PrzebudujRozkaz const & m)
+{
+	archive(m.kogo->uid, m.naco);
+}
+
+template<class Archive>
+void load(Archive & archive,
+	PrzebudujRozkaz & m)
+{
+	archive(m.ser_kogo, m.naco);
 }
 
 template<class Archive>
@@ -90,28 +104,28 @@ void save(Archive & archive,
 	vector<int> ser_drogi;
 	for (auto d : m.drogi)
 		ser_drogi.push_back(d->uid);
-	archive(m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.gracz->numer, m.uid, m.wyglad, ser_drogi);
+	archive(m.typdomku, m.poziom, m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.gracz->numer, m.uid, m.wyglad, ser_drogi);
 }
 
 template<class Archive>
 void load(Archive & archive,
 	Domek & m)
 {
-	archive(m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.ser_gracz, m.uid, m.wyglad, m.ser_drogi);
+	archive(m.typdomku, m.poziom, m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.ser_gracz, m.uid, m.wyglad, m.ser_drogi);
 }
 
 template<class Archive>
 void save(Archive & archive,
 	Ludek const & m)
 {
-	archive(m.cel->uid, m.gracz->numer, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
+	archive(m.tarcza, m.szybkosc_ludka, m.cel->uid, m.gracz->numer, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
 }
 
 template<class Archive>
 void load(Archive & archive,
 	Ludek & m)
 {
-	archive(m.ser_cel, m.ser_gracz, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
+	archive(m.tarcza, m.szybkosc_ludka, m.ser_cel, m.ser_gracz, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
 }
 
 

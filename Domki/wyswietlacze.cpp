@@ -82,7 +82,6 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
 			linijka.setOutlineThickness(2);
 
 			okno.draw(linijka);
-			//okno.draw(linia, 2, sf::Lines);
 		}
 	}
 }

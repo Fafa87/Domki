@@ -233,7 +233,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	rozgrywka.walka_w_polu = misja_ustawienia.walka_w_polu;
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
-	wyswietlacz.Zaladuj("wroclaw");
+	wyswietlacz.Zaladuj(misja_ustawienia.skorka);
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 

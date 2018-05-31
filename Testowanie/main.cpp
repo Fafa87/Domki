@@ -53,6 +53,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	ludek.polozenie = { x + 100,y };
 	ludek.gracz = &g;
 	ludek.wyglad = Wyglad::kLudek;
+	ludek.tarcza = 23;
 	gra.ZmienLiczebnosc(ludek, 40);
 
 	gra.armie.push_back(Ludek(domek));

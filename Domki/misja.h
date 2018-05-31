@@ -16,6 +16,7 @@ struct MisjaUstawienia
 	string nazwa = "";
 	double szybkosc = 1;
 	string trudnosc = "podstawa";
+	string skorka = "rycerze";
 	bool walka_w_polu = true;
 
 	int nr_gracza = 1;

@@ -94,7 +94,7 @@ int main() {
 	okno->SetPosition(sf::Vector2f(1000, 0));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
-	auto tytul = sfg::Label::Create("DOMKI 0.2");
+	auto tytul = sfg::Label::Create("DOMKI 0.5");
 	tytul->SetId("Naglowek");
 	auto tabelka = sfg::Table::Create();
 

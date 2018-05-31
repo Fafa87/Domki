@@ -4,7 +4,9 @@
 #include<set>
 #include<string>
 #include<ctime>
-#include<cmath>
+
+#define _USE_MATH_DEFINES
+#include<math.h>
 
 Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 {
@@ -63,7 +65,7 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
 	// namaluj drogi
 	for (auto dom : rozgrywka.domki)
 	{
-		for (auto dokad : dom.drogi)
+		for (auto dokad : dom.drogi) if(dokad->uid < dom.uid) // maluj tylko w jedn¹ stronê
 		{
 			sf::Vertex linia[] =
 			{
@@ -71,10 +73,13 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
 				sf::Vertex(sf::Vector2f(dokad->polozenie.x, dokad->polozenie.y), sf::Color::Black)
 			};
 			int odleglosc = sqrt(pow(dokad->polozenie.x - dom.polozenie.x, 2) + pow(dokad->polozenie.y - dom.polozenie.y, 2));
-			sf::RectangleShape linijka(sf::Vector2f(odleglosc, 5));
+			sf::RectangleShape linijka(sf::Vector2f(odleglosc, 4));
 			linijka.setPosition(linia[0].position);
 
-			linijka.setRotation(atan2(linia[1].position.y - linia[0].position.y, linia[1].position.x - linia[0].position.x));
+			linijka.setRotation(atan2(linia[1].position.y - linia[0].position.y, linia[1].position.x - linia[0].position.x) / M_PI * 180);
+			linijka.setFillColor(sf::Color(150, 75, 0));
+			linijka.setOutlineColor(sf::Color::Black);
+			linijka.setOutlineThickness(2);
 
 			okno.draw(linijka);
 			//okno.draw(linia, 2, sf::Lines);

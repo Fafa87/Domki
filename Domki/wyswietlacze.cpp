@@ -17,6 +17,7 @@ Animation Wyswietlacz::ZaladujAnimacje(string& sciezka)
 	auto tekstura = new sf::Texture();
 	tekstura->loadFromFile(sciezka);
 	tekstura->setSmooth(true);
+	tekstura->generateMipmap();
 
 	res.setSpriteSheet(*tekstura);
 
@@ -26,6 +27,10 @@ Animation Wyswietlacz::ZaladujAnimacje(string& sciezka)
 
 	int klatek = (tekstura->getSize().x + dlugosc_klatki / 2) / dlugosc_klatki;
 	for(int i = 0; i < klatek; i++) // TODO trzeba kiedyœ nauczyæ siê czytaæ te¿ w pionie
+		res.addFrame(sf::IntRect(dlugosc_klatki * i, 0, dlugosc_klatki, tekstura->getSize().y));
+
+	// wczytaj powrotne
+	for (int i = klatek - 1; i >= 1; i--)
 		res.addFrame(sf::IntRect(dlugosc_klatki * i, 0, dlugosc_klatki, tekstura->getSize().y));
 
 	return res;
@@ -114,21 +119,30 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 	{
 		auto wyglad = wyglad_tworow[twor];
 		wyglad.setPosition(twor->polozenie.x, twor->polozenie.y);
-		int wysokosc = twor->rozmiar * 640 / 400;  // trzeba to gdzieœ potem wyci¹gnaæ
+
+		int liczba_ramek = obrazek_tworow[twor->wyglad].getSize();
+		int dlugosc_jednego = 10;
+		int wysokosc_jednego = 10;
+		if (liczba_ramek > 0)
+		{
+			dlugosc_jednego = obrazek_tworow[twor->wyglad].getFrame(0).width;
+			wysokosc_jednego = obrazek_tworow[twor->wyglad].getFrame(0).height;
+		}
+
+		int wysokosc = twor->rozmiar * wysokosc_jednego / dlugosc_jednego;  // trzeba to gdzieœ potem wyci¹gnaæ
 		wyglad.setSize(sf::Vector2f(twor->rozmiar * 2, wysokosc * 2));
 		wyglad.setOrigin(twor->rozmiar, wysokosc);
 		//sf::Color polprzezroczysty = twor->gracz->kolor;
 		//polprzezroczysty.a = 128;
 		//wyglad.setFillColor(polprzezroczysty);
 
- 		int ziarno = ((unsigned int)twor) % 100;
-		int liczba_ramek = obrazek_tworow[twor->wyglad].getSize();
+		int ziarno = ((unsigned int)twor) % 100;
+
 		if (liczba_ramek > 0)
 		{
 			int ramka_numer = ((clock() * liczba_ramek * 2 / CLOCKS_PER_SEC) + ziarno) % liczba_ramek;
-			int ramka = liczba_ramek / 2 - abs(ramka_numer - liczba_ramek / 2);
 			wyglad.setTexture(obrazek_tworow[twor->wyglad].getSpriteSheet());
-			wyglad.setTextureRect(obrazek_tworow[twor->wyglad].getFrame(ramka));
+			wyglad.setTextureRect(obrazek_tworow[twor->wyglad].getFrame(ramka_numer));
 		}
 
 		sf::Text podpis;
@@ -147,6 +161,34 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		podpis.move(twor->polozenie.x - 15 * podpis.getString().getSize() / 2, twor->polozenie.y + wysokosc);
 
 		okno.draw(podpis);
+
+		// rysuj poziom domku
+		if (IsType<Domek>(twor))
+		{
+			int poziom = ((Domek*)twor)->poziom;
+			if (poziom > 1)
+			{
+				podpis.setFillColor(sf::Color::White);
+				podpis.setOutlineColor(twor->gracz->kolor);
+				podpis.setString(std::to_string(poziom));
+				podpis.setPosition(twor->polozenie.x - 15 * podpis.getString().getSize() / 2, twor->polozenie.y - wysokosc * 1.5);
+				okno.draw(podpis);
+			}
+		}
+		// rysuj tarcze ludka
+		if (IsType<Ludek>(twor))
+		{
+			int tarcza = ((Ludek*)twor)->tarcza;
+			if (tarcza > 0)
+			{
+				podpis.setFillColor(sf::Color::White);
+				podpis.setOutlineColor(twor->gracz->kolor);
+				podpis.setString(std::to_string(tarcza));
+				podpis.setPosition(twor->polozenie.x - 15 * podpis.getString().getSize() / 2, twor->polozenie.y - wysokosc * 1.5);
+				okno.draw(podpis);
+			}
+		}
+
 		okno.draw(wyglad);
 	}
 }

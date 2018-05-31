@@ -14,7 +14,7 @@ const string poziomy_trudnosci[] = { "podstawa", "rozszerzenie" };
 struct MisjaUstawienia
 {
 	string nazwa = "";
-	double szybkosc = 1;
+	double szybkosc = 1.5;
 	string trudnosc = "podstawa";
 	string skorka = "rycerze";
 	bool walka_w_polu = true;

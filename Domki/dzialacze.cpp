@@ -183,9 +183,12 @@ void Ruszacz::WykonajRuchy()
 			auto ulepsz = (UlepszRozkaz*)r;
 
 			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)
-			ulepsz->kogo->liczebnosc -= ulepsz->kogo->max_liczebnosc / 2;
-			ulepsz->kogo->poziom++;
-			ulepsz->kogo->max_liczebnosc = 2 * ulepsz->kogo->max_liczebnosc;
+			if (ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0 > 0)
+				{
+				rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0);
+				ulepsz->kogo->poziom++;
+				ulepsz->kogo->max_liczebnosc = 2 * ulepsz->kogo->max_liczebnosc;
+				}
 		}
 		else if (IsType<PrzebudujRozkaz>(r))
 		{
@@ -194,7 +197,7 @@ void Ruszacz::WykonajRuchy()
 			{
 				przebuduj->kogo->typdomku = przebuduj->naco;
 				przebuduj->kogo->poziom = 1;
-				przebuduj->kogo->liczebnosc -= 50.0;
+				rozgrywka->ZmienLiczebnosc(*przebuduj->kogo, przebuduj->kogo->liczebnosc-50.0);
 				przebuduj->kogo->max_liczebnosc = 100.0;
 			}
 			// TODO ustaw odpowiednio wartości jeśli ulepszenie jest możliwe

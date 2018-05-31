@@ -14,6 +14,7 @@ using namespace multi;
 
 Serwer* serwer = NULL;
 Klient* klient = NULL;
+MisjaUstawienia misja_ustawienia;
 
 #include <iterator>
 
@@ -34,13 +35,12 @@ std::vector<std::string> split(const std::string &s, char delim) {
 }
 
 void wykonaj(string zadanie);
-void konfiguruj(int l)
+void konfiguruj(int l, const char * argv[])
 {
 	if (l == 0)
 	{
-		wykonaj("serwer");
+		wykonaj("serwer " + string(argv[2]));
 		wykonaj("start");
-
 	}
 	else
 	{ 
@@ -52,14 +52,21 @@ void konfiguruj(int l)
 
 void wykonaj(string zadanie)
 {
-	if (zadanie == "serwer")
+	if (zadanie.find("serwer") == 0)
 	{
 		serwer = new Serwer();
 		auto adres = serwer->Postaw();
 		printf("%s:%d\n", adres.ip.c_str(), adres.port);
 
-		serwer->OczekujNaGracza();
-		serwer->OczekujNaGracza();
+		auto misja_nazwa = zadanie.substr(7);
+		auto misja_sciezka = "Plansza\\" + misja_nazwa;
+
+		misja_ustawienia = wczytaj_meta(misja_sciezka);
+		misja_ustawienia.nazwa = misja_nazwa;
+		int liczba_graczy = misja_ustawienia.komputery.size() + 1;
+
+		for(int i=0;i<liczba_graczy;i++)
+			serwer->OczekujNaGracza();
 	}
 	if (zadanie.find("klient") == 0)
 	{
@@ -75,8 +82,7 @@ void wykonaj(string zadanie)
 	}
 	if (zadanie.find("start") == 0)
 	{
-		MisjaUstawienia ustawienia;
-		ustawienia.nazwa = "graf_testowy.txt";
+		MisjaUstawienia ustawienia = misja_ustawienia;
 		ustawienia.komputery.clear();
 		ustawienia.nr_gracza = 0;
 
@@ -156,7 +162,7 @@ int main(int argc, const char * argv[]) {
 	string zadanie;
 
 	if (argc > 1)
-		konfiguruj(int(argv[1][0] - '0'));
+		konfiguruj(int(argv[1][0] - '0'), argv);
 
 	do 
 	{

@@ -1,5 +1,38 @@
 #include "misja.h"
 
+
+MisjaUstawienia wczytaj_meta(string sciezka)
+{
+	MisjaUstawienia res;
+	res.komputery.clear();
+
+	ifstream plikmapa;
+	plikmapa.open(sciezka);
+	int liczba_domkow, numer_domku, liczba_parametrow;
+	string parametr;
+	plikmapa >> liczba_domkow;
+
+	// wyznacz liczbę graczy na apie
+	while (plikmapa.good())
+	{
+		plikmapa >> parametr;
+		if (parametr == "gracz")
+		{
+			int num;
+			plikmapa >> num;
+			res.komputery.push_back(num);
+		}
+	}
+
+	sort(res.komputery.begin(), res.komputery.end());
+	res.komputery.erase(unique(res.komputery.begin(), res.komputery.end()), res.komputery.end());
+	res.komputery.erase(res.komputery.begin()); // usun pierwszego
+
+	plikmapa.close();
+
+	return res;
+}
+
 Rozgrywka zwarcie_rozgrywka(string sciezka)
 {
 	Rozgrywka gra;

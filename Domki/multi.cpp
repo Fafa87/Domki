@@ -90,6 +90,11 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
 							rozkaz = new UlepszRozkaz(nullptr);
 							dearchive(*(UlepszRozkaz*)rozkaz);
 						}
+						else if (d[0] == 'P')
+						{
+							rozkaz = new PrzebudujRozkaz(nullptr, TypDomku::kOsada);
+							dearchive(*(PrzebudujRozkaz*)rozkaz);
+						}
 						
 						res.push_back(rozkaz);
 					}
@@ -161,6 +166,12 @@ void multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 				UlepszRozkaz* rozkaz = (UlepszRozkaz*)r;
 				archive(*rozkaz);
 			}
+			else if (IsType<PrzebudujRozkaz>(r))
+			{
+				ss << "P";
+				PrzebudujRozkaz* rozkaz = (PrzebudujRozkaz*)r;
+				archive(*rozkaz);
+			}
 		}
 		printf("%s\n", ss.str().c_str());
 		dane.push_back(ss.str());
@@ -229,6 +240,11 @@ void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
 		else if (IsType<UlepszRozkaz>(r))
 		{
 			UlepszRozkaz * rozkaz = (UlepszRozkaz*)r;
+			rozkaz->kogo = rozgrywka.WskaznikDomek(rozkaz->ser_kogo);
+		}
+		else if (IsType<PrzebudujRozkaz>(r))
+		{
+			PrzebudujRozkaz * rozkaz = (PrzebudujRozkaz*)r;
 			rozkaz->kogo = rozgrywka.WskaznikDomek(rozkaz->ser_kogo);
 		}
 	}

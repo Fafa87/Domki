@@ -113,7 +113,7 @@ int main() {
 
 	auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
 	auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
-	szybkosc_pasek->SetValue(1.0);
+	szybkosc_pasek->SetValue(1.5);
 
 	auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
 	walka_w_polu_ptaszek->SetActive(true);

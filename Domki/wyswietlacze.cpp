@@ -26,7 +26,7 @@ Animation Wyswietlacz::ZaladujAnimacje(string& sciezka)
 		dlugosc_klatki = 600;
 
 	int klatek = (tekstura->getSize().x + dlugosc_klatki / 2) / dlugosc_klatki;
-	for(int i = 0; i < klatek; i++) // TODO trzeba kiedyœ nauczyæ siê czytaæ te¿ w pionie
+	for(int i = 0; i < klatek; i++) // TODO trzeba kiedyï¿½ nauczyï¿½ siï¿½ czytaï¿½ teï¿½ w pionie
 		res.addFrame(sf::IntRect(dlugosc_klatki * i, 0, dlugosc_klatki, tekstura->getSize().y));
 
 	// wczytaj powrotne
@@ -70,8 +70,14 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
 				sf::Vertex(sf::Vector2f(dom.polozenie.x, dom.polozenie.y), sf::Color::Black),
 				sf::Vertex(sf::Vector2f(dokad->polozenie.x, dokad->polozenie.y), sf::Color::Black)
 			};
+			int odleglosc = sqrt(pow(dokad->polozenie.x - dom.polozenie.x, 2) + pow(dokad->polozenie.y - dom.polozenie.y, 2));
+			sf::RectangleShape linijka(sf::Vector2f(odleglosc, 5));
+			linijka.setPosition(linia[0].position);
 
-			okno.draw(linia, 2, sf::Lines);
+			linijka.setRotation(atan2(linia[1].position.y - linia[0].position.y, linia[1].position.x - linia[0].position.x));
+
+			okno.draw(linijka);
+			//okno.draw(linia, 2, sf::Lines);
 		}
 	}
 }
@@ -84,7 +90,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 	for (auto& lud : rozgrywka.armie)
 		wszystkie_obiekty.insert(&lud);
 
-	// usuñ wygl¹dy których ju¿ nie ma
+	// usuï¿½ wyglï¿½dy ktï¿½rych juï¿½ nie ma
 	vector<Twor*> do_usuniecia;
 	for (auto& wyg_map : wyglad_tworow)
 		if (!wszystkie_obiekty.count(wyg_map.first))
@@ -93,17 +99,17 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 	for (auto twor : do_usuniecia)
 		wyglad_tworow.erase(twor);
 
-	// dodaj wygl¹dy których brakuje
+	// dodaj wyglï¿½dy ktï¿½rych brakuje
 	for (auto& twor : wszystkie_obiekty)
 	{
 		if (!wyglad_tworow.count(twor))
 		{
-			// brakuje wiêc utworz nowy obiekt do wyœwietlania
+			// brakuje wiï¿½c utworz nowy obiekt do wyï¿½wietlania
 			sf::RectangleShape kolo(sf::Vector2f(twor->rozmiar, twor->rozmiar));
 		}
 	}
 
-	// uaktualnij wygl¹dy domków
+	// uaktualnij wyglï¿½dy domkï¿½w
 	for (auto& dom : rozgrywka.domki)
 	{
 		if (dom.typdomku == TypDomku::kKuznia)
@@ -114,7 +120,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 			dom.wyglad = Wyglad::kObrona;
 	}
 
-	// wygl¹d tworów zawiera dok³adnie to co chcemy wyœwietliæ, uaktualnijmy ich stan
+	// wyglï¿½d tworï¿½w zawiera dokï¿½adnie to co chcemy wyï¿½wietliï¿½, uaktualnijmy ich stan
 	for (auto& twor : wszystkie_obiekty)
 	{
 		auto wyglad = wyglad_tworow[twor];
@@ -129,7 +135,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 			wysokosc_jednego = obrazek_tworow[twor->wyglad].getFrame(0).height;
 		}
 
-		int wysokosc = twor->rozmiar * wysokosc_jednego / dlugosc_jednego;  // trzeba to gdzieœ potem wyci¹gnaæ
+		int wysokosc = twor->rozmiar * wysokosc_jednego / dlugosc_jednego;  // trzeba to gdzieï¿½ potem wyciï¿½gnaï¿½
 		wyglad.setSize(sf::Vector2f(twor->rozmiar * 2, wysokosc * 2));
 		wyglad.setOrigin(twor->rozmiar, wysokosc);
 		//sf::Color polprzezroczysty = twor->gracz->kolor;
@@ -184,9 +190,13 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 				podpis.setFillColor(sf::Color::White);
 				podpis.setOutlineColor(twor->gracz->kolor);
 				podpis.setString(std::to_string(tarcza));
-				podpis.setPosition(twor->polozenie.x - 15 * podpis.getString().getSize() / 2, twor->polozenie.y - wysokosc * 1.5);
+				podpis.setPosition(twor->polozenie.x - 15 * podpis.getString().getSize() / 2, twor->polozenie.y - wysokosc * 2);
 				okno.draw(podpis);
 			}
+
+			bool lustro = ((Ludek*)twor)->cel->polozenie.x < ((Ludek*)twor)->polozenie.x;
+			if (lustro)
+				wyglad.setScale(-1, 1);
 		}
 
 		okno.draw(wyglad);

@@ -28,13 +28,13 @@ void Rozgrywka::ZniszczLudka(Ludek* ludek)
 void Rozgrywka::ZmienLiczebnosc(Domek & domek, double nowa)
 {
 	domek.liczebnosc = nowa;
-	domek.rozmiar = 30 + domek.poziom + nowa / 25;
+	domek.rozmiar = 30 + domek.poziom + nowa / 100;
 }
 
 void Rozgrywka::ZmienLiczebnosc(Ludek & ludek, double nowa)
 {
 	ludek.liczebnosc = nowa;
-	ludek.rozmiar = 20 + ludek.liczebnosc / 25;
+	ludek.rozmiar = 20 + ludek.liczebnosc / 100;
 }
 
 void Rozgrywka::TracLudki(Ludek & ludek, double ile)

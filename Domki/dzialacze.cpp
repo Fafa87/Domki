@@ -195,6 +195,7 @@ void Ruszacz::WykonajRuchy()
 				przebuduj->kogo->typdomku = przebuduj->naco;
 				przebuduj->kogo->poziom = 1;
 				przebuduj->kogo->liczebnosc -= 50.0;
+				przebuduj->kogo->max_liczebnosc = 100.0;
 			}
 			// TODO ustaw odpowiednio wartości jeśli ulepszenie jest możliwe
 		}
@@ -269,8 +270,8 @@ void Ruszacz::WalczLudkami(float czas)
 			auto spotkanie = rozgrywka->Spotkanie(armia);
 			if (spotkanie != NULL)
 			{
-				rozgrywka->TracLudki(armia, std::max(1.0, 5 * czas * szybkosc));
-				rozgrywka->TracLudki(*spotkanie, std::max(1.0, 5 * czas * szybkosc));
+				rozgrywka->TracLudki(armia, std::max(5.0, 5 * czas * szybkosc));
+				rozgrywka->TracLudki(*spotkanie, std::max(5.0, 5 * czas * szybkosc));
 		
 				if (armia.liczebnosc <= 0)
 				{
@@ -296,18 +297,29 @@ void Ruszacz::Produkuj(float czas)
 	for (Domek& domek : rozgrywka->domki)
 	{
 		if (domek.gracz->aktywny&&domek.liczebnosc == domek.max_liczebnosc);
-		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc&&domek.typdomku == kOsada)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
+		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc&&domek.typdomku == TypDomku::kOsada)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
 		else if(domek.gracz->aktywny&&domek.liczebnosc>domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*5,(double)domek.max_liczebnosc));
 	}
 }
 
 void Ruszacz::Strzelaj(float czas)
 {
-	int sila_strzalu = 10;
+	int sila_strzalu = 5.0;
 	//tego na razie nie ma
-
-
-
+	vector<Ludek*> do_usuniecia;
+	for (Ludek& ludek : rozgrywka->armie)
+		{
+		Domek * domek_cel = ((Domek*)ludek.cel);
+		if (domek_cel->typdomku==TypDomku::kZamek&&domek_cel->gracz->numer!=ludek.gracz->numer&&rozgrywka->Odleglosc(ludek,*domek_cel) < 100.0)
+			{
+			ludek.liczebnosc = std::max(0.0, ludek.liczebnosc - sila_strzalu*(double)domek_cel->poziom*czas);
+			if(ludek.liczebnosc==0.0)do_usuniecia.push_back(&ludek);
+			}
+		}
+	for (auto usunieta : do_usuniecia)
+	{
+		rozgrywka->ZniszczLudka(usunieta);
+	}
 }
 
 WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : skad(skad), dokad(dokad)

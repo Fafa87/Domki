@@ -1,1 +1,0 @@
-BIN\MultiSerwer.exe < MultiGraKlientPolacz.in

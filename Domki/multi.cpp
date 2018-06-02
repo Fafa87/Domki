@@ -8,7 +8,7 @@ Adres multi::Serwer::Postaw()
 {
 	if (nasluchiwacz.listen(85) != sf::Socket::Done)
 		printf("listener buraka!");
-	return Adres("localhost", nasluchiwacz.getLocalPort());
+	return Adres(sf::IpAddress::getLocalAddress().toString(), nasluchiwacz.getLocalPort());
 }
 
 void multi::Serwer::OczekujNaGracza()

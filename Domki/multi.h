@@ -17,6 +17,10 @@
 
 using namespace std;
 
+const int PORT_TCP = 85;
+const int PORT_BROADCAST = 85;
+const int PORT_RECEIVE = 84;
+
 template<class Archive>
 void serialize(Archive & archive,
 	MisjaUstawienia & m)
@@ -137,6 +141,15 @@ namespace multi
 
 		string ip;
 		int port;
+
+		string ToString() { return ip + ":" + to_string(port); }
+
+		bool operator==(const Adres &other) const
+		{
+			if (ip == other.ip)
+				return port == other.port;
+			return false;
+		}
 	};
 
 	struct Zawodnik {
@@ -170,6 +183,7 @@ namespace multi
 	private:
 		sf::TcpListener nasluchiwacz;
 		sf::SocketSelector wtykowiec;
+		sf::UdpSocket rozsylacz;
 	};
 
 	class Klient
@@ -185,5 +199,9 @@ namespace multi
 
 		string nazwa;
 		sf::TcpSocket* wtyk;
+		sf::UdpSocket odbieracz;
+
+		vector<Adres> lista_serwerow;
+		bool SpiszSerwery();
 	};
 }

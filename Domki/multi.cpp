@@ -6,8 +6,10 @@ using namespace multi;
 
 Adres multi::Serwer::Postaw()
 {
-	if (nasluchiwacz.listen(85) != sf::Socket::Done)
+	if (nasluchiwacz.listen(PORT_TCP) != sf::Socket::Done)
 		printf("listener buraka!");
+	if (rozsylacz.bind(PORT_BROADCAST) != sf::Socket::Done)
+		printf("rozsylacz buraka!");
 	return Adres(sf::IpAddress::getLocalAddress().toString(), nasluchiwacz.getLocalPort());
 }
 
@@ -15,7 +17,23 @@ void multi::Serwer::OczekujNaGracza()
 {
 	Zawodnik gracz;
 	gracz.wtyk = new sf::TcpSocket();
-	if (nasluchiwacz.accept(*gracz.wtyk) != sf::Socket::Done)
+	nasluchiwacz.setBlocking(false);
+	sf::Socket::Status status;
+	while ((status = nasluchiwacz.accept(*gracz.wtyk)) == sf::Socket::NotReady)
+	{
+		// wysyłaj swoje położenie wszędzie
+		int wysylaj = 0;
+		if (wysylaj % 10 == 0)
+		{
+			string powitanie = "czesc";
+			auto status = rozsylacz.send(powitanie.c_str(), powitanie.size(), sf::IpAddress::Broadcast, PORT_RECEIVE);
+			if (status != sf::Socket::Done)
+				printf("rozsylacz buraka!");
+		}
+		Sleep(100);
+		wysylaj++;
+	}
+	if (status != sf::Socket::Done)
 	{
 		printf("Serwer::OczekujNaGraczy buraka!\n");
 	}
@@ -24,6 +42,7 @@ void multi::Serwer::OczekujNaGracza()
 		auto nazwa = multi::Pobierz(*gracz.wtyk)[0];
 		gracz.adres = Adres(gracz.wtyk->getRemoteAddress().toString(), gracz.wtyk->getRemotePort());
 		gracz.nazwa = nazwa;
+		nasluchiwacz.setBlocking(true);
 		printf("polaczylem gracza %s\n", gracz.nazwa.c_str());
 
 		ludzie.emplace_back(gracz);
@@ -109,6 +128,7 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
 multi::Klient::Klient(string nazwa)
 {
 	this->nazwa = nazwa;
+	this->odbieracz.bind(PORT_RECEIVE);
 }
 
 void multi::Klient::Podlacz(Adres serwer)
@@ -121,9 +141,35 @@ void multi::Klient::Podlacz(Adres serwer)
 	}
 	else
 	{
-		printf("Polaczony!\n");
+		printf("Polaczony!\n%s\n", serwer.ToString().c_str());
 		multi::Wyslij(*wtyk, nazwa);
 	}
+}
+
+bool multi::Klient::SpiszSerwery()
+{
+	char data[100];
+	sf::IpAddress serwer;
+	unsigned short port;
+	std::size_t received;
+	odbieracz.setBlocking(false);
+	auto status = odbieracz.receive(data, 100, received, serwer, port);
+	data[received] = 0;
+	if (status != sf::Socket::Done) 
+	{
+		printf("Klient::SpiszSerwery buraka!:%d\n", status);
+		return status != sf::Socket::Error;
+	}
+	else if (string(data, received) == "czesc")
+	{
+		Adres nowy_adres(serwer.toString(), (int)port);
+		if (count(lista_serwerow.begin(), lista_serwerow.end(), nowy_adres) == 0)
+		{
+			printf("Serwerek na: %s\n", nowy_adres.ToString().c_str());
+			lista_serwerow.push_back(nowy_adres);
+		}
+	}
+	return true;
 }
 
 pair<bool, MisjaUstawienia> multi::Klient::OczekujNaStart()

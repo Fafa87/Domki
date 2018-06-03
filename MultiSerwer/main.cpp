@@ -56,7 +56,7 @@ void wykonaj(string zadanie)
 	{
 		serwer = new Serwer();
 		auto adres = serwer->Postaw();
-		printf("%s:%d\n", adres.ip.c_str(), adres.port);
+		printf("%s\n", adres.ToString().c_str());
 
 		auto misja_nazwa = zadanie.substr(7);
 		auto misja_sciezka = "Plansza\\" + misja_nazwa;
@@ -75,9 +75,17 @@ void wykonaj(string zadanie)
 	}
 	if (zadanie.find("polacz") == 0)
 	{
-		auto cel = zadanie.substr(7);
-		auto ip_port = split(cel, ':');
-		Adres adres(ip_port[0], stoi(ip_port[1]));
+		Adres adres;
+		if (klient->lista_serwerow.size() == 0)
+		{
+			auto cel = zadanie.substr(7);
+			auto ip_port = split(cel, ':');
+			adres = Adres(ip_port[0], stoi(ip_port[1]));
+		}
+		else 
+		{
+			adres = klient->lista_serwerow.back();
+		}
 		klient->Podlacz(adres);
 	}
 	if (zadanie.find("start") == 0)
@@ -171,6 +179,13 @@ int main(int argc, const char * argv[]) {
 		zadanie = tmp;
 
 		wykonaj(zadanie);
+
+		while (klient != nullptr && klient->lista_serwerow.size() == 0)
+		{
+			if (klient->SpiszSerwery() == false)
+				break;
+			Sleep(100);
+		}
 
 		Sleep(10);
 	} while (zadanie != "k");

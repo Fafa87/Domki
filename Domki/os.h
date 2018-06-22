@@ -2,7 +2,16 @@
 #include <Windows.h>
 #include <vector>
 #include <string>
+
+#include <SFGUI/SFGUI.hpp>
+#include <SFGUI/Widgets.hpp>
 using namespace std;
+
+namespace GUI
+{
+	static sfg::SFGUI sfgui;
+	static sfg::Desktop pulpit;
+}
 
 pair<string, string> split_parent(const string& path);
 

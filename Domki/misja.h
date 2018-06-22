@@ -1,10 +1,11 @@
 ﻿#pragma once
 #include <SFML/Graphics.hpp>
+#include <SFGUI/SFGUI.hpp>
 
 #include "dane.h"
 #include "dzialacze.h"
 #include "wyswietlacze.h"
-#include"si.h"
+#include "si.h"
 
 #include<windows.h>
 #include<fstream>

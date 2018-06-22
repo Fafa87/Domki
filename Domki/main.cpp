@@ -67,9 +67,9 @@ void start_klient(sfg::Desktop& pulpit)
 	pulpit.Add(okno);
 }
 
-int main() {
-	sfg::SFGUI sfgui;
 
+
+int main() {
 	sf::RenderWindow okno_menu(sf::VideoMode(1600, 900), "Domki menu!", sf::Style::None);
 	okno_menu.resetGLStates();
 
@@ -79,22 +79,21 @@ int main() {
 	sf::Sprite background(backtexture);
 	background.setTextureRect({ 0, 0, 1600, 900 });
 
-	sfg::Desktop pulpit;
-	pulpit.LoadThemeFromFile("Grafika\\bazowy.theme");
+	GUI::pulpit.LoadThemeFromFile("Grafika\\bazowy.theme");
 
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
-	pulpit.SetProperty("Window", "BackgroundColor", sf::Color(6, 4, 50));
-	pulpit.SetProperty("Label", "Color", sf::Color::White);
-	pulpit.SetProperty("Label", "FontSize", 28);
-	pulpit.SetProperty("Label#Naglowek", "FontSize", 48);
-	pulpit.SetProperty("ComboBox", "BackgroundColor", sf::Color(0, 50, 120));
-	pulpit.SetProperty("Button", "BackgroundColor", sf::Color(0, 50, 120));
+	GUI::pulpit.SetProperty("Window", "BackgroundColor", sf::Color(6, 4, 50));
+	GUI::pulpit.SetProperty("Label", "Color", sf::Color::White);
+	GUI::pulpit.SetProperty("Label", "FontSize", 28);
+	GUI::pulpit.SetProperty("Label#Naglowek", "FontSize", 48);
+	GUI::pulpit.SetProperty("ComboBox", "BackgroundColor", sf::Color(0, 50, 120));
+	GUI::pulpit.SetProperty("Button", "BackgroundColor", sf::Color(0, 50, 120));
 
 	okno->SetRequisition(sf::Vector2f(600, 900));
 	okno->SetPosition(sf::Vector2f(1000, 0));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
-	auto tytul = sfg::Label::Create("DOMKI 0.5");
+	auto tytul = sfg::Label::Create("DOMKI 0.6");
 	tytul->SetId("Naglowek");
 	auto tabelka = sfg::Table::Create();
 
@@ -125,18 +124,21 @@ int main() {
 		ustawienia.szybkosc = szybkosc_pasek->GetValue();
 		ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
 		ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
+
+		okno->Show(false);
 		misja(ustawienia);
+		okno->Show(true);
 	});
 
 	// multi
 	auto serwer = sfg::Button::Create("Serwer");
 	serwer->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
-		start_serwer(pulpit);
+		start_serwer(GUI::pulpit);
 	});
 
 	auto klient = sfg::Button::Create("Klient");
 	klient->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
-		start_klient(pulpit);
+		start_klient(GUI::pulpit);
 	});
 
 	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 0, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
@@ -157,7 +159,7 @@ int main() {
 	box->Pack(tabelka, false);
 	okno->Add(box);
 
-	pulpit.Add(okno);
+	GUI::pulpit.Add(okno);
 
 	sf::Event event;
 	sf::Clock clock;
@@ -165,7 +167,7 @@ int main() {
 	while (okno_menu.isOpen()) {
 		while (okno_menu.pollEvent(event)) 
 		{
-			pulpit.HandleEvent(event);
+			GUI::pulpit.HandleEvent(event);
 
 			switch (event.type)
 			{
@@ -181,11 +183,11 @@ int main() {
 			}
 		}
 
-		pulpit.Update(clock.restart().asSeconds());
+		GUI::pulpit.Update(clock.restart().asSeconds());
 
 		okno_menu.clear();
 		okno_menu.draw(background);
-		sfgui.Display(okno_menu);
+		GUI::sfgui.Display(okno_menu);
 		okno_menu.display();
 	}
 

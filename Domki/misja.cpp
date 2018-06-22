@@ -159,6 +159,14 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 
 void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
 {
+	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+	okno->SetRequisition(sf::Vector2f(300, 300));
+	okno->SetPosition(sf::Vector2f(100, 100));
+
+	auto trudnosc_etykieta = sfg::Label::Create("BLABLABLA: ");
+	okno->Add(trudnosc_etykieta);
+	GUI::pulpit.Add(okno);
+
 	//Przygotuj sie
 	podpis.setCharacterSize(250);
 	for (int a = 3; a >= 0; a--)
@@ -171,11 +179,17 @@ void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswiet
 		else podpis.setPosition(300, 200);
 		wyswietlacz.Wyswietlaj(window);
 		window.draw(podpis);
+
+		GUI::pulpit.Update(1);
+		GUI::sfgui.Display(window);
+
 		window.display();
 		if (a > 0)Sleep(1000);
 		else Sleep(250);
 	}
 	podpis.setCharacterSize(50);
+
+	GUI::pulpit.Remove(okno);
 }
 
 

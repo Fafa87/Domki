@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "misja.h"
+#include "gui.h"
 #include "os.h"
 
 vector<string> wczytaj_liste_plansz()
@@ -86,6 +87,8 @@ int main() {
 	GUI::pulpit.SetProperty("Label", "Color", sf::Color::White);
 	GUI::pulpit.SetProperty("Label", "FontSize", 28);
 	GUI::pulpit.SetProperty("Label#Naglowek", "FontSize", 48);
+	GUI::pulpit.SetProperty("Label#Alarm", "FontSize", 80);
+	GUI::pulpit.SetProperty("Label#Alarm", "Color", sf::Color::Yellow);
 	GUI::pulpit.SetProperty("ComboBox", "BackgroundColor", sf::Color(0, 50, 120));
 	GUI::pulpit.SetProperty("Button", "BackgroundColor", sf::Color(0, 50, 120));
 

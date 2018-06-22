@@ -60,6 +60,9 @@
     <ClCompile Include="multi_dzialacze.cpp">
       <Filter>Source Files\multi</Filter>
     </ClCompile>
+    <ClCompile Include="gui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">
@@ -97,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="multi_dzialacze.h">
       <Filter>Header Files\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="gui.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

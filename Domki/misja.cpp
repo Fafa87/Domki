@@ -1,4 +1,5 @@
 #include "misja.h"
+#include "gui.h"
 
 
 MisjaUstawienia wczytaj_meta(string sciezka)
@@ -157,28 +158,24 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 	return gra;
 }
 
-void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
+void odliczanie(sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
-	okno->SetRequisition(sf::Vector2f(300, 300));
-	okno->SetPosition(sf::Vector2f(100, 100));
+	okno->SetRequisition(sf::Vector2f(500, 300));
+	GUI::center_window(window, okno);
 
-	auto trudnosc_etykieta = sfg::Label::Create("BLABLABLA: ");
-	okno->Add(trudnosc_etykieta);
+	auto odliczanie_etykieta = sfg::Label::Create("");
+	odliczanie_etykieta->SetId("Alarm");
+	okno->Add(odliczanie_etykieta);
 	GUI::pulpit.Add(okno);
 
-	//Przygotuj sie
-	podpis.setCharacterSize(250);
 	for (int a = 3; a >= 0; a--)
 	{
 		window.clear();
 		wyswietlacz.WyswietlTlo(window);
-		if (a>0)podpis.setString(std::to_string(a));
-		else podpis.setString("RUSZAJ!");
-		if (a>0)podpis.setPosition(700, 200);
-		else podpis.setPosition(300, 200);
+		if (a>0) odliczanie_etykieta->SetText(std::to_string(a));
+		else odliczanie_etykieta->SetText("RUSZAJ!");
 		wyswietlacz.Wyswietlaj(window);
-		window.draw(podpis);
 
 		GUI::pulpit.Update(1);
 		GUI::sfgui.Display(window);
@@ -187,17 +184,38 @@ void odliczanie(sf::Text& podpis, sf::RenderWindow& window, Wyswietlacz& wyswiet
 		if (a > 0)Sleep(1000);
 		else Sleep(250);
 	}
-	podpis.setCharacterSize(50);
 
 	GUI::pulpit.Remove(okno);
 }
 
+void zakonczenie_gry(sf::RenderWindow& window, Gracz& gracz_wygrany, int grajacy)
+{
+	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+	okno->SetRequisition(sf::Vector2f(800, 300));
+
+	auto komunikat_koncowy = sfg::Label::Create("");
+	komunikat_koncowy->SetId("Naglowek");
+	komunikat_koncowy->SetAlignment(sf::Vector2f(0.5, 0.5));
+	okno->Add(komunikat_koncowy);
+	GUI::pulpit.Add(okno);
+
+	if (gracz_wygrany.numer == grajacy)
+		komunikat_koncowy->SetText("GRATULACJE DLA GRACZA " + gracz_wygrany.nazwa);
+	else
+		komunikat_koncowy->SetText("TYM RAZEM ZWYCIEZYL " + gracz_wygrany.nazwa + "\n		LESZCZU!");
+
+	GUI::center_window(window, okno);
+
+	GUI::pulpit.Update(1);
+	GUI::sfgui.Display(window);
+	window.display();
+	
+	Sleep(4000);
+	GUI::pulpit.Remove(okno);
+}
 
 sf::View WysrodkowanyWidok(list<Domek> &domki)
 {
-	double gui_min_X = 300.0, gui_max_X = 800.0;
-	double gui_min_Y = 0, gui_max_Y = 200.0;
-
 	auto minimalny_X = 10000.0, maksymalny_X = 0.0;
 	auto minimalny_Y = 10000.0, maksymalny_Y = 0.0;
 
@@ -209,42 +227,26 @@ sf::View WysrodkowanyWidok(list<Domek> &domki)
 		minimalny_Y = min(minimalny_Y, (double)dom.polozenie.y);
 		maksymalny_Y = max(maksymalny_Y, (double)dom.polozenie.y);
 	}
-
-	// centrum domkow
-	int centrum_X = (maksymalny_X + minimalny_X) / 2;
-	int przesun_domek_X = (300 + 800) / 2 - centrum_X;
-
-	for (auto& dom : domki)
-	{
-		// TODO trzeba ustalić jak to ma działać ostatecznie
-		//dom.polozenie.x += przesun_domek_X;
-	}
-
-	minimalny_X = min(gui_min_X, minimalny_X);
-	minimalny_Y = min(gui_min_Y, minimalny_Y);
-	maksymalny_X = max(gui_min_X, maksymalny_X);
-	maksymalny_Y = max(gui_min_Y, maksymalny_Y);
 	
-	minimalny_X -= 100;
-	maksymalny_X += 100;
+	auto powiekszenie_x = min(minimalny_X, 100.0);
+	minimalny_X -= powiekszenie_x;
+	maksymalny_X += powiekszenie_x;
 
-	minimalny_Y -= 50;
-	maksymalny_Y += 50;
-
-	// przesun aby było większe niż zero
-	int przesun_X = max(0.0, -minimalny_X);
-	int przesun_Y = max(0.0, -minimalny_Y);
-	minimalny_X += przesun_X;
-	maksymalny_X += przesun_X;
-	minimalny_Y += przesun_Y;
-	maksymalny_Y += przesun_Y;
+	auto powiekszenie_y = min(minimalny_Y, 80.0);
+	minimalny_Y -= powiekszenie_y;
+	maksymalny_Y += powiekszenie_y;
 
 	double stosunek = 1600 / 899.0;
-	auto maksymalny_X_z_Y = stosunek * maksymalny_Y;
-	maksymalny_X = max(maksymalny_X_z_Y, maksymalny_X);
-	maksymalny_Y = maksymalny_X / stosunek;
+	auto dlugosc_Y = maksymalny_Y - minimalny_Y;
+	auto dlugosc_X = maksymalny_X - minimalny_X;
 
-	return sf::View(sf::FloatRect(minimalny_X, minimalny_Y, maksymalny_X - minimalny_X, maksymalny_Y - minimalny_Y));
+	auto dlugosc_X_stosunku = stosunek * dlugosc_Y;
+	auto dlugosc_X_z_prop = max(dlugosc_X_stosunku, dlugosc_X);
+	auto dlugosc_Y_z_prop = dlugosc_X_z_prop / stosunek;
+
+	minimalny_X += (dlugosc_X - dlugosc_X_z_prop) / 2;
+
+	return sf::View(sf::FloatRect(minimalny_X, minimalny_Y, dlugosc_X_z_prop, dlugosc_Y_z_prop));
 }
 
 int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
@@ -258,7 +260,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	ustawienia.antialiasingLevel = 8;
 
 	auto videoMode = sf::VideoMode(1600, 899);
-	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::None, ustawienia);
+	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::None, ustawienia); // sf::Style::Fullscreen
 
 	if (misja_ustawienia.nr_gracza == 0)
 		window.setVisible(false);
@@ -267,12 +269,12 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	sf::Font czcionka;
 	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
 
-	sf::Text podpis;
+	/*sf::Text podpis;
 	podpis.setFont(czcionka);
 	podpis.setCharacterSize(50);
 	podpis.setStyle(sf::Text::Bold);
 	podpis.setFillColor(sf::Color::Red);
-	podpis.move(400, 0);
+	podpis.move(400, 0);*/
 
 	// tworzymy rozgrywke
 	//Rozgrywka rozgrywka = prosta_rozgrywka();
@@ -284,8 +286,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 
-	// WysrodkowanyWidok zmienia proporcje i spłaszcza 
-	sf::View view = sf::View(sf::FloatRect(0,0,1600, 900));//   WysrodkowanyWidok(rozgrywka.domki);
+	sf::View view = WysrodkowanyWidok(rozgrywka.domki);
 	window.setView(view);
 
 	//ZMIEN NAZWY GRACZ�W
@@ -314,8 +315,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	ruszacz.rozgrywka = &rozgrywka;
 	ruszacz.szybkosc *= predkosc;
 	
-	//PRYGOTOWANIE ROZGRYWKI
-	odliczanie(podpis, window, wyswietlacz);
+	odliczanie(window, wyswietlacz);
 
 	//czasomierz
 	auto czasomierz = clock();
@@ -366,40 +366,42 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 
 		window.clear();
 		wyswietlacz.WyswietlTlo(window);
-		///FPSY
+		
 
 		czasik = (int)(1.0 / czas + 0.5);
-		podpis.setString("FPSY: " + std::to_string(czasik));
-		podpis.setPosition(300, 0);
-		window.draw(podpis);//FPSY
+		///FPSY
+		//podpis.setString("FPSY: " + std::to_string(czasik));
+		//podpis.setPosition(300, 0);
+		//window.draw(podpis);//FPSY
 
-							///APM
-		podpis.setPosition(700, 0);
+		///APM
+		//podpis.setPosition(700, 0);
 		czas_przeminal = (double)(clock() - czas_przeminal) / CLOCKS_PER_SEC;
-		podpis.setString("APM: " + std::to_string((int)(60 * akcje / czas_przeminal)));
-		window.draw(podpis); //APM
+		//podpis.setString("APM: " + std::to_string((int)(60 * akcje / czas_przeminal)));
+		//window.draw(podpis); //APM
 
 		ruchGracza.Wyswietlaj(window);
 		wyswietlacz.Wyswietlaj(window);
+
 		//ZAKONCZENIE GRY
 		if (rozgrywka.liczba_aktywnych_graczy == 1)  // !rozgrywka.Gracz(nr_gracza).aktywny || 
 		{
-			podpis.setCharacterSize(75);
-			podpis.setPosition(300, 200);
-			if (rozgrywka.Gracz(nr_gracza).aktywny)podpis.setString("GRATULACJE DLA GRACZA");
-			else podpis.setString("TYM RAZEM ZWYCIEZYLA SI (LESZCZU!)");
-			window.draw(podpis);
-			window.display();
-			Sleep(3000);
+			for (auto& g : rozgrywka.gracze)
+			{
+				if (g.aktywny)
+					zakonczenie_gry(window, g, nr_gracza);
+			}
+			//podpis.setCharacterSize(75);
+			//podpis.setPosition(300, 200);
 			window.close();
 		}
-		else
+		/*else
 		{
 			podpis.setCharacterSize(50);
 			podpis.setPosition(1200, 0);
 			podpis.setString(std::to_string(rozgrywka.liczba_aktywnych_graczy));
 			window.draw(podpis);
-		}
+		}*/
 		window.display();
 
 		Sleep(16);

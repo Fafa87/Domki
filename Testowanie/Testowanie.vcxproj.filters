@@ -83,5 +83,8 @@
     <ClCompile Include="..\Domki\Narzedzia\Animation.cpp">
       <Filter>Source Files\narzedzia</Filter>
     </ClCompile>
+    <ClCompile Include="..\Domki\gui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

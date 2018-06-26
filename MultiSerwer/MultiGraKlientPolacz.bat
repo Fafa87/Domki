@@ -1,1 +1,0 @@
-MultiSerwer.exe < MultiGraKlientPolacz.in

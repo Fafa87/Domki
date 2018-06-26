@@ -47,7 +47,7 @@ void multi::Serwer::OczekujNaGracza()
 
 		ludzie.emplace_back(gracz);
 	}
-	printf("gracze po��czeni w liczbie %d\n", ludzie.size());
+	printf("gracze polaczeni w liczbie %d\n", ludzie.size());
 }
 
 void multi::Serwer::Start(MisjaUstawienia ustawienia)
@@ -128,7 +128,6 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
 multi::Klient::Klient(string nazwa)
 {
 	this->nazwa = nazwa;
-	this->odbieracz.bind(PORT_RECEIVE);
 }
 
 void multi::Klient::Podlacz(Adres serwer)
@@ -152,12 +151,15 @@ bool multi::Klient::SpiszSerwery()
 	sf::IpAddress serwer;
 	unsigned short port;
 	std::size_t received;
+	odbieracz.bind(PORT_RECEIVE);
+	Sleep(1000);
 	odbieracz.setBlocking(false);
 	auto status = odbieracz.receive(data, 100, received, serwer, port);
 	data[received] = 0;
 	if (status != sf::Socket::Done) 
 	{
 		printf("Klient::SpiszSerwery buraka!:%d\n", status);
+		odbieracz.unbind();
 		return status != sf::Socket::Error;
 	}
 	else if (string(data, received) == "czesc")
@@ -169,6 +171,7 @@ bool multi::Klient::SpiszSerwery()
 			lista_serwerow.push_back(nowy_adres);
 		}
 	}
+	odbieracz.unbind();
 	return true;
 }
 

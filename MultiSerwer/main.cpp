@@ -50,97 +50,114 @@ void konfiguruj(int l, const char * argv[])
 	}
 }
 
+void komunikat()
+{
+	if (serwer == nullptr && klient == nullptr)
+	{
+		printf("Zdecyduj czy jestes serwerem czy graczem:\n- jesli serwer to wpisz: 'serwer <nazwa_planszy>.txt' lub 'serwer <nr_planszy>'\n- jesli graczem to wpisz: 'klient <nazwa>'\n");
+	}
+	else if (klient != nullptr)
+	{
+		printf("Jestes graczem, musisz sie polaczyc z serwerm. Wpisz: 'polacz' lub 'polacz <adres_ip_serwera>'\n");
+	}
+	else if (serwer != nullptr)
+	{
+		printf("Jestes serwerem, gracze sie podlaczyli, napisz 'start' aby zaczac gre:\n");
+	}
+}
+
 void wykonaj(string zadanie)
 {
-	if (zadanie.find("serwer") == 0)
+	if (serwer == nullptr && klient == nullptr)
 	{
-		serwer = new Serwer();
-		auto adres = serwer->Postaw();
-		printf("%s\n", adres.ToString().c_str());
-
-		auto misja_nazwa = zadanie.substr(7);
-		auto misja_sciezka = "Plansza\\" + misja_nazwa;
-
-		misja_ustawienia = wczytaj_meta(misja_sciezka);
-		misja_ustawienia.nazwa = misja_nazwa;
-		int liczba_graczy = misja_ustawienia.komputery.size() + 1;
-
-		for(int i=0;i<liczba_graczy;i++)
-			serwer->OczekujNaGracza();
-	}
-	if (zadanie.find("klient") == 0)
-	{
-		klient = new Klient(zadanie.substr(7));
-		printf("Klient: %s\n", klient->nazwa.c_str());
-	}
-	if (zadanie.find("polacz") == 0)
-	{
-		Adres adres;
-		if (klient->lista_serwerow.size() == 0)
+		if (zadanie.find("serwer") == 0)
 		{
-			auto cel = zadanie.substr(7);
-			auto ip_port = split(cel, ':');
-			adres = Adres(ip_port[0], stoi(ip_port[1]));
-		}
-		else 
-		{
-			adres = klient->lista_serwerow.back();
-		}
-		klient->Podlacz(adres);
-	}
-	if (zadanie.find("start") == 0)
-	{
-		MisjaUstawienia ustawienia = misja_ustawienia;
-		ustawienia.komputery.clear();
-		ustawienia.nr_gracza = 0;
+			serwer = new Serwer();
+			auto adres = serwer->Postaw();
+			printf("%s\n", adres.ToString().c_str());
 
-		serwer->Start(ustawienia);
-
-		//serwer->ludzie[0].wtyk->setBlocking(false);
-		//serwer->ludzie[1].wtyk->setBlocking(false);
-		
-		SerwerowyRuszacz ruszacz(*serwer);
-
-		misja(ustawienia, ruszacz);
-
-		string test = "Rozgrywka:A";
-		/*while (1)
-		{
-			auto& res = serwer->Odbierz();
-			for (auto s : res)
-				printf("odebralem: %s\n", s.c_str());
-
-			Sleep(400);
-			serwer->Rozeslij(test);
-			test[10] = (test[10] + 1) % 150;
-		}*/
-	}
-	if (zadanie.find("gotowy") == 0)
-	{
-		auto res = klient->OczekujNaStart();
-		printf("startuje misje %s\n", res.second.nazwa.c_str());
-
-		string test = "A";
-		klient->wtyk->setBlocking(false);
-
-		KlientowyRuszacz ruszacz(*klient);
-
-		res.second.komputery.clear();
-		misja(res.second, ruszacz);
-
-		/*while (1)
-		{
-			auto& res = klient->Odbierz();
-			if (res.first)
+			auto misja_nazwa = zadanie.substr(7);
+			if (misja_nazwa.size() == 1)
 			{
-				printf("sync rozgr: %s\n", res.second.c_str());
+				misja_nazwa = wczytaj_liste_plansz()[atoi(misja_nazwa.c_str())];
 			}
+			auto misja_sciezka = "Plansza\\" + misja_nazwa;
 
-			Sleep(600);
-			klient->Wyslij(test);
-			test[0] = (test[0] + 1) % 150;
-		}*/
+			misja_ustawienia = wczytaj_meta(misja_sciezka);
+			misja_ustawienia.nazwa = misja_nazwa;
+			int liczba_graczy = misja_ustawienia.komputery.size() + 1;
+
+			printf("Stworzona gra na planszy %s\n", misja_nazwa.c_str());
+			printf("Oczekuj na podlaczenie %d graczy\n", liczba_graczy);
+
+			for (int i = 0; i<liczba_graczy; i++)
+				serwer->OczekujNaGracza();
+		}
+		if (zadanie.find("klient") == 0)
+		{
+			klient = new Klient(zadanie.substr(7));
+			printf("Klient: %s\n", klient->nazwa.c_str());
+		}
 	}
+	else if (klient != nullptr)
+	{
+		if (zadanie.find("polacz") == 0)
+		{
+			Adres adres;
+			if (klient->lista_serwerow.size() == 0)
+			{
+				auto cel = zadanie.substr(7);
+				auto ip_port = split(cel, ':');
+				adres = Adres(ip_port[0], stoi(ip_port[1]));
+			}
+			else
+			{
+				adres = klient->lista_serwerow.back();
+			}
+			klient->Podlacz(adres);
+
+			// nie ma co czekac na gotowy
+			//if (zadanie.find("gotowy") == 0)
+			{
+				auto res = klient->OczekujNaStart();
+				printf("startuje misje %s\n", res.second.nazwa.c_str());
+
+				string test = "A";
+				klient->wtyk->setBlocking(false);
+
+				KlientowyRuszacz ruszacz(*klient);
+
+				res.second.komputery.clear();
+				misja(res.second, ruszacz);
+				
+				klient->wtyk->setBlocking(true);
+			}
+		}
+	}
+	else if (serwer != nullptr)
+	{
+		if (zadanie.find("start") == 0)
+		{
+			MisjaUstawienia ustawienia = misja_ustawienia;
+			ustawienia.komputery.clear();
+			ustawienia.nr_gracza = 0;
+
+			serwer->Start(ustawienia);
+
+			//serwer->ludzie[0].wtyk->setBlocking(false);
+			//serwer->ludzie[1].wtyk->setBlocking(false);
+
+			SerwerowyRuszacz ruszacz(*serwer);
+
+			misja(ustawienia, ruszacz);
+
+			string test = "Rozgrywka:A";
+			
+			delete serwer;
+			serwer = nullptr;
+		}
+	}
+	
 	if (zadanie.find("odbierz") == 0)
 	{
 		vector<vector<string>> wiad;
@@ -174,17 +191,17 @@ int main(int argc, const char * argv[]) {
 
 	do 
 	{
+		komunikat();
 		char tmp[1000];
 		gets_s(tmp);
 		zadanie = tmp;
 
 		wykonaj(zadanie);
 
-		while (klient != nullptr && klient->lista_serwerow.size() == 0)
-		{
-			if (klient->SpiszSerwery() == false)
-				break;
-			Sleep(100);
+		if (klient != nullptr)
+		{			
+			klient->lista_serwerow.clear();
+			klient->SpiszSerwery();
 		}
 
 		Sleep(10);

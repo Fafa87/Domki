@@ -7,12 +7,6 @@
 #include "gui.h"
 #include "os.h"
 
-vector<string> wczytaj_liste_plansz()
-{
-	return get_all_names_within_folder("Plansza");
-}
-
-
 void start_serwer(sfg::Desktop& pulpit)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::TOPLEVEL);

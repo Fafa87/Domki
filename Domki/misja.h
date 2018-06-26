@@ -25,6 +25,8 @@ struct MisjaUstawienia
 	vector<int> komputery = { 2, 3, 4 };
 };
 
+vector<string> wczytaj_liste_plansz();
+
 MisjaUstawienia wczytaj_meta(string sciezka);
 
 Rozgrywka zwarcie_rozgrywka(string sciezka);

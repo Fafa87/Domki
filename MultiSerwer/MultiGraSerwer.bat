@@ -1,1 +1,0 @@
-MultiSerwer.exe 0 trojkat.txt

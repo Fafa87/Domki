@@ -1,6 +1,8 @@
 #include "misja.h"
 #include "gui.h"
 
+#include <SFML/Audio.hpp>
+
 vector<string> wczytaj_liste_plansz()
 {
 	return get_all_names_within_folder("Plansza");
@@ -173,6 +175,16 @@ void odliczanie(sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
 	okno->Add(odliczanie_etykieta);
 	GUI::pulpit.Add(okno);
 
+	sf::SoundBuffer pikPikBuffer;
+	pikPikBuffer.loadFromFile("Muzyka\\PikPik.ogg");
+
+	sf::SoundBuffer pukBuffer;
+	pukBuffer.loadFromFile("Muzyka\\Puk.ogg");
+
+	sf::Sound pikPik(pikPikBuffer);
+	sf::Sound puk(pukBuffer);
+	puk.setPitch(2);
+
 	for (int a = 3; a >= 0; a--)
 	{
 		window.clear();
@@ -185,8 +197,16 @@ void odliczanie(sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
 		GUI::sfgui.Display(window);
 
 		window.display();
-		if (a > 0)Sleep(1000);
-		else Sleep(250);
+		if (a > 0)
+		{
+			pikPik.play();
+			Sleep(1000);
+		}
+		else
+		{
+			puk.play();
+			Sleep(500);
+		}
 	}
 
 	GUI::pulpit.Remove(okno);
@@ -203,8 +223,15 @@ void zakonczenie_gry(sf::RenderWindow& window, Gracz& gracz_wygrany, int grajacy
 	okno->Add(komunikat_koncowy);
 	GUI::pulpit.Add(okno);
 
+	sf::SoundBuffer oklaskiBuffer;
+	oklaskiBuffer.loadFromFile("Muzyka\\Oklaski.ogg");
+	sf::Sound oklaski(oklaskiBuffer);
+
 	if (gracz_wygrany.numer == grajacy)
+	{
+		oklaski.play();
 		komunikat_koncowy->SetText("GRATULACJE DLA GRACZA " + gracz_wygrany.nazwa);
+	}
 	else
 		komunikat_koncowy->SetText("TYM RAZEM ZWYCIEZYL " + gracz_wygrany.nazwa + "\n		LESZCZU!");
 
@@ -294,6 +321,8 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	wyswietlacz.Zaladuj(misja_ustawienia.skorka);
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
+	Muzykant muzykant(rozgrywka);
+	muzykant.Zaladuj(misja_ustawienia.skorka);
 
 	sf::View view = WysrodkowanyWidok(rozgrywka.domki);
 	window.setView(view);
@@ -325,6 +354,8 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	ruszacz.szybkosc *= predkosc;
 	
 	odliczanie(window, wyswietlacz);
+
+	muzykant.Przygrywaj();
 
 	//czasomierz
 	auto czasomierz = clock();
@@ -372,6 +403,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 		}
 
 		ruszacz.Ruszaj(czas);
+		muzykant.GrajEfekty(ruszacz);
 
 		window.clear();
 		wyswietlacz.WyswietlTlo(window);
@@ -395,6 +427,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 		//ZAKONCZENIE GRY
 		if (rozgrywka.liczba_aktywnych_graczy == 1)  // !rozgrywka.Gracz(nr_gracza).aktywny || 
 		{
+			muzykant.Zamilcz();
 			for (auto& g : rozgrywka.gracze)
 			{
 				if (g.aktywny)

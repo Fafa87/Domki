@@ -51,6 +51,9 @@
     <ClCompile Include="..\Domki\gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Domki\muzyka.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Domki\multi.h">
@@ -63,6 +66,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Domki\Narzedzia\Animation.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domki\muzyka.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

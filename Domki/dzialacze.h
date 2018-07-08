@@ -80,6 +80,8 @@ public:
 
 	virtual ~Ruszacz() {}
 
+	int ile_armii_idzie = 0;
+	int armie_ktore_dotarly = 0;
 protected:
 	vector<Rozkaz*> kolejka_do_wykonania;
 

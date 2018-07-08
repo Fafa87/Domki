@@ -2,6 +2,7 @@
 #include <SFGUI/Widgets.hpp>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "misja.h"
 #include "gui.h"
@@ -63,10 +64,11 @@ void start_klient(sfg::Desktop& pulpit)
 }
 
 
-
 int main() {
 	sf::RenderWindow okno_menu(sf::VideoMode(1600, 900), "Domki menu!", sf::Style::None);
 	okno_menu.resetGLStates();
+
+	sf::Music muzyka;
 
 	sf::Texture backtexture;
 	backtexture.loadFromFile("Grafika\\houseofhouses.png");
@@ -122,8 +124,10 @@ int main() {
 		ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
 		ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
 
+		muzyka.stop();
 		okno->Show(false);
 		misja(ustawienia);
+		muzyka.play();
 		okno->Show(true);
 	});
 
@@ -160,6 +164,12 @@ int main() {
 
 	sf::Event event;
 	sf::Clock clock;
+
+	if (muzyka.openFromFile("Muzyka\\Tytulowa.ogg"))
+	{	
+		muzyka.setVolume(50);
+		muzyka.play();
+	}
 
 	while (okno_menu.isOpen()) {
 		while (okno_menu.pollEvent(event)) 

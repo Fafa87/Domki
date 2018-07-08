@@ -5,6 +5,7 @@
 #include "dane.h"
 #include "dzialacze.h"
 #include "wyswietlacze.h"
+#include "muzyka.h"
 #include "si.h"
 
 #include<windows.h>

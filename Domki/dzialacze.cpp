@@ -130,6 +130,8 @@ Ruszacz::Ruszacz()
 
 void Ruszacz::Ruszaj(float czas)
 {
+	ile_armii_idzie = armie_ktore_dotarly = 0;
+
 	WykonajRuchy();
 	PrzesuwajLudkow(czas);
 	WalczLudkami(czas);
@@ -209,6 +211,7 @@ void Ruszacz::WykonajRuchy()
 void Ruszacz::PrzesuwajLudkow(float czas)
 {
 	double przesuniecie = szybkosc * szybkosc_ruchu;
+	ile_armii_idzie = rozgrywka->armie.size();
 	for (Ludek& armia : rozgrywka->armie)
 	{
 		if (rozgrywka->Spotkanie(armia) == NULL)
@@ -240,6 +243,7 @@ void Ruszacz::WalczLudkami(float czas)
 				Domek* cel = (Domek*)armia.cel;
 				if (armia.gracz == armia.cel->gracz)
 				{
+					armie_ktore_dotarly++;
 					rozgrywka->ZmienLiczebnosc(*cel, armia.liczebnosc + cel->liczebnosc);
 				}
 				else
@@ -259,7 +263,8 @@ void Ruszacz::WalczLudkami(float czas)
 					{
 						rozgrywka->ZabierzTwor(cel);
 						cel->gracz = armia.gracz;
-						armia.gracz->liczba_tworow++;						
+						armia.gracz->liczba_tworow++;		
+						armie_ktore_dotarly++;
 					}
 					rozgrywka->ZmienLiczebnosc(*cel, std::abs(nowa_liczebnosc));
 				}
@@ -267,7 +272,6 @@ void Ruszacz::WalczLudkami(float czas)
 				rozgrywka->ZmienLiczebnosc(armia, std::abs(0));
 				do_usuniecia.push_back(&(*it));
 			}
-			// jak to nie jest domek to nic nie r�bmy, mo�e kiedy� b�dziemy?
 		}
 		else {
 			auto spotkanie = rozgrywka->Spotkanie(armia);

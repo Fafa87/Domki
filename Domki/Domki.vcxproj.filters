@@ -63,6 +63,9 @@
     <ClCompile Include="gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="muzyka.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">
@@ -102,6 +105,9 @@
       <Filter>Header Files\multi</Filter>
     </ClInclude>
     <ClInclude Include="gui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="muzyka.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

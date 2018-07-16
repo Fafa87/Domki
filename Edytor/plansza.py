@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 class Plansza:
 
     def __init__(self, h, w, d=1):
@@ -23,8 +26,8 @@ class Plansza:
         return h, w
 
     def pole_na_punkt(self, h, w):
-        y = h*self.d + 0.5*self.d
-        x = w*self.d + 0.5*self.d
+        y = (h*self.d + 0.5*self.d)
+        x = (w*self.d + 0.5*self.d)
         return y, x
 
     def wstawianie_obiektu(self,h,w,obiekt):
@@ -34,13 +37,66 @@ class Plansza:
         elif self.siatka[h][w] != '.':
             return False
 
+    def zapytanie_punkt(self, y, x):
+        h, w = self.punkt_na_pole(y, x)
+        if self.siatka[h][w] == '.':
+            return "Pole wolne"
+        else:
+            return "Na polu stoi {}".format(self.siatka[h][w])
+
+    def zapytanie_pole(self, h, w):
+        if self.siatka[h][w] == '.':
+            return "Pole wolne"
+        else:
+            return "Na polu stoi {}".format(self.siatka[h][w])
+
+    def czyszczenie_pola(self, h, w):
+        if self.siatka[h][w] == '.':
+            return "Pole wolne"
+        else:
+            self.siatka[h][w] = '.'
+
+    def czyszczenie_przez_punkt(self, y, x):
+        h, w = self.punkt_na_pole(y, x)
+        if self.siatka[h][w] == '.':
+            return "Pole wolne"
+        else:
+            self.siatka[h][w] = '.'
+
+    def ile_pol(self):
+        return self.h, self.w
+
+    def ile_punktow(self):
+        y = self.h * self.d
+        x = self.w * self.d
+        return y, x
+
+    def siatka_prezentacja(self):
+        siata = deepcopy(self.siatka)
+        for i in range(self.h):
+            for j in range(self.w):
+                if len(siata[i][j])>1:
+                    siata[i][j] = siata[i][j][0]
+        return siata
+
+    def prezentacja(self):
+        siatka = self.siatka_prezentacja()
+        lista = []
+        for i in range(self.h):
+            x = ("       ".join(siatka[i]))
+            lista.append(x)
+        for i in range(self.h):
+            print(lista[i])
 
 
 
-plansza = Plansza(3,3)
-print(plansza)
 
 
+if __name__ == '__main__':
+    plansza = Plansza(5, 5)
+    plansza.wstawianie_obiektu(0, 0, 'aj')
+    plansza.wstawianie_obiektu(0, 1, 'ba')
+    plansza.prezentacja()
 
 
 
@@ -53,9 +109,5 @@ print(plansza)
 
 
 """
-Zapytanie o zawartość pola (H, W) lub przez punkt (Y, X).
-Możliwość wyczyszczenia pola (H, W) lub przez punkt (Y, X).
-Aktualny rozmiar planszy w polach i w rozmiarze.
 Obrót całej planszy, odbicia lustrzane poziome i pionowe.
-Prezentacja zawartości planszy w konsoli.
 Podaj obiekty i ich położenia"""

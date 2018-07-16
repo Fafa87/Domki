@@ -15,30 +15,82 @@ class TestPlansza(unittest.TestCase):
 
     def test_punkt_na_pole(self):
         nowa_plansza = Plansza(10, 10, 10)
-        self.assertEqual((0, 0), nowa_plansza.punkt_na_pole(5, 5))
-        nowa_plansza = Plansza(10, 10, 10)
+        self.assertEqual((0, 0), nowa_plansza.punkt_na_pole(1, 9))
+        self.assertEqual((10, 10), nowa_plansza.punkt_na_pole(100, 100))
         self.assertEqual((1, 2), nowa_plansza.punkt_na_pole(15, 25))
-        nowa_plansza = Plansza(10, 10, 10)
         self.assertEqual((1, 2), nowa_plansza.punkt_na_pole(18, 23))
+        nowa_plansza = Plansza(10, 10, 1)
+        self.assertEqual((0, 0), nowa_plansza.punkt_na_pole(0, 0))
+        self.assertEqual((1, 0), nowa_plansza.punkt_na_pole(1, 0))
+
 
     def test_pole_na_punkt(self):
         nowa_plansza = Plansza(10, 10, 10)
         self.assertEqual((5, 5), nowa_plansza.pole_na_punkt(0, 0))
+        nowa_plansza = Plansza(10, 10)
+        self.assertEqual((1.5, 1.5), nowa_plansza.pole_na_punkt(1, 1))
 
     def test_wstawianie_obiektu(self):
         nowa_plansza = Plansza(3, 3)
-        """self.assertRaises(("Nie ma takiego pola"), nowa_plansza.wstawianie_obiektu(-1, 11, "obiekt"))"""
+        with self.assertRaises(IndexError) as error:
+            nowa_plansza.wstawianie_obiektu(-1, 11, "obiekt")
+        self.assertEqual("list index out of range", str(error.exception))
         nowa_plansza.wstawianie_obiektu(1, 1, "obiekt")
-        self.assertEqual(False, nowa_plansza.wstawianie_obiektu(1, 1, "obiekt"))
+        self.assertFalse(nowa_plansza.wstawianie_obiektu(1, 1, "obiekt"))
         nowa_plansza = Plansza(3, 3)
-        self.assertEqual(True, nowa_plansza.wstawianie_obiektu(0, 0, "obiekt"))
+        self.assertTrue(nowa_plansza.wstawianie_obiektu(0, 0, "obiekt"))
 
     def test_wyglad_planszy(self):
         nowa_plansza = Plansza(3, 3)
         self.assertEqual("[['.', '.', '.'], ['.', '.', '.'], ['.', '.', '.']]", str(nowa_plansza))
 
+    def test_zapytanie_punkt(self):
+        nowa_plansza = Plansza(20, 20)
+        self.assertEqual("Pole wolne", nowa_plansza.zapytanie_punkt(5, 5))
+        nowa_plansza.wstawianie_obiektu(4, 4, "obiekt")
+        self.assertEqual((4.5, 4.5), nowa_plansza.pole_na_punkt(4,4))
+        self.assertEqual("Na polu stoi obiekt", nowa_plansza.zapytanie_punkt(4, 4))
 
-"""Wstawianie obiektu (tekstu) do podanego pola (H, W) (rzuca wyjątek gdy H < 0 lub W < 0 lub gdy pole zajęte)."""
+    def test_zapytanie_pole(self):
+        nowa_plansza = Plansza(20, 20)
+        self.assertEqual("Pole wolne", nowa_plansza.zapytanie_pole(5, 5))
+        nowa_plansza.wstawianie_obiektu(4, 4, "obiekt")
+        self.assertEqual("Na polu stoi obiekt", nowa_plansza.zapytanie_pole(4, 4))
+
+    def test_czyszczenie_pola(self):
+        nowa_plansza = Plansza(10, 10)
+        nowa_plansza.wstawianie_obiektu(4, 4, "obiekt")
+        self.assertEqual('Na polu stoi obiekt', nowa_plansza.zapytanie_pole(4, 4))
+        nowa_plansza.wstawianie_obiektu(3, 4, "obiekt")
+        nowa_plansza.czyszczenie_pola(4, 4)
+        self.assertEqual('Pole wolne', nowa_plansza.zapytanie_pole(4, 4))
+        self.assertEqual('Na polu stoi obiekt', nowa_plansza.zapytanie_pole(3, 4))
+
+    def test_czyszczenie_przez_punkt(self):
+        nowa_plansza = Plansza(10, 10)
+        nowa_plansza.wstawianie_obiektu(4, 4, "obiekt")
+        self.assertEqual('Na polu stoi obiekt', nowa_plansza.zapytanie_pole(4, 4))
+        nowa_plansza.wstawianie_obiektu(3, 4, "obiekt")
+        nowa_plansza.czyszczenie_przez_punkt(4, 4)
+        self.assertEqual('Pole wolne', nowa_plansza.zapytanie_pole(4, 4))
+        self.assertEqual('Na polu stoi obiekt', nowa_plansza.zapytanie_pole(3, 4))
+
+    def test_ile_pol(self):
+        nowa_plansza = Plansza(10,10)
+        nowa_plansza1 = Plansza(0,1)
+        nowa_plansza2 = Plansza(0,0)
+        self.assertEqual((10,10), nowa_plansza.ile_pol())
+        self.assertEqual((0,1), nowa_plansza1.ile_pol())
+        self.assertEqual((0,0), nowa_plansza2.ile_pol())
+
+    def test_ile_punktow(self):
+        nowa_plansza = Plansza(10,10,10)
+        nowa_plansza1 = Plansza(0,1,10)
+        nowa_plansza2 = Plansza(0,0,100)
+        self.assertEqual((100,100), nowa_plansza.ile_punktow())
+        self.assertEqual((0,10), nowa_plansza1.ile_punktow())
+        self.assertEqual((0,0), nowa_plansza2.ile_punktow())
+
 
 if __name__ == '__main__':
     unittest.main()

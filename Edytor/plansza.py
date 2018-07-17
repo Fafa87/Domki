@@ -96,10 +96,7 @@ class Plansza:
                     slownik[(i, j)] = self.siatka[i][j]
                 else:
                     continue
-        if slownik:
-            return slownik
-        else:
-            return False
+        return slownik
 
     def lustro_poz(self):
         nowa_siatka = []
@@ -114,10 +111,7 @@ class Plansza:
 
     def obrot_90(self):
         self.siatka = list(zip(*self.siatka[::-1]))
-        nowa_siatka = []
-        for i in range(len(self.siatka)):
-            nowa_siatka.append(list(self.siatka[i]))
-        self.siatka = nowa_siatka
+        self.siatka = list(map(list, self.siatka))
         return self.siatka
 
     def obrot_stopnie(self, stopnie):

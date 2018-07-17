@@ -93,7 +93,7 @@ class TestPlansza(unittest.TestCase):
 
     def test_wypisz_obiekty(self):
         nowa_plansza = Plansza(2,2)
-        self.assertFalse(nowa_plansza.wypisz_obiekty())
+        self.assertEqual({}, nowa_plansza.wypisz_obiekty())
         nowa_plansza.wstawianie_obiektu(1,1,"dab")
         self.assertEqual({(1,1): "dab"}, nowa_plansza.wypisz_obiekty())
         nowa_plansza.wstawianie_obiektu(1,0,"abra")

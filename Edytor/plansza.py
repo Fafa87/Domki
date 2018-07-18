@@ -15,6 +15,9 @@ class Plansza:
     def __repr__(self):
         return str(self.siatka)
 
+    def __str__(self):
+        return self.prezentacja()
+
     def wielkosc_planszy(self):
         px_h = self.h*self.d
         px_w = self.w*self.d
@@ -30,7 +33,7 @@ class Plansza:
         x = (w*self.d + 0.5*self.d)
         return y, x
 
-    def wstawianie_obiektu(self,h,w,obiekt):
+    def wstaw(self, h, w, obiekt):
         if self.siatka[h][w] == '.':
             self.siatka[h][w] = obiekt
             return True
@@ -39,34 +42,28 @@ class Plansza:
 
     def zapytanie_punkt(self, y, x):
         h, w = self.punkt_na_pole(y, x)
-        if self.siatka[h][w] == '.':
-            return "Pole wolne"
-        else:
-            return self.siatka[h][w]
+        return self.zapytanie_pole(h, w)
 
     def zapytanie_pole(self, h, w):
         if self.siatka[h][w] == '.':
-            return "Pole wolne"
+            return None
         else:
             return self.siatka[h][w]
 
     def czyszczenie_pola(self, h, w):
         if self.siatka[h][w] == '.':
-            return "Pole wolne"
+            return None
         else:
             self.siatka[h][w] = '.'
 
     def czyszczenie_przez_punkt(self, y, x):
         h, w = self.punkt_na_pole(y, x)
-        if self.siatka[h][w] == '.':
-            return "Pole wolne"
-        else:
-            self.siatka[h][w] = '.'
+        return self.czyszczenie_pola(h, w)
 
-    def ile_pol(self):
+    def wielkosc_planszy_pola(self):
         return self.h, self.w
 
-    def ile_punktow(self):
+    def wielkosc_planszy_punkty(self):
         y = self.h * self.d
         x = self.w * self.d
         return y, x
@@ -85,10 +82,9 @@ class Plansza:
         for i in range(self.h):
             x = (" ".join(siatka[i]))
             lista.append(x)
-        for i in range(self.h):
-            print(lista[i])
+        return "\n".join(lista)
 
-    def wypisz_obiekty(self):
+    def podaj_obiekty(self):
         slownik = {}
         for i in range(len(self.siatka)):
             for j in range(len(self.siatka[i])):
@@ -148,17 +144,12 @@ if __name__ == '__main__':
     plansza.prezentacja()
     print("________________")"""
     plansza = Plansza(4, 4)
-    plansza.wstawianie_obiektu(0, 0, 'aj')
-    plansza.wstawianie_obiektu(0, 1, 'ba')
-    plansza.wstawianie_obiektu(1, 0, 'ca')
-    print(plansza.obrot_90())
+    plansza.wstaw(0, 0, 'aj')
+    plansza.wstaw(0, 1, 'ba')
+    plansza.wstaw(1, 0, 'ca')
     plansza.prezentacja()
-    print(plansza.obrot_90())
-    plansza.prezentacja()
-    plansza.obrot_stopnie(180)
-    plansza.prezentacja()
-    plansza.obrot_stopnie(90)
-    plansza.prezentacja()
+    print(plansza.prezentacja())
+    print(plansza)
 
 
 

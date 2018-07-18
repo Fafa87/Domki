@@ -1,3 +1,4 @@
+# -*- coding: ISO-8859-2 -*-
 import unittest
 from plansza import Plansza
 

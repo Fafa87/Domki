@@ -8,12 +8,6 @@ class TestPlansza(unittest.TestCase):
         nowa_plansza = Plansza(1, 1)
         self.assertEqual(1, nowa_plansza.d)
 
-    def test_wielkosc_planszy(self):
-        nowa_plansza = Plansza(1, 1, 10)
-        self.assertEqual((10, 10), nowa_plansza.wielkosc_planszy())
-        nowa_plansza = Plansza(2, 3, 10)
-        self.assertEqual((20, 30), nowa_plansza.wielkosc_planszy())
-
     def test_punkt_na_pole(self):
         nowa_plansza = Plansza(10, 10, 10)
         self.assertEqual((0, 0), nowa_plansza.punkt_na_pole(1, 9))
@@ -43,7 +37,7 @@ class TestPlansza(unittest.TestCase):
 
     def test_wyglad_planszy(self):
         nowa_plansza = Plansza(3, 3)
-        self.assertEqual("[['.', '.', '.'], ['.', '.', '.'], ['.', '.', '.']]", str(nowa_plansza))
+        self.assertEqual(". . .\n. . .\n. . .", str(nowa_plansza))
 
     def test_zapytanie_punkt(self):
         nowa_plansza = Plansza(20, 20)

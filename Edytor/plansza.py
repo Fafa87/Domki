@@ -19,11 +19,6 @@ class Plansza:
     def __str__(self):
         return self.prezentacja()
 
-    def wielkosc_planszy(self):
-        px_h = self.h*self.d
-        px_w = self.w*self.d
-        return px_h, px_w
-
     def punkt_na_pole(self, y, x):
         h = int(y/self.d)
         w = int(x/self.d)

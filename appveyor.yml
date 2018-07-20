@@ -1,0 +1,21 @@
+version: 0.6.{build}
+environment:
+  PYTHON: C:\Python35
+image:
+- Visual Studio 2017
+- Visual Studio 2015
+configuration: Release
+before_build:
+- cmd: ''
+install: 
+- "%PYTHON%/Scripts/pip.exe install nose"
+build:
+  project: Domki.sln
+  verbosity: minimal
+after_build:
+- cmd: xcopy /Y Grafika BIN\Grafika\
+test_script: 
+- "%PYTHON%/Scripts/nosetests Edytor" 
+artifacts:
+- path: BIN
+  name: Domki

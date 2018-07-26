@@ -42,7 +42,7 @@ class TestPlansza(unittest.TestCase):
 
     def test_wyglad_planszy(self):
         nowa_plansza = Plansza(3, 3)
-        self.assertEqual("[['.', '.', '.'], ['.', '.', '.'], ['.', '.', '.']]", str(nowa_plansza))
+        self.assertEqual(". . .\n. . .\n. . .", str(nowa_plansza))
 
     def test_zapytanie_punkt(self):
         nowa_plansza = Plansza(20, 20)

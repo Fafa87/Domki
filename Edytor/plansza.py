@@ -72,8 +72,7 @@ class Plansza:
         siata = deepcopy(self.siatka)
         for i in range(self.h):
             for j in range(self.w):
-                if len(siata[i][j])>1:
-                    siata[i][j] = siata[i][j][0]
+                siata[i][j] = str(siata[i][j])[0]
         return siata
 
     def prezentacja(self):

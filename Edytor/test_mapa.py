@@ -18,11 +18,12 @@ class TestMapa(unittest.TestCase):
         lista = mapka.wczytaj_domki(slowniczek)
         self.assertEqual((400, 1100 , [6], [4, 6, 9, 8]), (lista[1].x, lista[1].y, lista[0].lista_sasiadow, lista[1].lista_sasiadow))
 
-    def test_statystyki(self):
+    def test_pokaz_statystyki(self):
         mapka = Mapa(10, 10, "nowa_mapa", 100)
+        slowniczek = mapka.wczytaj_txt('mapa_testowa.txt')
+        lista = mapka.wczytaj_domki(slowniczek)
+        self.assertEqual('Liczba graczy: 2\nLiczba dróg: 5\nDrogi:[(2, 6), (2, 9), (2, 8), (1, 6), (2, 4)]\nLiczba domków: 2\n', mapka.pokaz_statystyki(mapka.statystyki()))
 
-        """for i in
-        return "{}\n".format(self.prezentacja)"""
 
-    # Wypisać się w konsoli: plansza, drogi, statystyki
+    # Wypisać się w konsoli: plansza, , statystyki
     # (#domków, #graczy, odległość między graczami).

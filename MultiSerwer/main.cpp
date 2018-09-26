@@ -45,8 +45,7 @@ void konfiguruj(int l, const char * argv[])
 	else
 	{ 
 		wykonaj("klient " + std::to_string(l));
-		wykonaj("polacz localhost:85");
-		wykonaj("gotowy");
+		wykonaj("polacz");
 	}
 }
 
@@ -54,7 +53,7 @@ void komunikat()
 {
 	if (serwer == nullptr && klient == nullptr)
 	{
-		printf("Zdecyduj czy jestes serwerem czy graczem:\n- jesli serwer to wpisz: 'serwer <nazwa_planszy>.txt' lub 'serwer <nr_planszy>'\n- jesli graczem to wpisz: 'klient <nazwa>'\n");
+		printf("Zdecyduj czy jestes serwerem czy graczem:\n- jesli serwer to wpisz: 'serwer <nazwa_planszy>.txt' lub 'serwer <nr_planszy>'\njesli chcesz zagrac wiele razy na jednej mapie to na koncu podaj do ilu wygranych grasz\n- jesli graczem to wpisz: 'klient <nazwa>'\n");
 	}
 	else if (klient != nullptr)
 	{
@@ -75,23 +74,38 @@ void wykonaj(string zadanie)
 			serwer = new Serwer();
 			auto adres = serwer->Postaw();
 			printf("%s\n", adres.ToString().c_str());
-
-			auto misja_nazwa = zadanie.substr(7);
+			
+			auto czastki = split(zadanie, ' ');
+			auto misja_nazwa = czastki[1];
 			if (misja_nazwa.size() == 1)
 			{
 				misja_nazwa = wczytaj_liste_plansz()[atoi(misja_nazwa.c_str())];
 			}
 			auto misja_sciezka = "Plansza\\" + misja_nazwa;
 
+			// jak podana liczba wygranych to ja zapisz
+			int liczba_gier = 1;
+			if (czastki.size() >= 3) 
+			{
+				liczba_gier = atoi(czastki[2].c_str());
+			}
+
 			misja_ustawienia = wczytaj_meta(misja_sciezka);
 			misja_ustawienia.nazwa = misja_nazwa;
-			int liczba_graczy = misja_ustawienia.komputery.size() + 1;
+			misja_ustawienia.do_ilu_wygranych = liczba_gier;
+			misja_ustawienia.ile_kto_wygranych = vector<int>(5);
 
+			int liczba_graczy = misja_ustawienia.komputery.size() + 1;
 			printf("Stworzona gra na planszy %s\n", misja_nazwa.c_str());
 			printf("Oczekuj na podlaczenie %d graczy\n", liczba_graczy);
+			printf("Gramy do %d\n", liczba_gier);
 
-			for (int i = 0; i<liczba_graczy; i++)
+			misja_ustawienia.nazwy_graczow.push_back("Neutralny");
+			for (int i = 0; i < liczba_graczy; i++)
+			{
 				serwer->OczekujNaGracza();
+				misja_ustawienia.nazwy_graczow.push_back(serwer->ludzie.back().nazwa);
+			}
 		}
 		if (zadanie.find("klient") == 0)
 		{
@@ -118,8 +132,10 @@ void wykonaj(string zadanie)
 
 			// nie ma co czekac na gotowy
 			//if (zadanie.find("gotowy") == 0)
-			{
-				auto res = klient->OczekujNaStart();
+			std::pair<bool, MisjaUstawienia> res;
+			do {
+				printf("oczekuje na start misji... ");
+				res = klient->OczekujNaStart();
 				printf("startuje misje %s\n", res.second.nazwa.c_str());
 
 				string test = "A";
@@ -129,9 +145,14 @@ void wykonaj(string zadanie)
 
 				res.second.komputery.clear();
 				misja(res.second, ruszacz);
+
+				printf("...misja skonczona\n");
+
+				res.second.WypiszRanking();
 				
 				klient->wtyk->setBlocking(true);
-			}
+				// TODO sprawdz dlaaczego Ci dalej czekaj¹ (cos ten warunek tu nie dzia³a dobrze
+			} while (!res.second.Zwyciezca() >= 0);
 		}
 	}
 	else if (serwer != nullptr)
@@ -151,10 +172,22 @@ void wykonaj(string zadanie)
 
 			misja(ustawienia, ruszacz);
 
-			string test = "Rozgrywka:A";
-			
-			delete serwer;
-			serwer = nullptr;
+			int liczba_gier = 0;
+			for (auto w : ustawienia.ile_kto_wygranych)
+				liczba_gier += w;
+
+			printf("Rozegrano juz %d gier\n", liczba_gier);
+			ustawienia.WypiszRanking();
+
+			if (ustawienia.Zwyciezca() >= 0)
+			{
+				delete serwer;
+				serwer = nullptr;
+			}
+			else
+			{
+				misja_ustawienia = ustawienia;
+			}
 		}
 	}
 	

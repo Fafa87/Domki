@@ -71,5 +71,8 @@
     <ClInclude Include="..\Domki\muzyka.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Domki\misja.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

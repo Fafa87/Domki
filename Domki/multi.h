@@ -25,7 +25,9 @@ template<class Archive>
 void serialize(Archive & archive,
 	MisjaUstawienia & m)
 {
-	archive(CEREAL_NVP(m.nazwa), CEREAL_NVP(m.skorka), CEREAL_NVP(m.szybkosc), CEREAL_NVP(m.walka_w_polu), CEREAL_NVP(m.trudnosc), CEREAL_NVP(m.nr_gracza), CEREAL_NVP(m.nazwy_graczow), CEREAL_NVP(m.komputery));
+	archive(CEREAL_NVP(m.nazwa), CEREAL_NVP(m.skorka), CEREAL_NVP(m.szybkosc), CEREAL_NVP(m.walka_w_polu), CEREAL_NVP(m.trudnosc), 
+		CEREAL_NVP(m.nr_gracza), CEREAL_NVP(m.nazwy_graczow), CEREAL_NVP(m.komputery),
+		CEREAL_NVP(m.do_ilu_wygranych), CEREAL_NVP(m.ile_kto_wygranych));
 }
 
 template<class Archive>

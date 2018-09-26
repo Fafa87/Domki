@@ -3,6 +3,33 @@
 
 #include <SFML/Audio.hpp>
 
+
+int MisjaUstawienia::Zwyciezca()
+{
+	int res = -1;
+	for (int i = 0; i < ile_kto_wygranych.size(); i++)
+	{
+		if (ile_kto_wygranych[i] >= do_ilu_wygranych)
+			return i;
+	}
+	return res;
+}
+
+void MisjaUstawienia::WypiszRanking()
+{
+	vector<pair<int,string>> stan;
+	for (int i = 0; i < min(ile_kto_wygranych.size(), nazwy_graczow.size()); i++)
+	{
+		stan.push_back(make_pair(ile_kto_wygranych[i], nazwy_graczow[i]));
+	}
+	sort(stan.begin(), stan.end(), greater<pair<int, string>>());
+	printf("Ranking:\n");
+	for (int i = 0; i < stan.size(); i++)
+	{
+		printf("%s - %d\n", stan[i].second.c_str(), stan[i].first);
+	}
+}
+
 vector<string> wczytaj_liste_plansz()
 {
 	return get_all_names_within_folder("Plansza");
@@ -34,6 +61,7 @@ MisjaUstawienia wczytaj_meta(string sciezka)
 	sort(res.komputery.begin(), res.komputery.end());
 	res.komputery.erase(unique(res.komputery.begin(), res.komputery.end()), res.komputery.end());
 	res.komputery.erase(res.komputery.begin()); // usun pierwszego
+	res.ile_kto_wygranych = vector<int>(5);
 
 	plikmapa.close();
 
@@ -182,6 +210,8 @@ void odliczanie(sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
 	pukBuffer.loadFromFile("Muzyka\\Puk.ogg");
 
 	sf::Sound pikPik(pikPikBuffer);
+	pikPik.setVolume(30);
+
 	sf::Sound puk(pukBuffer);
 	puk.setPitch(2);
 
@@ -280,7 +310,7 @@ sf::View WysrodkowanyWidok(list<Domek> &domki)
 	return sf::View(sf::FloatRect(minimalny_X, minimalny_Y, dlugosc_X_z_prop, dlugosc_Y_z_prop));
 }
 
-int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
+int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 {
 	string sciezka = "Plansza\\" + misja_ustawienia.nazwa;
 	string trudnosc = misja_ustawienia.trudnosc;
@@ -431,7 +461,10 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 			for (auto& g : rozgrywka.gracze)
 			{
 				if (g.aktywny)
+				{
 					zakonczenie_gry(window, g, nr_gracza);
+					misja_ustawienia.ile_kto_wygranych[g.numer]++;
+				}
 			}
 			//podpis.setCharacterSize(75);
 			//podpis.setPosition(300, 200);
@@ -451,7 +484,7 @@ int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz)
 	return 0;
 }
 
-int misja(MisjaUstawienia misja_ustawienia)
+int misja(MisjaUstawienia& misja_ustawienia)
 {
 	Ruszacz ruszacz;
 	return misja(misja_ustawienia, ruszacz);

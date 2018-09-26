@@ -24,6 +24,11 @@ struct MisjaUstawienia
 	int nr_gracza = 1;
 	vector<string> nazwy_graczow;
 	vector<int> komputery = { 2, 3, 4 };
+
+	int do_ilu_wygranych = 0;
+	vector<int> ile_kto_wygranych;
+	int Zwyciezca();
+	void WypiszRanking();
 };
 
 vector<string> wczytaj_liste_plansz();
@@ -32,6 +37,6 @@ MisjaUstawienia wczytaj_meta(string sciezka);
 
 Rozgrywka zwarcie_rozgrywka(string sciezka);
 
-int misja(MisjaUstawienia misja_ustawienia, Ruszacz& ruszacz);
+int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz);
 
-int misja(MisjaUstawienia misja_ustawienia);
+int misja(MisjaUstawienia& misja_ustawienia);

@@ -152,7 +152,10 @@ void wykonaj(string zadanie)
 				
 				klient->wtyk->setBlocking(true);
 				// TODO sprawdz dlaaczego Ci dalej czekaj¹ (cos ten warunek tu nie dzia³a dobrze
-			} while (!res.second.Zwyciezca() >= 0);
+			} while (!(res.second.Zwyciezca() >= 0));
+
+			auto wygrany = res.second.Zwyciezca();
+			printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", res.second.nazwy_graczow[wygrany].c_str());
 		}
 	}
 	else if (serwer != nullptr)
@@ -181,6 +184,9 @@ void wykonaj(string zadanie)
 
 			if (ustawienia.Zwyciezca() >= 0)
 			{
+				auto wygrany = ustawienia.Zwyciezca();
+				printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", ustawienia.nazwy_graczow[wygrany].c_str());
+
 				delete serwer;
 				serwer = nullptr;
 			}

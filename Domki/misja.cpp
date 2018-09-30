@@ -202,28 +202,39 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 {
 	if (interfejs == nullptr)
 	{
-		//if (stan.do_ilu_wygranych > 0)
+		if (stan.do_ilu_wygranych > 0)
 		{
 			interfejs = sfg::Window::Create();
 			interfejs->SetTitle("Mecz do " + to_string(stan.do_ilu_wygranych) + " wygranych");
 			interfejs->SetRequisition(sf::Vector2f(100, 0));
 
 			auto table = sfg::Table::Create();
-			for (int i = 0; i < rozgrywka.gracze.size(); i++)
+
+			auto gracze = rozgrywka.gracze;
+			gracze.sort([stan](const Gracz & a, const Gracz & b) -> bool
 			{
-				auto& gracz = rozgrywka.Gracz(i);
+				return stan.ile_kto_wygranych[a.numer] > stan.ile_kto_wygranych[b.numer];
+			});
+
+			int i = 0;
+			for (auto& gracz : gracze)
+			{
+				auto nr = gracz.numer;
 				if (gracz.aktywny)
 				{
 					auto graczId = "Inter-Gracz-" + to_string(i);
 					GUI::pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
 					GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 32.f);
+					if (stan.Zwyciezca() == nr)
+						GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 80.f);
 
-					auto wartosc = sfg::Button::Create(to_string(stan.ile_kto_wygranych[i]));
+					auto wartosc = sfg::Button::Create(to_string(stan.ile_kto_wygranych[nr]));
 					wartosc->SetId(graczId);
 					auto nazwa = sfg::Label::Create(gracz.nazwa);
 
 					table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 					table->Attach(nazwa, sf::Rect<sf::Uint32>(1, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+					i++;
 				}
 			}
 
@@ -487,6 +498,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 		ruszacz.Ruszaj(czas);
 		muzykant.GrajEfekty(ruszacz);
 
+		// przyspiesz jesli zostaly same komputery
 		if (!przyspieszenie_bez_gracza && misja_ustawienia.JedenGracz() && !rozgrywka.Gracz(misja_ustawienia.nr_gracza).aktywny)
 		{
 			int mnoznik_czasu = 5;

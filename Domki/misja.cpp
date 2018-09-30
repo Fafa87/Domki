@@ -199,7 +199,6 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 	{
 		if (stan.do_ilu_wygranych > 0)
 		{
-			// tylko gdy wiecej niz jedna rozgrywka?
 			interfejs = sfg::Window::Create();
 			interfejs->SetTitle("Mecz do " + to_string(stan.do_ilu_wygranych) + " wygranych");
 
@@ -215,7 +214,6 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 
 					auto wartosc = sfg::Button::Create(to_string(stan.ile_kto_wygranych[i]));
 					wartosc->SetId(graczId);
-					//wartosc->
 					auto nazwa = sfg::Label::Create(gracz.nazwa);
 
 					table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));

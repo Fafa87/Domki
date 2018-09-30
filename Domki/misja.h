@@ -17,6 +17,7 @@ struct MisjaUstawienia
 {
 	MisjaUstawienia();
 	int Zwyciezca();
+	bool JedenGracz();
 	void WypiszRanking();
 
 	string nazwa = "";

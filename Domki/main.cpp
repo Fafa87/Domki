@@ -113,6 +113,11 @@ int main() {
 	auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
 	szybkosc_pasek->SetValue(1.5);
 
+	auto do_ilu_etykieta = sfg::Label::Create("Do ilu wygranych: ");
+	auto do_ilu_pasek = sfg::Scale::Create(0.3, 4, 0.1);
+	do_ilu_pasek->SetValue(1);
+	do_ilu_pasek->SetIncrements(1, 2);
+
 	auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
 	walka_w_polu_ptaszek->SetActive(true);
 
@@ -123,10 +128,14 @@ int main() {
 		ustawienia.szybkosc = szybkosc_pasek->GetValue();
 		ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
 		ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
+		ustawienia.do_ilu_wygranych = do_ilu_pasek->GetValue();
 
 		muzyka.stop();
 		okno->Show(false);
-		misja(ustawienia);
+		while (ustawienia.Zwyciezca() == -1)
+		{
+			misja(ustawienia);
+		}
 		muzyka.play();
 		okno->Show(true);
 	});
@@ -149,9 +158,11 @@ int main() {
 	tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(1, 3, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
 	tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(1, 4, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
 	tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
-	tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 6, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
-	tabelka->Attach(separator, sf::Rect<sf::Uint32>(1, 7, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 20.f));
-	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 8, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(do_ilu_etykieta, sf::Rect<sf::Uint32>(1, 6, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(do_ilu_pasek, sf::Rect<sf::Uint32>(1, 7, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 8, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(1, 9, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 20.f));
+	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 10, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
 	tabelka->Attach(separator, sf::Rect<sf::Uint32>(3, 0, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
 	//tabelka->Attach(serwer, sf::Rect<sf::Uint32>(0, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 	//tabelka->Attach(klient, sf::Rect<sf::Uint32>(1, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));

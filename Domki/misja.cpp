@@ -16,6 +16,11 @@ int MisjaUstawienia::Zwyciezca()
 	return res;
 }
 
+bool MisjaUstawienia::JedenGracz()
+{
+	return nazwy_graczow.size() <= 1;
+}
+
 void MisjaUstawienia::WypiszRanking()
 {
 	vector<pair<int,string>> stan;
@@ -197,10 +202,11 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 {
 	if (interfejs == nullptr)
 	{
-		if (stan.do_ilu_wygranych > 0)
+		//if (stan.do_ilu_wygranych > 0)
 		{
 			interfejs = sfg::Window::Create();
 			interfejs->SetTitle("Mecz do " + to_string(stan.do_ilu_wygranych) + " wygranych");
+			interfejs->SetRequisition(sf::Vector2f(100, 0));
 
 			auto table = sfg::Table::Create();
 			for (int i = 0; i < rozgrywka.gracze.size(); i++)
@@ -358,6 +364,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	string trudnosc = misja_ustawienia.trudnosc;
 	double predkosc = misja_ustawienia.szybkosc;
 	int nr_gracza = misja_ustawienia.nr_gracza;
+	bool przyspieszenie_bez_gracza = false;
 
 	sf::ContextSettings ustawienia;
 	ustawienia.antialiasingLevel = 8;
@@ -451,6 +458,8 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 				switch (event.key.code)
 				{
 				case sf::Keyboard::Escape:
+					// nie startuj kolejnych gier
+					misja_ustawienia.ile_kto_wygranych[0] = 100;
 					window.close();
 					break;
 				case sf::Keyboard::F3:
@@ -477,6 +486,15 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
 		ruszacz.Ruszaj(czas);
 		muzykant.GrajEfekty(ruszacz);
+
+		if (!przyspieszenie_bez_gracza && misja_ustawienia.JedenGracz() && !rozgrywka.Gracz(misja_ustawienia.nr_gracza).aktywny)
+		{
+			int mnoznik_czasu = 5;
+			for (auto komp : kompiutery)
+				komp->szybkosc_komputera *= mnoznik_czasu;
+			ruszacz.szybkosc *= mnoznik_czasu;
+			przyspieszenie_bez_gracza = true;
+		}
 
 		window.clear();
 		wyswietlacz.WyswietlTlo(window);

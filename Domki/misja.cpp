@@ -3,6 +3,7 @@
 
 #include <SFML/Audio.hpp>
 
+MisjaUstawienia::MisjaUstawienia() : ile_kto_wygranych(5) {}
 
 int MisjaUstawienia::Zwyciezca()
 {
@@ -192,6 +193,49 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 	return gra;
 }
 
+shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, sf::RenderWindow& window, MisjaUstawienia &stan, Rozgrywka& rozgrywka)
+{
+	if (interfejs == nullptr)
+	{
+		if (stan.do_ilu_wygranych > 0)
+		{
+			// tylko gdy wiecej niz jedna rozgrywka?
+			interfejs = sfg::Window::Create();
+			interfejs->SetTitle("Mecz do " + to_string(stan.do_ilu_wygranych) + " wygranych");
+
+			auto table = sfg::Table::Create();
+			for (int i = 0; i < rozgrywka.gracze.size(); i++)
+			{
+				auto& gracz = rozgrywka.Gracz(i);
+				if (gracz.aktywny)
+				{
+					auto graczId = "Inter-Gracz-" + to_string(i);
+					GUI::pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
+					GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 32.f);
+
+					auto wartosc = sfg::Button::Create(to_string(stan.ile_kto_wygranych[i]));
+					wartosc->SetId(graczId);
+					//wartosc->
+					auto nazwa = sfg::Label::Create(gracz.nazwa);
+
+					table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+					table->Attach(nazwa, sf::Rect<sf::Uint32>(1, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+				}
+			}
+
+			GUI::pulpit.Add(interfejs);
+			interfejs->Add(table);
+			GUI::bottom_left_window(window, interfejs);
+		}
+	}
+	else
+	{
+
+
+	}
+	return interfejs;
+}
+
 void odliczanie(sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
@@ -376,8 +420,6 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 			kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr),misja_ustawienia.szybkosc));
 		else if (poziomy_trudnosci[1] == trudnosc)
 			kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr),misja_ustawienia.szybkosc));
-
-		
 	}
 
 	ruszacz.rozgrywka = &rozgrywka;
@@ -394,6 +436,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	//APM
 	long long akcje = 0;
 	float czas_przeminal = clock();
+	shared_ptr<sfg::Window> interfejs;
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -401,6 +444,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 		myszkaGracza.Przetworz(); // puste
 		while (window.pollEvent(event))
 		{
+			GUI::pulpit.HandleEvent(event);
 			myszkaGracza.Przetworz(event);
 			if (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::KeyReleased)akcje++;
 			switch (event.type)
@@ -409,7 +453,8 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 				switch (event.key.code)
 				{
 				case sf::Keyboard::Escape:
-					return 0;
+					window.close();
+					break;
 				case sf::Keyboard::F3:
 					wyswietlacz.ZaladujInne();
 					break;
@@ -437,7 +482,8 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
 		window.clear();
 		wyswietlacz.WyswietlTlo(window);
-		
+
+		interfejs = interfejs_rozgrywki(interfejs, window, misja_ustawienia, rozgrywka);
 
 		czasik = (int)(1.0 / czas + 0.5);
 		///FPSY
@@ -455,7 +501,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 		wyswietlacz.Wyswietlaj(window);
 
 		//ZAKONCZENIE GRY
-		if (rozgrywka.liczba_aktywnych_graczy == 1)  // !rozgrywka.Gracz(nr_gracza).aktywny || 
+		if (rozgrywka.liczba_aktywnych_graczy == 1)
 		{
 			muzykant.Zamilcz();
 			for (auto& g : rozgrywka.gracze)
@@ -466,21 +512,18 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 					misja_ustawienia.ile_kto_wygranych[g.numer]++;
 				}
 			}
-			//podpis.setCharacterSize(75);
-			//podpis.setPosition(300, 200);
 			window.close();
 		}
-		/*else
-		{
-			podpis.setCharacterSize(50);
-			podpis.setPosition(1200, 0);
-			podpis.setString(std::to_string(rozgrywka.liczba_aktywnych_graczy));
-			window.draw(podpis);
-		}*/
+
+		GUI::pulpit.Update(0.1f);
+		GUI::sfgui.Display(window);
 		window.display();
 
 		Sleep(16);
 	}
+
+	if(interfejs != nullptr)
+		GUI::pulpit.Remove(interfejs);
 	return 0;
 }
 

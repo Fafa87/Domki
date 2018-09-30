@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <SFGUI/SFGUI.hpp>
 
@@ -15,6 +15,10 @@ const string poziomy_trudnosci[] = { "podstawa", "rozszerzenie" };
 
 struct MisjaUstawienia
 {
+	MisjaUstawienia();
+	int Zwyciezca();
+	void WypiszRanking();
+
 	string nazwa = "";
 	double szybkosc = 1.5;
 	string trudnosc = "podstawa";
@@ -27,8 +31,6 @@ struct MisjaUstawienia
 
 	int do_ilu_wygranych = 0;
 	vector<int> ile_kto_wygranych;
-	int Zwyciezca();
-	void WypiszRanking();
 };
 
 vector<string> wczytaj_liste_plansz();

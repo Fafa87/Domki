@@ -174,28 +174,56 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 		wksslask2->drogi.push_back(wksslask1);
 	}
 
-	if (gracz1.liczba_tworow == 0)
+	for (auto& gracz : gra.gracze) if (gracz.numer >= 1)
 	{
-		gracz1.aktywny = false;
-		gra.liczba_aktywnych_graczy--;
+		gracz.istotny = gracz.liczba_tworow > 0;
+		gracz.aktywny = gracz.liczba_tworow > 0;
+		if (!gracz.aktywny)
+			gra.liczba_aktywnych_graczy--;
 	}
-	if (gracz2.liczba_tworow == 0)
-	{
-		gracz2.aktywny = false;
-		gra.liczba_aktywnych_graczy--;
-	}
-	if (gracz3.liczba_tworow == 0)
-	{
-		gracz3.aktywny = false;
-		gra.liczba_aktywnych_graczy--;
-	}
-	if (gracz4.liczba_tworow == 0)
-	{
-		gracz4.aktywny = false;
-		gra.liczba_aktywnych_graczy--;
-	}
+	
 	plikmapa.close();
 	return gra;
+}
+
+
+shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgrywka, int instance)
+{
+	auto table = sfg::Table::Create();
+
+	auto gracze = rozgrywka.gracze;
+	gracze.sort([stan](const Gracz & a, const Gracz & b) -> bool
+	{
+		return stan.ile_kto_wygranych[a.numer] > stan.ile_kto_wygranych[b.numer];
+	});
+
+	int i = 0;
+	for (auto& gracz : gracze)
+	{
+		auto nr = gracz.numer;
+		if (gracz.istotny)
+		{
+			auto graczId = "Ins-" + to_string(instance) + "-Inter-Gracz-" + to_string(i);
+			GUI::pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
+			GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 32.f);
+			if (stan.Zwyciezca() == nr)
+			{
+				GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 80.f);
+				GUI::pulpit.SetProperty("Label#" + graczId, "FontSize", 80.f);
+			}
+
+			auto wartosc = sfg::Button::Create(to_string(stan.ile_kto_wygranych[nr]));
+			wartosc->SetId(graczId);
+			auto nazwa = sfg::Label::Create(gracz.nazwa);
+			nazwa->SetId(graczId);
+
+			table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+			table->Attach(nazwa, sf::Rect<sf::Uint32>(1, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+			i++;
+		}
+	}
+
+	return table;
 }
 
 shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, sf::RenderWindow& window, MisjaUstawienia &stan, Rozgrywka& rozgrywka)
@@ -208,38 +236,10 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 			interfejs->SetTitle("Mecz do " + to_string(stan.do_ilu_wygranych) + " wygranych");
 			interfejs->SetRequisition(sf::Vector2f(100, 0));
 
-			auto table = sfg::Table::Create();
-
-			auto gracze = rozgrywka.gracze;
-			gracze.sort([stan](const Gracz & a, const Gracz & b) -> bool
-			{
-				return stan.ile_kto_wygranych[a.numer] > stan.ile_kto_wygranych[b.numer];
-			});
-
-			int i = 0;
-			for (auto& gracz : gracze)
-			{
-				auto nr = gracz.numer;
-				if (gracz.aktywny)
-				{
-					auto graczId = "Inter-Gracz-" + to_string(i);
-					GUI::pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
-					GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 32.f);
-					if (stan.Zwyciezca() == nr)
-						GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 80.f);
-
-					auto wartosc = sfg::Button::Create(to_string(stan.ile_kto_wygranych[nr]));
-					wartosc->SetId(graczId);
-					auto nazwa = sfg::Label::Create(gracz.nazwa);
-
-					table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
-					table->Attach(nazwa, sf::Rect<sf::Uint32>(1, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
-					i++;
-				}
-			}
+			auto ranking = interfejs_ranking(stan, rozgrywka, 1);
 
 			GUI::pulpit.Add(interfejs);
-			interfejs->Add(table);
+			interfejs->Add(ranking);
 			GUI::bottom_left_window(window, interfejs);
 		}
 	}
@@ -319,10 +319,10 @@ void zakonczenie_gry(sf::RenderWindow& window, Gracz& gracz_wygrany, int grajacy
 	if (gracz_wygrany.numer == grajacy)
 	{
 		oklaski.play();
-		komunikat_koncowy->SetText("GRATULACJE DLA GRACZA " + gracz_wygrany.nazwa);
+		komunikat_koncowy->SetText("GRATULACJE DLA GRACZA:\n" + gracz_wygrany.nazwa);
 	}
 	else
-		komunikat_koncowy->SetText("TYM RAZEM ZWYCIEZYL " + gracz_wygrany.nazwa + "\n		LESZCZU!");
+		komunikat_koncowy->SetText("TY LESZCZU ZWYCIEZYL:\n" + gracz_wygrany.nazwa);
 
 	GUI::center_window(window, okno);
 
@@ -330,7 +330,36 @@ void zakonczenie_gry(sf::RenderWindow& window, Gracz& gracz_wygrany, int grajacy
 	GUI::sfgui.Display(window);
 	window.display();
 	
-	Sleep(4000);
+	GUI::wait_for_anything(window);
+
+	GUI::pulpit.Remove(okno);
+}
+
+void zakonczenie_meczu(sf::RenderWindow& window, MisjaUstawienia &stan, Rozgrywka& rozgrywka)
+{
+	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW | sfg::Window::Style::RESIZE);
+	okno->SetRequisition(sf::Vector2f(800, 0));
+
+	auto komunikat_koncowy = sfg::Label::Create("OSTATECZNY RANKING:\n");
+	komunikat_koncowy->SetId("Naglowek");
+	komunikat_koncowy->SetAlignment(sf::Vector2f(0.5, 0.5));
+
+	auto ranking = interfejs_ranking(stan, rozgrywka, 2);
+
+	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 30.0f);
+	box->Pack(komunikat_koncowy);
+	box->Pack(ranking);
+	
+	okno->Add(box);
+	GUI::pulpit.Add(okno);
+	GUI::center_window(window, okno);
+
+	GUI::pulpit.Update(1);
+	GUI::sfgui.Display(window);
+	window.display();
+
+	GUI::wait_for_anything(window);
+
 	GUI::pulpit.Remove(okno);
 }
 
@@ -395,15 +424,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	sf::Font czcionka;
 	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
 
-	/*sf::Text podpis;
-	podpis.setFont(czcionka);
-	podpis.setCharacterSize(50);
-	podpis.setStyle(sf::Text::Bold);
-	podpis.setFillColor(sf::Color::Red);
-	podpis.move(400, 0);*/
-
 	// tworzymy rozgrywke
-	//Rozgrywka rozgrywka = prosta_rozgrywka();
 	Rozgrywka rozgrywka = zwarcie_rozgrywka(sciezka);
 	rozgrywka.walka_w_polu = misja_ustawienia.walka_w_polu;
 	// przygotowujemy dzialaczy
@@ -514,16 +535,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 		interfejs = interfejs_rozgrywki(interfejs, window, misja_ustawienia, rozgrywka);
 
 		czasik = (int)(1.0 / czas + 0.5);
-		///FPSY
-		//podpis.setString("FPSY: " + std::to_string(czasik));
-		//podpis.setPosition(300, 0);
-		//window.draw(podpis);//FPSY
-
-		///APM
-		//podpis.setPosition(700, 0);
 		czas_przeminal = (double)(clock() - czas_przeminal) / CLOCKS_PER_SEC;
-		//podpis.setString("APM: " + std::to_string((int)(60 * akcje / czas_przeminal)));
-		//window.draw(podpis); //APM
 
 		ruchGracza.Wyswietlaj(window);
 		wyswietlacz.Wyswietlaj(window);
@@ -536,9 +548,17 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 			{
 				if (g.aktywny)
 				{
-					zakonczenie_gry(window, g, nr_gracza);
 					misja_ustawienia.ile_kto_wygranych[g.numer]++;
+					if (misja_ustawienia.Zwyciezca() < 0)
+						zakonczenie_gry(window, g, nr_gracza);
+					break;
 				}
+			}
+
+			auto zwyciezca_meczu = misja_ustawienia.Zwyciezca();
+			if (zwyciezca_meczu >= 0)
+			{
+				zakonczenie_meczu(window, misja_ustawienia, rozgrywka);
 			}
 			window.close();
 		}

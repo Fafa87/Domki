@@ -3,6 +3,7 @@
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Widgets.hpp>
 
+#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 using namespace std;
@@ -15,4 +16,6 @@ namespace GUI
 	void center_window(sf::RenderWindow& parent, shared_ptr<sfg::Window> window);
 	void bottom_window(sf::RenderWindow& parent, shared_ptr<sfg::Window> window);
 	void bottom_left_window(sf::RenderWindow& parent, shared_ptr<sfg::Window> window);
+
+	void wait_for_anything(sf::RenderWindow& window);
 }

@@ -1,4 +1,5 @@
 #include "gui.h"
+#include "windows.h"
 
 void GUI::center_window(sf::RenderWindow& parent, shared_ptr<sfg::Window> window)
 {
@@ -26,4 +27,16 @@ void GUI::bottom_left_window(sf::RenderWindow& parent, shared_ptr<sfg::Window> w
 	final_position.y -= size.y;
 	final_position.x = 0;
 	window->SetPosition(final_position);
+}
+
+void GUI::wait_for_anything(sf::RenderWindow& window)
+{
+	sf::Event event;
+	while (true)
+	{
+		window.pollEvent(event);
+		if (event.type == sf::Event::KeyReleased || event.type == sf::Event::MouseButtonReleased)
+			break;
+		Sleep(100);
+	}
 }

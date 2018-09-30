@@ -9,7 +9,7 @@ typedef sf::Vector2<double> PD; // skrót dla typu oznaczaj¹cego parê liczb
 struct Gracz
 {
 	int numer,liczba_tworow=0;
-	bool aktywny=true;
+	bool aktywny=true, istotny=false;
 	string nazwa;
 	sf::Color kolor;
 };

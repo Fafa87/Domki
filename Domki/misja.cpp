@@ -263,10 +263,10 @@ void odliczanie(sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
 	GUI::pulpit.Add(okno);
 
 	sf::SoundBuffer pikPikBuffer;
-	pikPikBuffer.loadFromFile("Muzyka\\PikPik.ogg");
+	pikPikBuffer.loadFromFile("Muzyka\\Boom.ogg");
 
 	sf::SoundBuffer pukBuffer;
-	pukBuffer.loadFromFile("Muzyka\\Puk.ogg");
+	pukBuffer.loadFromFile("Muzyka\\Bam.ogg");
 
 	sf::Sound pikPik(pikPikBuffer);
 	pikPik.setVolume(30);
@@ -289,12 +289,12 @@ void odliczanie(sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
 		if (a > 0)
 		{
 			pikPik.play();
-			Sleep(1000);
+			Sleep(1500);
 		}
 		else
 		{
 			puk.play();
-			Sleep(500);
+			Sleep(800);
 		}
 	}
 

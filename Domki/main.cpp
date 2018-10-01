@@ -112,11 +112,17 @@ int main() {
 	auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
 	auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
 	szybkosc_pasek->SetValue(1.5);
+	szybkosc_pasek->SetRequisition(sf::Vector2f(200.f, 30.f));
 
 	auto do_ilu_etykieta = sfg::Label::Create("Do ilu wygranych: ");
-	auto do_ilu_pasek = sfg::Scale::Create(0.3, 4, 0.1);
+	auto do_ilu_wartosc = sfg::Label::Create("1");
+	auto do_ilu_pasek = sfg::Scale::Create(1, 6, 1);
+	do_ilu_pasek->SetRequisition(sf::Vector2f(200.f, 30.f));
 	do_ilu_pasek->SetValue(1);
 	do_ilu_pasek->SetIncrements(1, 2);
+	do_ilu_pasek->GetAdjustment()->GetSignal(sfg::Adjustment::OnChange).Connect([&] {
+		do_ilu_wartosc->SetText(to_string((int)do_ilu_pasek->GetValue()));
+	});
 
 	auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
 	walka_w_polu_ptaszek->SetActive(true);
@@ -151,24 +157,28 @@ int main() {
 		start_klient(GUI::pulpit);
 	});
 
+	tabelka->SetRowSpacings(10);
 	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 0, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
 	tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(1, 0, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
-	tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(1, 1, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
+	tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(1, 1, 3, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
 	tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(1, 2, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
-	tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(1, 3, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
-	tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(1, 4, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
-	tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
-	tabelka->Attach(do_ilu_etykieta, sf::Rect<sf::Uint32>(1, 6, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
-	tabelka->Attach(do_ilu_pasek, sf::Rect<sf::Uint32>(1, 7, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
-	tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 8, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
-	tabelka->Attach(separator, sf::Rect<sf::Uint32>(1, 9, 2, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 20.f));
-	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 10, 2, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(1, 3, 3, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);
+
+	tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(1, 4, 1, 1), 0, 0, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 3, 1), sfg::Table::FILL, 0, sf::Vector2f(10.f, 5.f));
+	tabelka->Attach(do_ilu_etykieta, sf::Rect<sf::Uint32>(1, 6, 1, 1), 0, 0, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(do_ilu_pasek, sf::Rect<sf::Uint32>(1, 7, 2, 1), sfg::Table::FILL, 0, sf::Vector2f(20.f, 5.f));
+	tabelka->Attach(do_ilu_wartosc, sf::Rect<sf::Uint32>(3, 7, 1, 1), sfg::Table::FILL, 0, sf::Vector2f(20.f, 5.f));
+
+	tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 8, 3, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(1, 9, 3, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(20.f, 20.f));
+	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 10, 3, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
 	tabelka->Attach(separator, sf::Rect<sf::Uint32>(3, 0, 1, 1), 0, sfg::Table::FILL, sf::Vector2f(20.f, 10.f));
 	//tabelka->Attach(serwer, sf::Rect<sf::Uint32>(0, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 	//tabelka->Attach(klient, sf::Rect<sf::Uint32>(1, 8, 1, 1), sfg::Table::FILL, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 
-	box->Pack(tytul, false);
-	box->Pack(tabelka, false);
+	box->Pack(tytul, false, false);
+	box->Pack(tabelka, false, false);
 	okno->Add(box);
 
 	GUI::pulpit.Add(okno);

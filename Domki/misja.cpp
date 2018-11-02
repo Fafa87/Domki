@@ -214,6 +214,10 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 	return gra;
 }
 
+string ranking_widget_id(int instance, int gracz, string sufix)
+{
+	return "Ins-" + to_string(instance) + "-Inter-Gracz-" + to_string(gracz) + "-" + sufix;
+}
 
 shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgrywka, int instance)
 {
@@ -231,7 +235,8 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 		auto nr = gracz.numer;
 		if (gracz.istotny)
 		{
-			auto graczId = "Ins-" + to_string(instance) + "-Inter-Gracz-" + to_string(i);
+			auto graczId = ranking_widget_id(instance, nr, "");
+			auto graczLudkiId = ranking_widget_id(instance, nr, "sila");
 			GUI::pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
 			GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 32.f);
 			if (stan.Zwyciezca() == nr)
@@ -244,9 +249,12 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 			wartosc->SetId(graczId);
 			auto nazwa = sfg::Label::Create(gracz.nazwa);
 			nazwa->SetId(graczId);
+			auto ludki = sfg::Label::Create(to_string(rozgrywka.SilaGracza(gracz.numer)));
+			ludki->SetId(graczLudkiId);
 
 			table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 			table->Attach(nazwa, sf::Rect<sf::Uint32>(1, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+			table->Attach(ludki, sf::Rect<sf::Uint32>(2, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 			i++;
 		}
 	}
@@ -256,6 +264,7 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 
 shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, sf::RenderWindow& window, MisjaUstawienia &stan, Rozgrywka& rozgrywka)
 {
+	
 	if (interfejs == nullptr)
 	{
 		if (stan.do_ilu_wygranych > 0)
@@ -273,8 +282,8 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 	}
 	else
 	{
-
-
+		auto sila_label = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById(ranking_widget_id(1, 1, "sila")));
+		sila_label->SetText((to_string(rozgrywka.SilaGracza(1))));
 	}
 	return interfejs;
 }

@@ -14,7 +14,7 @@ int Rozgrywka::SilaGracza(int nr_gracza)
 	auto tedomki = domki.begin();
 	int ile = 0;
 	for (; tearmie != armie.end(); tearmie++)if (tearmie->gracz->numer == nr_gracza)ile += tearmie->liczebnosc;
-	for (; tedomki != domki.end(); tearmie++)if (tedomki->gracz->numer == nr_gracza)ile += tedomki->liczebnosc;
+	for (; tedomki != domki.end(); tedomki++)if (tedomki->gracz->numer == nr_gracza)ile += tedomki->liczebnosc;
 	return ile;
 }
 

@@ -184,7 +184,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 			}
 		domek.produkcja = 2;
 		domek.max_liczebnosc = 100;
-		for (int a = 1; a < domek.poziom; a++)domek.max_liczebnosc *= 2;
+		domek.max_liczebnosc *= 1 << (domek.poziom-1);
 		domek.wyglad = Wyglad::kDomek;
 		if (domek.gracz == nullptr)
 		{
@@ -282,8 +282,15 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 	}
 	else
 	{
-		auto sila_label = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById(ranking_widget_id(1, 1, "sila")));
-		sila_label->SetText((to_string(rozgrywka.SilaGracza(1))));
+		for (auto& gracz : rozgrywka.gracze)
+		{
+			auto nr = gracz.numer;
+			if (gracz.istotny)
+			{
+				auto sila_label = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById(ranking_widget_id(1, nr, "sila")));
+				sila_label->SetText((to_string(rozgrywka.SilaGracza(nr))));
+			}
+		}
 	}
 	return interfejs;
 }

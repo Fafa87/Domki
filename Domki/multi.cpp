@@ -93,7 +93,7 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
 				for (auto &d : data)
 				{
 					auto rest = d.substr(1);
-
+					// MULTI_ROZKAZ
 					std::stringstream ss(rest);
 					{
 						cereal::BinaryInputArchive dearchive(ss);
@@ -113,6 +113,11 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
 						{
 							rozkaz = new PrzebudujRozkaz(nullptr, TypDomku::kOsada);
 							dearchive(*(PrzebudujRozkaz*)rozkaz);
+						}
+						else if (d[0] == 'B')
+						{
+							rozkaz = new BurzRozkaz(nullptr);
+							dearchive(*(BurzRozkaz*)rozkaz);
 						}
 						
 						res.push_back(rozkaz);
@@ -202,7 +207,7 @@ void multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 		std::stringstream ss;
 		{
 			cereal::BinaryOutputArchive archive(ss);
-			
+			// MULTI ROZKAZ
 			if (IsType<WymarszRozkaz>(r))
 			{
 				ss << "W";
@@ -219,6 +224,12 @@ void multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 			{
 				ss << "P";
 				PrzebudujRozkaz* rozkaz = (PrzebudujRozkaz*)r;
+				archive(*rozkaz);
+			}
+			else if (IsType<BurzRozkaz>(r))
+			{
+				ss << "B";
+				BurzRozkaz* rozkaz = (BurzRozkaz*)r;
 				archive(*rozkaz);
 			}
 		}
@@ -280,6 +291,7 @@ void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
 {
 	for (auto r : rozkazy)
 	{
+		// MULTI ROZKAZ
 		if (IsType<WymarszRozkaz>(r))
 		{
 			WymarszRozkaz * rozkaz = (WymarszRozkaz*)r;
@@ -294,6 +306,11 @@ void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
 		else if (IsType<PrzebudujRozkaz>(r))
 		{
 			PrzebudujRozkaz * rozkaz = (PrzebudujRozkaz*)r;
+			rozkaz->kogo = rozgrywka.WskaznikDomek(rozkaz->ser_kogo);
+		}
+		else if (IsType<BurzRozkaz>(r))
+		{
+			BurzRozkaz * rozkaz = (BurzRozkaz*)r;
 			rozkaz->kogo = rozgrywka.WskaznikDomek(rozkaz->ser_kogo);
 		}
 	}

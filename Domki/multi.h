@@ -30,6 +30,7 @@ void serialize(Archive & archive,
 		CEREAL_NVP(m.do_ilu_wygranych), CEREAL_NVP(m.ile_kto_wygranych));
 }
 
+// MULTI ROZKAZ
 template<class Archive>
 void save(Archive & archive,
 	WymarszRozkaz const & m)
@@ -70,6 +71,20 @@ void load(Archive & archive,
 	PrzebudujRozkaz & m)
 {
 	archive(m.ser_kogo, m.naco);
+}
+
+template<class Archive>
+void save(Archive & archive,
+	BurzRozkaz const & m)
+{
+	archive(m.kogo->uid);
+}
+
+template<class Archive>
+void load(Archive & archive,
+	BurzRozkaz & m)
+{
+	archive(m.ser_kogo);
 }
 
 template<class Archive>

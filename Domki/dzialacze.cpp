@@ -82,6 +82,12 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		cel = nullptr;
 		nacisniety = 0;
 	}
+	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&wybrany->liczebnosc < wybrany->max_liczebnosc / 2)
+	{
+		wybrany = nullptr;
+		cel = nullptr;
+		nacisniety = 0;
+	}
 	// po 0.5 sekundy wysy�ane s� ludki
 	if (cel != nullptr && cel != wybrany && clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
 	{

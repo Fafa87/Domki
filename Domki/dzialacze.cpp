@@ -54,8 +54,8 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 	{
 		if (wybrany != nullptr && wybrany->gracz == &gracz)
 		{
-			if (zdarzenie.key.code == sf::Keyboard::B)
-				nacisniety = 'B';
+			if (zdarzenie.key.code == sf::Keyboard::O)
+				nacisniety = 'O';
 			else if (zdarzenie.key.code == sf::Keyboard::Z)
 				nacisniety = 'Z';
 			else if (zdarzenie.key.code == sf::Keyboard::K)
@@ -112,7 +112,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 	{
 		switch (nacisniety)
 		{
-		case 'B':
+		case 'O':
 			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kOsada));
 			break;
 		case 'Z':
@@ -191,7 +191,7 @@ void Ruszacz::WykonajRuchy()
 			auto ulepsz = (UlepszRozkaz*)r;
 
 			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)
-			if (ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0 > 0)
+			if (ulepsz->kogo->ulepszanie == true&&ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0 > 0)
 				{
 				rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0);
 				ulepsz->kogo->poziom++;
@@ -201,12 +201,10 @@ void Ruszacz::WykonajRuchy()
 		else if (IsType<PrzebudujRozkaz>(r))
 		{
 			auto przebuduj = (PrzebudujRozkaz*)r;
-			if (przebuduj->kogo->liczebnosc >= 50.0)
+			if (przebuduj->kogo->przebudowa==true&&przebuduj->kogo->typdomku!=przebuduj->naco&&przebuduj->kogo->liczebnosc * 2.0 >= przebuduj->kogo->max_liczebnosc)
 			{
 				przebuduj->kogo->typdomku = przebuduj->naco;
-				przebuduj->kogo->poziom = 1;
-				rozgrywka->ZmienLiczebnosc(*przebuduj->kogo, przebuduj->kogo->liczebnosc-50.0);
-				przebuduj->kogo->max_liczebnosc = 100.0;
+				rozgrywka->ZmienLiczebnosc(*przebuduj->kogo, przebuduj->kogo->liczebnosc- przebuduj->kogo->max_liczebnosc/2.0);
 			}
 			// TODO ustaw odpowiednio wartości jeśli ulepszenie jest możliwe
 		}

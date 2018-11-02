@@ -59,11 +59,13 @@ enum class TypDomku
 struct Domek : Twor
 {
 	double produkcja;
-	double liczebnosc; // liczba aktualnie istniej¹cych ludków
+	double liczebnosc=0; // liczba aktualnie istniej¹cych ludków
 	int max_liczebnosc;
 	
 	TypDomku typdomku=TypDomku::kOsada;
 	int poziom = 1;
+	bool przebudowa = true,
+		ulepszanie = true;
 
 	vector<Domek*> drogi;
 	vector<int> ser_drogi;

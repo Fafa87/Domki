@@ -154,16 +154,44 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 				else if (znak == '3')gracz3.liczba_tworow++;
 				else if (znak == '4')gracz4.liczba_tworow++;
 				}
+			else if(parametr == "typ")
+				{
+				string znak;
+				plikmapa >> znak;
+				if (znak == "zamek")domek.typdomku = TypDomku::kZamek;
+				else if (znak == "kuznia")domek.typdomku = TypDomku::kKuznia;
+				}
+			else if (parametr == "bez_przebudowy")
+				{
+				domek.przebudowa = false;
+				}
+			else if (parametr == "bez_ulepszania")
+				{
+					domek.ulepszanie = false;
+				}
+			else if (parametr == "liczebnosc")
+				{
+					int ile_ludkow;
+					plikmapa >> ile_ludkow;
+					gra.ZmienLiczebnosc(domek, ile_ludkow);
+				}
+			else if (parametr == "poziom")
+				{
+					int lev;
+					plikmapa >> lev;
+					domek.poziom = lev;
+				}
 			}
 		domek.produkcja = 2;
 		domek.max_liczebnosc = 100;
+		for (int a = 1; a < domek.poziom; a++)domek.max_liczebnosc *= 2;
 		domek.wyglad = Wyglad::kDomek;
 		if (domek.gracz == nullptr)
 		{
 			domek.gracz = &gracz0;
-			gra.ZmienLiczebnosc(domek, 25);
+			if(domek.liczebnosc==0)gra.ZmienLiczebnosc(domek, 25);
 		}
-		else gra.ZmienLiczebnosc(domek, 50);
+		else if(domek.liczebnosc==0)gra.ZmienLiczebnosc(domek, 50);
 		}
 	for (auto para : numery_domkow)
 	{

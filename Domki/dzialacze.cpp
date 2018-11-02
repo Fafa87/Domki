@@ -319,7 +319,8 @@ void Ruszacz::Strzelaj(float czas)
 		Domek * domek_cel = ((Domek*)ludek.cel);
 		if (domek_cel->typdomku==TypDomku::kZamek&&domek_cel->gracz->numer!=ludek.gracz->numer&&rozgrywka->Odleglosc(ludek,*domek_cel) < 100.0)
 			{
-			ludek.liczebnosc = std::max(0.0, ludek.liczebnosc - sila_strzalu*(double)domek_cel->poziom*czas);
+			if(ludek.tarcza>0)ludek.tarcza = std::max(0.0, ludek.tarcza - sila_strzalu*(double)domek_cel->poziom*czas);
+			else ludek.liczebnosc = std::max(0.0, ludek.liczebnosc - sila_strzalu*(double)domek_cel->poziom*czas);
 			if(ludek.liczebnosc==0.0)do_usuniecia.push_back(&ludek);
 			}
 		}

@@ -32,6 +32,8 @@ struct Rozgrywka
 	Ludek* Spotkanie(Ludek& ludek);
 	Twor* Zlokalizuj(int x, int y);
 
+	int SilaGracza(int nr_gracza);
+
 	void ZniszczLudka(Ludek* ludek);
 	void ZabierzTwor(const Twor* twor1);
 	

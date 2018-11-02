@@ -38,6 +38,14 @@ struct PrzebudujRozkaz : Rozkaz
 	int ser_kogo;
 };
 
+struct BurzRozkaz : Rozkaz
+{
+	BurzRozkaz(Domek* kogo);
+
+	Domek * kogo;
+	int ser_kogo;
+};
+
 class Decydent // wprowadza rozkazy graczy
 {
 public:

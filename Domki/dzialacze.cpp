@@ -60,6 +60,8 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 				nacisniety = 'Z';
 			else if (zdarzenie.key.code == sf::Keyboard::K)
 				nacisniety = 'K';
+			else if (zdarzenie.key.code == sf::Keyboard::B)
+				nacisniety = 'B';
 		}
 	}
 }
@@ -120,6 +122,9 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 			break;
 		case 'K':
 			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kKuznia));
+			break;
+		case 'B':
+			res.push_back(new BurzRozkaz(wybrany));
 			break;
 		}
 		wybrany = nullptr;
@@ -197,6 +202,18 @@ void Ruszacz::WykonajRuchy()
 				ulepsz->kogo->poziom++;
 				ulepsz->kogo->max_liczebnosc = 2 * ulepsz->kogo->max_liczebnosc;
 				}
+		}
+		else if (IsType<BurzRozkaz>(r))
+		{
+			auto ulepsz = (BurzRozkaz*)r;
+
+			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)
+			if (ulepsz->kogo->ulepszanie == true && ulepsz->kogo->liczebnosc > 25.0)
+			{
+				rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - 25.0);
+				ulepsz->kogo->poziom--;
+				ulepsz->kogo->max_liczebnosc = ulepsz->kogo->max_liczebnosc / 2.0;
+			}
 		}
 		else if (IsType<PrzebudujRozkaz>(r))
 		{
@@ -342,6 +359,12 @@ UlepszRozkaz::UlepszRozkaz(Domek * kogo) : kogo(kogo)
 {
 }
 
+BurzRozkaz::BurzRozkaz(Domek * kogo) : kogo(kogo)
+{
+}
+
 PrzebudujRozkaz::PrzebudujRozkaz(Domek * kogo, TypDomku naco) : kogo(kogo), naco(naco)
 {
 }
+
+

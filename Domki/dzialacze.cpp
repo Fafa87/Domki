@@ -208,7 +208,7 @@ void Ruszacz::WykonajRuchy()
 			auto ulepsz = (BurzRozkaz*)r;
 
 			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)
-			if (ulepsz->kogo->ulepszanie == true && ulepsz->kogo->liczebnosc > 25.0)
+			if (ulepsz->kogo->ulepszanie == true && ulepsz->kogo->poziom>=2&&ulepsz->kogo->liczebnosc > 25.0)
 			{
 				rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - 25.0);
 				ulepsz->kogo->poziom--;
@@ -273,7 +273,12 @@ void Ruszacz::WalczLudkami(float czas)
 					if (cel->typdomku == TypDomku::kZamek)
 						{
 						cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza/(double)cel->poziom);
-						nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc/(double)cel->poziom;
+						if (cel->liczebnosc < armia.liczebnosc / (double)cel->poziom)
+						{
+							armia.liczebnosc -= (double)cel->poziom*cel->liczebnosc;
+							nowa_liczebnosc = -armia.liczebnosc;
+						}
+						else nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc/(double)cel->poziom;
 						}
 					else
 						{

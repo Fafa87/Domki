@@ -10,6 +10,9 @@ MultiSerwer/x64/**
 Testowanie/OBJ
 Testowanie/.VC/.db
 Testowanie/x64/**
+DomkoTesty/OBJ
+DomkoTesty/.VC/.db
+DomkoTesty/x64/**
 *.log
 
 Domki\.VC\.VC\.opendb

@@ -72,7 +72,7 @@ Rozgrywka pokazowa_rozgrywka()
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz0 = gra.gracze.back();
 	gracz0.numer = 0; gracz0.nazwa = "NEUTRAL";
-	gracz0.kolor = sf::Color::White;
+	gracz0.kolor = sf::Color(128,128,128);
 	gracz0.aktywny = false;
 
 	gra.gracze.push_back(Gracz());

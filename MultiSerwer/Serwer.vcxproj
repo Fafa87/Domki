@@ -168,12 +168,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Domki\misja.h" />
     <ClInclude Include="..\Domki\multi.h" />
     <ClInclude Include="..\Domki\multi_dzialacze.h" />
-    <ClInclude Include="..\Domki\muzyka.h" />
-    <ClInclude Include="..\Domki\Narzedzia\AnimatedSprite.hpp" />
-    <ClInclude Include="..\Domki\Narzedzia\Animation.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Domki\dzialacze.cpp" />
@@ -189,6 +185,11 @@
     <ClCompile Include="..\Domki\si.cpp" />
     <ClCompile Include="..\Domki\wyswietlacze.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domki\Domki.vcxproj">
+      <Project>{f45b812d-b8c1-4931-ab22-a8ac650cf562}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,7 +21,8 @@ enum class Wyglad
 	kDomekWybrany = 2,
 	kLudek = 3,
 	kObrona = 4,
-	kUlepszacz = 5
+	kUlepszacz = 5,
+	kPole = 6
 };
 
 struct Twor

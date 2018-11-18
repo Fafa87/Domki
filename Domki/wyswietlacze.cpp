@@ -46,6 +46,7 @@ void Wyswietlacz::Zaladuj(string wybrana_skora)
 
 	obrazek_tworow[Wyglad::kUlepszacz] = ZaladujAnimacje("Grafika\\" + skorka + "\\kuznia.png");
 	obrazek_tworow[Wyglad::kObrona] = ZaladujAnimacje("Grafika\\" + skorka + "\\zamek.png");
+	obrazek_tworow[Wyglad::kPole] = ZaladujAnimacje("Grafika\\" + skorka + "\\pole.png");
 
 	obrazek_tla.loadFromFile("Grafika\\" + skorka + "\\bruk.png");
 	obrazek_tla.setRepeated(true);
@@ -122,6 +123,9 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 			dom.wyglad = Wyglad::kDomek;
 		else if (dom.typdomku == TypDomku::kZamek)
 			dom.wyglad = Wyglad::kObrona;
+
+		if (dom.poziom == 0)
+			dom.wyglad = Wyglad::kPole;
 	}
 
 	// wygl�d twor�w zawiera dok�adnie to co chcemy wy�wietli�, uaktualnijmy ich stan

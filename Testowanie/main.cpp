@@ -19,6 +19,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	domek.max_liczebnosc = 100;
 	domek.wyglad = Wyglad::kDomek;
 	domek.gracz = &g;
+	domek.poziom = 1;
 	gra.ZmienLiczebnosc(domek, 50);
 
 	gra.domki.push_back(Domek());
@@ -37,6 +38,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	domek3.polozenie = { x - 100 ,y + 150 };
 	domek3.typdomku = TypDomku::kKuznia;
 	domek3.gracz = &g;
+	domek3.poziom = 1;
 	gra.ZmienLiczebnosc(domek3, 50);
 	domek3.drogi.push_back(&domek);
 
@@ -45,8 +47,19 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	domek4.polozenie = { x + 100 ,y + 150 };
 	domek4.typdomku = TypDomku::kZamek;
 	domek4.gracz = &g;
+	domek4.poziom = 1;
 	gra.ZmienLiczebnosc(domek4, 50);
 	domek4.drogi.push_back(&domek);
+
+	gra.domki.push_back(Domek());
+	Domek& domek5 = gra.domki.back();
+	domek5.polozenie = { x + 100 ,y + 250 };
+	domek5.typdomku = TypDomku::kOsada;
+	domek5.gracz = &g;
+	domek5.poziom = 0;
+	gra.ZmienLiczebnosc(domek5, 50);
+	domek5.drogi.push_back(&domek);
+	domek5.drogi.push_back(&domek4);
 
 	gra.armie.push_back(Ludek(domek));
 	Ludek & ludek = gra.armie.back();
@@ -97,9 +110,9 @@ Rozgrywka pokazowa_rozgrywka()
 	
 	dodaj_gracza(gra, gracz0, 200, 200);
 	dodaj_gracza(gra, gracz1, 500, 200);
-	dodaj_gracza(gra, gracz2, 500, 500);
+	dodaj_gracza(gra, gracz2, 500, 600);
 	dodaj_gracza(gra, gracz3, 800, 200);
-	dodaj_gracza(gra, gracz4, 800, 500);
+	dodaj_gracza(gra, gracz4, 800, 600);
 
 	return gra;
 }

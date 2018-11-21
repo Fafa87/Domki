@@ -13,12 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Domki">
-      <UniqueIdentifier>{1446518a-2549-4962-a8a3-a9fadc7665ce}</UniqueIdentifier>
+    <Filter Include="Source Files\Source">
+      <UniqueIdentifier>{6729eab7-64e0-4993-8026-69cd148eaac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mocks">
+      <UniqueIdentifier>{a7bed2d1-ec36-42c2-a640-4f65eca18118}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tworca.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -26,35 +32,32 @@
     <ClCompile Include="dzialacze_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Domki\rozgrywka.cpp">
-      <Filter>Source Files\Domki</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Domki\misja.cpp">
-      <Filter>Source Files\Domki</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Domki\dzialacze.cpp">
-      <Filter>Source Files\Domki</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Domki\gui.cpp">
-      <Filter>Source Files\Domki</Filter>
-    </ClCompile>
     <ClCompile Include="..\Domki\muzyka.cpp">
-      <Filter>Source Files\Domki</Filter>
+      <Filter>Source Files\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\Domki\os.cpp">
-      <Filter>Source Files\Domki</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Domki\si.cpp">
-      <Filter>Source Files\Domki</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Domki\wyswietlacze.cpp">
-      <Filter>Source Files\Domki</Filter>
+      <Filter>Source Files\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\Domki\Narzedzia\AnimatedSprite.cpp">
-      <Filter>Source Files\Domki</Filter>
+      <Filter>Source Files\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\Domki\Narzedzia\Animation.cpp">
-      <Filter>Source Files\Domki</Filter>
+      <Filter>Source Files\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domki\dzialacze.cpp">
+      <Filter>Source Files\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domki\rozgrywka.cpp">
+      <Filter>Source Files\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domki\wyswietlacze.cpp">
+      <Filter>Source Files\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domki\si.cpp">
+      <Filter>Source Files\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="tworca.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

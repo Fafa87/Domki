@@ -77,8 +77,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IntDir>OBJ\</IntDir>
-    <OutDir>$(SolutionDir)\BIN\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -103,6 +103,9 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\SFML-2.4.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-audio-d.lib;sfml-network-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfgui-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /d /y "$(SolutionDir)\SFML-2.4.2\bin\*.*" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -150,11 +153,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="tworca.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Domki\dzialacze.cpp" />
-    <ClCompile Include="..\Domki\gui.cpp" />
-    <ClCompile Include="..\Domki\misja.cpp" />
     <ClCompile Include="..\Domki\muzyka.cpp" />
     <ClCompile Include="..\Domki\Narzedzia\AnimatedSprite.cpp" />
     <ClCompile Include="..\Domki\Narzedzia\Animation.cpp" />
@@ -163,16 +165,10 @@
     <ClCompile Include="..\Domki\si.cpp" />
     <ClCompile Include="..\Domki\wyswietlacze.cpp" />
     <ClCompile Include="dzialacze_test.cpp" />
+    <ClCompile Include="tworca.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="mini_mapa_test.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Domki\Domki.vcxproj">
-      <Project>{f45b812d-b8c1-4931-ab22-a8ac650cf562}</Project>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

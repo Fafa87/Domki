@@ -3,7 +3,6 @@ environment:
   PYTHON: C:\Python35
 image:
 - Visual Studio 2017
-- Visual Studio 2015
 configuration: Release
 before_build:
 - cmd: ''
@@ -14,6 +13,10 @@ build:
   verbosity: minimal
 after_build:
 - cmd: xcopy /Y Grafika BIN\Grafika\
+test:
+  assemblies:
+    only:
+      - '**\DomkoTesty.dll'
 test_script: 
 - "%PYTHON%/Scripts/nosetests Edytor" 
 artifacts:

@@ -29,25 +29,13 @@
     <ClCompile Include="dzialacze_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Domki\muzyka.cpp">
-      <Filter>Source Files\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\Domki\os.cpp">
-      <Filter>Source Files\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Domki\Narzedzia\AnimatedSprite.cpp">
-      <Filter>Source Files\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Domki\Narzedzia\Animation.cpp">
       <Filter>Source Files\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\Domki\dzialacze.cpp">
       <Filter>Source Files\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\Domki\rozgrywka.cpp">
-      <Filter>Source Files\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Domki\wyswietlacze.cpp">
       <Filter>Source Files\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\Domki\si.cpp">

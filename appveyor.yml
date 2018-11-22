@@ -3,7 +3,7 @@ environment:
   PYTHON: C:\Python35
 image:
 - Visual Studio 2017
-configuration: Debug
+configuration: Release
 before_build:
 - cmd: ''
 install: 
@@ -13,10 +13,8 @@ build:
   verbosity: minimal
 after_build:
 - cmd: xcopy /Y Grafika BIN\Grafika\
-test:
-  assemblies:
-    only:
-      - '**\DomkoTesty.dll'
+test_script: 
+- "%PYTHON%/Scripts/nosetests Edytor" 
 artifacts:
 - path: BIN
   name: Domki

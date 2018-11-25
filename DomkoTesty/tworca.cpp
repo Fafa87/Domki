@@ -35,6 +35,8 @@ Domek& tworca::DodajDomek(Rozgrywka& gra, int nr_gracza, int liczba, PD pos)
 	gra.domki.push_back(Domek());
 	Domek& domek = gra.domki.back();
 	domek.polozenie = pos;
+	domek.poziom = 1;
+	domek.max_liczebnosc = 100;
 	domek.gracz = &g;
 	gra.ZmienLiczebnosc(domek, liczba);
 	return domek;

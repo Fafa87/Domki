@@ -1,6 +1,7 @@
 #include "CppUnitTest.h"
 
 #include "../Domki/rozgrywka.h"
+#include "../Domki/dzialacze.h"
 #include "../Domki/os.h"
 
 #include "tworca.h"
@@ -12,10 +13,27 @@ namespace DomkoTesty
 	TEST_CLASS(DzialaczeTest)
 	{
 		Rozgrywka rozgrywka;
+		Ruszacz ruszacz;
 	public:
 		TEST_METHOD_INITIALIZE(Init)
 		{
 			rozgrywka = Rozgrywka();
+			ruszacz = Ruszacz();
+			ruszacz.rozgrywka = &rozgrywka;
+		}
+
+		TEST_METHOD(ProstaWalka_Przegrana)
+		{
+			auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 101, PD());
+			auto& armia_atak = tworca::DodajLudka(rozgrywka, domek_0, 1, 32, PD());
+
+			Assert::AreEqual(101.0, domek_0.liczebnosc);
+			ruszacz.Ruszaj(10); // brak produkcja
+			Assert::AreEqual(69.0, domek_0.liczebnosc);
+
+			domek_0.produkcja = 2;
+			ruszacz.Ruszaj(10); // brak produkcja
+			Assert::AreEqual(89.0, domek_0.liczebnosc);
 		}
 
 		TEST_METHOD(SilaGracza)

@@ -242,6 +242,9 @@ void Ruszacz::PrzesuwajLudkow(float czas)
 
 			PD wektor_do_celu = (polozenie_cel - polozenie_teraz);
 			double dlugosc = sqrt(wektor_do_celu.x * wektor_do_celu.x + wektor_do_celu.y * wektor_do_celu.y);
+			if (dlugosc < 0.00001)
+				continue;
+
 			PD jednostkowy = wektor_do_celu / dlugosc;
 			jednostkowy *= przesuniecie*armia.szybkosc_ludka*czas;
 

@@ -115,7 +115,7 @@ template<class Archive>
 void serialize(Archive & archive,
 	Gracz & m)
 {
-	archive(CEREAL_NVP(m.aktywny), CEREAL_NVP(m.liczba_tworow), CEREAL_NVP(m.nazwa), CEREAL_NVP(m.numer), CEREAL_NVP(m.kolor));
+	archive(CEREAL_NVP(m.aktywny), CEREAL_NVP(m.liczba_tworow), CEREAL_NVP(m.nazwa), CEREAL_NVP(m.numer), CEREAL_NVP(m.kolor), CEREAL_NVP(m.istotny));
 }
 
 template<class Archive>

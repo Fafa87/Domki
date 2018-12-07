@@ -8,14 +8,25 @@ Gracz & Rozgrywka::Gracz(int numer)
 	std::advance(it, numer);
 	return *it;
 }
-int Rozgrywka::SilaGracza(int nr_gracza)
+std::tuple<int,int,int> Rozgrywka::SilaGracza(int nr_gracza)
 {
+	std::tuple<int, int, int> res;
+	res[0] = 0;
+	res[1] = 0;
+	res[2] = 0;
 	auto tearmie = armie.begin();
 	auto tedomki = domki.begin();
-	int ile = 0;
-	for (; tearmie != armie.end(); tearmie++)if (tearmie->gracz->numer == nr_gracza)ile += tearmie->liczebnosc;
-	for (; tedomki != domki.end(); tedomki++)if (tedomki->gracz->numer == nr_gracza)ile += tedomki->liczebnosc;
-	return ile;
+	for (; tearmie != armie.end(); tearmie++)if (tearmie->gracz->numer == nr_gracza)res[0] += tearmie->liczebnosc;
+	for (; tedomki != domki.end(); tedomki++)if (tedomki->gracz->numer == nr_gracza)
+	{
+		if (tedomki->typdomku == TypDomku::kOsada)
+		{
+			res[0] += tedomki->liczebnosc;
+			res[1] += tedomki->poziom;
+		}
+		else if (tedomki->typdomku == TypDomku::kKuznia)res[2] += tedomki->poziom;
+	}
+	return res;
 }
 
 void Rozgrywka::ZniszczLudka(Ludek* ludek)

@@ -593,14 +593,14 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 				if (g.aktywny)
 				{
 					misja_ustawienia.ile_kto_wygranych[g.numer]++;
-					if (misja_ustawienia.Zwyciezca() < 0)
+					if (misja_ustawienia.Zwyciezca() < 0 && misja_ustawienia.nr_gracza != 0)
 						zakonczenie_gry(window, g, nr_gracza);
 					break;
 				}
 			}
 
 			auto zwyciezca_meczu = misja_ustawienia.Zwyciezca();
-			if (zwyciezca_meczu >= 0)
+			if (zwyciezca_meczu >= 0 && misja_ustawienia.nr_gracza != 0)
 			{
 				zakonczenie_meczu(window, misja_ustawienia, rozgrywka);
 			}

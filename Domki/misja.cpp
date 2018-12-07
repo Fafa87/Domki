@@ -453,7 +453,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	sf::ContextSettings ustawienia;
 	ustawienia.antialiasingLevel = 8;
 
-	auto videoMode = sf::VideoMode(1600, 899);
+	auto videoMode = sf::VideoMode(1280, 719);
 	auto styl_okna = sf::Style::Fullscreen;
 	#ifdef _DEBUG
 	styl_okna = sf::Style::None;

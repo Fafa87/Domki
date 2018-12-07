@@ -237,8 +237,14 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 		{
 			auto graczId = ranking_widget_id(instance, nr, "");
 			auto graczLudkiId = ranking_widget_id(instance, nr, "sila");
+			auto graczProdukcjaId = ranking_widget_id(instance, nr, "produkcja");
+			auto graczModernizacjaId = ranking_widget_id(instance, nr, "modernizacja");
 			GUI::pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
 			GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 32.f);
+			GUI::pulpit.SetProperty("Label#" + graczProdukcjaId, "Color", gracz.kolor);
+			GUI::pulpit.SetProperty("Label#" + graczProdukcjaId, "FontSize", 16);
+			GUI::pulpit.SetProperty("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
+			GUI::pulpit.SetProperty("Label#" + graczModernizacjaId, "FontSize", 16);
 			if (stan.Zwyciezca() == nr)
 			{
 				GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 80.f);
@@ -249,12 +255,20 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 			wartosc->SetId(graczId);
 			auto nazwa = sfg::Label::Create(gracz.nazwa);
 			nazwa->SetId(graczId);
-			auto ludki = sfg::Label::Create(to_string(rozgrywka.SilaGracza(gracz.numer)));
+
+			auto sila_gracza = rozgrywka.SilaGracza(nr);
+			auto ludki = sfg::Label::Create(to_string(sila_gracza));
 			ludki->SetId(graczLudkiId);
+			auto produkcja = sfg::Label::Create(to_string(sila_gracza));
+			produkcja->SetId(graczProdukcjaId);
+			auto modernizacja = sfg::Label::Create(to_string(sila_gracza));
+			modernizacja->SetId(graczModernizacjaId);
 
 			table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 			table->Attach(nazwa, sf::Rect<sf::Uint32>(1, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 			table->Attach(ludki, sf::Rect<sf::Uint32>(2, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+			table->Attach(produkcja, sf::Rect<sf::Uint32>(3, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
+			table->Attach(modernizacja, sf::Rect<sf::Uint32>(4, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f(10.f, 10.f));
 			i++;
 		}
 	}
@@ -271,7 +285,7 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 		{
 			interfejs = sfg::Window::Create();
 			interfejs->SetTitle("Mecz do " + to_string(stan.do_ilu_wygranych) + " wygranych");
-			interfejs->SetRequisition(sf::Vector2f(100, 0));
+			interfejs->SetRequisition(sf::Vector2f(140, 0));
 
 			auto ranking = interfejs_ranking(stan, rozgrywka, 1);
 
@@ -287,8 +301,15 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 			auto nr = gracz.numer;
 			if (gracz.istotny)
 			{
+				auto sila_gracza = rozgrywka.SilaGracza(nr);
 				auto sila_label = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById(ranking_widget_id(1, nr, "sila")));
-				sila_label->SetText((to_string(rozgrywka.SilaGracza(nr))));
+				sila_label->SetText((to_string(sila_gracza)));
+
+				auto produkcja_label = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById(ranking_widget_id(1, nr, "produkcja")));
+				produkcja_label->SetText((to_string(sila_gracza)));
+
+				auto modernizacja_label = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById(ranking_widget_id(1, nr, "modernizacja")));
+				modernizacja_label->SetText((to_string(sila_gracza)));
 			}
 		}
 	}

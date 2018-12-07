@@ -76,17 +76,9 @@ int main() {
 	sf::Sprite background(backtexture);
 	background.setTextureRect({ 0, 0, 1600, 900 });
 
-	GUI::pulpit.LoadThemeFromFile("Grafika\\bazowy.theme");
+	GUI::setup_theme();
 
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
-	GUI::pulpit.SetProperty("Window", "BackgroundColor", sf::Color(6, 4, 50));
-	GUI::pulpit.SetProperty("Label", "Color", sf::Color::White);
-	GUI::pulpit.SetProperty("Label", "FontSize", 28);
-	GUI::pulpit.SetProperty("Label#Naglowek", "FontSize", 48);
-	GUI::pulpit.SetProperty("Label#Alarm", "FontSize", 80);
-	GUI::pulpit.SetProperty("Label#Alarm", "Color", sf::Color::Yellow);
-	GUI::pulpit.SetProperty("ComboBox", "BackgroundColor", sf::Color(0, 50, 120));
-	GUI::pulpit.SetProperty("Button", "BackgroundColor", sf::Color(0, 50, 120));
 
 	okno->SetRequisition(sf::Vector2f(600, 900));
 	okno->SetPosition(sf::Vector2f(1000, 0));

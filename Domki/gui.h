@@ -13,6 +13,8 @@ namespace GUI
 	static sfg::SFGUI sfgui;
 	static sfg::Desktop pulpit;
 
+	void setup_theme();
+
 	void center_window(sf::RenderWindow& parent, shared_ptr<sfg::Window> window);
 	void bottom_window(sf::RenderWindow& parent, shared_ptr<sfg::Window> window);
 	void bottom_left_window(sf::RenderWindow& parent, shared_ptr<sfg::Window> window);

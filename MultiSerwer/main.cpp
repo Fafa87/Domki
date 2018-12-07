@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../Domki/gui.h"
+
 #include "../Domki/misja.h"
 #include "../Domki/os.h"
 
@@ -224,6 +226,8 @@ void wykonaj(string zadanie)
 
 int main(int argc, const char * argv[]) {
 	string zadanie;
+
+	GUI::setup_theme();
 
 	if (argc > 1)
 		konfiguruj(int(argv[1][0] - '0'), argv);

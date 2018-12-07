@@ -35,7 +35,19 @@ namespace DomkoTesty
 			ruszacz.Ruszaj(10); // brak produkcja
 			Assert::AreEqual(89.0, domek_0.liczebnosc);
 		}
-
+		TEST_METHOD(ludki_sie_nie_mijaja)
+		{
+			auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 100, PD(1, 1));
+			auto& domek_1 = tworca::DodajDomek(rozgrywka, 1, 100, PD(5, 5));
+			auto& armia_atak = tworca::DodajLudka(rozgrywka, domek_0, 1, 99, PD(1,1));
+			auto rozkaz = new WymarszRozkaz(&domek_0, &domek_1);
+			rozkaz->ulamek = 0.5;
+			vector<Rozkaz*> rozkazy = { rozkaz };
+			ruszacz.PrzyjmijRuch(rozkazy);
+			ruszacz.Ruszaj(10);
+			Assert::AreNotEqual(domek_0.gracz->numer, domek_1.gracz->numer);
+			Assert::AreEqual(domek_0.liczebnosc, 1.0);
+		}
 		TEST_METHOD(SilaGracza)
 		{
 			auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 10, PD());
@@ -57,6 +69,5 @@ namespace DomkoTesty
 			Assert::AreEqual("placek", res.first.c_str());
 			Assert::AreEqual("nowy.txt", res.second.c_str());
 		}
-
 	};
 }

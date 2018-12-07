@@ -18,7 +18,7 @@ bool IsType(const SrcType* src)
 
 struct Rozgrywka
 {
-	bool walka_w_polu;
+	bool walka_w_polu = true;
 
 	list<Gracz> gracze;
 	list<Domek> domki;

@@ -260,6 +260,22 @@ void Ruszacz::WalczLudkami(float czas)
 	{
 		Ludek& armia = *it;
 		double odleglosc = rozgrywka->Odleglosc(armia, *armia.cel);
+		auto spotkanie = rozgrywka->Spotkanie(armia);
+		if (spotkanie != NULL)
+		{
+			rozgrywka->TracLudki(armia, std::max(5.0, 5 * czas * szybkosc));
+			rozgrywka->TracLudki(*spotkanie, std::max(5.0, 5 * czas * szybkosc));
+
+			if (armia.liczebnosc <= 0)
+			{
+				do_usuniecia.push_back(&(*it));
+			}
+
+			if (spotkanie->liczebnosc <= 0)
+			{
+				do_usuniecia.push_back(spotkanie);
+			}
+		}
 		if (odleglosc < armia.cel->rozmiar)
 		{
 			if (IsType<Domek>(armia.cel))
@@ -302,24 +318,7 @@ void Ruszacz::WalczLudkami(float czas)
 				do_usuniecia.push_back(&(*it));
 			}
 		}
-		else {
-			auto spotkanie = rozgrywka->Spotkanie(armia);
-			if (spotkanie != NULL)
-			{
-				rozgrywka->TracLudki(armia, std::max(5.0, 5 * czas * szybkosc));
-				rozgrywka->TracLudki(*spotkanie, std::max(5.0, 5 * czas * szybkosc));
 		
-				if (armia.liczebnosc <= 0)
-				{
-					do_usuniecia.push_back(&(*it));
-				}
-
-				if (spotkanie->liczebnosc <= 0)
-				{
-					do_usuniecia.push_back(spotkanie);
-				}
-			}
-		}
 	}
 
 	for (auto usunieta : do_usuniecia)

@@ -41,13 +41,15 @@ void konfiguruj(int l, const char * argv[])
 {
 	if (l == 0)
 	{
-		wykonaj("serwer " + string(argv[2]));
+		wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]));
 		wykonaj("start");
 	}
 	else
 	{ 
 		wykonaj("klient " + std::to_string(l));
-		wykonaj("polacz");
+		klient->lista_serwerow.clear();
+		klient->SpiszSerwery();
+		//wykonaj("polacz");
 	}
 }
 

@@ -8,7 +8,9 @@
 #include "gui.h"
 #include "os.h"
 
-void start_serwer(sfg::Desktop& pulpit)
+
+
+void start_serwer(sfg::Desktop& pulpit, sf::Music& muzyka)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::TOPLEVEL);
 	okno->SetRequisition(sf::Vector2f(300, 300));
@@ -46,7 +48,7 @@ void start_serwer(sfg::Desktop& pulpit)
 	pulpit.Add(okno);
 }
 
-void start_klient(sfg::Desktop& pulpit)
+void start_klient(sfg::Desktop& pulpit, sf::Music& muzyka)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::TOPLEVEL);
 	okno->SetRequisition(sf::Vector2f(300, 300));
@@ -63,21 +65,8 @@ void start_klient(sfg::Desktop& pulpit)
 	pulpit.Add(okno);
 }
 
-
-int main() {
-	sf::RenderWindow okno_menu(sf::VideoMode(1600, 900), "Domki menu!", sf::Style::None);
-	okno_menu.resetGLStates();
-
-	sf::Music muzyka;
-
-	sf::Texture backtexture;
-	backtexture.loadFromFile("Grafika\\houseofhouses.png");
-	backtexture.setRepeated(false);
-	sf::Sprite background(backtexture);
-	background.setTextureRect({ 0, 0, 1600, 900 });
-
-	GUI::setup_theme();
-
+std::shared_ptr<sfg::Window> pojedynczy_gracz(sfg::Desktop& pulpit, sf::RenderWindow& okno_menu, sf::Music& muzyka)
+{
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 
 	okno->SetRequisition(sf::Vector2f(600, 900));
@@ -112,7 +101,8 @@ int main() {
 	do_ilu_pasek->SetRequisition(sf::Vector2f(200.f, 30.f));
 	do_ilu_pasek->SetValue(1);
 	do_ilu_pasek->SetIncrements(1, 2);
-	do_ilu_pasek->GetAdjustment()->GetSignal(sfg::Adjustment::OnChange).Connect([&] {
+	do_ilu_pasek->GetAdjustment()->GetSignal(sfg::Adjustment::OnChange).Connect(
+		[do_ilu_wartosc, do_ilu_pasek] {
 		do_ilu_wartosc->SetText(to_string((int)do_ilu_pasek->GetValue()));
 	});
 
@@ -120,7 +110,8 @@ int main() {
 	walka_w_polu_ptaszek->SetActive(true);
 
 	auto uruchom = sfg::Button::Create("Uruchom");
-	uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
+	uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
+		[wybor_lista, szybkosc_pasek, trudnosc_lista, walka_w_polu_ptaszek, do_ilu_pasek, okno, &okno_menu, &muzyka] {
 		MisjaUstawienia ustawienia;
 		ustawienia.nazwa = wybor_lista->GetSelectedText();
 		ustawienia.szybkosc = szybkosc_pasek->GetValue();
@@ -129,6 +120,7 @@ int main() {
 		ustawienia.do_ilu_wygranych = do_ilu_pasek->GetValue();
 
 		muzyka.stop();
+		okno_menu.setVisible(false);
 		okno->Show(false);
 		while (ustawienia.Zwyciezca() == -1)
 		{
@@ -136,17 +128,7 @@ int main() {
 		}
 		muzyka.play();
 		okno->Show(true);
-	});
-
-	// multi
-	auto serwer = sfg::Button::Create("Serwer");
-	serwer->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
-		start_serwer(GUI::pulpit);
-	});
-
-	auto klient = sfg::Button::Create("Klient");
-	klient->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
-		start_klient(GUI::pulpit);
+		okno_menu.setVisible(true);
 	});
 
 	tabelka->SetRowSpacings(10);
@@ -173,6 +155,36 @@ int main() {
 	box->Pack(tabelka, false, false);
 	okno->Add(box);
 
+	return okno;
+}
+
+int main() {
+	sf::RenderWindow okno_menu(sf::VideoMode(1600, 900), "Domki menu!", sf::Style::None);
+	okno_menu.resetGLStates();
+
+	sf::Music muzyka;
+
+	sf::Texture backtexture;
+	backtexture.loadFromFile("Grafika\\houseofhouses.png");
+	backtexture.setRepeated(false);
+	sf::Sprite background(backtexture);
+	background.setTextureRect({ 0, 0, 1600, 900 });
+
+	GUI::setup_theme();
+
+	//// multi
+	//auto serwer = sfg::Button::Create("Serwer");
+	//serwer->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
+	//	start_serwer(GUI::pulpit, muzyka);
+	//});
+
+	//auto klient = sfg::Button::Create("Klient");
+	//klient->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
+	//	start_klient(GUI::pulpit, muzyka);
+	//});
+
+	
+	auto okno = pojedynczy_gracz(GUI::pulpit, okno_menu, muzyka);
 	GUI::pulpit.Add(okno);
 
 	sf::Event event;

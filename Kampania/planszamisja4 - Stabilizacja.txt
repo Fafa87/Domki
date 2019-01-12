@@ -1,0 +1,71 @@
+13
+1 6
+koordynaty 900 500
+drogi 8 2 3 4 6 7 8 9 10
+gracz 1
+poziom 5
+typ zamek
+liczebnosc 10
+2 5
+koordynaty 800 600
+drogi 2 1 4 
+gracz 1
+poziom 3
+liczebnosc 10
+3 5
+koordynaty 900 600
+drogi 2 1 4
+gracz 1
+poziom 3
+liczebnosc 10
+4 6
+koordynaty 1000 600
+drogi 4 1 2 3 5
+gracz 1
+poziom 5
+typ kuznia
+liczebnosc 0
+5 5
+koordynaty 900 700
+drogi 1 4
+gracz 1
+poziom 3
+liczebnosc 10
+6 3
+koordynaty 800 500
+drogi 3 1 7 11
+liczebnosc 10
+7 3
+koordynaty 800 400
+drogi 3 1 6 8
+liczebnosc 10
+8  3
+koordynaty 900 400
+drogi 4 1 7 9 12 
+liczebnosc 10
+9 3
+koordynaty 1000 400
+drogi 3 1 8 10 
+liczebnosc 10
+10 3
+koordynaty 1000 500
+drogi 3 1 9 13
+liczebnosc 10
+11 5
+koordynaty 700 500
+drogi 1 6 
+gracz 2
+poziom 3
+liczebnosc 50
+12 5
+koordynaty 900 300
+drogi 1 8 
+gracz 3
+poziom 3
+liczebnosc 50
+13 5
+koordynaty 1100 500
+drogi 1 10
+gracz 4
+poziom 3
+liczebnosc 50

@@ -2,7 +2,7 @@
 Historia zmian
 ==============
 
-`0.7.160 <https://github.com/Fafa87/Domki/tree/v0.7>`_ (2019-01-11)
+`0.7.231 <https://github.com/Fafa87/Domki/tree/v0.7>`_ (2019-01-11)
 -------------------------
 `ZIP
 <https://ci.appveyor.com/api/buildjobs/uxmnhpu9a9v6mx4b/artifacts/Domki.zip>`_

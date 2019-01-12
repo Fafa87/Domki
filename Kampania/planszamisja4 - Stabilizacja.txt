@@ -13,18 +13,18 @@ gracz 1
 poziom 3
 liczebnosc 10
 3 5
-koordynaty 900 600
+koordynaty 1000 600
 drogi 2 1 4
 gracz 1
 poziom 3
 liczebnosc 10
 4 6
-koordynaty 1000 600
+koordynaty 900 600
 drogi 4 1 2 3 5
 gracz 1
 poziom 5
 typ kuznia
-liczebnosc 0
+liczebnosc 5
 5 5
 koordynaty 900 700
 drogi 1 4

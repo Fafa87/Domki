@@ -1,0 +1,9 @@
+2
+1 3
+koordynaty 300 400
+drogi 1 2
+gracz 1
+2 3
+koordynaty 600 400
+drogi 1 1
+gracz 2

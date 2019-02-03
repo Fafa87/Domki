@@ -5,7 +5,7 @@ SerwerowyRuszacz::SerwerowyRuszacz(multi::Serwer & serwer) : serwer(serwer)
 {
 }
 
-void SerwerowyRuszacz::Ruszaj(float czas)
+void SerwerowyRuszacz::Ruszaj(double czas)
 {
 	// pobierz ruchy z klientów
 	auto& rozkazy = serwer.Odbierz();
@@ -27,7 +27,7 @@ KlientowyRuszacz::KlientowyRuszacz(multi::Klient & klient) : klient(klient)
 {
 }
 
-void KlientowyRuszacz::Ruszaj(float czas)
+void KlientowyRuszacz::Ruszaj(double czas)
 {
 	// wyœlij swoje rozkazy
 	klient.Wyslij(kolejka_do_wykonania);

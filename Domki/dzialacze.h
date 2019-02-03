@@ -79,7 +79,7 @@ class Ruszacz // wykonuje zaplanowane kroki symulacji
 {
 public:
 	Ruszacz();
-	virtual void Ruszaj(float czas);
+	virtual void Ruszaj(double czas);
 	void PrzyjmijRuch(vector<Rozkaz*> rozkazy);
 
 	Rozgrywka* rozgrywka;
@@ -95,8 +95,8 @@ protected:
 
 private:
 	void WykonajRuchy();
-	void PrzesuwajLudkow(float czas);
-	void WalczLudkami(float czas);
-	void Produkuj(float czas);
-	void Strzelaj(float czas);
+	void PrzesuwajLudkow(double czas);
+	void WalczLudkami(double czas);
+	void Produkuj(double czas);
+	void Strzelaj(double czas);
 };

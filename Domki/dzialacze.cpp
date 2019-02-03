@@ -139,7 +139,7 @@ Ruszacz::Ruszacz()
 {
 }
 
-void Ruszacz::Ruszaj(float czas)
+void Ruszacz::Ruszaj(double czas)
 {
 	ile_armii_idzie = armie_ktore_dotarly = 0;
 
@@ -179,12 +179,12 @@ void Ruszacz::WykonajRuchy()
 
 					//ZMIERZ SILE LUDKOW I NADAJ IM SZYBKOSC
 					int sila_ludkow=0;
-					float wspolczynnik_walki=0.1,wspolczynnik_ruchu=0.1;
+					double wspolczynnik_walki=0.1,wspolczynnik_ruchu=0.1;
 					for (Domek& domekek : rozgrywka->domki)
 					{
 						if (domekek.gracz->numer == ruch.skad->gracz->numer&&domekek.typdomku == TypDomku::kKuznia)sila_ludkow += domekek.poziom;
 					}
-					nowaArmia.tarcza = (int)((float)sila_ludkow*wspolczynnik_walki*(float)liczba);
+					nowaArmia.tarcza = (int)((double)sila_ludkow*wspolczynnik_walki*(double)liczba);
 					nowaArmia.szybkosc_ludka = sila_ludkow*wspolczynnik_ruchu + 1.0;
 
 					ruch.skad->gracz->liczba_tworow++;
@@ -229,7 +229,7 @@ void Ruszacz::WykonajRuchy()
 	kolejka_do_wykonania.clear();
 }
 
-void Ruszacz::PrzesuwajLudkow(float czas)
+void Ruszacz::PrzesuwajLudkow(double czas)
 {
 	double przesuniecie = szybkosc * szybkosc_ruchu;
 	ile_armii_idzie = rozgrywka->armie.size();
@@ -253,7 +253,7 @@ void Ruszacz::PrzesuwajLudkow(float czas)
 	}
 }
 
-void Ruszacz::WalczLudkami(float czas)
+void Ruszacz::WalczLudkami(double czas)
 {
 	vector<Ludek*> do_usuniecia;
 	for (auto it = rozgrywka->armie.begin(); it != rozgrywka->armie.end(); it++)
@@ -327,7 +327,7 @@ void Ruszacz::WalczLudkami(float czas)
 	}
 }
 
-void Ruszacz::Produkuj(float czas)
+void Ruszacz::Produkuj(double czas)
 {
 	for (Domek& domek : rozgrywka->domki)
 	{
@@ -337,7 +337,7 @@ void Ruszacz::Produkuj(float czas)
 	}
 }
 
-void Ruszacz::Strzelaj(float czas)
+void Ruszacz::Strzelaj(double czas)
 {
 	int sila_strzalu = 5.0;
 	//tego na razie nie ma

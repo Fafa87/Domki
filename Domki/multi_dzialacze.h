@@ -14,7 +14,7 @@ class SerwerowyRuszacz : public Ruszacz
 {
 public:
 	SerwerowyRuszacz(multi::Serwer& serwer);
-	virtual void Ruszaj(float czas);
+	virtual void Ruszaj(double czas);
 	double okres_synchronizacji = 0.1;
 
 private:
@@ -26,7 +26,7 @@ class KlientowyRuszacz : public Ruszacz
 {
 public:
 	KlientowyRuszacz(multi::Klient& klient);
-	virtual void Ruszaj(float czas);
+	virtual void Ruszaj(double czas);
 
 private:
 	multi::Klient& klient;

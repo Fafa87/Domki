@@ -10,7 +10,7 @@ Walka domków o życie!
 Ściągnij 
 ------------
 
-`0.6.x
+`0.7.x
 <https://ci.appveyor.com/project/Fafa87/domki>`_
 
 `ZIP
@@ -19,4 +19,4 @@ Walka domków o życie!
 Zobacz
 ------------
 
-.. image:: https://user-images.githubusercontent.com/9865688/42425126-6df28e2c-8318-11e8-8669-d6f52bea538c.png
+.. image:: https://user-images.githubusercontent.com/9865688/51075563-6c9dee00-168d-11e9-87c4-68981d94a3ed.png

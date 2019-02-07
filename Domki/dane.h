@@ -48,7 +48,7 @@ struct Ludek : Twor
 	Twor* cel; // do kogo (domka) stara siê dotrzeæ
 	int ser_cel;
 	int liczebnosc,tarcza=0; // powinna byæ zwi¹zana z jego rozmiarem
-	float szybkosc_ludka = 1.0;
+	double szybkosc_ludka = 1.0;
 };
 
 enum class TypDomku

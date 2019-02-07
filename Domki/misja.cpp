@@ -534,10 +534,10 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	//czasomierz
 	auto czasomierz = clock();
 	int czasik = 0;
-	float czas;
+	double czas;
 	//APM
 	long long akcje = 0;
-	float czas_przeminal = clock();
+	double czas_przeminal = clock();
 	shared_ptr<sfg::Window> interfejs;
 	while (window.isOpen())
 	{

@@ -5,9 +5,9 @@
 #include<ctime>
 #include<cmath>
 
-Komputer::Komputer(Rozgrywka & rozgrywka, Gracz & gracz,float szybkosc_komputera) : rozgrywka(rozgrywka), gracz(gracz),szybkosc_komputera(szybkosc_komputera)
+Komputer::Komputer(Rozgrywka & rozgrywka, Gracz & gracz,double szybkosc_komputera) : rozgrywka(rozgrywka), gracz(gracz),szybkosc_komputera(szybkosc_komputera)
 {
-	czas = (float)(rand() % 30)/10.0;
+	czas = (double)(rand() % 30)/10.0;
 }
 
 double licz_przyrost(double odleglosc)
@@ -24,7 +24,7 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 	{
 		czas -= 3.0;
 		bool ruch,graniczy;
-		float odleglosc = 0;
+		double odleglosc = 0;
 		Domek* domekx = NULL;
 		for (Domek& domek1 : rozgrywka.domki)
 			if (domek1.gracz->numer == gracz.numer)
@@ -81,7 +81,7 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 	return res;
 }
 
-KomputerSilver::KomputerSilver(Rozgrywka & rozgrywka, Gracz & gracz, float szybkosc_komputera) : Komputer(rozgrywka, gracz,szybkosc_komputera)
+KomputerSilver::KomputerSilver(Rozgrywka & rozgrywka, Gracz & gracz, double szybkosc_komputera) : Komputer(rozgrywka, gracz,szybkosc_komputera)
 {
 
 

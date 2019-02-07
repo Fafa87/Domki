@@ -143,10 +143,9 @@ int pokazowa_misja()
 	//czasomierz
 	auto czasomierz = clock();
 	int czasik = 0;
-	float czas;
 	//APM
 	long long akcje = 0;
-	float czas_przeminal = clock();
+	double czas_przeminal = clock();
 	while (window.isOpen())
 	{
 		sf::Event event;

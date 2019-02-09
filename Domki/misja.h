@@ -11,7 +11,7 @@
 #include<windows.h>
 #include<fstream>
 
-const string poziomy_trudnosci[] = { "podstawa", "rozszerzenie" };
+const string poziomy_trudnosci[] = { "pokojowy", "agresywny" };
 
 struct MisjaUstawienia
 {

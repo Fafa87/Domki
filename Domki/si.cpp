@@ -23,7 +23,7 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 	if (czas*szybkosc_komputera >= 3.0)
 	{
 		czas -= 3.0;
-		bool ruch,graniczy;
+		bool ruch, graniczy;
 		double odleglosc = 0;
 		Domek* domekx = NULL;
 		for (Domek& domek1 : rozgrywka.domki)
@@ -31,19 +31,29 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 			{
 				graniczy = false;
 				for (Domek* domek2 : domek1.drogi)
+				{
+					if (domek2->typdomku != TypDomku::kZamek&&domek2->gracz->numer != gracz.numer &&
+						((domek2->gracz->aktywny && 2 * domek2->liczebnosc + 30 * domek1.poziom < domek1.liczebnosc) || ((domek2->gracz->aktywny == false || domek2->typdomku == TypDomku::kKuznia) && 2 * domek2->liczebnosc < domek1.liczebnosc)))
 					{
-					if (domek2->gracz->numer != gracz.numer &&
-						((domek2->gracz->aktywny&& 2* (domek2->liczebnosc + 5) <= domek1.liczebnosc)|| domek2->gracz->aktywny==false&&2*domek2->liczebnosc<=domek1.liczebnosc))
-						{
 						auto r = new WymarszRozkaz(&domek1, domek2);
-						r->ulamek = 1.0;
+						r->ulamek = 0.5;
 						res.push_back(r);
 						graniczy = true;
-						}
+						break;
 					}
-				if (!graniczy)
+					else if (domek2->typdomku == TypDomku::kZamek&&domek2->gracz->numer != gracz.numer &&
+						((domek2->gracz->aktywny && 2 * (domek2->liczebnosc + 5) * domek2->poziom < domek1.liczebnosc) || (domek2->gracz->aktywny == false && 2 * (domek2->liczebnosc + 5) * domek2->poziom < domek1.liczebnosc)))
 					{
-					if (2 * domek1.liczebnosc >= domek1.max_liczebnosc&&domek1.poziom <= 2)
+						auto r = new WymarszRozkaz(&domek1, domek2);
+						r->ulamek = 0.5;
+						res.push_back(r);
+						graniczy = true;
+						break;
+					}
+				}
+				if (!graniczy)
+				{
+					if (2 * domek1.liczebnosc >= domek1.max_liczebnosc&&domek1.poziom <= 10)
 					{
 						UlepszRozkaz* r = new UlepszRozkaz(&domek1);
 						res.push_back(r);
@@ -59,36 +69,103 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 						}
 
 					}
-					if (!ruch&&!graniczy)
+					if (!ruch && !graniczy)
 					{
-						for (Domek& romek1 : rozgrywka.domki)
+						for (Domek* romek1 : domek1.drogi)
 						{
-							if (2 * romek1.liczebnosc >= romek1.max_liczebnosc&&romek1.poziom <= 2);
+							if (romek1->poziom >= domek1.poziom);
 							else
 							{
-								auto r = new WymarszRozkaz(&domek1, &romek1);
+								auto r = new WymarszRozkaz(&domek1, romek1);
 								r->ulamek = 1.0;
 								res.push_back(r);
 								ruch = true;
 								break;
 							}
 						}
-						
+
 					}
-					}	
+				}
 			}
 	}
+	
 	return res;
 }
 
 KomputerSilver::KomputerSilver(Rozgrywka & rozgrywka, Gracz & gracz, double szybkosc_komputera) : Komputer(rozgrywka, gracz,szybkosc_komputera)
 {
-
-
+	
 }
 
 vector<Rozkaz*> KomputerSilver::WykonajRuch()
 {
 	vector<Rozkaz*> res;
+	if (czas*szybkosc_komputera >= 3.0)
+	{
+		czas -= 3.0;
+		bool ruch, graniczy;
+		double odleglosc = 0;
+		Domek* domekx = NULL;
+		for (Domek& domek1 : rozgrywka.domki)
+			if (domek1.gracz->numer == gracz.numer)
+			{
+				graniczy = false;
+				for (Domek* domek2 : domek1.drogi)
+				{
+					if (domek2->typdomku != TypDomku::kZamek&&domek2->gracz->numer != gracz.numer &&
+						((domek2->gracz->aktywny && domek2->liczebnosc + 15 * domek1.poziom < domek1.liczebnosc) || ((domek2->gracz->aktywny == false || domek2->typdomku == TypDomku::kKuznia) && domek2->liczebnosc < domek1.liczebnosc)))
+					{
+						auto r = new WymarszRozkaz(&domek1, domek2);
+						r->ulamek = 1.0;
+						res.push_back(r);
+						graniczy = true;
+					}
+					else if (domek2->typdomku == TypDomku::kZamek&&domek2->gracz->numer != gracz.numer &&
+						((domek2->gracz->aktywny && (domek2->liczebnosc + 5) * domek2->poziom < domek1.liczebnosc) || (domek2->gracz->aktywny == false && (domek2->liczebnosc + 5) * domek2->poziom < domek1.liczebnosc)))
+					{
+						auto r = new WymarszRozkaz(&domek1, domek2);
+						r->ulamek = 1.0;
+						res.push_back(r);
+						graniczy = true;
+					}
+				}
+				if (!graniczy)
+				{
+					if (2 * domek1.liczebnosc >= domek1.max_liczebnosc&&domek1.poziom <= 10)
+					{
+						UlepszRozkaz* r = new UlepszRozkaz(&domek1);
+						res.push_back(r);
+						ruch = true;
+					}
+					else
+					{
+						ruch = false;
+						graniczy = false;
+						for (Domek* domek2 : domek1.drogi)
+						{
+							if (domek2->gracz->numer != gracz.numer)graniczy = true;
+						}
+
+					}
+					if (!ruch && !graniczy)
+					{
+						for (Domek* romek1 : domek1.drogi)
+						{
+							if (romek1->poziom >= domek1.poziom);
+							else
+							{
+								auto r = new WymarszRozkaz(&domek1, romek1);
+								r->ulamek = 1.0;
+								res.push_back(r);
+								ruch = true;
+								break;
+							}
+						}
+
+					}
+				}
+			}
+	}
 	return res;
+
 }

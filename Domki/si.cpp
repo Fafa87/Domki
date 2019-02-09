@@ -71,19 +71,24 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 					}
 					if (!ruch && !graniczy)
 					{
+						int min_poziom = domek1.poziom;
+						Domek* ktojestromek = NULL;
 						for (Domek* romek1 : domek1.drogi)
 						{
-							if (romek1->poziom >= domek1.poziom);
-							else
+							if (romek1->poziom < min_poziom)
 							{
-								auto r = new WymarszRozkaz(&domek1, romek1);
-								r->ulamek = 1.0;
-								res.push_back(r);
-								ruch = true;
-								break;
+								min_poziom = romek1->poziom;
+								ktojestromek = romek1;
+
 							}
 						}
-
+						if (min_poziom < domek1.poziom)
+						{
+							auto r = new WymarszRozkaz(&domek1, ktojestromek);
+							r->ulamek = 1.0;
+							res.push_back(r);
+							ruch = true;
+						}
 					}
 				}
 			}
@@ -149,19 +154,24 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
 					}
 					if (!ruch && !graniczy)
 					{
+						int min_poziom = domek1.poziom;
+						Domek* ktojestromek = NULL;
 						for (Domek* romek1 : domek1.drogi)
 						{
-							if (romek1->poziom >= domek1.poziom);
-							else
+							if (romek1->poziom < min_poziom)
 							{
-								auto r = new WymarszRozkaz(&domek1, romek1);
-								r->ulamek = 1.0;
-								res.push_back(r);
-								ruch = true;
-								break;
+								min_poziom = romek1->poziom;
+								ktojestromek = romek1;
+
 							}
 						}
-
+						if (min_poziom < domek1.poziom)
+						{
+							auto r = new WymarszRozkaz(&domek1, ktojestromek);
+							r->ulamek = 1.0;
+							res.push_back(r);
+							ruch = true;
+						}
 					}
 				}
 			}

@@ -122,7 +122,7 @@ liczebnosc 100
 koordynaty 1125 400
 drogi 3 12 17 20
 gracz 2
-typ zamek
+typ osada
 poziom 3
 liczebnosc 100
 19 6 

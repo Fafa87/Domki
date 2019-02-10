@@ -1,0 +1,106 @@
+15
+1 6
+koordynaty 800 300
+drogi 1 5
+gracz 2
+typ osada
+poziom 3
+liczebnosc 50
+2 6
+koordynaty 900 300
+drogi 1 5
+gracz 2
+typ osada
+poziom 3
+liczebnosc 50
+3 6
+koordynaty 1000 300
+drogi 1 5
+gracz 2
+typ osada
+poziom 3
+liczebnosc 50
+4 6
+koordynaty 700 400
+drogi 1 7
+gracz 2
+typ osada
+poziom 3
+liczebnosc 50
+5 6
+koordynaty 900 400
+drogi 6 1 2 3 7 8 9
+gracz 0
+typ kuznia
+poziom 3
+liczebnosc 50
+6 6
+koordynaty 1100 400
+drogi 1 9
+gracz 2
+typ osada
+poziom 3
+liczebnosc 50
+7 6
+koordynaty 800 500
+drogi 5 4 5 8 10 11
+gracz 0
+typ zamek
+poziom 3
+liczebnosc 500
+8 6
+koordynaty 900 500
+drogi 4 5 7 9 11
+gracz 0
+typ zamek
+poziom 5
+liczebnosc 250
+9 6
+koordynaty 1000 500
+drogi 5 5 6 8 11 12
+gracz 0
+typ zamek
+poziom 3
+liczebnosc 500
+10 6
+koordynaty 700 600
+drogi 1 7
+gracz 1
+typ osada
+poziom 3
+liczebnosc 50
+11 6
+koordynaty 900 600
+drogi 6 7 8 9 13 14 15
+gracz 0
+typ kuznia
+poziom 3
+liczebnosc 50
+12 6
+koordynaty 1100 600
+drogi 1 9
+gracz 1
+typ osada
+poziom 3
+liczebnosc 50
+13 6
+koordynaty 800 700
+drogi 1 11
+gracz 1
+typ osada
+poziom 3
+liczebnosc 50
+14 6
+koordynaty 900 700
+drogi 1 11
+gracz 1
+typ osada
+poziom 3
+liczebnosc 50
+15 6
+koordynaty 1000 700
+drogi 1 11
+gracz 1
+typ osada
+poziom 3
+liczebnosc 50

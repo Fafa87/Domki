@@ -141,7 +141,7 @@ liczebnosc 100
 poziom 3 
 21 6
 koordynaty 750 750
-drogi 4 14 23 20 22
+drogi 4 14 16 20 22
 gracz 3
 typ zamek
 liczebnosc 50

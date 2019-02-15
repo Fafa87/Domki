@@ -1,4 +1,4 @@
-18
+19
 1 6
 koordynaty 600 300
 drogi 2 4 5
@@ -32,14 +32,14 @@ koordynaty 700 500
 drogi 6 1 2 4 6 7 8
 gracz 1
 typ zamek
-poziom 3
+poziom 1
 liczebnosc 10
 6 6
 koordynaty 800 500
-drogi 6 2 3 5 8 9 13
+drogi 6 2 3 5 8 9 19
 gracz 1
 typ zamek
-poziom 3
+poziom 1
 liczebnosc 10
 7 6
 koordynaty 600 700
@@ -85,17 +85,17 @@ poziom 3
 liczebnosc 10
 13 6
 koordynaty 1000 500
-drogi 6 6 10 11 14 16 17
+drogi 6 10 11 14 16 17 19
 gracz 2
 typ zamek
-poziom 3
+poziom 1
 liczebnosc 10
 14 6
 koordynaty 1100 500
 drogi 6 11 12 13 15 17 18
 gracz 2 
 typ zamek
-poziom 3
+poziom 1
 liczebnosc 10
 15 6
 koordynaty 1200 500
@@ -125,3 +125,10 @@ gracz 2
 typ osada
 poziom 3
 liczebnosc 10
+19 6
+koordynaty 900 500
+drogi 2 6 13
+gracz 0
+typ zamek
+poziom 5
+liczebnosc 150

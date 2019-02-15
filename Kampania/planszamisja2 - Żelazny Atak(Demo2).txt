@@ -3,7 +3,7 @@
 koordynaty 600 500
 drogi 1 2
 gracz 1
-poziom 5
+poziom 3
 liczebnosc 10
 2 5
 koordynaty 750 500
@@ -15,7 +15,7 @@ liczebnosc 10
 koordynaty 900 500 
 drogi 4 2 4 5 6
 gracz 2
-poziom 5
+poziom 10
 liczebnosc 10
 typ kuznia
 4 5

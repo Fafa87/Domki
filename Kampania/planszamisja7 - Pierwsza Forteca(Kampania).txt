@@ -2,28 +2,28 @@
 1 6
 koordynaty 750 275
 drogi 1 2
-gracz 0
+gracz 1
 typ osada
 liczebnosc 50
 poziom 3
 2 6
 koordynaty 950 275
 drogi 3 1 3 9
-gracz 1
+gracz 0
 typ osada
-liczebnosc 100
+liczebnosc 50
 poziom 3
 3 6
 koordynaty 1150 275
 drogi 1 2
-gracz 0
+gracz 1
 typ osada
 liczebnosc 50
 poziom 3
 4 6
 koordynaty 650 350
 drogi 1 11
-gracz 0
+gracz 1
 typ osada
 liczebnosc 50
 poziom 3
@@ -33,18 +33,18 @@ drogi 1 9
 gracz 2
 typ osada
 liczebnosc 10
-poziom 3
+poziom 4
 6 6
 koordynaty 1050 350
 drogi 1 9
 gracz 2
 typ osada
 liczebnosc 10
-poziom 3
+poziom 4
 7 6
 koordynaty 1250 350
 drogi 1 15
-gracz 0
+gracz 1
 typ osada
 liczebnosc 50
 poziom 3
@@ -54,7 +54,7 @@ drogi 1 12
 gracz 2
 typ osada
 liczebnosc 10
-poziom 3
+poziom 4
 9 6
 koordynaty 950 425
 drogi 4 2 5 6 13
@@ -68,13 +68,13 @@ drogi 1 14
 gracz 2
 typ osada
 liczebnosc 10
-poziom 3
+poziom 4
 11 6
 koordynaty 650 500
 drogi 3 4 12 19
-gracz 1
+gracz 0
 typ osada
-liczebnosc 100
+liczebnosc 50
 poziom 3
 12 6
 koordynaty 850 500
@@ -100,9 +100,9 @@ poziom 3
 15 6
 koordynaty 1250 500
 drogi 3 7 14 22
-gracz 1
+gracz 0
 typ osada
-liczebnosc 100
+liczebnosc 50
 poziom 3
 16 6
 koordynaty 750 575
@@ -110,7 +110,7 @@ drogi 1 12
 gracz 2
 typ osada
 liczebnosc 10
-poziom 3
+poziom 4
 17 6
 koordynaty 950 575
 drogi 4 13 20 21 24
@@ -124,11 +124,11 @@ drogi 1 14
 gracz 2
 typ osada
 liczebnosc 10
-poziom 3
+poziom 4
 19 6
 koordynaty 650 650 
 drogi 1 11
-gracz 0
+gracz 1
 typ osada
 liczebnosc 50
 poziom 3
@@ -138,39 +138,39 @@ drogi 1 17
 gracz 2
 typ osada
 liczebnosc 10
-poziom 3
+poziom 4
 21 6
 koordynaty 1050 650
 drogi 1 17
 gracz 2
 typ osada
 liczebnosc 10
-poziom 3
+poziom 4
 22 6
 koordynaty 1250 650
 drogi 1 15
-gracz 0
+gracz 1
 typ osada
 liczebnosc 50
 poziom 3
 23 6
 koordynaty 750 725
 drogi 1 24
-gracz 0
+gracz 1
 typ osada
 liczebnosc 50
 poziom 3
 24 6
 koordynaty 950 725
 drogi 3 17 23 25
-gracz 1
+gracz 0
 typ osada
-liczebnosc 100
+liczebnosc 50
 poziom 3
 25 6
 koordynaty 1150 725
 drogi 1 24
-gracz 0
+gracz 1
 typ osada
 liczebnosc 50
 poziom 3

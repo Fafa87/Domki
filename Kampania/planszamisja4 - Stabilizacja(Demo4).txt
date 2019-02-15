@@ -1,11 +1,11 @@
-13
+12
 1 6
 koordynaty 900 500
-drogi 8 2 3 4 6 7 8 9 10
+drogi 8 2 3 4 5 6 7 8 9
 gracz 1
-poziom 5
+poziom 10
 typ zamek
-liczebnosc 10
+liczebnosc 15
 2 5
 koordynaty 800 600
 drogi 2 1 4 
@@ -20,52 +20,51 @@ poziom 3
 liczebnosc 10
 4 6
 koordynaty 900 600
-drogi 4 1 2 3 5
+drogi 3 1 2 3
 gracz 1
-poziom 5
+poziom 10
 typ kuznia
 liczebnosc 5
-5 5
-koordynaty 900 700
-drogi 1 4
-gracz 1
-poziom 3
-liczebnosc 10
-6 3
+5 4
 koordynaty 800 500
-drogi 3 1 7 11
+drogi 3 1 6 10
 liczebnosc 10
-7 3
+poziom 3
+6 4
 koordynaty 800 400
-drogi 3 1 6 8
+drogi 3 1 5 7
 liczebnosc 10
-8  3
+poziom 3
+7 4
 koordynaty 900 400
-drogi 4 1 7 9 12 
+drogi 4 1 6 8 11 
 liczebnosc 10
-9 3
+poziom 3
+8 4
 koordynaty 1000 400
-drogi 3 1 8 10 
+drogi 3 1 7 9
 liczebnosc 10
-10 3
+poziom 3
+9 4
 koordynaty 1000 500
-drogi 3 1 9 13
+drogi 3 1 8 12
 liczebnosc 10
-11 5
+poziom 3
+10 5
 koordynaty 700 500
-drogi 1 6 
+drogi 1 5 
 gracz 2
 poziom 3
 liczebnosc 50
-12 5
+11 5
 koordynaty 900 300
-drogi 1 8 
+drogi 1 7 
 gracz 3
 poziom 3
 liczebnosc 50
-13 5
+12 5
 koordynaty 1100 500
-drogi 1 10
+drogi 1 9
 gracz 4
 poziom 3
 liczebnosc 50

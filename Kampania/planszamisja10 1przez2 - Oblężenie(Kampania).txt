@@ -157,12 +157,13 @@ gracz 2
 poziom 5
 liczebnosc 150
 typ kuznia
-26 5
+26 6
 koordynaty 1050 300
 drogi 3 20 25 27
 gracz 2
 poziom 5
 liczebnosc 150
+typ kuznia
 27 5
 koordynaty 1150 300
 drogi 3 22 26 28

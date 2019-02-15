@@ -3,7 +3,7 @@
 koordynaty 600 700
 drogi 2 2 6
 gracz 2
-poziom 3
+poziom 5
 liczebnosc 100
 typ kuznia
 2 6
@@ -31,7 +31,7 @@ typ osada
 koordynaty 1200 700
 drogi 2 4 10
 gracz 2
-poziom 3 
+poziom 5 
 liczebnosc 100
 typ kuznia
 6 6
@@ -47,21 +47,21 @@ drogi 4 3 8 13 14
 gracz 1
 poziom 3
 liczebnosc 100
-typ zamek
+typ osada
 8 6
 koordynaty 900 600
 drogi 5 3 7 9 11 12
 gracz 1
 poziom 3
 liczebnosc 100
-typ osada
+typ kuznia
 9 6
 koordynaty 1050 600
 drogi 4 3 8 16 17
 gracz 1
 poziom 3 
 liczebnosc 100
-typ zamek
+typ osada
 10 6
 koordynaty 1200 600
 drogi 3 4 5 17
@@ -75,14 +75,14 @@ drogi 3 8 14 15
 gracz 1
 poziom 3
 liczebnosc 100
-typ kuznia
+typ osada
 12 6
 koordynaty 975 550
 drogi 3 8 15 16
 gracz 1
 poziom 3
 liczebnosc 100
-typ kuznia
+typ osada
 13 6
 koordynaty 600 500
 drogi 5 6 7 14 20 21
@@ -96,13 +96,13 @@ drogi 5 7 11 13 18 21
 gracz 1
 poziom 3
 liczebnosc 100
-typ osada
+typ kuznia
 15 6
 koordynaty 900 500
 drogi 4 11 12 18 19
 gracz 1
-poziom 5
-liczebnosc 100
+poziom 10
+liczebnosc 10
 typ zamek
 16 6
 koordynaty 1050 500
@@ -110,7 +110,7 @@ drogi 5 9 12 17 19 23
 gracz 1
 poziom 3
 liczebnosc 100
-typ osada
+typ kuznia
 17 6
 koordynaty 1200 500
 drogi 5 9 10 16 23 24
@@ -124,14 +124,14 @@ drogi 3 14 15 22
 gracz 1
 poziom 3 
 liczebnosc 100
-typ kuznia
+typ osada
 19 6
 koordynaty 975 450
 drogi 3 15 16 22
 gracz 1
 poziom 3
 liczebnosc 100
-typ kuznia
+typ osada
 20 6
 koordynaty 600 400
 drogi 3 13 25 26
@@ -145,21 +145,21 @@ drogi 4 13 14 22 27
 gracz 1
 poziom 3 
 liczebnosc 100
-typ zamek
+typ osada
 22 6
 koordynaty 900 400
 drogi 5 18 19 21 23 27
 gracz 1
 poziom 3 
 liczebnosc 100
-typ osada
+typ kuznia
 23 6
 koordynaty 1050 400
 drogi 4 16 17 22 27
 gracz 1
 poziom 3 
 liczebnosc 100
-typ zamek
+typ osada
 24 6
 koordynaty 1200 400
 drogi 3 17 28 29
@@ -171,7 +171,7 @@ typ osada
 koordynaty 600 300
 drogi 2 20 26
 gracz 2
-poziom 3
+poziom 5
 liczebnosc 100
 typ kuznia
 26 6
@@ -199,6 +199,6 @@ typ osada
 koordynaty 1200 300
 drogi 2 24 28
 gracz 2
-poziom 3
+poziom 5
 liczebnosc 100
 typ kuznia

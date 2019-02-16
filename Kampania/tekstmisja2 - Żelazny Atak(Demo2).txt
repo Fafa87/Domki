@@ -3,12 +3,12 @@ O twoim buncie dowiedział się pobliski możnowładca
 Bigoes i teraz szykuje się do ataku na twoją pozycję!
 Nie martw się jednak. Bigoes nie spodziewał się 
 twojego szybkiego zwycięstwa, dlatego jego najsilniejsza
-kuźnia jest prawie nie strzeżona! W następnej potyczce
-potrzebujesz zdobyć tą kuźnię, aby móc zaatakować
-na twierdze Bigoesa. Tylko tak możesz zapewnić sobie
+kuźnia jest prawie niestrzeżona! W następnej potyczce
+musisz zdobyć tę kuźnię, aby następnie móc zaatakować
+twierdzę Bigoesa. Tylko w ten sposób zapewnisz sobie
 możliwość walki o tron.
 
 Kuźnia to budynek, który nie produkuje wojsk, ale
-zwiększa zarówno szybkość, jak i siłę wojsk w ataku.
-Aby wysłać wszystkie jednostki zamiast połowy, naciśnij 
+zwiększa zarówno ich szybkość, jak i siłę ataku.
+Aby wysłać wszystkie jednostki naraz, naciśnij 
 na własny budynek, a następnie dwukrotnie na budynek wroga.

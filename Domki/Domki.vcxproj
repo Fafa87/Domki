@@ -97,6 +97,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
   <ItemGroup>
     <ClCompile Include="dzialacze.cpp" />
     <ClCompile Include="gui.cpp" />
+    <ClCompile Include="kampania.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="misja.cpp" />
     <ClCompile Include="multi.cpp" />
@@ -113,6 +114,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClInclude Include="dane.h" />
     <ClInclude Include="dzialacze.h" />
     <ClInclude Include="gui.h" />
+    <ClInclude Include="kampania.h" />
     <ClInclude Include="misja.h" />
     <ClInclude Include="multi.h" />
     <ClInclude Include="multi_dzialacze.h" />

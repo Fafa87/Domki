@@ -7,6 +7,7 @@
 #include "misja.h"
 #include "gui.h"
 #include "os.h"
+#include "kampania.h"
 
 const string WERSJA = "DOMKI 0.6";
 
@@ -67,8 +68,20 @@ void start_klient(sfg::Desktop& pulpit, sf::Music& muzyka)
 
 std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindow& okno_menu, sf::Music& muzyka)
 {
-
-
+	//Kampania kampania;
+	/*
+	muzyka.stop();
+	okno_menu.setVisible(false);
+	okno->Show(false);
+	GUI::hide_all_windows();
+	while (ustawienia.Zwyciezca() == -1)
+	{
+		misja(ustawienia);
+	}
+	muzyka.play();
+	okno->Show(true);
+	okno_menu.setVisible(true);
+	*/
 	return nullptr;
 }
 

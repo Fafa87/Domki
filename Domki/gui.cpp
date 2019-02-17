@@ -54,3 +54,27 @@ void GUI::wait_for_anything(sf::RenderWindow& window)
 		Sleep(100);
 	}
 }
+
+void GUI::set_active_window(shared_ptr<sfg::Window> window)
+{
+	pulpit.Add(window);
+	windows.push_back(window);
+}
+
+void GUI::remove_active_window(shared_ptr<sfg::Window> window)
+{
+	pulpit.Remove(window);
+	windows.erase(std::remove(windows.begin(), windows.end(), window), windows.end());
+}
+
+void GUI::show_all_windows()
+{
+	for (auto& w : GUI::windows)
+		w->Show(true);
+}
+
+void GUI::hide_all_windows()
+{
+	for (auto& w : GUI::windows)
+		w->Show(false);
+}

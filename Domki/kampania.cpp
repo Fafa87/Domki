@@ -11,7 +11,7 @@ Kampania::Kampania(string sciezka)
 {
 	this->nazwa = split_parent(sciezka).second;
 	this->lista_plikow = get_all_names_within_folder(sciezka, false, true);
-	for (int i = 0; i < this->lista_plikow.size() / 2; i++)
+	for (int i = 1; i < this->lista_plikow.size(); i+=2)
 		this->lista_misji.push_back(this->lista_plikow[i]);
 
 	this->akt_misja = 1;
@@ -23,10 +23,6 @@ Kampania::~Kampania()
 
 MisjaUstawienia Kampania::PobierzMisje(int numer)
 {
-	if (numer >= 2 && numer < 10)
-		numer += 2;
-	else if (numer >= 10)
-		numer = numer - 10 + 2;
 	MisjaUstawienia ustawienia;
 	ustawienia.grupa = "";
 	ustawienia.nazwa = this->lista_misji[numer - 1];
@@ -39,11 +35,7 @@ MisjaUstawienia Kampania::PobierzMisje(int numer)
 
 OpisMisji Kampania::PobierzOpis(int numer)
 {
-	if (numer >= 2 && numer < 10)
-		numer += 2;
-	else if (numer >= 10)
-		numer = numer - 10 + 2;
-	return OpisMisji(this->lista_plikow[numer - 1 + this->lista_plikow.size() / 2]);
+	return OpisMisji(this->lista_plikow[2 * (numer - 1)]);
 }
 
 OpisMisji::OpisMisji(string sciezka)

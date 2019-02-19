@@ -7,6 +7,8 @@ using namespace std;
 
 pair<string, string> split_parent(const string& path);
 
-vector<string> get_all_names_within_folder(string folder, bool folder_mode = false);
+string join(const string & path, const string & subpath);
+
+vector<string> get_all_names_within_folder(string folder, bool folder_mode = false, bool get_full_paths = false);
 
 string next_folder_within_folder(string path);

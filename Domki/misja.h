@@ -20,6 +20,7 @@ struct MisjaUstawienia
 	bool JedenGracz();
 	void WypiszRanking();
 
+	string grupa = "Plansza";
 	string nazwa = "";
 	double szybkosc = 1.5;
 	string trudnosc = "podstawa";

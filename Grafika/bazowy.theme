@@ -1,8 +1,10 @@
 
 Window > * > * > Label {
-	FontSize: 28;
+	FontSize: 32;
+    FontName: Grafika/BuxtonSketch.ttf;
 }
 
 Window > * > Label {
-	FontSize: 28;
+	FontSize: 32;
+    FontName: Grafika/BuxtonSketch.ttf;
 }

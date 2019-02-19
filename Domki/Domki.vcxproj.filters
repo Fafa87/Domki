@@ -66,6 +66,9 @@
     <ClCompile Include="muzyka.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="kampania.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="muzyka.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kampania.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

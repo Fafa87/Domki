@@ -69,7 +69,7 @@ void start_klient(sfg::Desktop& pulpit, sf::Music& muzyka)
 std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindow& okno_menu, sf::Music& muzyka)
 {
 	Kampania kampania("Kampania");
-
+	//kampania.akt_misja = 7; do testow
 	while (kampania.akt_misja < kampania.lista_misji.size())
 	{
 		auto misja_dane = kampania.PobierzMisje(kampania.akt_misja);
@@ -78,7 +78,6 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 		// pokaz opis
 		auto okno_opisu = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 		okno_opisu->SetRequisition(sf::Vector2f(900, 600));
-		GUI::center_window(okno_menu, okno_opisu);
 
 		auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
 
@@ -94,6 +93,8 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 
 		okno_opisu->Add(box);
 		pulpit.Add(okno_opisu);
+
+		GUI::center_window(okno_menu, okno_opisu);
 
 		GUI::pulpit.Update(1);
 		GUI::sfgui.Display(okno_menu);

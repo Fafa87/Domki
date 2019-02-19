@@ -42,7 +42,22 @@ OpisMisji::OpisMisji(string sciezka)
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
 	ifstream plik;
-	plik.open(sciezka);
+
+	std::ios_base::iostate exceptionMask = plik.exceptions() | std::ios::failbit;
+	plik.exceptions(exceptionMask);
+
+	try {
+		plik.open(sciezka);
+	}
+	catch (std::ios_base::failure& e) {
+		std::cout << "Caught an ios_base::failure.\n"
+			<< "Explanatory string: " << e.what() << '\n'
+			<< "Error code: " << e.code() << '\n';
+
+		std::fflush(stdout);
+	}
+
+	//cerr << "Error: " << strerror(errno);
 
 	string tmp;
 	std::getline(plik, tmp);
@@ -52,16 +67,16 @@ OpisMisji::OpisMisji(string sciezka)
 	string linia;
 	while (std::getline(plik, linia))
 	{
-		if (linia == "\n")
+		if (linia == "\n" || linia =="")
 			break;
 		tmp += linia + "\n";
 	}
 	this->fabula = converter.from_bytes(tmp);
 
 	tmp = "";
-	while (std::getline(plik, linia))
+	while (!plik.eof() && std::getline(plik, linia))
 	{
-		if (linia == "\n")
+		if (linia == "\n" || linia == "")
 			break;
 		tmp += linia + "\n";
 	}

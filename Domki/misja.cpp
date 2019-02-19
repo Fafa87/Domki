@@ -245,6 +245,8 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 			GUI::pulpit.SetProperty("Label#" + graczProdukcjaId, "FontSize", 16);
 			GUI::pulpit.SetProperty("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
 			GUI::pulpit.SetProperty("Label#" + graczModernizacjaId, "FontSize", 16);
+			GUI::pulpit.SetProperty("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");
+			GUI::pulpit.SetProperty("Label#" + graczLudkiId, "FontSize", 24);
 			if (stan.Zwyciezca() == nr)
 			{
 				GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 80.f);

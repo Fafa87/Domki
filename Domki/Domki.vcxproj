@@ -66,6 +66,7 @@
     <PostBuildEvent>
       <Command>xcopy /d /y "$(SolutionDir)\SFML-2.4.2\bin\*.*" "$(OutDir)"
 xcopy /I /e /y "$(SolutionDir)\plansza" "$(OutDir)\Plansza"
+xcopy /I /e /y "$(SolutionDir)\kampania" "$(OutDir)\Kampania"
 xcopy /I /e /y "$(SolutionDir)\muzyka" "$(OutDir)\Muzyka"
 xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     </PostBuildEvent>
@@ -90,6 +91,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <PostBuildEvent>
       <Command>xcopy /d /y "$(SolutionDir)\SFML-2.4.2\bin\*.*" "$(OutDir)"
 xcopy /I /e /y "$(SolutionDir)\plansza" "$(OutDir)\Plansza"
+xcopy /I /e /y "$(SolutionDir)\kampania" "$(OutDir)\Kampania"
 xcopy /I /e /y "$(SolutionDir)\muzyka" "$(OutDir)\Muzyka"
 xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     </PostBuildEvent>

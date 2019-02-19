@@ -7,7 +7,15 @@ pair<string, string> split_parent(const string& path)
 	return { path.substr(0, found), path.substr(found + 1) };
 }
 
-vector<string> get_all_names_within_folder(string folder, bool folder_mode)
+string join(const string& path, const string& subpath)
+{
+	if (path.size())
+		return path + "\\" + subpath;
+	else
+		return subpath;
+}
+
+vector<string> get_all_names_within_folder(string folder, bool folder_mode, bool get_full_paths)
 {
 	vector<string> names;
 	string search_path = folder + "/*.*";
@@ -21,6 +29,8 @@ vector<string> get_all_names_within_folder(string folder, bool folder_mode)
 			if (!folder_mode && !(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 				|| folder_mode && (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && file_name != "." && file_name != "..")
 			{
+				if (get_full_paths)
+					file_name = folder + "\\" + file_name;
 				names.push_back(file_name);
 			}
 		} while (::FindNextFile(hFind, &fd));

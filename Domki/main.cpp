@@ -68,21 +68,87 @@ void start_klient(sfg::Desktop& pulpit, sf::Music& muzyka)
 
 std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindow& okno_menu, sf::Music& muzyka)
 {
-	//Kampania kampania;
-	/*
-	muzyka.stop();
-	okno_menu.setVisible(false);
-	okno->Show(false);
-	GUI::hide_all_windows();
-	while (ustawienia.Zwyciezca() == -1)
+	Kampania kampania("Kampania");
+
+	while (kampania.akt_misja < kampania.lista_misji.size())
 	{
-		misja(ustawienia);
+		auto misja_dane = kampania.PobierzMisje(kampania.akt_misja);
+		auto opis = kampania.PobierzOpis(kampania.akt_misja);
+
+		// pokaz opis
+		auto okno_opisu = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+		okno_opisu->SetRequisition(sf::Vector2f(900, 600));
+		GUI::center_window(okno_menu, okno_opisu);
+
+		auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
+
+		auto tytul = sfg::Label::Create(opis.powitanie);
+		tytul->SetId("Naglowek");
+		box->Pack(tytul);
+
+		auto opis_fabuly = sfg::Label::Create(opis.fabula);
+		box->Pack(opis_fabuly);
+
+		auto opis_nauka = sfg::Label::Create(opis.nauka);
+		box->Pack(opis_nauka);
+
+		okno_opisu->Add(box);
+		pulpit.Add(okno_opisu);
+
+		GUI::pulpit.Update(1);
+		GUI::sfgui.Display(okno_menu);
+		okno_menu.display();
+
+		GUI::wait_for_anything(okno_menu);
+
+		pulpit.Remove(okno_opisu);
+		okno_opisu->Show(false);
+
+
+		// odpal misje
+		muzyka.stop();
+		okno_menu.setVisible(false);
+		GUI::hide_all_windows();
+
+		while (misja_dane.Zwyciezca() != 1)
+		{
+			misja(misja_dane);
+
+			if (misja_dane.Zwyciezca() == 0)
+				return nullptr;
+		}
+		muzyka.play();
+		okno_menu.setVisible(true);
+
+		kampania.akt_misja++;
+
+		// jak porazka to powtorz
 	}
-	muzyka.play();
-	okno->Show(true);
-	okno_menu.setVisible(true);
-	*/
-	return nullptr;
+
+	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+
+	okno->SetRequisition(sf::Vector2f(600, 900));
+	okno->SetPosition(sf::Vector2f(1000, 0));
+
+	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
+	auto tytul = sfg::Label::Create(kampania.nazwa);
+	tytul->SetId("Naglowek");
+
+	auto gratulacje = sfg::Label::Create("Wygrales kampanie!\nGratulacje!");
+
+	auto powrot = sfg::Button::Create("Powrot");
+	powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
+		[okno, &pulpit, &okno_menu, &muzyka] {
+		GUI::remove_active_window(okno);
+		okno->Show(false);
+	});
+
+	box->Pack(tytul);
+	box->Pack(gratulacje);
+	box->Pack(powrot);
+
+	okno->Add(box);
+	return okno;
 }
 
 std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(sfg::Desktop& pulpit, sf::RenderWindow& okno_menu, sf::Music& muzyka)

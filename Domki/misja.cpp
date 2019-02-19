@@ -465,7 +465,7 @@ sf::View WysrodkowanyWidok(list<Domek> &domki)
 
 int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 {
-	string sciezka = "Plansza\\" + misja_ustawienia.nazwa;
+	string sciezka = join(misja_ustawienia.grupa, misja_ustawienia.nazwa);
 	string trudnosc = misja_ustawienia.trudnosc;
 	double predkosc = misja_ustawienia.szybkosc;
 	int nr_gracza = misja_ustawienia.nr_gracza;
@@ -484,10 +484,6 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
 	if (misja_ustawienia.nr_gracza == 0)
 		window.setVisible(false);
-
-	// fpsy
-	sf::Font czcionka;
-	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
 
 	// tworzymy rozgrywke
 	Rozgrywka rozgrywka = zwarcie_rozgrywka(sciezka);

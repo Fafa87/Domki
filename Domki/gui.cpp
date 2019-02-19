@@ -55,6 +55,7 @@ void GUI::wait_for_anything(sf::RenderWindow& window)
 	}
 }
 
+
 void GUI::set_active_window(shared_ptr<sfg::Window> window)
 {
 	pulpit.Add(window);

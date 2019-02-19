@@ -27,7 +27,7 @@ MisjaUstawienia Kampania::PobierzMisje(int numer)
 	ustawienia.grupa = "";
 	ustawienia.nazwa = this->lista_misji[numer - 1];
 	ustawienia.szybkosc = 1.5;
-	ustawienia.trudnosc = "podstawa";
+	ustawienia.trudnosc = "pokojowy";
 	ustawienia.walka_w_polu = 1;
 	ustawienia.do_ilu_wygranych = 1;
 	return ustawienia;

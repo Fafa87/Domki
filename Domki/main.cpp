@@ -70,7 +70,7 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 {
 	Kampania kampania("Kampania");
 	//kampania.akt_misja = 7; do testow
-	while (kampania.akt_misja < kampania.lista_misji.size())
+	while (kampania.akt_misja <= kampania.lista_misji.size())
 	{
 		auto misja_dane = kampania.PobierzMisje(kampania.akt_misja);
 		auto opis = kampania.PobierzOpis(kampania.akt_misja);

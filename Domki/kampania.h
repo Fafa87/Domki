@@ -20,6 +20,8 @@ public:
 class Kampania
 {
 	vector<string> lista_plikow;
+	vector<string> lista_opisow;
+
 public:
 	vector<string> lista_misji;
 	string nazwa;
@@ -30,5 +32,6 @@ public:
 
 	MisjaUstawienia PobierzMisje(int numer);
 	OpisMisji PobierzOpis(int numer);
+	string PobierzOdprawe(int numer);
 };
 

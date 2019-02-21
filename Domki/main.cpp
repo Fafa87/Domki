@@ -74,6 +74,8 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 	{
 		auto misja_dane = kampania.PobierzMisje(kampania.akt_misja);
 		auto opis = kampania.PobierzOpis(kampania.akt_misja);
+		string przemowa_sciezka = kampania.PobierzOdprawe(kampania.akt_misja);
+		sf::Music przemowa;
 
 		// pokaz opis
 		auto okno_opisu = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
@@ -99,15 +101,20 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 		GUI::pulpit.Update(1);
 		GUI::sfgui.Display(okno_menu);
 		okno_menu.display();
+		
+		muzyka.stop();
+		if (przemowa.openFromFile(przemowa_sciezka))
+			przemowa.play();
 
 		GUI::wait_for_anything(okno_menu);
+
+		przemowa.stop();
 
 		pulpit.Remove(okno_opisu);
 		okno_opisu->Show(false);
 
 
 		// odpal misje
-		muzyka.stop();
 		okno_menu.setVisible(false);
 		GUI::hide_all_windows();
 

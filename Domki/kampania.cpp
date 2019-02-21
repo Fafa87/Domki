@@ -3,16 +3,20 @@
 #include <locale>
 #include <codecvt>
 #include <string>
+#include <filesystem>
 
 #include "os.h"
+#include "ext_string.h"
 
 
 Kampania::Kampania(string sciezka)
 {
 	this->nazwa = split_parent(sciezka).second;
 	this->lista_plikow = get_all_names_within_folder(sciezka, false, true);
-	for (int i = 1; i < this->lista_plikow.size(); i+=2)
-		this->lista_misji.push_back(this->lista_plikow[i]);
+	std::copy_if(lista_plikow.begin(), lista_plikow.end(), std::back_inserter(this->lista_misji), 
+		[](string path) { return ends_with(path, ".txt"); });
+	std::copy_if(lista_plikow.begin(), lista_plikow.end(), std::back_inserter(this->lista_opisow),
+		[](string path) { return ends_with(path, ".ops"); });
 
 	this->akt_misja = 1;
 }
@@ -35,7 +39,18 @@ MisjaUstawienia Kampania::PobierzMisje(int numer)
 
 OpisMisji Kampania::PobierzOpis(int numer)
 {
-	return OpisMisji(this->lista_plikow[2 * (numer - 1)]);
+	return OpisMisji(this->lista_opisow[numer - 1]);
+}
+
+string Kampania::PobierzOdprawe(int numer)
+{
+	string sciezka = this->lista_misji[numer - 1];
+	replace_ext(sciezka, "ogg");
+
+	if (std::experimental::filesystem::exists(sciezka))
+		return sciezka;
+	else
+		return string();
 }
 
 OpisMisji::OpisMisji(string sciezka)

@@ -66,7 +66,7 @@ void start_klient(sfg::Desktop& pulpit, sf::Music& muzyka)
 	pulpit.Add(okno);
 }
 
-std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindow& okno_menu, sf::Music& muzyka)
+std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindow& okno_menu, sf::Music& muzyka, string poziom)
 {
 	Kampania kampania("Kampania");
 	//kampania.akt_misja = 7; do testow
@@ -76,6 +76,9 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 		auto opis = kampania.PobierzOpis(kampania.akt_misja);
 		string przemowa_sciezka = kampania.PobierzOdprawe(kampania.akt_misja);
 		sf::Music przemowa;
+
+		if (poziom.size() != 0)
+			misja_dane.trudnosc = poziom;
 
 		// pokaz opis
 		auto okno_opisu = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
@@ -277,12 +280,22 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 	tytul->SetId("Naglowek");
 	auto tabelka = sfg::Table::Create();
 
-	auto kampania = sfg::Button::Create("Kampania");
-	kampania->SetRequisition(sf::Vector2f(400, 80));
-	kampania->GetSignal(sfg::Widget::OnLeftClick).Connect(
+	auto kampania1 = sfg::Button::Create("Kampania ³atwa");
+	kampania1->SetRequisition(sf::Vector2f(400, 80));
+	kampania1->GetSignal(sfg::Widget::OnLeftClick).Connect(
 		[&pulpit, &okno_menu, &muzyka]
 	{
-		auto okno_kampanii = kampania_menu(pulpit, okno_menu, muzyka);
+		auto okno_kampanii = kampania_menu(pulpit, okno_menu, muzyka, poziomy_trudnosci[0]);
+		GUI::set_active_window(okno_kampanii);
+		pulpit.Add(okno_kampanii);
+	});
+
+	auto kampania2 = sfg::Button::Create("Kampania trudna");
+	kampania2->SetRequisition(sf::Vector2f(400, 80));
+	kampania2->GetSignal(sfg::Widget::OnLeftClick).Connect(
+		[&pulpit, &okno_menu, &muzyka]
+	{
+		auto okno_kampanii = kampania_menu(pulpit, okno_menu, muzyka, poziomy_trudnosci[1]);
 		GUI::set_active_window(okno_kampanii);
 		pulpit.Add(okno_kampanii);
 	});
@@ -299,8 +312,9 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 
 	tabelka->SetRowSpacings(10);
 	tabelka->SetRequisition(sf::Vector2f(400, 0));
-	tabelka->Attach(kampania, sf::Rect<sf::Uint32>(1, 2, 12, 1), sfg::Table::FILL, sfg::Table::FILL);
-	tabelka->Attach(pojedynczy, sf::Rect<sf::Uint32>(1, 4, 12, 1), sfg::Table::FILL, sfg::Table::FILL);
+	tabelka->Attach(kampania1, sf::Rect<sf::Uint32>(1, 2, 12, 1), sfg::Table::FILL, sfg::Table::FILL);
+	tabelka->Attach(kampania2, sf::Rect<sf::Uint32>(1, 4, 12, 1), sfg::Table::FILL, sfg::Table::FILL);
+	tabelka->Attach(pojedynczy, sf::Rect<sf::Uint32>(1, 6, 12, 1), sfg::Table::FILL, sfg::Table::FILL);
 
 	box->Pack(tytul, false, false);
 	box->Pack(tabelka, true, true);

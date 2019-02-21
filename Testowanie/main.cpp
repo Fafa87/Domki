@@ -29,7 +29,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	domek2.max_liczebnosc = 100;
 	domek2.wyglad = Wyglad::kDomek;
 	domek2.gracz = &g;
-	domek2.poziom = 3;
+	domek2.poziom = 10;
 	gra.ZmienLiczebnosc(domek2, 250);
 	domek2.drogi.push_back(&domek);
 

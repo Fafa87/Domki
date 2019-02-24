@@ -1,38 +1,88 @@
-7
+17
 1 4
 koordynaty 600 500
 poziom 1
-liczebnosc 10
+liczebnosc 1000
 typ zamek
 2 4
 koordynaty 750 500
 poziom 2
-liczebnosc 10
+liczebnosc 1000
 typ zamek
 3 4
 koordynaty 900 500
 poziom 3
-liczebnosc 10
+liczebnosc 1000
 typ zamek
 4 4
 koordynaty 1050 500
 poziom 4
-liczebnosc 10
+liczebnosc 1000
 typ zamek
 5 4
 koordynaty 1200 500
 poziom 5
-liczebnosc 10
+liczebnosc 1000
 typ zamek
 6 5
-koordynaty 1200 300
+koordynaty 600 700
 poziom 1
-liczebnosc 5
+liczebnosc 0
 typ zamek
 gracz 1
 7 5
 koordynaty 1200 700
 poziom 1
-liczebnosc 5
+liczebnosc 0
 typ zamek
 gracz 2
+8 4
+koordynaty 600 300
+poziom 1
+liczebnosc 0
+typ zamek
+9 4
+koordynaty 750 300
+poziom 2
+liczebnosc 0
+typ zamek
+10 4
+koordynaty 900 300
+poziom 3
+liczebnosc 0
+typ zamek
+11 4
+koordynaty 1050 300
+poziom 4
+liczebnosc 0
+typ zamek
+12 4
+koordynaty 1200 300
+poziom 5
+liczebnosc 0
+typ zamek
+13 4
+koordynaty 600 400
+poziom 1
+liczebnosc 250
+typ zamek
+14 4
+koordynaty 750 400
+poziom 2
+liczebnosc 250
+typ zamek
+15 4
+koordynaty 900 400
+poziom 3
+liczebnosc 250
+typ zamek
+16 4
+koordynaty 1050 400
+poziom 4
+liczebnosc 250
+typ zamek
+17 4
+koordynaty 1200 400
+poziom 5
+liczebnosc 250
+typ zamek

@@ -43,13 +43,14 @@ void Rozgrywka::ZniszczLudka(Ludek* ludek)
 void Rozgrywka::ZmienLiczebnosc(Domek & domek, double nowa)
 {
 	domek.liczebnosc = nowa;
-	domek.rozmiar = 25 + 2 * domek.poziom + nowa / 400;
+	if (domek.poziom <= 5&&domek.max_liczebnosc!=-1)domek.rozmiar = 15 + 3 * domek.poziom +6 * log(nowa + 1.0) / log(1000);
+	else domek.rozmiar = 36;
 }
 
 void Rozgrywka::ZmienLiczebnosc(Ludek & ludek, double nowa)
 {
 	ludek.liczebnosc = nowa;
-	ludek.rozmiar = 15 + ludek.liczebnosc / 400;
+	ludek.rozmiar = 10 + 10 * log(nowa+1.0) / log(1000);
 }
 
 void Rozgrywka::TracLudki(Ludek & ludek, double ile)

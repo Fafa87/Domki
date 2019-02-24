@@ -86,22 +86,22 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz1 = gra.gracze.back();
-	gracz1.numer = 1; gracz1.nazwa = "GRACZ1";
+	gracz1.numer = 1; gracz1.nazwa = "GRACZ";
 	gracz1.kolor = sf::Color::Red;
 
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz2 = gra.gracze.back();
-	gracz2.numer = 2; gracz2.nazwa = "KOMPUTER2";
+	gracz2.numer = 2; gracz2.nazwa = "CIENIAS";
 	gracz2.kolor = sf::Color::Blue;
 
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz3 = gra.gracze.back();
-	gracz3.numer = 3; gracz3.nazwa = "KOMPUTER3";
+	gracz3.numer = 3; gracz3.nazwa = "CZERESNIAK";
 	gracz3.kolor = sf::Color::Green;
 
 	gra.gracze.push_back(Gracz());
 	Gracz& gracz4 = gra.gracze.back();
-	gracz4.numer = 4; gracz4.nazwa = "KOMPUTER4";
+	gracz4.numer = 4; gracz4.nazwa = "CWANIACZEK";
 	gracz4.kolor = sf::Color::Yellow;
 
 	gra.liczba_aktywnych_graczy = 4;
@@ -173,6 +173,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 				{
 					int ile_ludkow;
 					plikmapa >> ile_ludkow;
+					if (domek.max_liczebnosc == -1)domek.max_liczebnosc = 100;
 					gra.ZmienLiczebnosc(domek, ile_ludkow);
 				}
 			else if (parametr == "poziom")
@@ -180,18 +181,19 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 					int lev;
 					plikmapa >> lev;
 					domek.poziom = lev;
+					domek.max_liczebnosc = 100;
+					domek.max_liczebnosc *= 1 << (domek.poziom - 1);
 				}
 			}
 		domek.produkcja = 2;
-		domek.max_liczebnosc = 100;
-		domek.max_liczebnosc *= 1 << (domek.poziom-1);
+		if(domek.max_liczebnosc==-1)domek.max_liczebnosc = 100;
 		domek.wyglad = Wyglad::kDomek;
 		if (domek.gracz == nullptr)
 		{
 			domek.gracz = &gracz0;
-			if(domek.liczebnosc==0)gra.ZmienLiczebnosc(domek, 25);
+			if(domek.liczebnosc==-1)gra.ZmienLiczebnosc(domek, 25);
 		}
-		else if(domek.liczebnosc==0)gra.ZmienLiczebnosc(domek, 50);
+		else if(domek.liczebnosc==-1)gra.ZmienLiczebnosc(domek, 50);
 		}
 	for (auto para : numery_domkow)
 	{
@@ -515,7 +517,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	int nr_kompa = 1;
 	for (auto nr : misja_ustawienia.komputery)
 	{
-		rozgrywka.Gracz(nr).nazwa = "KOMPUTER" + nr;
+		//rozgrywka.Gracz(nr).nazwa = "KOMPUTER" + nr;
 		if (poziomy_trudnosci[0] == trudnosc)
 			kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr),misja_ustawienia.szybkosc));
 		else if (poziomy_trudnosci[1] == trudnosc)

@@ -1,0 +1,38 @@
+7
+1 4
+koordynaty 600 500
+poziom 1
+liczebnosc 10
+typ zamek
+2 4
+koordynaty 750 500
+poziom 2
+liczebnosc 10
+typ zamek
+3 4
+koordynaty 900 500
+poziom 3
+liczebnosc 10
+typ zamek
+4 4
+koordynaty 1050 500
+poziom 4
+liczebnosc 10
+typ zamek
+5 4
+koordynaty 1200 500
+poziom 5
+liczebnosc 10
+typ zamek
+6 5
+koordynaty 1200 300
+poziom 1
+liczebnosc 5
+typ zamek
+gracz 1
+7 5
+koordynaty 1200 700
+poziom 1
+liczebnosc 5
+typ zamek
+gracz 2

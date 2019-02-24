@@ -61,8 +61,8 @@ enum class TypDomku
 struct Domek : Twor
 {
 	double produkcja;
-	double liczebnosc=0; // liczba aktualnie istniej¹cych ludków
-	int max_liczebnosc;
+	double liczebnosc=-1; // liczba aktualnie istniej¹cych ludków
+	int max_liczebnosc=-1;
 	
 	TypDomku typdomku=TypDomku::kOsada;
 	int poziom = 1;

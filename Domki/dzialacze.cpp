@@ -195,8 +195,8 @@ void Ruszacz::WykonajRuchy()
 		{
 			auto ulepsz = (UlepszRozkaz*)r;
 
-			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)
-			if (ulepsz->kogo->ulepszanie == true&&ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0 > 0)
+			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)//DONE?
+			if (ulepsz->kogo->ulepszanie == true&&ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0 > 0&&ulepsz->kogo->poziom<=4)
 				{
 				rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0);
 				ulepsz->kogo->poziom++;
@@ -207,7 +207,7 @@ void Ruszacz::WykonajRuchy()
 		{
 			auto ulepsz = (BurzRozkaz*)r;
 
-			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)
+			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)//DONE?
 			if (ulepsz->kogo->ulepszanie == true && ulepsz->kogo->poziom>=2&&ulepsz->kogo->liczebnosc > 25.0)
 			{
 				rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - 25.0);
@@ -333,7 +333,7 @@ void Ruszacz::Produkuj(double czas)
 	{
 		if (domek.gracz->aktywny&&domek.liczebnosc == domek.max_liczebnosc);
 		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc&&domek.typdomku == TypDomku::kOsada)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
-		else if(domek.liczebnosc>domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*5,(double)domek.max_liczebnosc));
+		else if(domek.liczebnosc>domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*5*log(domek.liczebnosc-domek.max_liczebnosc+1.0),(double)domek.max_liczebnosc));
 	}
 }
 

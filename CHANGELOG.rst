@@ -2,6 +2,18 @@
 Historia zmian
 ==============
 
+
+`0.8.271 <https://github.com/Fafa87/Domki/tree/v0.8>`_ (2019-02-26)
+-------------------------
+`ZIP
+<https://ci.appveyor.com/api/buildjobs/exkxfohqt4q6c8ol/artifacts/Domki.zip>`_
+
+* Kampania - seria misji powiązanych fabułą
+* Rozwinięta gra komputera
+* Wprowadzono drugi tryb gry komputera - agresywny
+
+.. image:: https://user-images.githubusercontent.com/9865688/53448679-4acbb100-3a18-11e9-98fb-1282ae205dfe.png
+
 `0.7.231 <https://github.com/Fafa87/Domki/tree/v0.7>`_ (2019-01-11)
 -------------------------
 `ZIP

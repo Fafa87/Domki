@@ -28,13 +28,14 @@ enum class Wyglad
 
 struct Twor
 {
-	Twor() { uid = last_uid++; }
+	Twor() { uid = last_uid++; wyglad_rodzaj = 0; }
 
 	static int last_uid;
 	int uid; // unikalny identifikator
 	PD polozenie;
 	double rozmiar; // promien
 	Wyglad wyglad; // liczba okreœlajaca jak powinien twór siê prezentowaæ
+	int wyglad_rodzaj; // specyfika wygl¹du (np. poziom domku)
 	Gracz* gracz; // do kogo nale¿y; neutralny te¿ jest graczem
 	int ser_gracz;
 

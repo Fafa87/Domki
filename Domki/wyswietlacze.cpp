@@ -4,16 +4,13 @@
 #include<set>
 #include<string>
 #include<ctime>
+#include <filesystem>
 
 #define _USE_MATH_DEFINES
 #include<math.h>
 
-Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
-{
-	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
-}
 
-Animation Wyswietlacz::ZaladujAnimacje(string& sciezka)
+Animation ZestawAnimacji::ZaladujAnimacje(string& sciezka)
 {
 	Animation res;
 	auto tekstura = new sf::Texture();
@@ -24,11 +21,20 @@ Animation Wyswietlacz::ZaladujAnimacje(string& sciezka)
 	res.setSpriteSheet(*tekstura);
 
 	int dlugosc_klatki = 400;
-	if (abs((int)tekstura->getSize().x % dlugosc_klatki) > 100)
-		dlugosc_klatki = 600;
+	if ((int)tekstura->getSize().x == (int)tekstura->getSize().y)
+	{
+		dlugosc_klatki = (int)tekstura->getSize().x;
+	}
+	else 
+	{
+		if (abs((int)tekstura->getSize().x % dlugosc_klatki) > 100)
+			dlugosc_klatki = 600;
+		if (abs((int)tekstura->getSize().x % dlugosc_klatki) > 100)
+			dlugosc_klatki = 800;
+	}
 
 	int klatek = (tekstura->getSize().x + dlugosc_klatki / 2) / dlugosc_klatki;
-	for(int i = 0; i < klatek; i++) // TODO trzeba kiedy� nauczy� si� czyta� te� w pionie
+	for (int i = 0; i < klatek; i++) // TODO trzeba kiedy� nauczy� si� czyta� te� w pionie
 		res.addFrame(sf::IntRect(dlugosc_klatki * i, 0, dlugosc_klatki, tekstura->getSize().y));
 
 	// wczytaj powrotne
@@ -38,15 +44,69 @@ Animation Wyswietlacz::ZaladujAnimacje(string& sciezka)
 	return res;
 }
 
+Animation ZestawAnimacji::PobierzAnimacjePoziomu(int poziom)
+{
+	poziom = min(poziom, (int)wszystkieAnimacje.size() - 1);
+	return wszystkieAnimacje[poziom];
+}
+
+sf::IntRect ZestawAnimacji::Rozmiar()
+{
+	return this->PobierzAnimacjePoziomu(1).getFrame(0);
+}
+
+ZestawAnimacji ZestawAnimacji::ZaladujZPliku(string & sciezka_szablon)
+{
+	ZestawAnimacji res;
+	auto szablon = sf::String(sciezka_szablon);
+
+	auto bez_poziomu = szablon;
+	bez_poziomu.replace("{}", "");
+
+	if (std::experimental::filesystem::exists(szablon.toAnsiString()))
+		res.wszystkieAnimacje.push_back(ZaladujAnimacje(szablon.toAnsiString()));
+	else if (std::experimental::filesystem::exists(bez_poziomu.toAnsiString()))
+		res.wszystkieAnimacje.push_back(ZaladujAnimacje(bez_poziomu.toAnsiString()));
+	else
+	{
+		auto z_poziomem = szablon;
+		z_poziomem.replace("{}", "_" + to_string(0));
+
+		if (std::experimental::filesystem::exists(z_poziomem.toAnsiString()))
+			res.wszystkieAnimacje.push_back(ZaladujAnimacje(z_poziomem.toAnsiString()));
+		else
+			res.wszystkieAnimacje.push_back(Animation());
+
+		for (int i = 1; i < 10; i++)
+		{
+			auto z_poziomem = szablon;
+			z_poziomem.replace("{}", "_" + to_string(i));
+
+			if (std::experimental::filesystem::exists(z_poziomem.toAnsiString()))
+				res.wszystkieAnimacje.push_back(ZaladujAnimacje(z_poziomem.toAnsiString()));
+			else
+				break;
+		}
+	}
+	return res;
+}
+
+
+Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
+{
+	czcionka.loadFromFile("Grafika\\waltographUI.ttf");
+}
+
+
 void Wyswietlacz::Zaladuj(string wybrana_skora)
 {
 	skorka = wybrana_skora;
-	obrazek_tworow[Wyglad::kDomek] = ZaladujAnimacje("Grafika\\" + skorka + "\\kamienica.png");
-	obrazek_tworow[Wyglad::kLudek] = ZaladujAnimacje("Grafika\\" + skorka + "\\krasnal.png");
+	obrazek_tworow[Wyglad::kDomek] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\kamienica{}.png");
+	obrazek_tworow[Wyglad::kLudek] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\krasnal.png");
 
-	obrazek_tworow[Wyglad::kUlepszacz] = ZaladujAnimacje("Grafika\\" + skorka + "\\kuznia.png");
-	obrazek_tworow[Wyglad::kObrona] = ZaladujAnimacje("Grafika\\" + skorka + "\\zamek.png");
-	obrazek_tworow[Wyglad::kPole] = ZaladujAnimacje("Grafika\\" + skorka + "\\pole.png");
+	obrazek_tworow[Wyglad::kUlepszacz] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\kuznia{}.png");
+	obrazek_tworow[Wyglad::kObrona] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\zamek{}.png");
+	obrazek_tworow[Wyglad::kPole] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\pole.png");
 
 	obrazek_tla.loadFromFile("Grafika\\" + skorka + "\\bruk.png");
 	obrazek_tla.setRepeated(true);
@@ -117,6 +177,8 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 	// uaktualnij wygl�dy domk�w
 	for (auto& dom : rozgrywka.domki)
 	{
+		dom.wyglad_rodzaj = dom.poziom;
+
 		if (dom.typdomku == TypDomku::kKuznia)
 			dom.wyglad = Wyglad::kUlepszacz;
 		else if (dom.typdomku == TypDomku::kOsada)
@@ -132,15 +194,18 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 	for (auto& twor : wszystkie_obiekty)
 	{
 		auto wyglad = wyglad_tworow[twor];
+		auto zestaw_animacja_tworu = obrazek_tworow[twor->wyglad];
+		auto animacja_tworu = zestaw_animacja_tworu.PobierzAnimacjePoziomu(twor->wyglad_rodzaj);
 		wyglad.setPosition(twor->polozenie.x, twor->polozenie.y);
 
-		int liczba_ramek = obrazek_tworow[twor->wyglad].getSize();
+		int liczba_ramek = animacja_tworu.getSize();
 		int dlugosc_jednego = 10;
 		int wysokosc_jednego = 10;
 		if (liczba_ramek > 0)
 		{
-			dlugosc_jednego = obrazek_tworow[twor->wyglad].getFrame(0).width;
-			wysokosc_jednego = obrazek_tworow[twor->wyglad].getFrame(0).height;
+			auto rozmiar = zestaw_animacja_tworu.Rozmiar();
+			dlugosc_jednego = rozmiar.width;
+			wysokosc_jednego = rozmiar.height;
 		}
 
 		int wysokosc = twor->rozmiar * wysokosc_jednego / dlugosc_jednego;  // trzeba to gdzie� potem wyci�gna�
@@ -155,8 +220,8 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		if (liczba_ramek > 0)
 		{
 			int ramka_numer = ((clock() * liczba_ramek * 2 / CLOCKS_PER_SEC) + ziarno) % liczba_ramek;
-			wyglad.setTexture(obrazek_tworow[twor->wyglad].getSpriteSheet());
-			wyglad.setTextureRect(obrazek_tworow[twor->wyglad].getFrame(ramka_numer));
+			wyglad.setTexture(animacja_tworu.getSpriteSheet());
+			wyglad.setTextureRect(animacja_tworu.getFrame(ramka_numer));
 		}
 
 		sf::Text podpis;

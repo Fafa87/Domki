@@ -333,7 +333,7 @@ void Ruszacz::Produkuj(double czas)
 	{
 		if (domek.gracz->aktywny&&domek.liczebnosc == domek.max_liczebnosc);
 		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc&&domek.typdomku == TypDomku::kOsada)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
-		else if(domek.liczebnosc>domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*5*log(domek.liczebnosc-domek.max_liczebnosc+1.0),(double)domek.max_liczebnosc));
+		else if(domek.liczebnosc>domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*(domek.liczebnosc-domek.max_liczebnosc)/10.0,(double)domek.max_liczebnosc));
 	}
 }
 

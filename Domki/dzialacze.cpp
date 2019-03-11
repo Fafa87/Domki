@@ -207,7 +207,7 @@ void Ruszacz::WykonajRuchy()
 			auto ulepsz = (UlepszRozkaz*)r;
 
 			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)//DONE?
-			if (ulepsz->kogo->ulepszanie == true&&ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0 > 0&&ulepsz->kogo->poziom<=4)
+			if (ulepsz->kogo->ulepszanie == true&&ulepsz->kogo->poziom>0&&ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0 > 0&&ulepsz->kogo->poziom<=4&&ulepsz->kogo->poziom>0)
 				{
 				rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0);
 				ulepsz->kogo->poziom++;
@@ -219,20 +219,32 @@ void Ruszacz::WykonajRuchy()
 			auto ulepsz = (BurzRozkaz*)r;
 
 			// TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)//DONE?
-			if (ulepsz->kogo->ulepszanie == true && ulepsz->kogo->poziom>=2&&ulepsz->kogo->liczebnosc > 25.0)
+			if (ulepsz->kogo->ulepszanie == true && ulepsz->kogo->poziom>0&&ulepsz->kogo->liczebnosc > 25.0)
 			{
-				rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - 25.0);
 				ulepsz->kogo->poziom--;
-				ulepsz->kogo->max_liczebnosc = ulepsz->kogo->max_liczebnosc / 2.0;
+				if(ulepsz->kogo->poziom>0)ulepsz->kogo->max_liczebnosc = ulepsz->kogo->max_liczebnosc / 2.0;
+				else
+					{
+					ulepsz->kogo->typdomku = TypDomku::kPole;
+					ulepsz->kogo->max_liczebnosc = 0;
+					}
+				rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - 25.0);
 			}
 		}
 		else if (IsType<PrzebudujRozkaz>(r))
 		{
 			auto przebuduj = (PrzebudujRozkaz*)r;
-			if (przebuduj->kogo->przebudowa==true&&przebuduj->kogo->typdomku!=przebuduj->naco&&przebuduj->kogo->liczebnosc * 2.0 >= przebuduj->kogo->max_liczebnosc)
+			if (przebuduj->kogo->przebudowa==true&&przebuduj->kogo->typdomku!=przebuduj->naco&&przebuduj->kogo->liczebnosc * 2.0 >= przebuduj->kogo->max_liczebnosc&&przebuduj->kogo->poziom>0)
 			{
 				przebuduj->kogo->typdomku = przebuduj->naco;
 				rozgrywka->ZmienLiczebnosc(*przebuduj->kogo, przebuduj->kogo->liczebnosc- przebuduj->kogo->max_liczebnosc/2.0);
+			}
+			else if (przebuduj->kogo->przebudowa == true && przebuduj->kogo->typdomku != przebuduj->naco&&przebuduj->kogo->liczebnosc >= 25.0&&przebuduj->kogo->poziom == 0)
+			{
+				przebuduj->kogo->typdomku = przebuduj->naco;
+				przebuduj->kogo->poziom = 1;
+				przebuduj->kogo->max_liczebnosc = 100.0;
+				rozgrywka->ZmienLiczebnosc(*przebuduj->kogo, przebuduj->kogo->liczebnosc - 25.0);
 			}
 			// TODO ustaw odpowiednio wartości jeśli ulepszenie jest możliwe
 		}
@@ -350,7 +362,7 @@ void Ruszacz::Produkuj(double czas)
 
 void Ruszacz::Strzelaj(double czas)
 {
-	int sila_strzalu = 25.0;
+	int sila_strzalu = 10.0;
 	//tego na razie nie ma
 	vector<Ludek*> do_usuniecia;
 	for (Ludek& ludek : rozgrywka->armie)
@@ -358,8 +370,8 @@ void Ruszacz::Strzelaj(double czas)
 		Domek * domek_cel = ((Domek*)ludek.cel);
 		if (domek_cel->typdomku==TypDomku::kWieza&&domek_cel->gracz->numer!=ludek.gracz->numer&&rozgrywka->Odleglosc(ludek,*domek_cel) < 100.0)
 			{
-			if(ludek.tarcza>0)ludek.tarcza = std::max(0.0, ludek.tarcza - sila_strzalu*(double)domek_cel->poziom*czas);
-			else ludek.liczebnosc = std::max(0.0, ludek.liczebnosc - sila_strzalu*(double)domek_cel->poziom*czas);
+			if(ludek.tarcza>0)ludek.tarcza = std::max(0.0, ludek.tarcza - sila_strzalu*(double)domek_cel->poziom*(double)domek_cel->poziom*czas);
+			else ludek.liczebnosc = std::max(0.0, ludek.liczebnosc - sila_strzalu*(double)domek_cel->poziom*(double)domek_cel->poziom*czas);
 			if(ludek.liczebnosc==0.0)do_usuniecia.push_back(&ludek);
 			}
 		}

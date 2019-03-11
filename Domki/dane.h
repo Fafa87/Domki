@@ -59,7 +59,8 @@ enum class TypDomku
 	kFort = 1,
 	kWieza = 2,
 	kZbrojownia = 3,
-	kStajnia = 4
+	kStajnia = 4,
+	kPole = 5
 };
 
 struct Domek : Twor

@@ -16,9 +16,9 @@ std::tuple<int,int,int> Rozgrywka::SilaGracza(int nr_gracza)
 	for (; tearmie != armie.end(); tearmie++)if (tearmie->gracz->numer == nr_gracza)ludki += tearmie->liczebnosc;
 	for (; tedomki != domki.end(); tedomki++)if (tedomki->gracz->numer == nr_gracza)
 	{
-		if (tedomki->typdomku == TypDomku::kOsada)
+		if (tedomki->typdomku == TypDomku::kMiasto)
 			produkcja += tedomki->poziom;
-		else if (tedomki->typdomku == TypDomku::kKuznia)modernizacja += tedomki->poziom;
+		else if (tedomki->typdomku == TypDomku::kZbrojownia)modernizacja += tedomki->poziom;
 		ludki += tedomki->liczebnosc;
 	}
 	return make_tuple(ludki, produkcja, modernizacja);

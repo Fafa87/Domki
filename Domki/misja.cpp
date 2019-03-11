@@ -158,8 +158,10 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 				{
 				string znak;
 				plikmapa >> znak;
-				if (znak == "zamek")domek.typdomku = TypDomku::kZamek;
-				else if (znak == "kuznia")domek.typdomku = TypDomku::kKuznia;
+				if (znak == "zamek"||znak=="fort")domek.typdomku = TypDomku::kFort;
+				else if (znak == "wieza")domek.typdomku = TypDomku::kWieza;
+				else if (znak == "kuznia"||znak=="zbrojownia")domek.typdomku = TypDomku::kZbrojownia;
+				else if (znak == "stajnia")domek.typdomku = TypDomku::kStajnia;
 				}
 			else if (parametr == "bez_przebudowy")
 				{
@@ -187,7 +189,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 			}
 		domek.produkcja = 2;
 		if(domek.max_liczebnosc==-1)domek.max_liczebnosc = 100;
-		domek.wyglad = Wyglad::kDomek;
+		domek.wyglad = Wyglad::kMiasto;
 		if (domek.gracz == nullptr)
 		{
 			domek.gracz = &gracz0;

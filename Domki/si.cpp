@@ -33,8 +33,8 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 				graniczy = false;
 				for (Domek* domek2 : domek1.drogi)
 				{
-					if (domek2->typdomku != TypDomku::kZamek&&domek2->gracz->numer != gracz.numer &&
-						((domek2->gracz->aktywny && 2 * domek2->liczebnosc + 30 * domek2->poziom < domek1.liczebnosc*(10.0+(float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer))))/10.0 || ((domek2->gracz->aktywny == false || domek2->typdomku == TypDomku::kKuznia) && 2 * domek2->liczebnosc < domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0))))
+					if (domek2->typdomku != TypDomku::kFort&&domek2->gracz->numer != gracz.numer &&
+						((domek2->gracz->aktywny && 2 * domek2->liczebnosc + 30 * domek2->poziom < domek1.liczebnosc*(10.0+(float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer))))/10.0 || ((domek2->gracz->aktywny == false || domek2->typdomku == TypDomku::kZbrojownia) && 2 * domek2->liczebnosc < domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0))))
 					{
 						auto r = new WymarszRozkaz(&domek1, domek2);
 						r->ulamek = 0.5;
@@ -42,7 +42,7 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 						graniczy = true;
 						break;
 					}
-					else if (domek2->typdomku == TypDomku::kZamek&&domek2->gracz->numer != gracz.numer &&
+					else if (domek2->typdomku == TypDomku::kFort&&domek2->gracz->numer != gracz.numer &&
 						((domek2->gracz->aktywny && 2 * (domek2->liczebnosc + 5) * domek2->poziom < domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0) || (domek2->gracz->aktywny == false && 2 * (domek2->liczebnosc + 5) * domek2->poziom < domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0)))
 					{
 						auto r = new WymarszRozkaz(&domek1, domek2);
@@ -123,15 +123,15 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
 				graniczy = false;
 				for (Domek* domek2 : domek1.drogi)
 				{
-					if (domek2->typdomku != TypDomku::kZamek&&domek2->gracz->numer != gracz.numer &&
-						((domek2->gracz->aktywny && domek2->liczebnosc + 15 * domek2->poziom < domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0) || ((domek2->gracz->aktywny == false || domek2->typdomku == TypDomku::kKuznia) && domek2->liczebnosc < domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0)))
+					if (domek2->typdomku != TypDomku::kFort&&domek2->gracz->numer != gracz.numer &&
+						((domek2->gracz->aktywny && domek2->liczebnosc + 15 * domek2->poziom < domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0) || ((domek2->gracz->aktywny == false || domek2->typdomku == TypDomku::kZbrojownia) && domek2->liczebnosc < domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0)))
 					{
 						auto r = new WymarszRozkaz(&domek1, domek2);
 						r->ulamek = 1.0;
 						res.push_back(r);
 						graniczy = true;
 					}
-					else if (domek2->typdomku == TypDomku::kZamek&&domek2->gracz->numer != gracz.numer &&
+					else if (domek2->typdomku == TypDomku::kFort&&domek2->gracz->numer != gracz.numer &&
 						((domek2->gracz->aktywny && (domek2->liczebnosc + 5) * domek2->poziom < domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0) || (domek2->gracz->aktywny == false && (domek2->liczebnosc + 5) * domek2->poziom < domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0)))
 					{
 						auto r = new WymarszRozkaz(&domek1, domek2);

@@ -54,14 +54,18 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 	{
 		if (wybrany != nullptr && wybrany->gracz == &gracz)
 		{
-			if (zdarzenie.key.code == sf::Keyboard::O)
-				nacisniety = 'O';
-			else if (zdarzenie.key.code == sf::Keyboard::Z)
-				nacisniety = 'Z';
-			else if (zdarzenie.key.code == sf::Keyboard::K)
-				nacisniety = 'K';
-			else if (zdarzenie.key.code == sf::Keyboard::B)
-				nacisniety = 'B';
+			if (zdarzenie.key.code == sf::Keyboard::Tilde)
+				nacisniety = '`';
+			else if (zdarzenie.key.code == sf::Keyboard::Num1)
+				nacisniety = '1';
+			else if (zdarzenie.key.code == sf::Keyboard::Num2)
+				nacisniety = '2';
+			else if (zdarzenie.key.code == sf::Keyboard::Num3)
+				nacisniety = '3';
+			else if (zdarzenie.key.code == sf::Keyboard::Num4)
+				nacisniety = '4';
+			else if (zdarzenie.key.code == sf::Keyboard::Num5)
+				nacisniety = '5';
 		}
 	}
 }
@@ -114,17 +118,23 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 	{
 		switch (nacisniety)
 		{
-		case 'O':
-			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kOsada));
-			break;
-		case 'Z':
-			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kZamek));
-			break;
-		case 'K':
-			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kKuznia));
-			break;
-		case 'B':
+		case '`':
 			res.push_back(new BurzRozkaz(wybrany));
+			break;
+		case '1':
+			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kMiasto));
+			break;
+		case '2':
+			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kFort));
+			break;
+		case '3':
+			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kZbrojownia));
+			break;
+		case '4':
+			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kWieza));
+			break;
+		case '5':
+			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kStajnia));
 			break;
 		}
 		wybrany = nullptr;
@@ -174,18 +184,19 @@ void Ruszacz::WykonajRuchy()
 					Ludek& nowaArmia = rozgrywka->armie.back();
 					nowaArmia.gracz = ruch.skad->gracz;
 					nowaArmia.polozenie = ruch.skad->polozenie;
-					nowaArmia.wyglad = Wyglad::kLudek;
+					nowaArmia.wyglad = Wyglad::kWojownik;
 					rozgrywka->ZmienLiczebnosc(nowaArmia, liczba);
 
 					//ZMIERZ SILE LUDKOW I NADAJ IM SZYBKOSC
-					int sila_ludkow=0;
-					double wspolczynnik_walki=0.1,wspolczynnik_ruchu=0.1;
+					int sila_ludkow=0,szybkosc_ludkow=0;
+					double wspolczynnik_walki=0.1,wspolczynnik_ruchu=0.5;//10poz kuzni na tarcze ludka i 2poz stajni na szybkosc
 					for (Domek& domekek : rozgrywka->domki)
 					{
-						if (domekek.gracz->numer == ruch.skad->gracz->numer&&domekek.typdomku == TypDomku::kKuznia)sila_ludkow += domekek.poziom;
+						if (domekek.gracz->numer == ruch.skad->gracz->numer&&domekek.typdomku == TypDomku::kZbrojownia)sila_ludkow += domekek.poziom;
+						else if (domekek.gracz->numer == ruch.skad->gracz->numer&&domekek.typdomku == TypDomku::kStajnia)szybkosc_ludkow += domekek.poziom;
 					}
 					nowaArmia.tarcza = (int)((double)sila_ludkow*wspolczynnik_walki*(double)liczba);
-					nowaArmia.szybkosc_ludka = sila_ludkow*wspolczynnik_ruchu + 1.0;
+					nowaArmia.szybkosc_ludka = szybkosc_ludkow*wspolczynnik_ruchu + 1.0;
 
 					ruch.skad->gracz->liczba_tworow++;
 				}
@@ -289,7 +300,7 @@ void Ruszacz::WalczLudkami(double czas)
 				else
 				{
 					double nowa_liczebnosc;
-					if (cel->typdomku == TypDomku::kZamek)
+					if (cel->typdomku == TypDomku::kFort)
 						{
 						cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza/(double)cel->poziom);
 						if (cel->liczebnosc < armia.liczebnosc / (double)cel->poziom)
@@ -332,20 +343,20 @@ void Ruszacz::Produkuj(double czas)
 	for (Domek& domek : rozgrywka->domki)
 	{
 		if (domek.gracz->aktywny&&domek.liczebnosc == domek.max_liczebnosc);
-		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc&&domek.typdomku == TypDomku::kOsada)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
+		else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc&&domek.typdomku == TypDomku::kMiasto)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
 		else if(domek.liczebnosc>domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*(domek.liczebnosc-domek.max_liczebnosc)/10.0,(double)domek.max_liczebnosc));
 	}
 }
 
 void Ruszacz::Strzelaj(double czas)
 {
-	int sila_strzalu = 5.0;
+	int sila_strzalu = 25.0;
 	//tego na razie nie ma
 	vector<Ludek*> do_usuniecia;
 	for (Ludek& ludek : rozgrywka->armie)
 		{
 		Domek * domek_cel = ((Domek*)ludek.cel);
-		if (domek_cel->typdomku==TypDomku::kZamek&&domek_cel->gracz->numer!=ludek.gracz->numer&&rozgrywka->Odleglosc(ludek,*domek_cel) < 100.0)
+		if (domek_cel->typdomku==TypDomku::kWieza&&domek_cel->gracz->numer!=ludek.gracz->numer&&rozgrywka->Odleglosc(ludek,*domek_cel) < 100.0)
 			{
 			if(ludek.tarcza>0)ludek.tarcza = std::max(0.0, ludek.tarcza - sila_strzalu*(double)domek_cel->poziom*czas);
 			else ludek.liczebnosc = std::max(0.0, ludek.liczebnosc - sila_strzalu*(double)domek_cel->poziom*czas);

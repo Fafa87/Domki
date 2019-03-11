@@ -111,7 +111,7 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
 						}
 						else if (d[0] == 'P')
 						{
-							rozkaz = new PrzebudujRozkaz(nullptr, TypDomku::kOsada);
+							rozkaz = new PrzebudujRozkaz(nullptr, TypDomku::kMiasto);
 							dearchive(*(PrzebudujRozkaz*)rozkaz);
 						}
 						else if (d[0] == 'B')

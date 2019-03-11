@@ -101,11 +101,16 @@ Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 void Wyswietlacz::Zaladuj(string wybrana_skora)
 {
 	skorka = wybrana_skora;
-	obrazek_tworow[Wyglad::kDomek] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\kamienica{}.png");
-	obrazek_tworow[Wyglad::kLudek] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\krasnal.png");
+	obrazek_tworow[Wyglad::kWojownik] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\wojownik.png");
 
-	obrazek_tworow[Wyglad::kUlepszacz] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\kuznia{}.png");
-	obrazek_tworow[Wyglad::kObrona] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\zamek{}.png");
+	obrazek_tworow[Wyglad::kMiasto] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\miasto{}.png");
+	
+	obrazek_tworow[Wyglad::kFort] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\fort{}.png");
+	obrazek_tworow[Wyglad::kWieza] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\wieza{}.png");
+
+	obrazek_tworow[Wyglad::kZbrojownia] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\zbrojownia{}.png");
+	obrazek_tworow[Wyglad::kStajnia] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\stajnia{}.png");
+
 	obrazek_tworow[Wyglad::kPole] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\pole.png");
 
 	obrazek_tla.loadFromFile("Grafika\\" + skorka + "\\bruk.png");
@@ -179,15 +184,19 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 	{
 		dom.wyglad_rodzaj = dom.poziom;
 
-		if (dom.typdomku == TypDomku::kKuznia)
-			dom.wyglad = Wyglad::kUlepszacz;
-		else if (dom.typdomku == TypDomku::kOsada)
-			dom.wyglad = Wyglad::kDomek;
-		else if (dom.typdomku == TypDomku::kZamek)
-			dom.wyglad = Wyglad::kObrona;
-
-		if (dom.poziom == 0)
+		if (dom.typdomku == TypDomku::kMiasto)
+			dom.wyglad = Wyglad::kMiasto;
+		else if (dom.typdomku == TypDomku::kFort)
+			dom.wyglad = Wyglad::kFort;
+		else if (dom.typdomku == TypDomku::kZbrojownia)
+			dom.wyglad = Wyglad::kZbrojownia;
+		else if (dom.typdomku == TypDomku::kWieza)
+			dom.wyglad = Wyglad::kWieza;
+		else if (dom.typdomku == TypDomku::kStajnia)
+			dom.wyglad = Wyglad::kStajnia;
+		else if (dom.poziom == 0)
 			dom.wyglad = Wyglad::kPole;
+		else dom.wyglad = Wyglad::kNieznany;
 	}
 
 	// wygl�d twor�w zawiera dok�adnie to co chcemy wy�wietli�, uaktualnijmy ich stan

@@ -18,12 +18,13 @@ struct Gracz
 enum class Wyglad
 {
 	kNieznany = 0,
-	kDomek = 1,
-	kDomekWybrany = 2,
-	kLudek = 3,
-	kObrona = 4,
-	kUlepszacz = 5,
-	kPole = 6
+	kWojownik = 1,
+	kMiasto = 2,
+	kFort = 3,
+	kWieza = 4,
+	kZbrojownia = 5,
+	kStajnia = 6,
+	kPole = 7
 };
 
 struct Twor
@@ -54,9 +55,11 @@ struct Ludek : Twor
 
 enum class TypDomku
 {
-	kOsada = 0,
-	kZamek = 1,
-	kKuznia = 2
+	kMiasto = 0,
+	kFort = 1,
+	kWieza = 2,
+	kZbrojownia = 3,
+	kStajnia = 4
 };
 
 struct Domek : Twor
@@ -65,7 +68,7 @@ struct Domek : Twor
 	double liczebnosc=-1; // liczba aktualnie istniej¹cych ludków
 	int max_liczebnosc=-1;
 	
-	TypDomku typdomku=TypDomku::kOsada;
+	TypDomku typdomku=TypDomku::kMiasto;
 	int poziom = 1;
 	bool przebudowa = true,
 		ulepszanie = true;

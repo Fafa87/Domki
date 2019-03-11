@@ -17,7 +17,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	domek.polozenie = { x,y };
 	domek.produkcja = 2;
 	domek.max_liczebnosc = 100;
-	domek.wyglad = Wyglad::kDomek;
+	domek.wyglad = Wyglad::kMiasto;
 	domek.gracz = &g;
 	domek.poziom = 1;
 	gra.ZmienLiczebnosc(domek, 50);
@@ -27,7 +27,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	domek2.polozenie = { x,y + 150};
 	domek2.produkcja = 2;
 	domek2.max_liczebnosc = 100;
-	domek2.wyglad = Wyglad::kDomek;
+	domek2.wyglad = Wyglad::kMiasto;
 	domek2.gracz = &g;
 	domek2.poziom = 10;
 	gra.ZmienLiczebnosc(domek2, 250);
@@ -36,7 +36,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	gra.domki.push_back(Domek());
 	Domek& domek3 = gra.domki.back();
 	domek3.polozenie = { x - 100 ,y + 150 };
-	domek3.typdomku = TypDomku::kKuznia;
+	domek3.typdomku = TypDomku::kZbrojownia;
 	domek3.gracz = &g;
 	domek3.poziom = 1;
 	gra.ZmienLiczebnosc(domek3, 50);
@@ -45,7 +45,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	gra.domki.push_back(Domek());
 	Domek& domek4 = gra.domki.back();
 	domek4.polozenie = { x + 100 ,y + 150 };
-	domek4.typdomku = TypDomku::kZamek;
+	domek4.typdomku = TypDomku::kFort;
 	domek4.gracz = &g;
 	domek4.poziom = 1;
 	gra.ZmienLiczebnosc(domek4, 50);
@@ -54,7 +54,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	gra.domki.push_back(Domek());
 	Domek& domek5 = gra.domki.back();
 	domek5.polozenie = { x + 100 ,y + 250 };
-	domek5.typdomku = TypDomku::kOsada;
+	domek5.typdomku = TypDomku::kMiasto;
 	domek5.gracz = &g;
 	domek5.poziom = 0;
 	gra.ZmienLiczebnosc(domek5, 50);
@@ -65,7 +65,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	Ludek & ludek = gra.armie.back();
 	ludek.polozenie = { x + 100,y };
 	ludek.gracz = &g;
-	ludek.wyglad = Wyglad::kLudek;
+	ludek.wyglad = Wyglad::kWojownik;
 	ludek.tarcza = 23;
 	gra.ZmienLiczebnosc(ludek, 40);
 
@@ -73,7 +73,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	Ludek & ludek2 = gra.armie.back();
 	ludek2.polozenie = { x - 100,y };
 	ludek2.gracz = &g;
-	ludek2.wyglad = Wyglad::kLudek;
+	ludek2.wyglad = Wyglad::kWojownik;
 	gra.ZmienLiczebnosc(ludek2, 240);
 }
 

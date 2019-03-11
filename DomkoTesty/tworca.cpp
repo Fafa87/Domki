@@ -23,7 +23,7 @@ Ludek& tworca::DodajLudka(Rozgrywka& gra, Domek& dokad, int nr_gracza, int liczb
 	Ludek & ludek = gra.armie.back();
 	ludek.polozenie = pos;
 	ludek.gracz = &g;
-	ludek.wyglad = Wyglad::kLudek;
+	ludek.wyglad = Wyglad::kWojownik;
 	gra.ZmienLiczebnosc(ludek, liczba);
 	return ludek;
 }

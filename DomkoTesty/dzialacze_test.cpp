@@ -70,10 +70,10 @@ namespace DomkoTesty
 			SprawdzSilaGracza(10, 1, 0, rozgrywka.SilaGracza(0));
 			SprawdzSilaGracza(49, 2, 0, rozgrywka.SilaGracza(1));
 
-			domek_0.typdomku = TypDomku::kKuznia;
+			domek_0.typdomku = TypDomku::kZbrojownia;
 			SprawdzSilaGracza(10, 0, 1, rozgrywka.SilaGracza(0));
 
-			domek_0.typdomku = TypDomku::kZamek;
+			domek_0.typdomku = TypDomku::kFort;
 			SprawdzSilaGracza(10, 0, 0, rozgrywka.SilaGracza(0));
 		}
 

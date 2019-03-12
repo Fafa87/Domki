@@ -229,7 +229,7 @@ void wykonaj(string zadanie)
 int main(int argc, const char * argv[]) {
 	string zadanie;
 
-	GUI::setup_theme();
+	GUI::aplikacja.setup_theme();
 
 	if (argc > 1)
 		konfiguruj(int(argv[1][0] - '0'), argv);

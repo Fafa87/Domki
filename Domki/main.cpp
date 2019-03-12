@@ -99,17 +99,17 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 		okno_opisu->Add(box);
 		pulpit.Add(okno_opisu);
 
-		GUI::center_window(okno_menu, okno_opisu);
+		GUI::aplikacja.center_window(okno_opisu);
 
-		GUI::pulpit.Update(1);
-		GUI::sfgui.Display(okno_menu);
+		GUI::aplikacja.pulpit.Update(1);
+		GUI::aplikacja.sfgui.Display(okno_menu);
 		okno_menu.display();
 		
 		muzyka.stop();
 		if (przemowa.openFromFile(przemowa_sciezka))
 			przemowa.play();
 
-		GUI::wait_for_anything(okno_menu);
+		GUI::aplikacja.wait_for_anything();
 
 		przemowa.stop();
 
@@ -118,8 +118,7 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 
 
 		// odpal misje
-		okno_menu.setVisible(false);
-		GUI::hide_all_windows();
+		GUI::aplikacja.hide_all_windows();
 
 		while (misja_dane.Zwyciezca() != 1)
 		{
@@ -129,7 +128,6 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 				return nullptr;
 		}
 		muzyka.play();
-		okno_menu.setVisible(true);
 
 		kampania.akt_misja++;
 
@@ -138,8 +136,8 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 
-	okno->SetRequisition(sf::Vector2f(600, 900));
-	okno->SetPosition(sf::Vector2f(1000, 0));
+	okno->SetRequisition(sf::Vector2f(400, 900));
+	okno->SetPosition(sf::Vector2f(880, 0));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
 	auto tytul = sfg::Label::Create(kampania.nazwa);
@@ -150,7 +148,7 @@ std::shared_ptr<sfg::Window> kampania_menu(sfg::Desktop& pulpit, sf::RenderWindo
 	auto powrot = sfg::Button::Create("Powrot");
 	powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
 		[okno, &pulpit, &okno_menu, &muzyka] {
-		GUI::remove_active_window(okno);
+		GUI::aplikacja.remove_active_window(okno);
 		okno->Show(false);
 	});
 
@@ -166,8 +164,8 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(sfg::Desktop& pulpit, sf::Ren
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 
-	okno->SetRequisition(sf::Vector2f(600, 900));
-	okno->SetPosition(sf::Vector2f(1000, 0));
+	okno->SetRequisition(sf::Vector2f(400, 900));
+	okno->SetPosition(sf::Vector2f(880, 0));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
 	auto tytul = sfg::Label::Create(WERSJA);
@@ -217,22 +215,20 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(sfg::Desktop& pulpit, sf::Ren
 		ustawienia.do_ilu_wygranych = do_ilu_pasek->GetValue();
 
 		muzyka.stop();
-		okno_menu.setVisible(false);
 		okno->Show(false);
-		GUI::hide_all_windows();
+		GUI::aplikacja.hide_all_windows();
 		while (ustawienia.Zwyciezca() == -1)
 		{
 			misja(ustawienia);
 		}
 		muzyka.play();
 		okno->Show(true);
-		okno_menu.setVisible(true);
 	});
 	
 	auto powrot = sfg::Button::Create("Powrot");
 	powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
 		[okno, &pulpit, &okno_menu, &muzyka] {
-		GUI::remove_active_window(okno);
+		GUI::aplikacja.remove_active_window(okno);
 		okno->Show(false);
 	});
 
@@ -270,11 +266,11 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 
-	okno->SetRequisition(sf::Vector2f(600, 900));
-	okno->SetPosition(sf::Vector2f(1000, 0));
+	okno->SetRequisition(sf::Vector2f(400, 900));
+	okno->SetPosition(sf::Vector2f(880, 0));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 100.0f);
-	box->SetRequisition(sf::Vector2f(600, 0));
+	box->SetRequisition(sf::Vector2f(400, 0));
 
 	auto tytul = sfg::Label::Create(WERSJA);
 	tytul->SetId("Naglowek");
@@ -286,7 +282,7 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 		[&pulpit, &okno_menu, &muzyka]
 	{
 		auto okno_kampanii = kampania_menu(pulpit, okno_menu, muzyka, poziomy_trudnosci[0]);
-		GUI::set_active_window(okno_kampanii);
+		GUI::aplikacja.set_active_window(okno_kampanii);
 		pulpit.Add(okno_kampanii);
 	});
 
@@ -296,7 +292,7 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 		[&pulpit, &okno_menu, &muzyka]
 	{
 		auto okno_kampanii = kampania_menu(pulpit, okno_menu, muzyka, poziomy_trudnosci[1]);
-		GUI::set_active_window(okno_kampanii);
+		GUI::aplikacja.set_active_window(okno_kampanii);
 		pulpit.Add(okno_kampanii);
 	});
 
@@ -306,7 +302,7 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 		[&pulpit, &okno_menu, &muzyka]
 	{
 		auto okno_sam = pojedynczy_gracz_menu(pulpit, okno_menu, muzyka);
-		GUI::set_active_window(okno_sam);
+		GUI::aplikacja.set_active_window(okno_sam);
 		pulpit.Add(okno_sam);
 	});
 
@@ -324,18 +320,17 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 }
 
 int main() {
-	sf::RenderWindow okno_menu(sf::VideoMode(1600, 900), "Domki menu!", sf::Style::None);
-	okno_menu.resetGLStates();
-
 	sf::Music muzyka;
 
 	sf::Texture backtexture;
 	backtexture.loadFromFile("Grafika\\houseofhouses.png");
 	backtexture.setRepeated(false);
 	sf::Sprite background(backtexture);
-	background.setTextureRect({ 0, 0, 1600, 900 });
+	background.setScale(0.8, 1);
+	background.setTextureRect({ 0, 0, 1100, 900 });
 
-	GUI::setup_theme();
+	auto& okno_menu = GUI::aplikacja.okno;
+	GUI::aplikacja.setup_theme();
 
 	//// multi
 	//auto serwer = sfg::Button::Create("Serwer");
@@ -349,9 +344,9 @@ int main() {
 	//});
 
 	
-	auto okno = grand_menu(GUI::pulpit, okno_menu, muzyka);
-	GUI::set_active_window(okno);
-	GUI::pulpit.Add(okno);
+	auto okno = grand_menu(GUI::aplikacja.pulpit, okno_menu, muzyka);
+	GUI::aplikacja.set_active_window(okno);
+	GUI::aplikacja.pulpit.Add(okno);
 
 	sf::Event event;
 	sf::Clock clock;
@@ -365,7 +360,7 @@ int main() {
 	while (okno_menu.isOpen()) {
 		while (okno_menu.pollEvent(event)) 
 		{
-			GUI::pulpit.HandleEvent(event);
+			GUI::aplikacja.pulpit.HandleEvent(event);
 
 			switch (event.type)
 			{
@@ -381,11 +376,11 @@ int main() {
 			}
 		}
 
-		GUI::pulpit.Update(clock.restart().asSeconds());
+		GUI::aplikacja.pulpit.Update(clock.restart().asSeconds());
 
 		okno_menu.clear();
 		okno_menu.draw(background);
-		GUI::sfgui.Display(okno_menu);
+		GUI::aplikacja.sfgui.Display(okno_menu);
 		okno_menu.display();
 	}
 

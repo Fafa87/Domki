@@ -243,18 +243,20 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 			auto graczLudkiId = ranking_widget_id(instance, nr, "sila");
 			auto graczProdukcjaId = ranking_widget_id(instance, nr, "produkcja");
 			auto graczModernizacjaId = ranking_widget_id(instance, nr, "modernizacja");
-			GUI::pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
-			GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 32.f);
-			GUI::pulpit.SetProperty("Label#" + graczProdukcjaId, "Color", gracz.kolor);
-			GUI::pulpit.SetProperty("Label#" + graczProdukcjaId, "FontSize", 16);
-			GUI::pulpit.SetProperty("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
-			GUI::pulpit.SetProperty("Label#" + graczModernizacjaId, "FontSize", 16);
-			GUI::pulpit.SetProperty("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");
-			GUI::pulpit.SetProperty("Label#" + graczLudkiId, "FontSize", 24);
+
+			// to zajmuje jakos duzo czasu, nie wiem czemu!
+			GUI::aplikacja.pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
+			GUI::aplikacja.pulpit.SetProperty("Button#" + graczId, "FontSize", 32);
+			GUI::aplikacja.pulpit.SetProperty("Label#" + graczProdukcjaId, "Color", gracz.kolor);
+			GUI::aplikacja.pulpit.SetProperty("Label#" + graczProdukcjaId, "FontSize", 16);
+			GUI::aplikacja.pulpit.SetProperty("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
+			GUI::aplikacja.pulpit.SetProperty("Label#" + graczModernizacjaId, "FontSize", 16);
+			GUI::aplikacja.pulpit.SetProperty("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");
+			GUI::aplikacja.pulpit.SetProperty("Label#" + graczLudkiId, "FontSize", 24);
 			if (stan.Zwyciezca() == nr)
 			{
-				GUI::pulpit.SetProperty("Button#" + graczId, "FontSize", 80.f);
-				GUI::pulpit.SetProperty("Label#" + graczId, "FontSize", 80.f);
+				GUI::aplikacja.pulpit.SetProperty("Button#" + graczId, "FontSize", 80.f);
+				GUI::aplikacja.pulpit.SetProperty("Label#" + graczId, "FontSize", 80.f);
 			}
 
 			auto wartosc = sfg::Button::Create(to_string(stan.ile_kto_wygranych[nr]));
@@ -282,7 +284,7 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 	return table;
 }
 
-shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, sf::RenderWindow& window, MisjaUstawienia &stan, Rozgrywka& rozgrywka)
+shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka)
 {
 	
 	if (interfejs == nullptr)
@@ -295,9 +297,9 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 
 			auto ranking = interfejs_ranking(stan, rozgrywka, 1);
 
-			GUI::pulpit.Add(interfejs);
+			GUI::aplikacja.pulpit.Add(interfejs);
 			interfejs->Add(ranking);
-			GUI::bottom_left_window(window, interfejs);
+			GUI::aplikacja.bottom_left_window(interfejs);
 		}
 	}
 	else
@@ -322,16 +324,16 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, s
 	return interfejs;
 }
 
-void odliczanie(sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
+void odliczanie(Wyswietlacz& wyswietlacz)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 	okno->SetRequisition(sf::Vector2f(500, 300));
-	GUI::center_window(window, okno);
+	GUI::aplikacja.center_window(okno);
 
 	auto odliczanie_etykieta = sfg::Label::Create("");
 	odliczanie_etykieta->SetId("Alarm");
 	okno->Add(odliczanie_etykieta);
-	GUI::pulpit.Add(okno);
+	GUI::aplikacja.pulpit.Add(okno);
 
 	sf::SoundBuffer pikPikBuffer;
 	pikPikBuffer.loadFromFile("Muzyka\\Boom.ogg");
@@ -347,16 +349,16 @@ void odliczanie(sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
 
 	for (int a = 3; a >= 0; a--)
 	{
-		window.clear();
-		wyswietlacz.WyswietlTlo(window);
+		GUI::aplikacja.okno.clear();
+		wyswietlacz.WyswietlTlo(GUI::aplikacja.okno);
 		if (a>0) odliczanie_etykieta->SetText(std::to_string(a));
 		else odliczanie_etykieta->SetText("RUSZAJ!");
-		wyswietlacz.Wyswietlaj(window);
+		wyswietlacz.Wyswietlaj(GUI::aplikacja.okno);
 
-		GUI::pulpit.Update(1);
-		GUI::sfgui.Display(window);
+		GUI::aplikacja.pulpit.Update(1);
+		GUI::aplikacja.sfgui.Display(GUI::aplikacja.okno);
 
-		window.display();
+		GUI::aplikacja.okno.display();
 		if (a > 0)
 		{
 			pikPik.play();
@@ -369,10 +371,10 @@ void odliczanie(sf::RenderWindow& window, Wyswietlacz& wyswietlacz)
 		}
 	}
 
-	GUI::pulpit.Remove(okno);
+	GUI::aplikacja.pulpit.Remove(okno);
 }
 
-void zakonczenie_gry(sf::RenderWindow& window, Gracz& gracz_wygrany, int grajacy)
+void zakonczenie_gry(Gracz& gracz_wygrany, int grajacy)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 	okno->SetRequisition(sf::Vector2f(800, 300));
@@ -381,8 +383,6 @@ void zakonczenie_gry(sf::RenderWindow& window, Gracz& gracz_wygrany, int grajacy
 	komunikat_koncowy->SetId("Naglowek");
 	komunikat_koncowy->SetAlignment(sf::Vector2f(0.5, 0.5));
 	okno->Add(komunikat_koncowy);
-	GUI::pulpit.Add(okno);
-
 	sf::SoundBuffer oklaskiBuffer;
 	oklaskiBuffer.loadFromFile("Muzyka\\Oklaski.ogg");
 	sf::Sound oklaski(oklaskiBuffer);
@@ -395,18 +395,10 @@ void zakonczenie_gry(sf::RenderWindow& window, Gracz& gracz_wygrany, int grajacy
 	else
 		komunikat_koncowy->SetText("TY LESZCZU ZWYCIEZYL:\n" + gracz_wygrany.nazwa);
 
-	GUI::center_window(window, okno);
-
-	GUI::pulpit.Update(1);
-	GUI::sfgui.Display(window);
-	window.display();
-	
-	GUI::wait_for_anything(window);
-
-	GUI::pulpit.Remove(okno);
+	GUI::aplikacja.show_and_wait_for_anything(okno);
 }
 
-void zakonczenie_meczu(sf::RenderWindow& window, MisjaUstawienia &stan, Rozgrywka& rozgrywka)
+void zakonczenie_meczu(MisjaUstawienia &stan, Rozgrywka& rozgrywka)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW | sfg::Window::Style::RESIZE);
 	okno->SetRequisition(sf::Vector2f(800, 0));
@@ -416,22 +408,13 @@ void zakonczenie_meczu(sf::RenderWindow& window, MisjaUstawienia &stan, Rozgrywk
 	komunikat_koncowy->SetAlignment(sf::Vector2f(0.5, 0.5));
 
 	auto ranking = interfejs_ranking(stan, rozgrywka, 2);
-
+	
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 30.0f);
 	box->Pack(komunikat_koncowy);
 	box->Pack(ranking);
 	
 	okno->Add(box);
-	GUI::pulpit.Add(okno);
-	GUI::center_window(window, okno);
-
-	GUI::pulpit.Update(1);
-	GUI::sfgui.Display(window);
-	window.display();
-
-	GUI::wait_for_anything(window);
-
-	GUI::pulpit.Remove(okno);
+	GUI::aplikacja.show_and_wait_for_anything(okno);
 }
 
 sf::View WysrodkowanyWidok(list<Domek> &domki)
@@ -477,16 +460,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	int nr_gracza = misja_ustawienia.nr_gracza;
 	bool przyspieszenie_bez_gracza = false;
 
-	sf::ContextSettings ustawienia;
-	ustawienia.antialiasingLevel = 8;
-
-	auto videoMode = sf::VideoMode(1280, 719);
-	auto styl_okna = sf::Style::Fullscreen;
-	#ifdef _DEBUG
-	styl_okna = sf::Style::None;
-	#endif
-
-	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", styl_okna, ustawienia);
+	sf::RenderWindow& window = GUI::aplikacja.okno;
 
 	if (misja_ustawienia.nr_gracza == 0)
 		window.setVisible(false);
@@ -529,7 +503,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	ruszacz.rozgrywka = &rozgrywka;
 	ruszacz.szybkosc *= predkosc;
 	
-	odliczanie(window, wyswietlacz);
+	odliczanie(wyswietlacz);
 
 	muzykant.Przygrywaj();
 
@@ -541,14 +515,16 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	long long akcje = 0;
 	double czas_przeminal = clock();
 	shared_ptr<sfg::Window> interfejs;
-	while (window.isOpen())
+
+	bool trwa_gra = true;
+	while (trwa_gra)
 	{
 		sf::Event event;
 
 		myszkaGracza.Przetworz(); // puste
 		while (window.pollEvent(event))
 		{
-			GUI::pulpit.HandleEvent(event);
+			GUI::aplikacja.pulpit.HandleEvent(event);
 			myszkaGracza.Przetworz(event);
 			if (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::KeyReleased)akcje++;
 			switch (event.type)
@@ -559,7 +535,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 				case sf::Keyboard::Escape:
 					// nie startuj kolejnych gier
 					misja_ustawienia.ile_kto_wygranych[0] = 100;
-					window.close();
+					trwa_gra = false;
 					break;
 				case sf::Keyboard::F3:
 					wyswietlacz.ZaladujInne();
@@ -568,7 +544,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 				break;
 			}
 			if (event.type == sf::Event::Closed)
-				window.close();
+				trwa_gra = false;
 		}
 		///FPSY
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
@@ -599,7 +575,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 		window.clear();
 		wyswietlacz.WyswietlTlo(window);
 
-		interfejs = interfejs_rozgrywki(interfejs, window, misja_ustawienia, rozgrywka);
+		interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka);
 
 		czasik = (int)(1.0 / czas + 0.5);
 		czas_przeminal = (double)(clock() - czas_przeminal) / CLOCKS_PER_SEC;
@@ -617,7 +593,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 				{
 					misja_ustawienia.ile_kto_wygranych[g.numer]++;
 					if (misja_ustawienia.Zwyciezca() < 0 && misja_ustawienia.nr_gracza != 0)
-						zakonczenie_gry(window, g, nr_gracza);
+						zakonczenie_gry(g, nr_gracza);
 					break;
 				}
 			}
@@ -625,20 +601,21 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 			auto zwyciezca_meczu = misja_ustawienia.Zwyciezca();
 			if (zwyciezca_meczu >= 0 && misja_ustawienia.nr_gracza != 0)
 			{
-				zakonczenie_meczu(window, misja_ustawienia, rozgrywka);
+				zakonczenie_meczu(misja_ustawienia, rozgrywka);
 			}
-			window.close();
+			trwa_gra = false;
+			break;
 		}
 
-		GUI::pulpit.Update(0.1f);
-		GUI::sfgui.Display(window);
+		GUI::aplikacja.pulpit.Update(0.1f);
+		GUI::aplikacja.sfgui.Display(window);
 		window.display();
 
 		Sleep(16);
 	}
 
 	if(interfejs != nullptr)
-		GUI::pulpit.Remove(interfejs);
+		GUI::aplikacja.pulpit.Remove(interfejs);
 	return 0;
 }
 

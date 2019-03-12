@@ -16,36 +16,34 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 {
 	if (zdarzenie.type == sf::Event::MouseButtonPressed)
 	{
-		if (zdarzenie.mouseButton.button == sf::Mouse::Left)
+		//zdarzenie.mouseButton.button == sf::Mouse::Left <---wazna formula
+		sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
+		auto polozenie_kliku = okno.mapPixelToCoords(pixelPos);
+		Twor* klikniety = rozgrywka.Zlokalizuj(polozenie_kliku.x, polozenie_kliku.y);
+		if (klikniety != nullptr && IsType<Domek>(klikniety))
 		{
-			sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
-			auto polozenie_kliku = okno.mapPixelToCoords(pixelPos);
-			Twor* klikniety = rozgrywka.Zlokalizuj(polozenie_kliku.x, polozenie_kliku.y);
-			if (klikniety != nullptr && IsType<Domek>(klikniety))
+			if (wybrany != (Domek*)klikniety&& klikniety->gracz->numer == gracz.numer&&zdarzenie.mouseButton.button == sf::Mouse::Left)//wybór własnego domku
+				wybrany = (Domek*)klikniety;
+			else if (wybrany != nullptr && wybrany != klikniety&& zdarzenie.mouseButton.button == sf::Mouse::Right)//przesyl ludkow tylko prawym klawiszem myszy
 			{
-				if (wybrany == nullptr && klikniety->gracz->numer == gracz.numer)
-					wybrany = (Domek*)klikniety;
-				else if (wybrany != nullptr && wybrany != klikniety)
-				{
-					if (cel != klikniety)
-					{
-						klikniecia.clear();
-						cel = (Domek*)klikniety;
-					}
-					klikniecia.push_back(clock());
-				}
-				else if (wybrany != nullptr && wybrany == klikniety)
+				if (cel != klikniety)
 				{
 					klikniecia.clear();
 					cel = (Domek*)klikniety;
 				}
+				klikniecia.push_back(clock());
+			}
+			else if (wybrany != nullptr && wybrany == klikniety && zdarzenie.mouseButton.button == sf::Mouse::Left)//ulepszanie
+			{
+				klikniecia.clear();
+				cel = (Domek*)klikniety;
 			}
 		}
 		else
 		{
 			klikniecia.clear();
-			cel = nullptr;
 			wybrany = nullptr;
+			cel = nullptr;
 			klikniecia.push_back(clock());
 		}
 	}
@@ -79,23 +77,19 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		wybrany = nullptr;
 		nacisniety = 0;
 	}
-	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&wybrany->liczebnosc>=wybrany->max_liczebnosc/2)
+	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany)
 	{
 		auto r = new UlepszRozkaz(wybrany);
 		res.push_back(r);
 
-		wybrany = nullptr;
-		cel = nullptr;
-		nacisniety = 0;
-	}
-	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&wybrany->liczebnosc < wybrany->max_liczebnosc / 2)
-	{
-		wybrany = nullptr;
+		klikniecia.clear();
+
+		//wybrany = nullptr; nie odznaczaj po ulepszeniu
 		cel = nullptr;
 		nacisniety = 0;
 	}
 	// po 0.5 sekundy wysy�ane s� ludki
-	if (cel != nullptr && cel != wybrany && clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
+	if (cel != nullptr && cel != wybrany && clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC)
 	{
 		double frakcja = 1;
 		if (klikniecia.size() == 1)
@@ -108,7 +102,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		r->ulamek = frakcja;
 		res.push_back(r);
 
-		wybrany = nullptr;
+		//wybrany = nullptr; MOZNA DALEJ KLIKAC
 		cel = nullptr;
 		nacisniety = 0;
 		klikniecia.clear();
@@ -137,7 +131,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kStajnia));
 			break;
 		}
-		wybrany = nullptr;
+		//wybrany = nullptr; //to umozliwia szybkie burzenie lub/oraz przebudowę 
 		cel = nullptr;
 		nacisniety = 0;
 	}

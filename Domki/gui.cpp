@@ -59,7 +59,7 @@ void GUI::wait_for_anything()
 
 void GUI::show_and_wait_for_anything(shared_ptr<sfg::Window> window)
 {
-	pulpit.Add(window);
+	set_active_window(window);
 	center_window(window);
 
 	pulpit.Update(1);
@@ -68,7 +68,7 @@ void GUI::show_and_wait_for_anything(shared_ptr<sfg::Window> window)
 
 	wait_for_anything();
 
-	pulpit.Remove(window);
+	remove_active_window(window);
 }
 
 void GUI::set_active_window(shared_ptr<sfg::Window> window)

@@ -97,22 +97,13 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)
 		box->Pack(opis_nauka);
 
 		okno_opisu->Add(box);
-		GUI::aplikacja.set_active_window(okno_opisu);
-		GUI::aplikacja.center_window(okno_opisu);
-
-		GUI::aplikacja.pulpit.Update(1);
-		GUI::aplikacja.sfgui.Display(GUI::aplikacja.okno);
-		GUI::aplikacja.okno.display();
-		
 		muzyka.stop();
 		if (przemowa.openFromFile(przemowa_sciezka))
 			przemowa.play();
 
-		GUI::aplikacja.wait_for_anything();
+		GUI::aplikacja.show_and_wait_for_anything(okno_opisu);
 
 		przemowa.stop();
-
-		GUI::aplikacja.remove_active_window(okno_opisu);
 
 		// odpal misje
 		GUI::aplikacja.hide_all_windows();
@@ -122,7 +113,10 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)
 			misja(misja_dane);
 
 			if (misja_dane.Zwyciezca() == 0)
+			{
+				GUI::aplikacja.show_all_windows();
 				return nullptr;
+			}
 		}
 		muzyka.play();
 
@@ -153,6 +147,8 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)
 	box->Pack(powrot);
 
 	okno->Add(box);
+
+	GUI::aplikacja.show_all_windows();
 	return okno;
 }
 

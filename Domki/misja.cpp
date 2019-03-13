@@ -614,6 +614,8 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 		Sleep(16);
 	}
 
+	window.setView(window.getDefaultView());
+
 	if(interfejs != nullptr)
 		GUI::aplikacja.pulpit.Remove(interfejs);
 	return 0;

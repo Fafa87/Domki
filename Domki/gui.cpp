@@ -74,13 +74,18 @@ void GUI::show_and_wait_for_anything(shared_ptr<sfg::Window> window)
 void GUI::set_active_window(shared_ptr<sfg::Window> window)
 {
 	pulpit.Add(window);
+	window->Show(true);
 	windows.push_back(window);
 }
 
 void GUI::remove_active_window(shared_ptr<sfg::Window> window)
 {
 	pulpit.Remove(window);
+	window->Show(false);
 	windows.erase(std::remove(windows.begin(), windows.end(), window), windows.end());
+
+	if (windows.size() > 0)
+		set_active_window(windows.back());
 }
 
 void GUI::show_all_windows()

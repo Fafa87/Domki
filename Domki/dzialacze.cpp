@@ -291,8 +291,8 @@ void Ruszacz::WalczLudkami(double czas)
 		auto spotkanie = rozgrywka->Spotkanie(armia);
 		if (spotkanie != NULL)
 		{
-			rozgrywka->TracLudki(armia, std::max(5.0, 5 * czas * szybkosc));
-			rozgrywka->TracLudki(*spotkanie, std::max(5.0, 5 * czas * szybkosc));
+			rozgrywka->TracLudki(armia, std::max(5.0+ czas * szybkosc,0.3 * (*spotkanie).liczebnosc*czas * szybkosc));
+			rozgrywka->TracLudki(*spotkanie, std::max(5.0+ czas * szybkosc, 0.3 * armia.liczebnosc*czas * szybkosc));
 
 			if (armia.liczebnosc <= 0)
 			{

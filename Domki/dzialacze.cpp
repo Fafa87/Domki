@@ -31,21 +31,23 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 					klikniecia.clear();
 					cel = (Domek*)klikniety;
 				}
-				klikniecia.push_back(clock());
 			}
 			else if (wybrany != nullptr && wybrany == klikniety && zdarzenie.mouseButton.button == sf::Mouse::Left)//ulepszanie
 			{
-				klikniecia.clear();
-				cel = (Domek*)klikniety;
+				if (cel != klikniety)
+				{
+					klikniecia.clear();
+					cel = (Domek*)klikniety;
+				}
 			}
 		}
 		else
 		{
 			klikniecia.clear();
 			wybrany = nullptr;
-			cel = nullptr;
-			klikniecia.push_back(clock());
+			cel = nullptr;	
 		}
+		klikniecia.push_back(clock());
 	}
 
 	if (zdarzenie.type == sf::Event::KeyPressed)
@@ -77,19 +79,19 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		wybrany = nullptr;
 		nacisniety = 0;
 	}
-	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany)
+	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany)// do zrobienia -> ulepszanie tylko w przypadku szybkiego klikania
 	{
 		auto r = new UlepszRozkaz(wybrany);
 		res.push_back(r);
 
 		klikniecia.clear();
 
-		//wybrany = nullptr; nie odznaczaj po ulepszeniu
+		wybrany = nullptr; //to mozna dac pod komentarz aby szybciej ulepszac
 		cel = nullptr;
 		nacisniety = 0;
 	}
 	// po 0.5 sekundy wysy�ane s� ludki
-	if (cel != nullptr && cel != wybrany && clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC)
+	if (cel != nullptr && cel != wybrany && clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC)// do zrobienia -> klikanie wiecej niz dwukrotne powoduje wyslanie wszystkich ludkow
 	{
 		double frakcja = 1;
 		if (klikniecia.size() == 1)
@@ -102,11 +104,20 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		r->ulamek = frakcja;
 		res.push_back(r);
 
-		//wybrany = nullptr; MOZNA DALEJ KLIKAC
+		if (klikniecia.size() == 2)wybrany = nullptr; // odznaczaj tylko gdy zostala wyslana calosc
+		//wybrany = nullptr; 
 		cel = nullptr;
 		nacisniety = 0;
 		klikniecia.clear();
 	}
+
+/*	if (klikniecia.size() > 0 && clock() - klikniecia.back() >= 3.0 * CLOCKS_PER_SEC) // co trzy sekundy braku akcji domek jest odznaczany
+	{																																 // do zrobienia -> zmniejszanie się okręgu wokół domku symbolizujące malejący czas
+		wybrany = nullptr;
+		cel = nullptr;
+		nacisniety = 0;
+		klikniecia.clear();
+	}*/ //narazie bez tego
 
 	if (nacisniety != 0 && wybrany != nullptr)
 	{

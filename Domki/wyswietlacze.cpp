@@ -293,7 +293,8 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 {
 	if (decydent.wybrany != nullptr)
 	{
-		double rozmiar = decydent.wybrany->rozmiar * 1.6;
+		double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaæ wielkoœæ okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)
+		double rozmiar = decydent.wybrany->rozmiar * wspolczynnik_czas_odznaczenia;
 		sf::CircleShape kolo(rozmiar);
 		kolo.setPosition(decydent.wybrany->polozenie.x, decydent.wybrany->polozenie.y);
 		kolo.setRadius(rozmiar);

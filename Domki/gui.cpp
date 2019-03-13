@@ -45,6 +45,22 @@ void GUI::bottom_left_window(shared_ptr<sfg::Window> window)
 	window->SetPosition(final_position);
 }
 
+void GUI::top_right_window(shared_ptr<sfg::Window> window)
+{
+	auto win_rect = window->GetAllocation();
+	sf::Vector2f size(win_rect.width, win_rect.height);
+	auto final_position = (sf::Vector2f)okno.getSize();
+	final_position.y = 0;
+	final_position.x -= size.x;
+	window->SetPosition(final_position);
+}
+
+void GUI::stretch_up_down(shared_ptr<sfg::Window> window)
+{
+	auto win_rect = window->GetAllocation();
+	window->SetRequisition(sf::Vector2f(win_rect.width, okno.getSize().y));
+}
+
 void GUI::wait_for_anything()
 {
 	sf::Event event;
@@ -63,8 +79,7 @@ void GUI::show_and_wait_for_anything(shared_ptr<sfg::Window> window)
 	center_window(window);
 
 	pulpit.Update(1);
-	sfgui.Display(okno);
-	okno.display();
+	render();
 
 	wait_for_anything();
 
@@ -98,4 +113,15 @@ void GUI::hide_all_windows()
 {
 	for (auto& w : windows)
 		w->Show(false);
+}
+
+void GUI::render()
+{
+	GUI::aplikacja.sfgui.Display(okno);
+	okno.display();
+}
+
+void GUI::reset_view()
+{
+	okno.setView(zwykly_widok);
 }

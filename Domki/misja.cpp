@@ -356,9 +356,8 @@ void odliczanie(Wyswietlacz& wyswietlacz)
 		wyswietlacz.Wyswietlaj(GUI::aplikacja.okno);
 
 		GUI::aplikacja.pulpit.Update(1);
-		GUI::aplikacja.sfgui.Display(GUI::aplikacja.okno);
+		GUI::aplikacja.render();
 
-		GUI::aplikacja.okno.display();
 		if (a > 0)
 		{
 			pikPik.play();
@@ -608,13 +607,12 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 		}
 
 		GUI::aplikacja.pulpit.Update(0.1f);
-		GUI::aplikacja.sfgui.Display(window);
-		window.display();
+		GUI::aplikacja.render();
 
 		Sleep(16);
 	}
 
-	window.setView(window.getDefaultView());
+	GUI::aplikacja.reset_view();
 
 	if(interfejs != nullptr)
 		GUI::aplikacja.pulpit.Remove(interfejs);

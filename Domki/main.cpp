@@ -156,8 +156,7 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(sf::Music& muzyka)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 
-	okno->SetRequisition(sf::Vector2f(480, 0));
-	okno->SetPosition(sf::Vector2f(810, 0));
+	okno->SetRequisition(sf::Vector2f(472, 0));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
 	auto tytul = sfg::Label::Create(WERSJA);
@@ -244,19 +243,20 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(sf::Music& muzyka)
 	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 8, 2, 1));
 	tabelka->Attach(powrot, sf::Rect<sf::Uint32>(1, 9, 2, 1));
 
-	box->Pack(tytul);
-	box->Pack(tabelka);
+	box->Pack(tytul, false, false);
+	box->Pack(tabelka, true, true);
 	okno->Add(box);
+
+	GUI::aplikacja.top_right_window(okno);
+	GUI::aplikacja.stretch_up_down(okno);
 
 	return okno;
 }
 
-std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& okno_menu, sf::Music& muzyka)
+std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
-
 	okno->SetRequisition(sf::Vector2f(450, 900));
-	okno->SetPosition(sf::Vector2f(810, 0));
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 100.0f);
 	box->SetRequisition(sf::Vector2f(450, 900));
@@ -265,10 +265,10 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 	tytul->SetId("Naglowek");
 	auto tabelka = sfg::Table::Create();
 
-	auto kampania1 = sfg::Button::Create("Kampania ³atwa");
+	auto kampania1 = sfg::Button::Create(L"Kampania ³atwa");
 	kampania1->SetRequisition(sf::Vector2f(450, 0));
 	kampania1->GetSignal(sfg::Widget::OnLeftClick).Connect(
-		[&pulpit, &okno_menu, &muzyka]
+		[&muzyka]
 	{
 		auto okno_kampanii = kampania_menu(muzyka, poziomy_trudnosci[0]);
 		if (okno_kampanii != nullptr)
@@ -278,7 +278,7 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 	auto kampania2 = sfg::Button::Create("Kampania trudna");
 	kampania2->SetRequisition(sf::Vector2f(450, 0));
 	kampania2->GetSignal(sfg::Widget::OnLeftClick).Connect(
-		[&pulpit, &okno_menu, &muzyka]
+		[&muzyka]
 	{
 		auto okno_kampanii = kampania_menu(muzyka, poziomy_trudnosci[1]);
 		if (okno_kampanii != nullptr)
@@ -288,7 +288,7 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 	auto pojedynczy = sfg::Button::Create("Sam");
 	pojedynczy->SetRequisition(sf::Vector2f(450, 0));
 	pojedynczy->GetSignal(sfg::Widget::OnLeftClick).Connect(
-		[&pulpit, &okno_menu, &muzyka]
+		[&muzyka]
 	{
 		auto okno_sam = pojedynczy_gracz_menu(muzyka);
 		GUI::aplikacja.set_active_window(okno_sam);
@@ -303,6 +303,9 @@ std::shared_ptr<sfg::Window> grand_menu(sfg::Desktop& pulpit, sf::RenderWindow& 
 	box->Pack(tytul, false, false);
 	box->Pack(tabelka, true, true);
 	okno->Add(box);
+
+	GUI::aplikacja.top_right_window(okno);
+	GUI::aplikacja.stretch_up_down(okno);
 
 	return okno;
 }
@@ -320,19 +323,7 @@ int main() {
 	auto& okno_menu = GUI::aplikacja.okno;
 	GUI::aplikacja.setup_theme();
 
-	//// multi
-	//auto serwer = sfg::Button::Create("Serwer");
-	//serwer->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
-	//	start_serwer(GUI::pulpit, muzyka);
-	//});
-
-	//auto klient = sfg::Button::Create("Klient");
-	//klient->GetSignal(sfg::Widget::OnLeftClick).Connect([&] {
-	//	start_klient(GUI::pulpit, muzyka);
-	//});
-
-	
-	auto okno = grand_menu(GUI::aplikacja.pulpit, okno_menu, muzyka);
+	auto okno = grand_menu(muzyka);
 	GUI::aplikacja.set_active_window(okno);
 
 	sf::Event event;
@@ -367,8 +358,7 @@ int main() {
 
 		okno_menu.clear();
 		okno_menu.draw(background);
-		GUI::aplikacja.sfgui.Display(okno_menu);
-		okno_menu.display();
+		GUI::aplikacja.render();
 	}
 
 	return 0;

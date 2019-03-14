@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../Domki/gui.h"
 #include "../Domki/misja.h"
 #include "../Domki/os.h"
 
@@ -108,22 +109,18 @@ Rozgrywka pokazowa_rozgrywka()
 	gracz4.numer = 4; gracz4.nazwa = "KOMPUTER4";
 	gracz4.kolor = sf::Color::Yellow;
 	
-	dodaj_gracza(gra, gracz0, 200, 200);
-	dodaj_gracza(gra, gracz1, 500, 200);
-	dodaj_gracza(gra, gracz2, 500, 600);
-	dodaj_gracza(gra, gracz3, 800, 200);
-	dodaj_gracza(gra, gracz4, 800, 600);
+	dodaj_gracza(gra, gracz0, 200, 100);
+	dodaj_gracza(gra, gracz1, 500, 100);
+	dodaj_gracza(gra, gracz2, 500, 500);
+	dodaj_gracza(gra, gracz3, 800, 100);
+	dodaj_gracza(gra, gracz4, 800, 500);
 
 	return gra;
 }
 
 int pokazowa_misja()
 {
-	sf::ContextSettings ustawienia;
-	ustawienia.antialiasingLevel = 8;
-
-	auto videoMode = sf::VideoMode(1600, 899);
-	sf::RenderWindow window(videoMode, "DOMKI PRE-ALFA!", sf::Style::None, ustawienia);
+	sf::RenderWindow& window = GUI::aplikacja.okno;
 
 	// tworzymy rozgrywke
 	Rozgrywka rozgrywka = pokazowa_rozgrywka();

@@ -118,6 +118,22 @@ Rozgrywka pokazowa_rozgrywka()
 	return gra;
 }
 
+std::shared_ptr<sfg::Window> zakonczenie_gry()
+{
+	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+	okno->SetRequisition(sf::Vector2f(300, 300));
+	GUI::aplikacja.bottom_window(okno);
+
+	auto komunikat_koncowy = sfg::Label::Create("");
+	komunikat_koncowy->SetId("Naglowek");
+	komunikat_koncowy->SetAlignment(sf::Vector2f(0.5, 0.5));
+	komunikat_koncowy->SetText("GRATULACJE DLA GRACZA");
+	okno->Add(komunikat_koncowy);
+
+	GUI::aplikacja.set_active_window(okno);
+	return okno;
+}
+
 int pokazowa_misja()
 {
 	sf::RenderWindow& window = GUI::aplikacja.okno;
@@ -172,12 +188,33 @@ int pokazowa_misja()
 		ruszacz.Ruszaj(0.0001);
 
 		window.clear();
-		wyswietlacz.WyswietlTlo(window);
+		
+		view.setViewport(sf::FloatRect(0.0f, 0.0f, 1.0f, 0.9f));
+		window.setView(view);
 
+		wyswietlacz.WyswietlTlo(window);
 		ruchGracza.Wyswietlaj(window);
 		wyswietlacz.Wyswietlaj(window);
+
+		view.setViewport(sf::FloatRect(0.0f, 0.9f, 1.0f, 0.1f));
+		window.setView(view);
+
+		wyswietlacz.WyswietlTlo(window);
+		ruchGracza.Wyswietlaj(window);
+		wyswietlacz.Wyswietlaj(window);
+
+		view.setViewport(sf::FloatRect(0.75f, 0.0f, 0.25f, 0.25f));
+		window.setView(view);
 		
-		window.display();
+		//wyswietlacz.WyswietlTlo(window);
+		//ruchGracza.Wyswietlaj(window);
+		//wyswietlacz.Wyswietlaj(window);
+		auto gujak = zakonczenie_gry();
+
+		GUI::aplikacja.render();
+
+		/*GUI::aplikacja.sfgui.Display(window);
+		window.display();*/
 
 		Sleep(16);
 	}

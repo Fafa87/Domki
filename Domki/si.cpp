@@ -36,7 +36,7 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 				graniczy = false;
 				for (Domek* domek2 : domek1.drogi)
 				{
-					if(domek2->gracz->numer!=gracz.numer&&2*ile_trzeba_ludkow(rozgrywka.Odleglosc(domek1,(*domek2)),domek2)+1.0<=domek1.liczebnosc)
+					if(domek2->gracz->numer!=gracz.numer&&2*ile_trzeba_ludkow(rozgrywka.Odleglosc(domek1,(*domek2)),domek2)+1.0<=domek1.liczebnosc*(10.0+ (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer))))/10.0)
 					{
 						auto r = new WymarszRozkaz(&domek1, domek2);
 						r->ulamek = 0.5;
@@ -136,7 +136,7 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
 					graniczy = false;
 					for (Domek* domek2 : domek1.drogi)
 					{
-						if (domek2->gracz->numer != gracz.numer && 2 * ile_trzeba_ludkow(rozgrywka.Odleglosc(domek1, (*domek2)), domek2) + 1.0 <= domek1.liczebnosc)
+						if (domek2->gracz->numer != gracz.numer && ile_trzeba_ludkow(rozgrywka.Odleglosc(domek1, (*domek2)), domek2) + 1.0 <= domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0)
 						{
 							auto r = new WymarszRozkaz(&domek1, domek2);
 							r->ulamek = 1.0;

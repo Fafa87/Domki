@@ -58,7 +58,6 @@ void Rozgrywka::TracLudki(Ludek & ludek, double ile)
 	ludek.tarcza = std::max(0,ludek.tarcza - (int)ile);
 	ile -= (double)ludek.tarcza;
 	if (ile > 0)ludek.liczebnosc = std::max(0.0,ludek.liczebnosc-ile);
-			
 }
 
 void Rozgrywka::ZabierzTwor(const Twor* twor)

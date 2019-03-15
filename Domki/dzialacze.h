@@ -12,6 +12,14 @@ struct Rozkaz
 	virtual ~Rozkaz() {}
 };
 
+struct Testpower : Rozkaz
+{
+	Testpower(Domek* kogo);
+
+	Domek * kogo;
+	int ser_kogo;
+};
+
 struct WymarszRozkaz : Rozkaz
 {
 	WymarszRozkaz(Domek* skad, Domek* dokad);

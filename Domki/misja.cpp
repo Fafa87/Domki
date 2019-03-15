@@ -416,7 +416,7 @@ void zakonczenie_meczu(MisjaUstawienia &stan, Rozgrywka& rozgrywka)
 	GUI::aplikacja.show_and_wait_for_anything(okno);
 }
 
-sf::View WysrodkowanyWidok(list<Domek> &domki)
+sf::View wysrodkowany_widok(list<Domek> &domki, int bottom_space)
 {
 	auto minimalny_X = 10000.0, maksymalny_X = 0.0;
 	auto minimalny_Y = 10000.0, maksymalny_Y = 0.0;
@@ -434,11 +434,13 @@ sf::View WysrodkowanyWidok(list<Domek> &domki)
 	minimalny_X -= powiekszenie_x;
 	maksymalny_X += powiekszenie_x;
 
-	auto powiekszenie_y = min(minimalny_Y, 80.0);
+	auto powiekszenie_y = min(minimalny_Y, 100.0);
 	minimalny_Y -= powiekszenie_y;
 	maksymalny_Y += powiekszenie_y;
 
-	double stosunek = 1600 / 899.0;
+	auto okno_size = GUI::aplikacja.okno.getSize();
+
+	double stosunek = (double) okno_size.x / (okno_size.y - bottom_space);
 	auto dlugosc_Y = maksymalny_Y - minimalny_Y;
 	auto dlugosc_X = maksymalny_X - minimalny_X;
 
@@ -475,7 +477,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	Muzykant muzykant(rozgrywka);
 	muzykant.Zaladuj(misja_ustawienia.skorka);
 
-	sf::View view = WysrodkowanyWidok(rozgrywka.domki);
+	sf::View view = wysrodkowany_widok(rozgrywka.domki);
 	window.setView(view);
 
 	//ZMIEN NAZWY GRACZ�W
@@ -606,7 +608,6 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 			break;
 		}
 
-		GUI::aplikacja.pulpit.Update(0.1f);
 		GUI::aplikacja.render();
 
 		Sleep(16);

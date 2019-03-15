@@ -126,3 +126,26 @@ void GUI::reset_view()
 {
 	okno.setView(zwykly_widok);
 }
+
+void GUI::set_viewport_abs(sf::View& view, sf::FloatRect rect)
+{
+	auto size = okno.getSize();
+	rect = sf::FloatRect(rect.left, rect.top, rect.width <= 0 ? size.x + rect.width : rect.width, rect.height <= 0 ? size.y + rect.height : rect.height);
+	view.setViewport(sf::FloatRect(rect.left / size.x, rect.top / size.y, rect.width / size.x, rect.height / size.y));
+}
+
+void GUI::show_bottom_gui(sf::View& view, std::shared_ptr<sfg::Window> gui_okno)
+{
+	gui_okno->SetRequisition(sf::Vector2f(okno.getSize().x, gui_okno->GetRequisition().y));
+	bottom_window(gui_okno);
+
+	view.setViewport(sf::FloatRect(0.0f, 0.0f, 1.0f, 1.0f));
+	okno.setView(view);
+
+	okno.draw(nico);
+	pulpit.Update(0.001f);
+	sfgui.Display(okno);
+
+	set_viewport_abs(view, sf::FloatRect(0.0f, 0.0f, 0.0f, -gui_okno->GetAllocation().height));
+	okno.setView(view);
+}

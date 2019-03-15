@@ -41,6 +41,8 @@ MisjaUstawienia wczytaj_meta(string sciezka);
 
 Rozgrywka zwarcie_rozgrywka(string sciezka);
 
+sf::View wysrodkowany_widok(list<Domek> &domki, int bottom_space=0);
+
 int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz);
 
 int misja(MisjaUstawienia& misja_ustawienia);

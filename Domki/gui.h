@@ -11,6 +11,7 @@ using namespace std;
 class GUI
 {
 private:
+	sf::Sprite nico;
 	static int styl_okna() 
 	{
 		auto res = sf::Style::Fullscreen;
@@ -36,6 +37,10 @@ public:
 		okno.resetGLStates();
 		zwykly_widok = sf::View(sf::FloatRect(0, 0, 1280, 719));
 		okno.setView(zwykly_widok);
+
+		sf::Texture obrazek_tla;
+		obrazek_tla.create(10, 10);
+		nico.setTexture(obrazek_tla);
 	}
 
 	sfg::SFGUI sfgui;
@@ -49,6 +54,9 @@ public:
 	void bottom_window(shared_ptr<sfg::Window> window);
 	void bottom_left_window(shared_ptr<sfg::Window> window);
 	void top_right_window(shared_ptr<sfg::Window> window);
+
+	void set_viewport_abs(sf::View& view, sf::FloatRect rect);
+	void show_bottom_gui(sf::View& view, std::shared_ptr<sfg::Window> gui_okno);
 
 	void stretch_up_down(shared_ptr<sfg::Window> window);
 

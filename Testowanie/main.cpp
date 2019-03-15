@@ -109,11 +109,11 @@ Rozgrywka pokazowa_rozgrywka()
 	gracz4.numer = 4; gracz4.nazwa = "KOMPUTER4";
 	gracz4.kolor = sf::Color::Yellow;
 	
-	dodaj_gracza(gra, gracz0, 200, 100);
-	dodaj_gracza(gra, gracz1, 500, 100);
-	dodaj_gracza(gra, gracz2, 500, 500);
-	dodaj_gracza(gra, gracz3, 800, 100);
-	dodaj_gracza(gra, gracz4, 800, 500);
+	dodaj_gracza(gra, gracz0, 500, 100);
+	dodaj_gracza(gra, gracz1, 800, 100);
+	dodaj_gracza(gra, gracz2, 800, 500);
+	dodaj_gracza(gra, gracz3, 1100, 100);
+	dodaj_gracza(gra, gracz4, 1100, 500);
 
 	return gra;
 }
@@ -121,7 +121,7 @@ Rozgrywka pokazowa_rozgrywka()
 std::shared_ptr<sfg::Window> zakonczenie_gry()
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
-	okno->SetRequisition(sf::Vector2f(300, 300));
+	okno->SetRequisition(sf::Vector2f(GUI::aplikacja.okno.getSize().x, 100));
 	GUI::aplikacja.bottom_window(okno);
 
 	auto komunikat_koncowy = sfg::Label::Create("");
@@ -146,7 +146,8 @@ int pokazowa_misja()
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(1));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 
-	sf::View view = sf::View(sf::FloatRect(0, 0, 1600, 900));
+	auto gujak = zakonczenie_gry();
+	sf::View view = wysrodkowany_widok(rozgrywka.domki, gujak->GetAllocation().height);
 	window.setView(view);
 
 	Ruszacz ruszacz;
@@ -189,32 +190,13 @@ int pokazowa_misja()
 
 		window.clear();
 		
-		view.setViewport(sf::FloatRect(0.0f, 0.0f, 1.0f, 0.9f));
-		window.setView(view);
-
-		wyswietlacz.WyswietlTlo(window);
-		ruchGracza.Wyswietlaj(window);
-		wyswietlacz.Wyswietlaj(window);
-
-		view.setViewport(sf::FloatRect(0.0f, 0.9f, 1.0f, 0.1f));
-		window.setView(view);
-
-		wyswietlacz.WyswietlTlo(window);
-		ruchGracza.Wyswietlaj(window);
-		wyswietlacz.Wyswietlaj(window);
-
-		view.setViewport(sf::FloatRect(0.75f, 0.0f, 0.25f, 0.25f));
-		window.setView(view);
+		GUI::aplikacja.show_bottom_gui(view, gujak);
 		
-		//wyswietlacz.WyswietlTlo(window);
-		//ruchGracza.Wyswietlaj(window);
-		//wyswietlacz.Wyswietlaj(window);
-		auto gujak = zakonczenie_gry();
+		wyswietlacz.WyswietlTlo(window);
+		ruchGracza.Wyswietlaj(window);
+		wyswietlacz.Wyswietlaj(window);
 
-		GUI::aplikacja.render();
-
-		/*GUI::aplikacja.sfgui.Display(window);
-		window.display();*/
+		GUI::aplikacja.okno.display();
 
 		Sleep(16);
 	}

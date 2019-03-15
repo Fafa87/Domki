@@ -66,6 +66,8 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 				nacisniety = '4';
 			else if (zdarzenie.key.code == sf::Keyboard::Num5)
 				nacisniety = '5';
+			else if (zdarzenie.key.code == sf::Keyboard::T)
+				nacisniety = 'T';
 		}
 	}
 }
@@ -140,6 +142,9 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 			break;
 		case '5':
 			res.push_back(new PrzebudujRozkaz(wybrany, TypDomku::kStajnia));
+			break;
+		case 'T':
+			res.push_back(new Testpower(wybrany));
 			break;
 		}
 		//wybrany = nullptr; //to umozliwia szybkie burzenie lub/oraz przebudowę 
@@ -252,6 +257,14 @@ void Ruszacz::WykonajRuchy()
 				rozgrywka->ZmienLiczebnosc(*przebuduj->kogo, przebuduj->kogo->liczebnosc - 25.0);
 			}
 			// TODO ustaw odpowiednio wartości jeśli ulepszenie jest możliwe
+		}
+		else if (IsType<Testpower>(r))
+		{
+			auto testpoweruj = (Testpower*)r;
+			if (testpoweruj->kogo->poziom == 0)testpoweruj->kogo->typdomku = TypDomku::kMiasto;
+			testpoweruj->kogo->poziom = 5;
+			testpoweruj->kogo->max_liczebnosc = 1600.0;
+			rozgrywka->ZmienLiczebnosc(*testpoweruj->kogo, 1600.0);
 		}
 	}
 	kolejka_do_wykonania.clear();
@@ -375,8 +388,7 @@ void Ruszacz::Strzelaj(double czas)
 		Domek * domek_cel = ((Domek*)ludek.cel);
 		if (domek_cel->typdomku==TypDomku::kWieza&&domek_cel->gracz->numer!=ludek.gracz->numer&&rozgrywka->Odleglosc(ludek,*domek_cel) < 100.0)
 			{
-			if(ludek.tarcza>0)ludek.tarcza = std::max(0.0, ludek.tarcza - sila_strzalu*(double)domek_cel->poziom*(double)domek_cel->poziom*czas);
-			else ludek.liczebnosc = std::max(0.0, ludek.liczebnosc - sila_strzalu*(double)domek_cel->poziom*(double)domek_cel->poziom*czas);
+			rozgrywka->TracLudki(ludek, sila_strzalu*(double)domek_cel->poziom*(double)domek_cel->poziom*czas* szybkosc);
 			if(ludek.liczebnosc==0.0)do_usuniecia.push_back(&ludek);
 			}
 		}
@@ -402,4 +414,6 @@ PrzebudujRozkaz::PrzebudujRozkaz(Domek * kogo, TypDomku naco) : kogo(kogo), naco
 {
 }
 
-
+Testpower::Testpower(Domek * kogo) : kogo(kogo)
+{
+}

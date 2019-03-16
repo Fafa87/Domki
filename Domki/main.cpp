@@ -139,7 +139,7 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)
 	auto powrot = sfg::Button::Create("Powrot");
 	powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
 		[okno] {
-		GUI::aplikacja.remove_active_window(okno);
+		GUI::aplikacja.pop_active_window(okno);
 	});
 
 	box->Pack(tytul);
@@ -217,7 +217,7 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(sf::Music& muzyka)
 	auto powrot = sfg::Button::Create("Powrot");
 	powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
 		[okno] {
-		GUI::aplikacja.remove_active_window(okno);
+		GUI::aplikacja.pop_active_window(okno);
 	});
 
 	tabelka->SetRowSpacings(10);

@@ -57,6 +57,7 @@ public:
 
 	void set_viewport_abs(sf::View& view, sf::FloatRect rect);
 	void show_bottom_gui(sf::View& view, std::shared_ptr<sfg::Window> gui_okno);
+	void finish_viewport_render(sf::View& view);
 
 	void stretch_up_down(shared_ptr<sfg::Window> window);
 
@@ -65,6 +66,7 @@ public:
 
 	void set_active_window(shared_ptr<sfg::Window> window);
 	void remove_active_window(shared_ptr<sfg::Window> window);
+	void pop_active_window(shared_ptr<sfg::Window> window);
 	void show_all_windows();
 	void hide_all_windows();
 

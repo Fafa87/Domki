@@ -93,14 +93,19 @@ void GUI::set_active_window(shared_ptr<sfg::Window> window)
 	windows.push_back(window);
 }
 
+void GUI::pop_active_window(shared_ptr<sfg::Window> window)
+{
+	remove_active_window(window);
+
+	if (windows.size() > 0)
+		set_active_window(windows.back());
+}
+
 void GUI::remove_active_window(shared_ptr<sfg::Window> window)
 {
 	pulpit.Remove(window);
 	window->Show(false);
 	windows.erase(std::remove(windows.begin(), windows.end(), window), windows.end());
-
-	if (windows.size() > 0)
-		set_active_window(windows.back());
 }
 
 void GUI::show_all_windows()
@@ -125,6 +130,7 @@ void GUI::render()
 void GUI::reset_view()
 {
 	okno.setView(zwykly_widok);
+	okno.draw(nico);
 }
 
 void GUI::set_viewport_abs(sf::View& view, sf::FloatRect rect)
@@ -148,4 +154,12 @@ void GUI::show_bottom_gui(sf::View& view, std::shared_ptr<sfg::Window> gui_okno)
 
 	set_viewport_abs(view, sf::FloatRect(0.0f, 0.0f, 0.0f, -gui_okno->GetAllocation().height));
 	okno.setView(view);
+}
+
+void GUI::finish_viewport_render(sf::View & view)
+{
+	view.setViewport(sf::FloatRect(0.0f, 0.0f, 1.0f, 1.0f));
+	okno.setView(view);
+
+	okno.draw(nico);
 }

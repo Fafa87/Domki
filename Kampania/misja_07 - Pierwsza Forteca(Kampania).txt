@@ -1,7 +1,7 @@
 25
 1 6
 koordynaty 750 275
-drogi 1 2
+drogi 2 2 4
 gracz 1
 typ osada
 liczebnosc 50
@@ -15,14 +15,14 @@ liczebnosc 50
 poziom 3
 3 6
 koordynaty 1150 275
-drogi 1 2
+drogi 2 2 7
 gracz 1
 typ osada
 liczebnosc 50
 poziom 3
 4 6
 koordynaty 650 350
-drogi 1 11
+drogi 2 1 11
 gracz 1
 typ osada
 liczebnosc 50
@@ -43,7 +43,7 @@ liczebnosc 10
 poziom 4
 7 6
 koordynaty 1250 350
-drogi 1 15
+drogi 2 3 15
 gracz 1
 typ osada
 liczebnosc 50
@@ -127,7 +127,7 @@ liczebnosc 10
 poziom 4
 19 6
 koordynaty 650 650 
-drogi 1 11
+drogi 2 11 23
 gracz 1
 typ osada
 liczebnosc 50
@@ -148,14 +148,14 @@ liczebnosc 10
 poziom 4
 22 6
 koordynaty 1250 650
-drogi 1 15
+drogi 2 15 25
 gracz 1
 typ osada
 liczebnosc 50
 poziom 3
 23 6
 koordynaty 750 725
-drogi 1 24
+drogi 2 19 24
 gracz 1
 typ osada
 liczebnosc 50
@@ -169,7 +169,7 @@ liczebnosc 50
 poziom 3
 25 6
 koordynaty 1150 725
-drogi 1 24
+drogi 2 22 24
 gracz 1
 typ osada
 liczebnosc 50

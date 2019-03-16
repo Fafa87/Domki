@@ -8,8 +8,8 @@ drogi 1 2
 
 gracz 1
 
-poziom 4
-liczebnosc 10
+poziom 5
+liczebnosc 35
 2 5
 koordynaty 400 400
 

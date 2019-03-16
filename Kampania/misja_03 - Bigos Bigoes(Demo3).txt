@@ -3,7 +3,7 @@
 koordynaty 600 500
 drogi 3 2 3 4
 gracz 1
-poziom 10
+poziom 5
 liczebnosc 5
 typ kuznia
 2 5
@@ -43,13 +43,13 @@ liczebnosc 10
 koordynaty 1050 500
 drogi 3 5 6 7
 gracz 2
-poziom 3
+poziom 2
 liczebnosc 5
 typ kuznia
 9 6
 koordynaty 1200 500
 drogi 1 8
 gracz 2
-poziom 25
+poziom 5
 liczebnosc 15
 typ zamek

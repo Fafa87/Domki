@@ -1,57 +1,57 @@
 12
 1 6
-koordynaty 900 500
+koordynaty 900 600
 drogi 8 2 3 4 5 6 7 8 9
 gracz 1
-poziom 10
+poziom 5
 typ zamek
-liczebnosc 15
+liczebnosc 50
 2 5
-koordynaty 800 600
+koordynaty 750 750
 drogi 2 1 4 
 gracz 1
-poziom 3
+poziom 4
 liczebnosc 10
 3 5
-koordynaty 1000 600
+koordynaty 1050 750
 drogi 2 1 4
 gracz 1
-poziom 3
+poziom 4
 liczebnosc 10
 4 6
-koordynaty 900 600
+koordynaty 900 750
 drogi 3 1 2 3
 gracz 1
-poziom 10
+poziom 5
 typ kuznia
 liczebnosc 5
 5 4
-koordynaty 800 500
+koordynaty 750 600
 drogi 3 1 6 10
 liczebnosc 10
 poziom 3
 6 4
-koordynaty 800 400
+koordynaty 750 450
 drogi 3 1 5 7
 liczebnosc 10
 poziom 3
 7 4
-koordynaty 900 400
+koordynaty 900 450
 drogi 4 1 6 8 11 
 liczebnosc 10
 poziom 3
 8 4
-koordynaty 1000 400
+koordynaty 1050 450
 drogi 3 1 7 9
 liczebnosc 10
 poziom 3
 9 4
-koordynaty 1000 500
+koordynaty 1050 600
 drogi 3 1 8 12
 liczebnosc 10
 poziom 3
 10 5
-koordynaty 700 500
+koordynaty 600 600
 drogi 1 5 
 gracz 2
 poziom 3
@@ -63,7 +63,7 @@ gracz 3
 poziom 3
 liczebnosc 50
 12 5
-koordynaty 1100 500
+koordynaty 1200 600
 drogi 1 9
 gracz 4
 poziom 3

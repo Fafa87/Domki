@@ -317,7 +317,7 @@ void Ruszacz::WalczLudkami(double czas)
 				do_usuniecia.push_back(spotkanie);
 			}
 		}
-		if (odleglosc < armia.cel->rozmiar)
+		if (odleglosc < min(armia.cel->rozmiar,armia.rozmiar))
 		{
 			if (IsType<Domek>(armia.cel))
 			{

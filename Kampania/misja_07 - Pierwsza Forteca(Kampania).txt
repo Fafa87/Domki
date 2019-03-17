@@ -33,14 +33,14 @@ drogi 1 9
 gracz 2
 typ osada
 liczebnosc 10
-poziom 4
+poziom 3
 6 6
 koordynaty 1050 350
 drogi 1 9
 gracz 2
 typ osada
 liczebnosc 10
-poziom 4
+poziom 3
 7 6
 koordynaty 1250 350
 drogi 2 3 15
@@ -54,7 +54,7 @@ drogi 1 12
 gracz 2
 typ osada
 liczebnosc 10
-poziom 4
+poziom 3
 9 6
 koordynaty 950 425
 drogi 4 2 5 6 13
@@ -68,7 +68,7 @@ drogi 1 14
 gracz 2
 typ osada
 liczebnosc 10
-poziom 4
+poziom 3
 11 6
 koordynaty 650 500
 drogi 3 4 12 19
@@ -110,7 +110,7 @@ drogi 1 12
 gracz 2
 typ osada
 liczebnosc 10
-poziom 4
+poziom 3
 17 6
 koordynaty 950 575
 drogi 4 13 20 21 24
@@ -124,7 +124,7 @@ drogi 1 14
 gracz 2
 typ osada
 liczebnosc 10
-poziom 4
+poziom 3
 19 6
 koordynaty 650 650 
 drogi 2 11 23
@@ -138,7 +138,7 @@ drogi 1 17
 gracz 2
 typ osada
 liczebnosc 10
-poziom 4
+poziom 3
 21 6
 koordynaty 1050 650
 drogi 1 17

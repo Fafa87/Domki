@@ -26,7 +26,7 @@ drogi 5 1 2 3 5 7
 gracz 1
 typ zamek
 liczebnosc 100
-poziom 3 
+poziom 5 
 5 6
 koordynaty 850 450
 drogi 3 4 6 10
@@ -172,5 +172,5 @@ koordynaty 1250 750
 drogi 2 19 24
 gracz 1
 typ osada
-liczebnosc 50
+liczebnosc 100
 poziom 3 

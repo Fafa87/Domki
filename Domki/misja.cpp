@@ -297,7 +297,7 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
 	{
 		if (stan.do_ilu_wygranych > 0)
 		{
-			interfejs = sfg::Window::Create();
+			interfejs = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 			interfejs->SetTitle("Mecz do " + to_string(stan.do_ilu_wygranych) + " wygranych");
 			interfejs->SetRequisition(sf::Vector2f(140, 0));
 
@@ -407,7 +407,7 @@ void zakonczenie_gry(Gracz& gracz_wygrany, int grajacy)
 
 void zakonczenie_meczu(MisjaUstawienia &stan, Rozgrywka& rozgrywka)
 {
-	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW | sfg::Window::Style::RESIZE);
+	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 	okno->SetRequisition(sf::Vector2f(800, 0));
 
 	auto komunikat_koncowy = sfg::Label::Create("OSTATECZNY RANKING:\n");

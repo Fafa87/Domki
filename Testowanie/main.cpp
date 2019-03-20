@@ -6,6 +6,7 @@
 #include "../Domki/gui.h"
 #include "../Domki/misja.h"
 #include "../Domki/os.h"
+#include "../Domki/winextra.h"
 
 using namespace std;
 
@@ -120,15 +121,46 @@ Rozgrywka pokazowa_rozgrywka()
 
 std::shared_ptr<sfg::Window> zakonczenie_gry()
 {
+	sf::Texture sfgui_logo;
+	sfgui_logo.loadFromFile("D:\\Fafa\\Domki\\Kod\\Grafika\\paper_small.png");
+	sfgui_logo.setRepeated(true);
+
+	sf::Sprite papierek;
+	papierek.setTexture(sfgui_logo);
+	papierek.setScale(8, 8);
+
+	auto canvas = sfg::Canvas::Create();
+
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 	okno->SetRequisition(sf::Vector2f(GUI::aplikacja.okno.getSize().x, 100));
+	
 	GUI::aplikacja.bottom_window(okno);
+
+	auto lewy = sfg::Label::Create("Lewy panel");
 
 	auto komunikat_koncowy = sfg::Label::Create("");
 	komunikat_koncowy->SetId("Naglowek");
 	komunikat_koncowy->SetAlignment(sf::Vector2f(0.5, 0.5));
 	komunikat_koncowy->SetText("GRATULACJE DLA GRACZA");
-	okno->Add(komunikat_koncowy);
+	GUI::aplikacja.pulpit.SetProperty("Label", "Color", sf::Color::White);
+	GUI::aplikacja.pulpit.SetProperty("Label", "FontSize", 28);
+	GUI::aplikacja.pulpit.SetProperty("Label#Naglowek", "FontSize", 48);
+
+	auto prawy = sfg::Label::Create("Prawy panel");
+
+	auto table = sfg::Table::Create();
+	GUI::aplikacja.pulpit.SetProperty("Label", "BorderColor", sf::Color(79, 45, 4));
+	GUI::aplikacja.pulpit.SetProperty("Label", "BorderWidth", 8);
+	table->Attach(lewy, sf::Rect<sf::Uint32>(0, 0, 1, 1));
+	table->Attach(canvas, sf::Rect<sf::Uint32>(1, 0, 1, 1));
+	table->Attach(komunikat_koncowy, sf::Rect<sf::Uint32>(1, 0, 1, 1));
+	table->Attach(prawy, sf::Rect<sf::Uint32>(2, 0, 1, 1));
+	
+	okno->Add(table);
+
+	canvas->Bind();
+	canvas->Clear();
+	canvas->Draw(papierek);
 
 	GUI::aplikacja.set_active_window(okno);
 	return okno;

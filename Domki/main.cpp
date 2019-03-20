@@ -317,7 +317,7 @@ int main() {
 
 	auto& okno_menu = GUI::aplikacja.okno;
 	GUI::aplikacja.setup_theme();
-
+	
 	auto okno = grand_menu(muzyka);
 	GUI::aplikacja.set_active_window(okno);
 
@@ -330,13 +330,14 @@ int main() {
 		muzyka.play();
 	}
 
-	while (okno_menu.isOpen()) {
-		while (okno_menu.pollEvent(event)) 
-		{
-			GUI::aplikacja.pulpit.HandleEvent(event);
-
-			switch (event.type)
+	try {
+		while (okno_menu.isOpen()) {
+			while (okno_menu.pollEvent(event))
 			{
+				GUI::aplikacja.pulpit.HandleEvent(event);
+
+				switch (event.type)
+				{
 				case sf::Event::KeyReleased:
 					switch (event.key.code)
 					{
@@ -346,14 +347,22 @@ int main() {
 					break;
 				case sf::Event::Closed:
 					return 0;
+				case sf::Event::Resized:
+					GUI::aplikacja.top_right_window(okno);
+					GUI::aplikacja.stretch_up_down(okno);
+				}
 			}
+
+			GUI::aplikacja.pulpit.Update(clock.restart().asSeconds());
+
+			okno_menu.clear();
+			okno_menu.draw(background);
+			GUI::aplikacja.render();
 		}
-
-		GUI::aplikacja.pulpit.Update(clock.restart().asSeconds());
-
-		okno_menu.clear();
-		okno_menu.draw(background);
-		GUI::aplikacja.render();
+	}
+	catch (const std::exception&)
+	{
+		return -1;
 	}
 
 	return 0;

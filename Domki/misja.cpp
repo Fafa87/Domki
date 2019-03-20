@@ -303,8 +303,20 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
 
 			auto ranking = interfejs_ranking(stan, rozgrywka, 1);
 
+			auto pomoc = sfg::Image::Create();
+			sf::Image pomoc_obraz;
+			if (pomoc_obraz.loadFromFile("Grafika\\rycerze\\info.png"))
+				pomoc->SetImage(pomoc_obraz);
+			
+			auto info = sfg::Label::Create("Informacje o tym domku.");
+
+			auto tabela_interfejsu = sfg::Table::Create();
+			tabela_interfejsu->Attach(ranking, sf::Rect<sf::Uint32>(0, 0, 1, 1));
+			tabela_interfejsu->Attach(pomoc, sf::Rect<sf::Uint32>(1, 0, 1, 1));
+			tabela_interfejsu->Attach(info, sf::Rect<sf::Uint32>(2, 0, 1, 1));
+
 			GUI::aplikacja.pulpit.Add(interfejs);
-			interfejs->Add(ranking);
+			interfejs->Add(tabela_interfejsu);
 			GUI::aplikacja.bottom_left_window(interfejs);
 		}
 	}
@@ -552,7 +564,9 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 				break;
 			}
 			if (event.type == sf::Event::Closed)
-				trwa_gra = false;
+			{
+				throw std::exception("okno zamkniete");
+			}
 		}
 		///FPSY
 		czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;

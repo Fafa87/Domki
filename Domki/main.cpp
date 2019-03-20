@@ -311,6 +311,8 @@ int main() {
 	sf::Texture backtexture;
 	backtexture.loadFromFile("Grafika\\houseofhouses.png");
 	backtexture.setRepeated(false);
+	backtexture.setSmooth(true);
+	backtexture.generateMipmap();
 	sf::Sprite background(backtexture);
 	background.setScale(0.8, 1);
 	background.setTextureRect({ 0, 0, 1280, 900 });

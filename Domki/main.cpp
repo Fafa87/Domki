@@ -244,7 +244,7 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(sf::Music& muzyka)
 	tabelka->Attach(powrot, sf::Rect<sf::Uint32>(1, 9, 2, 1));
 
 	box->Pack(tytul, false, false);
-	box->Pack(tabelka, true, true);
+	box->Pack(tabelka, true, false);
 	okno->Add(box);
 
 	GUI::aplikacja.top_right_window(okno);

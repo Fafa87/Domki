@@ -36,6 +36,7 @@ namespace DomkoTesty
 			ruszacz.Ruszaj(10); // brak produkcja
 			Assert::AreEqual(89.0, domek_0.liczebnosc);
 		}
+
 		TEST_METHOD(ludki_sie_nie_mijaja)
 		{
 			auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 100, PD(1, 1));
@@ -48,6 +49,31 @@ namespace DomkoTesty
 			ruszacz.Ruszaj(10);
 			Assert::AreNotEqual(domek_0.gracz->numer, domek_1.gracz->numer);
 			Assert::AreEqual(domek_0.liczebnosc, 1.0);
+		}
+
+		TEST_METHOD(LudekMalyNieMinie)
+		{
+			auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 100, PD(1, 1));
+			auto& domek_1 = tworca::DodajDomek(rozgrywka, 1, 100, PD(50, 50));
+			auto& armia_probny = tworca::DodajLudka(rozgrywka, domek_1, 0, 1, PD(50, 50));
+			auto rozmiar_1 = armia_probny.rozmiar;
+			auto rozmiar_domku = domek_0.rozmiar;
+			auto pomiedzy = (rozmiar_domku + rozmiar_1) / 2;
+
+			Assert::AreEqual(true, rozmiar_1 < rozmiar_domku);
+
+			auto& armia_atak = tworca::DodajLudka(rozgrywka, domek_0, 1, 99, PD(1 + pomiedzy, 1));
+			Assert::AreEqual(true, pomiedzy < min(rozmiar_domku, armia_atak.rozmiar));
+
+			auto rozkaz = new WymarszRozkaz(&domek_0, &domek_1);
+			rozkaz->ulamek = 0.01; // jeden ludek
+			vector<Rozkaz*> rozkazy = { rozkaz };
+			ruszacz.PrzyjmijRuch(rozkazy);
+			ruszacz.Ruszaj(0.001);
+			Assert::AreNotEqual(domek_0.gracz->numer, domek_1.gracz->numer);
+			Assert::AreEqual(99.0, domek_1.liczebnosc);
+			Assert::AreEqual(1.0, domek_0.liczebnosc);
+
 		}
 
 		void SprawdzSilaGracza(int liczba, int produkcja, int kuznia, tuple<int,int,int> wyliczone)

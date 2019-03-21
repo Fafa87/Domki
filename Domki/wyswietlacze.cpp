@@ -114,6 +114,8 @@ void Wyswietlacz::Zaladuj(string wybrana_skora)
 	obrazek_tworow[Wyglad::kPole] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\pole.png");
 
 	obrazek_tla.loadFromFile("Grafika\\" + skorka + "\\bruk.png");
+	obrazek_tla.setSmooth(true);
+	obrazek_tla.generateMipmap();
 	obrazek_tla.setRepeated(true);
 }
 
@@ -135,17 +137,17 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
 		{
 			sf::Vertex linia[] =
 			{
-				sf::Vertex(sf::Vector2f(dom.polozenie.x, dom.polozenie.y + 10), sf::Color::Black),
-				sf::Vertex(sf::Vector2f(dokad->polozenie.x, dokad->polozenie.y + 10), sf::Color::Black)
+				sf::Vertex(sf::Vector2f(dom.polozenie.x, dom.polozenie.y + 5), sf::Color(70, 40, 0)),
+				sf::Vertex(sf::Vector2f(dokad->polozenie.x, dokad->polozenie.y + 5), sf::Color(70, 40, 0))
 			};
 			int odleglosc = sqrt(pow(dokad->polozenie.x - dom.polozenie.x, 2) + pow(dokad->polozenie.y - dom.polozenie.y, 2));
-			sf::RectangleShape linijka(sf::Vector2f(odleglosc, 4));
+			sf::RectangleShape linijka(sf::Vector2f(odleglosc, 3));
 			linijka.setPosition(linia[0].position);
 
 			linijka.setRotation(atan2(linia[1].position.y - linia[0].position.y, linia[1].position.x - linia[0].position.x) / M_PI * 180);
 			linijka.setFillColor(sf::Color(150, 75, 0));
-			linijka.setOutlineColor(sf::Color::Black);
-			linijka.setOutlineThickness(2);
+			linijka.setOutlineColor(sf::Color(70, 40, 0));
+			linijka.setOutlineThickness(1);
 
 			okno.draw(linijka);
 		}

@@ -6,7 +6,6 @@
 #include "../Domki/gui.h"
 #include "../Domki/misja.h"
 #include "../Domki/os.h"
-#include "../Domki/winextra.h"
 
 using namespace std;
 

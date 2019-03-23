@@ -137,8 +137,8 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
 		{
 			sf::Vertex linia[] =
 			{
-				sf::Vertex(sf::Vector2f(dom.polozenie.x, dom.polozenie.y + 5), sf::Color(70, 40, 0)),
-				sf::Vertex(sf::Vector2f(dokad->polozenie.x, dokad->polozenie.y + 5), sf::Color(70, 40, 0))
+				sf::Vertex(sf::Vector2f(dom.polozenie.x, dom.polozenie.y + 15), sf::Color(70, 40, 0)),
+				sf::Vertex(sf::Vector2f(dokad->polozenie.x, dokad->polozenie.y + 15), sf::Color(70, 40, 0))
 			};
 			int odleglosc = sqrt(pow(dokad->polozenie.x - dom.polozenie.x, 2) + pow(dokad->polozenie.y - dom.polozenie.y, 2));
 			sf::RectangleShape linijka(sf::Vector2f(odleglosc, 3));

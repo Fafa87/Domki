@@ -305,7 +305,7 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
 
 			auto pomoc = sfg::Image::Create();
 			sf::Image pomoc_obraz;
-			if (pomoc_obraz.loadFromFile("Grafika\\rycerze\\info.png"))
+			if (pomoc_obraz.loadFromFile("Grafika\\rycerze_hd\\info.png"))
 				pomoc->SetImage(pomoc_obraz);
 			
 			auto info = sfg::Label::Create("Informacje o tym domku.");

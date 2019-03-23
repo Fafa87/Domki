@@ -145,7 +145,7 @@ drogi 1 17
 gracz 2
 typ osada
 liczebnosc 10
-poziom 4
+poziom 3
 22 6
 koordynaty 1250 650
 drogi 2 15 25

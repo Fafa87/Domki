@@ -3,7 +3,7 @@
 koordynaty 600 700
 drogi 2 2 6
 gracz 2
-poziom 5
+poziom 3
 liczebnosc 100
 typ kuznia
 2 6
@@ -31,7 +31,7 @@ typ osada
 koordynaty 1200 700
 drogi 2 4 10
 gracz 2
-poziom 5 
+poziom 3 
 liczebnosc 100
 typ kuznia
 6 6
@@ -171,7 +171,7 @@ typ osada
 koordynaty 600 300
 drogi 2 20 26
 gracz 2
-poziom 5
+poziom 3
 liczebnosc 100
 typ kuznia
 26 6
@@ -199,6 +199,6 @@ typ osada
 koordynaty 1200 300
 drogi 2 24 28
 gracz 2
-poziom 5
+poziom 3
 liczebnosc 100
 typ kuznia

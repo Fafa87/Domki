@@ -162,6 +162,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 				else if (znak == "wieza")domek.typdomku = TypDomku::kWieza;
 				else if (znak == "kuznia"||znak=="zbrojownia")domek.typdomku = TypDomku::kZbrojownia;
 				else if (znak == "stajnia")domek.typdomku = TypDomku::kStajnia;
+				else if (znak == "pole")domek.typdomku = TypDomku::kPole;
 				}
 			else if (parametr == "bez_przebudowy")
 				{

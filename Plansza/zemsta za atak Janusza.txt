@@ -76,16 +76,18 @@ gracz 1
 typ osada
 liczebnosc 5
 poziom 2
-13 4
+13 5
 koordynaty 700 600
 drogi 4 8 9 15 16
 liczebnosc 15
 poziom 0
-14 4
+typ pole
+14 5
 koordynaty 1000 600
 drogi 4 10 11 17 18
 liczebnosc 15
 poziom 0
+typ pole
 15 5
 koordynaty 600 700
 drogi 3 8 13 16

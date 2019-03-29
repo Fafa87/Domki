@@ -265,7 +265,7 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
 	tytul->SetId("Naglowek");
 	auto tabelka = sfg::Table::Create();
 
-	auto kampania1 = sfg::Button::Create(L"Kampania �atwa");
+	auto kampania1 = sfg::Button::Create(L"Kampania łatwa");
 	kampania1->GetSignal(sfg::Widget::OnLeftClick).Connect(
 		[&muzyka]
 	{

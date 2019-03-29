@@ -51,6 +51,14 @@ void GUI::bottom_left_window(shared_ptr<sfg::Window> window)
 	window->SetPosition(final_position);
 }
 
+void GUI::put_right_to(shared_ptr<sfg::Window> window, int startFromX)
+{
+	auto bottom_right = okno.mapCoordsToPixel(sf::Vector2f(startFromX, 0));
+	auto window_width = okno.getSize().x - bottom_right.x;
+
+	window->SetAllocation(sf::FloatRect(bottom_right.x, 0, window_width, window->GetAllocation().height));
+}
+
 void GUI::top_right_window(shared_ptr<sfg::Window> window)
 {
 	auto win_rect = window->GetAllocation();

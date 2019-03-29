@@ -52,6 +52,7 @@ public:
 	void setup_theme();
 	void center_window(shared_ptr<sfg::Window> window);
 	void bottom_window(shared_ptr<sfg::Window> window);
+	void put_right_to(shared_ptr<sfg::Window> window, int startFromX);
 	void bottom_left_window(shared_ptr<sfg::Window> window);
 	void top_right_window(shared_ptr<sfg::Window> window);
 

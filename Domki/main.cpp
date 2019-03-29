@@ -152,11 +152,13 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)
 	return okno;
 }
 
-std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(sf::Music& muzyka)
+std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka)
 {
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 
-	okno->SetRequisition(sf::Vector2f(480, 0));
+	//okno->SetRequisition(sf::Vector2f(480, 0));
+	okno->SetRequisition(sf::Vector2f(glowne->GetAllocation().width, 0));
+	okno->SetAllocation(glowne->GetAllocation());
 
 	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
 	auto tytul = sfg::Label::Create(WERSJA);
@@ -247,7 +249,6 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(sf::Music& muzyka)
 	box->Pack(tabelka, true, false);
 	okno->Add(box);
 
-	GUI::aplikacja.top_right_window(okno);
 	GUI::aplikacja.stretch_up_down(okno);
 
 	return okno;
@@ -264,7 +265,7 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
 	tytul->SetId("Naglowek");
 	auto tabelka = sfg::Table::Create();
 
-	auto kampania1 = sfg::Button::Create(L"Kampania ³atwa");
+	auto kampania1 = sfg::Button::Create(L"Kampania ï¿½atwa");
 	kampania1->GetSignal(sfg::Widget::OnLeftClick).Connect(
 		[&muzyka]
 	{
@@ -284,9 +285,9 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
 
 	auto pojedynczy = sfg::Button::Create("Sam");
 	pojedynczy->GetSignal(sfg::Widget::OnLeftClick).Connect(
-		[&muzyka, &okno]
+		[&muzyka, okno]
 	{
-		auto okno_sam = pojedynczy_gracz_menu(muzyka);
+		auto okno_sam = pojedynczy_gracz_menu(okno, muzyka);
 		GUI::aplikacja.set_active_window(okno_sam);
 	});
 
@@ -299,9 +300,6 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
 	box->Pack(tabelka, true, true);
 	okno->Add(box);
 
-	GUI::aplikacja.top_right_window(okno);
-	GUI::aplikacja.stretch_up_down(okno);
-
 	return okno;
 }
 
@@ -309,18 +307,20 @@ int main() {
 	sf::Music muzyka;
 
 	sf::Texture backtexture;
-	backtexture.loadFromFile("Grafika\\houseofhouses.png");
+	backtexture.loadFromFile("Grafika\\houseofhouses2.png");
 	backtexture.setRepeated(false);
 	backtexture.setSmooth(true);
-	backtexture.generateMipmap();
 	sf::Sprite background(backtexture);
-	background.setScale(0.8, 1);
-	background.setTextureRect({ 0, 0, 1280, 900 });
+	background.setScale(0.45, 0.45);
 
 	auto& okno_menu = GUI::aplikacja.okno;
 	GUI::aplikacja.setup_theme();
 	
 	auto okno = grand_menu(muzyka);
+
+	GUI::aplikacja.put_right_to(okno, background.getGlobalBounds().width);
+	GUI::aplikacja.stretch_up_down(okno);
+
 	GUI::aplikacja.set_active_window(okno);
 
 	sf::Event event;
@@ -350,7 +350,7 @@ int main() {
 				case sf::Event::Closed:
 					return 0;
 				case sf::Event::Resized:
-					GUI::aplikacja.top_right_window(okno);
+					GUI::aplikacja.put_right_to(okno, background.getGlobalBounds().width);
 					GUI::aplikacja.stretch_up_down(okno);
 				}
 			}

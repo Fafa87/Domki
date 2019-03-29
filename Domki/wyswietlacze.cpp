@@ -27,10 +27,14 @@ Animation ZestawAnimacji::ZaladujAnimacje(string& sciezka)
 	}
 	else 
 	{
-		if (abs((int)tekstura->getSize().x % dlugosc_klatki) > 100)
-			dlugosc_klatki = 600;
-		if (abs((int)tekstura->getSize().x % dlugosc_klatki) > 100)
+		if ((int)tekstura->getSize().y == 800)
 			dlugosc_klatki = 800;
+		else {
+			if (abs((int)tekstura->getSize().x % dlugosc_klatki) > 100)
+				dlugosc_klatki = 600;
+			if (abs((int)tekstura->getSize().x % dlugosc_klatki) > 100)
+				dlugosc_klatki = 800;
+		}
 	}
 
 	int klatek = (tekstura->getSize().x + dlugosc_klatki / 2) / dlugosc_klatki;
@@ -196,7 +200,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 			dom.wyglad = Wyglad::kWieza;
 		else if (dom.typdomku == TypDomku::kStajnia)
 			dom.wyglad = Wyglad::kStajnia;
-		else if (dom.poziom == 0)
+		else if (dom.typdomku == TypDomku::kPole)
 			dom.wyglad = Wyglad::kPole;
 		else dom.wyglad = Wyglad::kNieznany;
 	}
@@ -219,9 +223,14 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 			wysokosc_jednego = rozmiar.height;
 		}
 
-		int wysokosc = twor->rozmiar * wysokosc_jednego / dlugosc_jednego;  // trzeba to gdzieï¿½ potem wyciï¿½gnaï¿½
-		wyglad.setSize(sf::Vector2f(twor->rozmiar * 2, wysokosc * 2));
-		wyglad.setOrigin(twor->rozmiar, wysokosc);
+		// tymczasowo trochê wiêksze nowego wieœniaka
+		double rozmiar = twor->rozmiar;
+		if (IsType<Ludek>(twor))
+			rozmiar *= 1.2;
+
+		int wysokosc = rozmiar * wysokosc_jednego / dlugosc_jednego;  // trzeba to gdzieï¿½ potem wyciï¿½gnaï¿½
+		wyglad.setSize(sf::Vector2f(rozmiar * 2, wysokosc * 2));
+		wyglad.setOrigin(rozmiar, wysokosc);
 		//sf::Color polprzezroczysty = twor->gracz->kolor;
 		//polprzezroczysty.a = 128;
 		//wyglad.setFillColor(polprzezroczysty);

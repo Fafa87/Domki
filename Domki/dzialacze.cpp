@@ -34,7 +34,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 			}
 			else if (wybrany != nullptr && wybrany == klikniety && zdarzenie.mouseButton.button == sf::Mouse::Left)//ulepszanie
 			{
-				if (cel != klikniety)
+				if (cel != klikniety|| clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC)
 				{
 					klikniecia.clear();
 					cel = (Domek*)klikniety;
@@ -81,25 +81,23 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		wybrany = nullptr;
 		nacisniety = 0;
 	}
-	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany)// do zrobienia -> ulepszanie tylko w przypadku szybkiego klikania
+	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&klikniecia.size()>=2)// do zrobienia -> ulepszanie tylko w przypadku szybkiego klikania
 	{
 		auto r = new UlepszRozkaz(wybrany);
 		res.push_back(r);
 
 		klikniecia.clear();
 
-		wybrany = nullptr; //to mozna dac pod komentarz aby szybciej ulepszac
+		//wybrany = nullptr; //to mozna dac pod komentarz aby szybciej ulepszac
 		cel = nullptr;
 		nacisniety = 0;
 	}
 	// po 0.5 sekundy wysy�ane s� ludki
-	if (cel != nullptr && cel != wybrany && clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC)// do zrobienia -> klikanie wiecej niz dwukrotne powoduje wyslanie wszystkich ludkow
+	if (cel != nullptr && cel != wybrany && (clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC || klikniecia.size()>=3))// do zrobienia(zrobione!) -> klikanie wiecej niz dwukrotne powoduje wyslanie wszystkich ludkow
 	{
 		double frakcja = 1;
 		if (klikniecia.size() == 1)
 			frakcja = 0.5;
-		else if (klikniecia.size() == 2)
-			frakcja = 1;
 
 		// utworz i zwroc rozkaz 
 		auto r = new WymarszRozkaz(wybrany, cel);

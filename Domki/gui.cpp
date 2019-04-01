@@ -21,6 +21,8 @@ void GUI::setup_theme()
 	pulpit.SetProperty("ComboBox", "BorderColorShift", 10);
 	pulpit.SetProperty("Button", "BackgroundColor", sf::Color(79, 45, 4));
 	pulpit.SetProperty("Button", "BorderColorShift", 10);
+
+	pulpit.SetProperty("Label.GridOpis", "FontSize", 10);
 }
 
 void GUI::center_window(shared_ptr<sfg::Window> window)

@@ -235,6 +235,27 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 	});
 
 	int i = 0;
+
+	// dorzuc nagłowek mały
+	auto wartosc = sfg::Label::Create(stan.do_ilu_wygranych <= 1 ? "" : "gra do " + to_string(stan.do_ilu_wygranych));
+	wartosc->SetClass("GridOpis");
+	auto nazwa = sfg::Label::Create("nazwa");
+	nazwa->SetClass("GridOpis");
+	auto ludki = sfg::Label::Create("ludki");
+	ludki->SetClass("GridOpis");
+	auto produkcja = sfg::Label::Create("prod.");
+	produkcja->SetClass("GridOpis");
+	auto modernizacja = sfg::Label::Create("ulep.");
+	modernizacja->SetClass("GridOpis");
+
+	table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), 3, 3, sf::Vector2f(0, 3));
+	table->Attach(nazwa, sf::Rect<sf::Uint32>(1, i, 1, 1));
+	table->Attach(ludki, sf::Rect<sf::Uint32>(2, i, 1, 1));
+	table->Attach(produkcja, sf::Rect<sf::Uint32>(3, i, 1, 1));
+	table->Attach(modernizacja, sf::Rect<sf::Uint32>(4, i, 1, 1));
+
+	i++;
+
 	for (auto& gracz : gracze)
 	{
 		auto nr = gracz.numer;

@@ -34,10 +34,15 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 			}
 			else if (wybrany != nullptr && wybrany == klikniety && zdarzenie.mouseButton.button == sf::Mouse::Left)//ulepszanie
 			{
-				if (cel != klikniety|| clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC)
+				if (cel != klikniety&&(klikniecia.size()==0||clock() - klikniecia.back() < 0.3 * CLOCKS_PER_SEC))
 				{
 					klikniecia.clear();
 					cel = (Domek*)klikniety;
+				}
+				else if (klikniecia.size() >= 3)
+				{
+					klikniecia.clear();
+					cel = nullptr;
 				}
 			}
 		}
@@ -81,7 +86,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 		wybrany = nullptr;
 		nacisniety = 0;
 	}
-	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&klikniecia.size()>=2)// do zrobienia -> ulepszanie tylko w przypadku szybkiego klikania
+	else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&klikniecia.size()==1)// do zrobienia -> ulepszanie tylko w przypadku szybkiego klikania
 	{
 		auto r = new UlepszRozkaz(wybrany);
 		res.push_back(r);

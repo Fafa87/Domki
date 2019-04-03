@@ -27,8 +27,8 @@ Animation ZestawAnimacji::ZaladujAnimacje(string& sciezka)
 	}
 	else 
 	{
-		if ((int)tekstura->getSize().y == 800)
-			dlugosc_klatki = 800;
+		if (tekstura->getSize().x % tekstura->getSize().y == 0)
+			dlugosc_klatki = tekstura->getSize().y;
 		else {
 			if (abs((int)tekstura->getSize().x % dlugosc_klatki) > 100)
 				dlugosc_klatki = 600;
@@ -41,10 +41,12 @@ Animation ZestawAnimacji::ZaladujAnimacje(string& sciezka)
 	for (int i = 0; i < klatek; i++) // TODO trzeba kiedy� nauczy� si� czyta� te� w pionie
 		res.addFrame(sf::IntRect(dlugosc_klatki * i, 0, dlugosc_klatki, tekstura->getSize().y));
 
-	// wczytaj powrotne
-	for (int i = klatek - 1; i >= 1; i--)
-		res.addFrame(sf::IntRect(dlugosc_klatki * i, 0, dlugosc_klatki, tekstura->getSize().y));
-
+	if (klatek <= 4)
+	{
+		// wczytaj powrotne
+		for (int i = klatek - 1; i >= 1; i--)
+			res.addFrame(sf::IntRect(dlugosc_klatki * i, 0, dlugosc_klatki, tekstura->getSize().y));
+	}
 	return res;
 }
 

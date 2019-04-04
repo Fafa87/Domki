@@ -76,11 +76,12 @@ namespace DomkoTesty
 
 		}
 
-		void SprawdzSilaGracza(int liczba, int produkcja, int kuznia, tuple<int,int,int> wyliczone)
+		void SprawdzSilaGracza(int liczba, int produkcja, int kuznia, int szybkosc, tuple<int,int,int,int> wyliczone)
 		{
 			Assert::AreEqual(liczba, get<0>(wyliczone));
 			Assert::AreEqual(produkcja, get<1>(wyliczone));
 			Assert::AreEqual(kuznia, get<2>(wyliczone));
+			Assert::AreEqual(szybkosc, get<3>(wyliczone));
 		}
 
 		TEST_METHOD(SilaGracza)
@@ -89,18 +90,21 @@ namespace DomkoTesty
 			tworca::DodajDomek(rozgrywka, 1, 30, PD());
 			tworca::DodajDomek(rozgrywka, 1, 7, PD());
 			
-			SprawdzSilaGracza(10, 1, 0, rozgrywka.SilaGracza(0));
-			SprawdzSilaGracza(37, 2, 0, rozgrywka.SilaGracza(1));
+			SprawdzSilaGracza(10, 1, 0, 0, rozgrywka.SilaGracza(0));
+			SprawdzSilaGracza(37, 2, 0, 0, rozgrywka.SilaGracza(1));
 			tworca::DodajLudka(rozgrywka, domek_0, 1, 12, PD());
 
-			SprawdzSilaGracza(10, 1, 0, rozgrywka.SilaGracza(0));
-			SprawdzSilaGracza(49, 2, 0, rozgrywka.SilaGracza(1));
+			SprawdzSilaGracza(10, 1, 0, 0, rozgrywka.SilaGracza(0));
+			SprawdzSilaGracza(49, 2, 0, 0, rozgrywka.SilaGracza(1));
 
 			domek_0.typdomku = TypDomku::kZbrojownia;
-			SprawdzSilaGracza(10, 0, 1, rozgrywka.SilaGracza(0));
+			SprawdzSilaGracza(10, 0, 1, 0, rozgrywka.SilaGracza(0));
 
 			domek_0.typdomku = TypDomku::kFort;
-			SprawdzSilaGracza(10, 0, 0, rozgrywka.SilaGracza(0));
+			SprawdzSilaGracza(10, 0, 0, 0, rozgrywka.SilaGracza(0));
+
+			domek_0.typdomku = TypDomku::kStajnia;
+			SprawdzSilaGracza(10, 0, 0, 1, rozgrywka.SilaGracza(0));
 		}
 
 		TEST_METHOD(Osy)

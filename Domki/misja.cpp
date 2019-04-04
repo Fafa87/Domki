@@ -576,6 +576,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	{
 		sf::Event event;
 
+		muzykant.NoGraj();
 		myszkaGracza.Przetworz(); // puste
 		while (window.pollEvent(event))
 		{

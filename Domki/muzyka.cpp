@@ -7,10 +7,21 @@ Muzykant::Muzykant(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 void Muzykant::Zaladuj(string wybrana_skora)
 {
 	przygrywka.openFromFile("Muzyka\\" + wybrana_skora + "\\Dawnosc.ogg");
+	przygrywkaOkrzyki.openFromFile("Muzyka\\" + wybrana_skora + "\\Okrzykowo.ogg");
 	marszBuffer.loadFromFile("Muzyka\\" + wybrana_skora + "\\Marsz.ogg");
 	marsz.setBuffer(marszBuffer);
 	zdobycieBuffer.loadFromFile("Muzyka\\" + wybrana_skora + "\\Tupniecie.ogg");
 	zdobycie.setBuffer(zdobycieBuffer);
+}
+
+void Muzykant::NoGraj()
+{
+	if (przygrywka.getStatus() == sf::SoundSource::Status::Stopped && 
+		przygrywkaOkrzyki.getStatus() == sf::SoundSource::Status::Stopped)
+	{
+		przygrywkaOkrzyki.setVolume(70);
+		przygrywkaOkrzyki.play();
+	}
 }
 
 void Muzykant::Przygrywaj()
@@ -22,6 +33,7 @@ void Muzykant::Przygrywaj()
 void Muzykant::Zamilcz()
 {
 	przygrywka.stop();
+	przygrywkaOkrzyki.stop();
 }
 
 void Muzykant::GrajEfekty(Ruszacz & ruchy)

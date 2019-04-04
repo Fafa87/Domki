@@ -55,12 +55,32 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	gra.domki.push_back(Domek());
 	Domek& domek5 = gra.domki.back();
 	domek5.polozenie = { x + 100 ,y + 250 };
-	domek5.typdomku = TypDomku::kMiasto;
+	domek5.typdomku = TypDomku::kPole;
 	domek5.gracz = &g;
 	domek5.poziom = 0;
 	gra.ZmienLiczebnosc(domek5, 50);
 	domek5.drogi.push_back(&domek);
 	domek5.drogi.push_back(&domek4);
+
+	gra.domki.push_back(Domek());
+	Domek& domek6 = gra.domki.back();
+	domek6.polozenie = { x ,y + 250 };
+	domek6.typdomku = TypDomku::kStajnia;
+	domek6.gracz = &g;
+	domek6.poziom = 4;
+	gra.ZmienLiczebnosc(domek6, 50);
+	domek6.drogi.push_back(&domek);
+	domek6.drogi.push_back(&domek4);
+
+	gra.domki.push_back(Domek());
+	Domek& domek7 = gra.domki.back();
+	domek7.polozenie = { x - 100 ,y + 250 };
+	domek7.typdomku = TypDomku::kWieza;
+	domek7.gracz = &g;
+	domek7.poziom = 4;
+	gra.ZmienLiczebnosc(domek7, 50);
+	domek7.drogi.push_back(&domek);
+	domek7.drogi.push_back(&domek4);
 
 	gra.armie.push_back(Ludek(domek));
 	Ludek & ludek = gra.armie.back();
@@ -74,8 +94,25 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	Ludek & ludek2 = gra.armie.back();
 	ludek2.polozenie = { x - 100,y };
 	ludek2.gracz = &g;
+	ludek.tarcza = 23;
 	ludek2.wyglad = Wyglad::kWojownik;
 	gra.ZmienLiczebnosc(ludek2, 240);
+
+	gra.armie.push_back(Ludek(domek));
+	Ludek & ludek3 = gra.armie.back();
+	ludek3.polozenie = { x + 100,y + 100 };
+	ludek3.gracz = &g;
+	ludek3.wyglad = Wyglad::kWojownik;
+	gra.ZmienLiczebnosc(ludek3, 240);
+
+	gra.armie.push_back(Ludek(domek));
+	Ludek & ludek4 = gra.armie.back();
+	ludek4.polozenie = { x - 100,y + 100 };
+	ludek4.gracz = &g;
+	ludek4.tarcza = 200;
+	ludek4.szybkosc_ludka = 3;
+	ludek4.wyglad = Wyglad::kWojownik;
+	gra.ZmienLiczebnosc(ludek4, 240);
 }
 
 
@@ -173,7 +210,7 @@ int pokazowa_misja()
 	Rozgrywka rozgrywka = pokazowa_rozgrywka();
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
-	wyswietlacz.Zaladuj("wroclaw");
+	wyswietlacz.Zaladuj("rycerze_hd");
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(1));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 

@@ -107,7 +107,7 @@ Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 void Wyswietlacz::Zaladuj(string wybrana_skora)
 {
 	skorka = wybrana_skora;
-	obrazek_tworow[Wyglad::kWojownik] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\wojownik.png");
+	obrazek_tworow[Wyglad::kWojownik] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\wojownik{}.png");
 
 	obrazek_tworow[Wyglad::kMiasto] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\miasto{}.png");
 	
@@ -207,6 +207,14 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 		else dom.wyglad = Wyglad::kNieznany;
 	}
 
+	// uaktualnij wyglï¿½dy ludków
+	for (auto& ludek : rozgrywka.armie)
+	{
+		double procent_tarczy = ludek.tarcza / (double)ludek.liczebnosc;
+		ludek.wyglad_rodzaj = procent_tarczy > 0.5 ? 3 : (procent_tarczy > 0.25 ? 2 : 1);
+		ludek.wyglad_rodzaj += ludek.szybkosc_ludka > 2 ? 3 : 0;
+	}
+
 	// wyglï¿½d tworï¿½w zawiera dokï¿½adnie to co chcemy wyï¿½wietliï¿½, uaktualnijmy ich stan
 	for (auto& twor : wszystkie_obiekty)
 	{
@@ -283,9 +291,10 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 			if (tarcza > 0)
 			{
 				podpis.setFillColor(sf::Color::White);
+				podpis.setCharacterSize(12);
 				podpis.setOutlineColor(twor->gracz->kolor);
 				podpis.setString(std::to_string(tarcza));
-				podpis.setPosition(twor->polozenie.x - 15 * podpis.getString().getSize() / 2, twor->polozenie.y - wysokosc * 2);
+				podpis.setPosition(twor->polozenie.x - 10 * podpis.getString().getSize() / 2, twor->polozenie.y - wysokosc * 1.5);
 				okno.draw(podpis);
 			}
 

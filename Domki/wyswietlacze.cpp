@@ -294,7 +294,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 				podpis.setCharacterSize(12);
 				podpis.setOutlineColor(twor->gracz->kolor);
 				podpis.setString(std::to_string(tarcza));
-				podpis.setPosition(twor->polozenie.x - 10 * podpis.getString().getSize() / 2, twor->polozenie.y - wysokosc * 1.5);
+				podpis.setPosition(twor->polozenie.x - 10 * podpis.getString().getSize() / 2, twor->polozenie.y - wysokosc * 1.8);
 				okno.draw(podpis);
 			}
 

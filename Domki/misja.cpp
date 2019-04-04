@@ -274,7 +274,7 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 			GUI::aplikacja.pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
 			GUI::aplikacja.pulpit.SetProperty("Button#" + graczId, "FontSize", 26);
 			GUI::aplikacja.pulpit.SetProperty("Label#" + graczId, "FontSize", 28);
-			GUI::aplikacja.pulpit.SetProperty("Label#" + graczId, "FontName", "Grafika/waltographUI.ttf");
+			GUI::aplikacja.pulpit.SetProperty("Label#" + graczId, "FontName", "Grafika/BuxtonSketch.ttf");
 			GUI::aplikacja.pulpit.SetProperty("Label#" + graczProdukcjaId, "Color", gracz.kolor);
 			GUI::aplikacja.pulpit.SetProperty("Label#" + graczProdukcjaId, "FontSize", 28);
 			GUI::aplikacja.pulpit.SetProperty("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);

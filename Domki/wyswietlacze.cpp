@@ -271,8 +271,8 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 
 		okno.draw(podpis);
 
-		// rysuj poziom domku
-		if (IsType<Domek>(twor))
+		// nie potrzebne ju¿! rysuj poziom domku
+		/*if (IsType<Domek>(twor))
 		{
 			int poziom = ((Domek*)twor)->poziom;
 			if (poziom > 1)
@@ -283,7 +283,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 				podpis.setPosition(twor->polozenie.x - 15 * podpis.getString().getSize() / 2, twor->polozenie.y - wysokosc * 1.5);
 				okno.draw(podpis);
 			}
-		}
+		}*/
 		// rysuj tarcze ludka
 		if (IsType<Ludek>(twor))
 		{

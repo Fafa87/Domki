@@ -12,6 +12,7 @@ public:
 	Muzykant(Rozgrywka& rozgrywka);
 	void Zaladuj(string wybrana_skora);
 	void Przygrywaj();
+	void NoGraj();
 	void Zamilcz();
 	void GrajEfekty(Ruszacz& ruchy);
 private:
@@ -21,6 +22,7 @@ private:
 	sf::Sound marsz;
 
 	sf::Music przygrywka;
+	sf::Music przygrywkaOkrzyki;
 
 	sf::SoundBuffer zdobycieBuffer;
 	sf::Sound zdobycie;

@@ -247,12 +247,15 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 	produkcja->SetClass("GridOpis");
 	auto modernizacja = sfg::Label::Create("ulep.");
 	modernizacja->SetClass("GridOpis");
+	auto szybkosc = sfg::Label::Create("szyb.");
+	szybkosc->SetClass("GridOpis");
 
 	table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), 3, 3, sf::Vector2f(0, 3));
 	table->Attach(nazwa, sf::Rect<sf::Uint32>(1, i, 1, 1));
 	table->Attach(ludki, sf::Rect<sf::Uint32>(2, i, 1, 1));
 	table->Attach(produkcja, sf::Rect<sf::Uint32>(3, i, 1, 1));
 	table->Attach(modernizacja, sf::Rect<sf::Uint32>(4, i, 1, 1));
+	table->Attach(szybkosc, sf::Rect<sf::Uint32>(5, i, 1, 1));
 
 	i++;
 
@@ -265,6 +268,7 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 			auto graczLudkiId = ranking_widget_id(instance, nr, "sila");
 			auto graczProdukcjaId = ranking_widget_id(instance, nr, "produkcja");
 			auto graczModernizacjaId = ranking_widget_id(instance, nr, "modernizacja");
+			auto graczSzybkoscId = ranking_widget_id(instance, nr, "szybkosc");
 
 			// to zajmuje jakos duzo czasu, nie wiem czemu!
 			GUI::aplikacja.pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
@@ -275,6 +279,8 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 			GUI::aplikacja.pulpit.SetProperty("Label#" + graczProdukcjaId, "FontSize", 28);
 			GUI::aplikacja.pulpit.SetProperty("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
 			GUI::aplikacja.pulpit.SetProperty("Label#" + graczModernizacjaId, "FontSize", 28);
+			GUI::aplikacja.pulpit.SetProperty("Label#" + graczSzybkoscId, "Color", sf::Color::Black);
+			GUI::aplikacja.pulpit.SetProperty("Label#" + graczSzybkoscId, "FontSize", 28);
 			GUI::aplikacja.pulpit.SetProperty("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");
 			GUI::aplikacja.pulpit.SetProperty("Label#" + graczLudkiId, "FontSize", 28);
 			if (stan.Zwyciezca() == nr)
@@ -299,12 +305,16 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 			auto modernizacja = sfg::Label::Create(to_string(std::get<2>(sila_gracza)));
 			modernizacja->SetAlignment(sf::Vector2f(0.5, 0.5));
 			modernizacja->SetId(graczModernizacjaId);
+			auto szybkosc = sfg::Label::Create(to_string(std::get<3>(sila_gracza)));
+			szybkosc->SetAlignment(sf::Vector2f(0.5, 0.5));
+			szybkosc->SetId(graczSzybkoscId);
 
 			table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);// , sf::Vector2f(10.f, 10.f));
 			table->Attach(nazwa, sf::Rect<sf::Uint32>(1, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);//, sf::Vector2f(10.f, 10.f));
 			table->Attach(ludki, sf::Rect<sf::Uint32>(2, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);//, sf::Vector2f(10.f, 10.f));
 			table->Attach(produkcja, sf::Rect<sf::Uint32>(3, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);//, sf::Vector2f(10.f, 10.f));
 			table->Attach(modernizacja, sf::Rect<sf::Uint32>(4, i, 1, 1) , sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);//, sf::Vector2f(10.f, 10.f));
+			table->Attach(szybkosc, sf::Rect<sf::Uint32>(5, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);//, sf::Vector2f(10.f, 10.f));
 			i++;
 		}
 	}
@@ -358,6 +368,9 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
 
 				auto modernizacja_label = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById(ranking_widget_id(1, nr, "modernizacja")));
 				modernizacja_label->SetText((to_string(std::get<2>(sila_gracza))));
+
+				auto szybkosc_label = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById(ranking_widget_id(1, nr, "szybkosc")));
+				szybkosc_label->SetText((to_string(std::get<3>(sila_gracza))));
 			}
 		}
 	}

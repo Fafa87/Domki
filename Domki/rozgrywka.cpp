@@ -8,9 +8,9 @@ Gracz & Rozgrywka::Gracz(int numer)
 	std::advance(it, numer);
 	return *it;
 }
-std::tuple<int,int,int> Rozgrywka::SilaGracza(int nr_gracza)
+std::tuple<int,int,int,int> Rozgrywka::SilaGracza(int nr_gracza)
 {
-	int ludki=0, produkcja=0, modernizacja=0;
+	int ludki=0, produkcja=0, modernizacja=0,szybkosc=0;
 	auto tearmie = armie.begin();
 	auto tedomki = domki.begin();
 	for (; tearmie != armie.end(); tearmie++)if (tearmie->gracz->numer == nr_gracza)ludki += tearmie->liczebnosc;
@@ -19,9 +19,10 @@ std::tuple<int,int,int> Rozgrywka::SilaGracza(int nr_gracza)
 		if (tedomki->typdomku == TypDomku::kMiasto)
 			produkcja += tedomki->poziom;
 		else if (tedomki->typdomku == TypDomku::kZbrojownia)modernizacja += tedomki->poziom;
+		else if (tedomki->typdomku == TypDomku::kStajnia)szybkosc += tedomki->poziom;
 		ludki += tedomki->liczebnosc;
 	}
-	return make_tuple(ludki, produkcja, modernizacja);
+	return make_tuple(ludki, produkcja, modernizacja,szybkosc);
 }
 
 void Rozgrywka::ZniszczLudka(Ludek* ludek)

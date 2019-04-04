@@ -328,7 +328,7 @@ int main() {
 
 	if (muzyka.openFromFile("Muzyka\\Tytulowa.ogg"))
 	{	
-		muzyka.setVolume(50);
+		muzyka.setVolume(30);
 		muzyka.play();
 	}
 

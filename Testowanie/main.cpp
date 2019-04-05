@@ -87,14 +87,14 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	ludek.polozenie = { x + 100,y };
 	ludek.gracz = &g;
 	ludek.wyglad = Wyglad::kWojownik;
-	ludek.tarcza = 23;
+	ludek.tarcza = 0;
 	gra.ZmienLiczebnosc(ludek, 40);
 
 	gra.armie.push_back(Ludek(domek));
 	Ludek & ludek2 = gra.armie.back();
 	ludek2.polozenie = { x - 100,y };
 	ludek2.gracz = &g;
-	ludek.tarcza = 23;
+	ludek2.tarcza = 90;
 	ludek2.wyglad = Wyglad::kWojownik;
 	gra.ZmienLiczebnosc(ludek2, 240);
 
@@ -102,6 +102,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	Ludek & ludek3 = gra.armie.back();
 	ludek3.polozenie = { x + 100,y + 100 };
 	ludek3.gracz = &g;
+	ludek3.tarcza = 200;
 	ludek3.wyglad = Wyglad::kWojownik;
 	gra.ZmienLiczebnosc(ludek3, 240);
 

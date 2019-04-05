@@ -47,6 +47,8 @@ class OznaczaczWyborow
 public:
 	OznaczaczWyborow(MyszDecydent& decydent);
 	void Wyswietlaj(sf::RenderWindow& okno);
+
+	Domek* WybranyDomek();
 private:
 	MyszDecydent& decydent;
 };

@@ -328,3 +328,8 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 		okno.draw(kolo);
 	}
 }
+
+Domek* OznaczaczWyborow::WybranyDomek()
+{
+	return decydent.wybrany;
+}

@@ -23,6 +23,8 @@ void GUI::setup_theme()
 	pulpit.SetProperty("Button", "BorderColorShift", 10);
 	pulpit.SetProperty("Button", "FontName", "Grafika/BuxtonSketch.ttf");
 	pulpit.SetProperty("Button", "FontSize", 18);
+	pulpit.SetProperty("Label.WybranyTekst", "FontName", "Grafika/BuxtonSketch.ttf");
+	pulpit.SetProperty("Label.WybranyTekst", "FontSize", 16);
 
 	pulpit.SetProperty("Label.GridOpis", "FontSize", 10);
 }

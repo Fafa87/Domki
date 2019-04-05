@@ -1,6 +1,7 @@
-#include "misja.h"
+﻿#include "misja.h"
 #include "gui.h"
 
+#include "ext_string.h"
 #include <SFML/Audio.hpp>
 
 MisjaUstawienia::MisjaUstawienia() : ile_kto_wygranych(5) {}
@@ -224,6 +225,90 @@ string ranking_widget_id(int instance, int gracz, string sufix)
 	return "Ins-" + to_string(instance) + "-Inter-Gracz-" + to_string(gracz) + "-" + sufix;
 }
 
+
+
+void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Domek* wybrany)
+{
+	// TODO pokaż obrazek domku
+	auto wyglad = std::static_pointer_cast<sfg::Image>(interfejs->GetWidgetById("Wybrany-wyglad"));
+	auto info_poziom = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-poziom"));
+	auto info_zapelnienie = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-zapelnienie"));
+	auto info_ulepsz = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-ulepszenie"));
+	auto info_atak = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-atak"));
+	auto info_obrona = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-obrona"));
+
+	auto info_poziom_tekst = wybrany == nullptr ? "" : string_format("Poziom: %d", wybrany->poziom);
+	info_poziom->SetText(info_poziom_tekst);
+
+	auto info_zapelnienie_tekst = wybrany == nullptr ? L"" : L"Zapełniony: " + to_wstring(100 * (int)wybrany->liczebnosc / (int)wybrany->max_liczebnosc) + L"%";
+	info_zapelnienie->SetText(info_zapelnienie_tekst);
+
+	auto info_ulepsz_tekst = wybrany == nullptr ? "" : string_format("Koszt ulepszenia: %d", wybrany->max_liczebnosc / 2);
+	info_ulepsz->SetText(info_ulepsz_tekst);
+
+	// TODO wylicz obronę i atak poprawnie
+	auto info_atak_tekst = wybrany == nullptr ? "" : string_format("Atak: %d", (int)wybrany->liczebnosc);
+	info_atak->SetText(info_atak_tekst);
+
+	// TODO wylicz obronę i atak poprawnie
+	auto info_obrona_tekst = wybrany == nullptr ? "" : string_format("Obrona: %d", (int)wybrany->liczebnosc);
+	info_obrona->SetText(info_obrona_tekst);
+}
+
+shared_ptr<sfg::Box> interfejs_wybrany()
+{
+	auto box = sfg::Box::Create();
+	box->SetOrientation(sfg::Box::Orientation::HORIZONTAL);
+
+	auto wyglad = sfg::Image::Create();
+	wyglad->SetId("Wybrany-wyglad");
+
+	auto info = sfg::Box::Create();
+	info->SetOrientation(sfg::Box::Orientation::VERTICAL);
+
+	auto info_poziom = sfg::Label::Create();
+	info_poziom->SetId("Wybrany-poziom");
+	info_poziom->SetClass("WybranyTekst");
+	info_poziom->SetAlignment(sf::Vector2f(0.0, 0.5));
+	info_poziom->SetText("Poziom: 3");
+
+	auto info_zapelnienie = sfg::Label::Create();
+	info_zapelnienie->SetId("Wybrany-zapelnienie");
+	info_zapelnienie->SetClass("WybranyTekst");
+	info_zapelnienie->SetAlignment(sf::Vector2f(0.0, 0.5));
+	info_zapelnienie->SetText(L"Zapełniony: 35.5%");
+
+	auto info_ulepsz = sfg::Label::Create();
+	info_ulepsz->SetId("Wybrany-ulepszenie");
+	info_ulepsz->SetClass("WybranyTekst");
+	info_ulepsz->SetAlignment(sf::Vector2f(0.0, 0.5));
+	info_ulepsz->SetText(L"Koszt ulepszenia: 400");
+
+	auto info_atak = sfg::Label::Create();
+	info_atak->SetId("Wybrany-atak");
+	info_atak->SetClass("WybranyTekst");
+	info_atak->SetAlignment(sf::Vector2f(0.0, 0.5));
+	info_atak->SetText("Atak: 234");
+
+	auto info_obrona = sfg::Label::Create();
+	info_obrona->SetId("Wybrany-obrona");
+	info_obrona->SetClass("WybranyTekst");
+	info_obrona->SetAlignment(sf::Vector2f(0.0, 0.5));
+	info_obrona->SetText("Obrona: 200");
+
+	info->Pack(info_poziom);
+	info->Pack(info_zapelnienie);
+	info->Pack(info_ulepsz);
+	info->Pack(info_atak);
+	info->Pack(info_obrona);
+
+	box->Pack(wyglad);
+	box->Pack(info);
+	box->SetRequisition(sf::Vector2f(200, 100));
+
+	return box;
+}
+
 shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgrywka, int instance)
 {
 	auto table = sfg::Table::Create();
@@ -322,7 +407,7 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 	return table;
 }
 
-shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka)
+shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Domek* wybrany)
 {
 	
 	if (interfejs == nullptr)
@@ -340,7 +425,8 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
 			if (pomoc_obraz.loadFromFile("Grafika\\rycerze_hd\\info.png"))
 				pomoc->SetImage(pomoc_obraz);
 			
-			auto info = sfg::Label::Create("Informacje o tym domku.");
+			auto info = interfejs_wybrany();
+			interfejs_wybrany_ustaw(interfejs, wybrany);
 
 			auto tabela_interfejsu = sfg::Table::Create();
 			tabela_interfejsu->Attach(ranking, sf::Rect<sf::Uint32>(0, 0, 1, 1));
@@ -373,6 +459,9 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
 				szybkosc_label->SetText((to_string(std::get<3>(sila_gracza))));
 			}
 		}
+
+
+		interfejs_wybrany_ustaw(interfejs, wybrany);
 	}
 	return interfejs;
 }
@@ -556,7 +645,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	ruszacz.rozgrywka = &rozgrywka;
 	ruszacz.szybkosc *= predkosc;
 	
-	shared_ptr<sfg::Window> interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka);
+	shared_ptr<sfg::Window> interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, nullptr);
 	sf::View view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
 	window.setView(view);
 	odliczanie(wyswietlacz, view, interfejs);
@@ -632,7 +721,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
 		window.clear();
 
-		interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka);
+		interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, ruchGracza.WybranyDomek());
 		GUI::aplikacja.show_bottom_gui(view, interfejs);
 		wyswietlacz.WyswietlTlo(window);
 

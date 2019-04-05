@@ -88,7 +88,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 	ludek.gracz = &g;
 	ludek.wyglad = Wyglad::kWojownik;
 	ludek.tarcza = 0;
-	gra.ZmienLiczebnosc(ludek, 40);
+	gra.ZmienLiczebnosc(ludek, 240);
 
 	gra.armie.push_back(Ludek(domek));
 	Ludek & ludek2 = gra.armie.back();
@@ -156,7 +156,14 @@ Rozgrywka pokazowa_rozgrywka()
 	return gra;
 }
 
-std::shared_ptr<sfg::Window> zakonczenie_gry()
+MisjaUstawienia pokazowe_ustawienia()
+{
+	MisjaUstawienia res;
+	res.do_ilu_wygranych = 3;
+	return res;
+}
+
+std::shared_ptr<sfg::Window> probne_gui()
 {
 	sf::Texture sfgui_logo;
 	sfgui_logo.loadFromFile("D:\\Fafa\\Domki\\Kod\\Grafika\\paper_small.png");
@@ -206,16 +213,18 @@ std::shared_ptr<sfg::Window> zakonczenie_gry()
 int pokazowa_misja()
 {
 	sf::RenderWindow& window = GUI::aplikacja.okno;
+	GUI::aplikacja.setup_theme();
 
 	// tworzymy rozgrywke
 	Rozgrywka rozgrywka = pokazowa_rozgrywka();
+	MisjaUstawienia ustawienia = pokazowe_ustawienia();
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
 	wyswietlacz.Zaladuj("rycerze_hd");
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(1));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 
-	auto gujak = zakonczenie_gry();
+	auto gujak = interfejs_rozgrywki(nullptr, ustawienia, rozgrywka, nullptr);
 	sf::View view = wysrodkowany_widok(rozgrywka.domki, gujak->GetAllocation().height);
 	window.setView(view);
 
@@ -248,6 +257,10 @@ int pokazowa_misja()
 				case sf::Keyboard::F3:
 					wyswietlacz.ZaladujInne();
 					break;
+				case sf::Keyboard::F4:
+					//zakonczenie_meczu()
+					//wyswietlacz.ZaladujInne();
+					break;
 				}
 				break;
 			}
@@ -259,6 +272,8 @@ int pokazowa_misja()
 
 		window.clear();
 		
+		interfejs_rozgrywki(gujak, ustawienia, rozgrywka, ruchGracza.WybranyDomek());
+
 		GUI::aplikacja.show_bottom_gui(view, gujak);
 		
 		wyswietlacz.WyswietlTlo(window);

@@ -5,7 +5,7 @@ Historia zmian
 `0.9.339 <https://github.com/Fafa87/Domki/tree/v0.9>`_ (2019-04-08)
 -------------------------
 `ZIP
-<https://ci.appveyor.com/api/buildjobs/exkxfohqt4q6c8ol/artifacts/Domki.zip>`_
+<https://ci.appveyor.com/api/buildjobs/q7v6jdoiyvbawc5m/artifacts/Domki.zip>`_
 
 * Nowy styl graficzny
 * Czytanie kampanii przez aktora (niekompletne)

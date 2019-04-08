@@ -11,44 +11,45 @@
 
 class ZestawAnimacji {
 public:
-	vector<Animation> wszystkieAnimacje;
+    vector<Animation> wszystkieAnimacje;
 
-	static Animation ZaladujAnimacje(string & sciezka);
-	static ZestawAnimacji ZaladujZPliku(string & sciezka_szablon);
+    static Animation ZaladujAnimacje(string & sciezka);
+    static ZestawAnimacji ZaladujZPliku(string & sciezka_szablon);
 
-	Animation PobierzAnimacjePoziomu(int poziom);
+    Animation PobierzAnimacjePoziomu(int poziom);
 
-	sf::IntRect Rozmiar();
+    sf::IntRect Rozmiar();
 };
 
 class Wyswietlacz
 {
 public:
-	Wyswietlacz(Rozgrywka& rozgrywka);
-	void Wyswietlaj(sf::RenderWindow& okno);
-	void WyswietlTlo(sf::RenderWindow& okno);
+    Wyswietlacz(Rozgrywka& rozgrywka);
+    void Wyswietlaj(sf::RenderWindow& okno);
+    void WyswietlTlo(sf::RenderWindow& okno);
 
-	void Zaladuj(string wybrana_skora);
-	void ZaladujInne();
+    void Zaladuj(string wybrana_skora);
+    void ZaladujInne();
+    sf::RectangleShape PobierzWyglad(Twor* domek);
 
 private:
-	Rozgrywka& rozgrywka;
-	map<Twor*, sf::RectangleShape> wyglad_tworow;
-	map<Wyglad, ZestawAnimacji> obrazek_tworow;
+    Rozgrywka& rozgrywka;
+    map<Twor*, sf::RectangleShape> wyglad_tworow;
+    map<Wyglad, ZestawAnimacji> obrazek_tworow;
 
-	sf::Texture obrazek_tla;
-	sf::Font czcionka;
+    sf::Texture obrazek_tla;
+    sf::Font czcionka;
 
-	string skorka;
+    string skorka;
 };
 
 class OznaczaczWyborow
 {
 public:
-	OznaczaczWyborow(MyszDecydent& decydent);
-	void Wyswietlaj(sf::RenderWindow& okno);
+    OznaczaczWyborow(MyszDecydent& decydent);
+    void Wyswietlaj(sf::RenderWindow& okno);
 
-	Domek* WybranyDomek();
+    Domek* WybranyDomek();
 private:
-	MyszDecydent& decydent;
+    MyszDecydent& decydent;
 };

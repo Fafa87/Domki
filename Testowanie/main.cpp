@@ -224,7 +224,7 @@ int pokazowa_misja()
 	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(1));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 
-	auto gujak = interfejs_rozgrywki(nullptr, ustawienia, rozgrywka, nullptr);
+	auto gujak = interfejs_rozgrywki(nullptr, ustawienia, rozgrywka, wyswietlacz, nullptr);
 	sf::View view = wysrodkowany_widok(rozgrywka.domki, gujak->GetAllocation().height);
 	window.setView(view);
 
@@ -272,7 +272,7 @@ int pokazowa_misja()
 
 		window.clear();
 		
-		interfejs_rozgrywki(gujak, ustawienia, rozgrywka, ruchGracza.WybranyDomek());
+		interfejs_rozgrywki(gujak, ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek());
 
 		GUI::aplikacja.show_bottom_gui(view, gujak);
 		

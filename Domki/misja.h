@@ -44,7 +44,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka);
 
 sf::View wysrodkowany_widok(list<Domek> &domki, int bottom_space=0);
 
-shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Domek* wybrany);
+shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany);
 
 int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz);
 

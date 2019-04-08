@@ -9,7 +9,7 @@
 #include "os.h"
 #include "kampania.h"
 
-const string WERSJA = "DOMKI 0.8";
+const string WERSJA = "DOMKI 0.9";
 
 void start_serwer(sfg::Desktop& pulpit, sf::Music& muzyka)
 {

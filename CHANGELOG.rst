@@ -2,6 +2,29 @@
 Historia zmian
 ==============
 
+`0.9.339 <https://github.com/Fafa87/Domki/tree/v0.9>`_ (2019-04-08)
+-------------------------
+`ZIP
+<https://ci.appveyor.com/api/buildjobs/exkxfohqt4q6c8ol/artifacts/Domki.zip>`_
+
+* Nowy styl graficzny
+* Czytanie kampanii przez aktora (niekompletne)
+* Korekta opisów misji w kampanii
+* Więcej muzyki 
+* Zupełnie nowa skórka rycerska
+* Wygląd ludka zależy od ulepszeń
+* Nowe domki: wieża, stajnia, pole
+* Poziom domku oznaczony w grafice
+* Zmiana klawiszologii i myszologii rozgrywki
+* Poprawa wielu mniejszych błędów
+* Nowe nazwy komputerów
+* Dodano pasek informacyjny na dole
+
+.. image:: https://user-images.githubusercontent.com/9865688/55758296-9bdab600-5a56-11e9-89f5-a49ab31d1b58.png
+
+.. image:: https://user-images.githubusercontent.com/9865688/55758098-1525d900-5a56-11e9-8f2b-cc07b8c85e94.png
+
+.. image:: https://user-images.githubusercontent.com/9865688/55758104-18b96000-5a56-11e9-9bf2-88af7af99c81.png
 
 `0.8.271 <https://github.com/Fafa87/Domki/tree/v0.8>`_ (2019-02-26)
 -------------------------

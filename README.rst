@@ -19,7 +19,7 @@ Walka domków o życie!
 Zobacz
 ------------
 
-.. image:: https://user-images.githubusercontent.com/9865688/55758092-0f2ff800-5a56-11e9-89bb-83cdd950f5cb.png
+.. image:: https://user-images.githubusercontent.com/9865688/55758296-9bdab600-5a56-11e9-89f5-a49ab31d1b58.png
 
 .. image:: https://user-images.githubusercontent.com/9865688/55758098-1525d900-5a56-11e9-8f2b-cc07b8c85e94.png
 

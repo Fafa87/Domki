@@ -225,7 +225,7 @@ string ranking_widget_id(int instance, int gracz, string sufix)
     return "Ins-" + to_string(instance) + "-Inter-Gracz-" + to_string(gracz) + "-" + sufix;
 }
 
-void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Wyswietlacz& wyswietlacz, Domek* wybrany)
+void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany)
 {
     auto wyglad = std::static_pointer_cast<sfg::Canvas>(interfejs->GetWidgetById("Wybrany-wyglad"));
     auto info_poziom = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-poziom"));
@@ -253,11 +253,14 @@ void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Wyswietlacz& wys
         info_zapelnienie_etykieta->SetText(L"Zapełnienie:");
         info_zapelnienie->SetText(to_wstring(100 * (int)wybrany->liczebnosc / (int)wybrany->max_liczebnosc) + L"%");
         info_ulepsz_etykieta->SetText(L"Koszt ulepszenia:");
-        info_ulepsz->SetText(string_format("%d", wybrany->max_liczebnosc / 2));
+        if (wybrany->poziom < 5)
+            info_ulepsz->SetText(string_format("%d", wybrany->max_liczebnosc / 2));
+        else 
+            info_ulepsz->SetText(" --- ");
         info_atak_etykieta->SetText(L"Atak:");
-        info_atak->SetText(string_format("%d", (int)wybrany->liczebnosc));
+        info_atak->SetText(string_format("%d", (int)rozgrywka.PoliczAtakDomku(*wybrany)));
         info_obrona_etykieta->SetText(L"Obrona:");
-        info_obrona->SetText(string_format("%d", (int)wybrany->liczebnosc));
+        info_obrona->SetText(string_format("%d", (int)rozgrywka.PoliczObroneDomku(*wybrany)));
     }
     else
     {
@@ -292,7 +295,6 @@ shared_ptr<sfg::Table> interfejs_wybrany()
     info_poziom->SetId("Wybrany-poziom");
     info_poziom->SetClass("WybranyTekst");
     info_poziom->SetAlignment(sf::Vector2f(1.0, 0.5));
-    info_poziom->SetText("Poziom: 3");
 
     auto info_zapelnienie_etykieta = sfg::Label::Create();
     info_zapelnienie_etykieta->SetId("Wybrany-etk-zapelnienie");
@@ -302,7 +304,6 @@ shared_ptr<sfg::Table> interfejs_wybrany()
     info_zapelnienie->SetId("Wybrany-zapelnienie");
     info_zapelnienie->SetClass("WybranyTekst");
     info_zapelnienie->SetAlignment(sf::Vector2f(1.0, 0.5));
-    info_zapelnienie->SetText(L"Zapełniony: 35.5%");
 
     auto info_ulepsz_etykieta = sfg::Label::Create();
     info_ulepsz_etykieta->SetId("Wybrany-etk-ulepszenie");
@@ -312,7 +313,6 @@ shared_ptr<sfg::Table> interfejs_wybrany()
     info_ulepsz->SetId("Wybrany-ulepszenie");
     info_ulepsz->SetClass("WybranyTekst");
     info_ulepsz->SetAlignment(sf::Vector2f(1.0, 0.5));
-    info_ulepsz->SetText(L"Koszt ulepszenia: 400");
 
     auto info_atak_etykieta = sfg::Label::Create();
     info_atak_etykieta->SetId("Wybrany-etk-atak");
@@ -322,7 +322,6 @@ shared_ptr<sfg::Table> interfejs_wybrany()
     info_atak->SetId("Wybrany-atak");
     info_atak->SetClass("WybranyTekst");
     info_atak->SetAlignment(sf::Vector2f(1.0, 0.5));
-    info_atak->SetText("Atak: 234");
 
     auto info_obrona_etykieta = sfg::Label::Create();
     info_obrona_etykieta->SetId("Wybrany-etk-obrona");
@@ -332,7 +331,6 @@ shared_ptr<sfg::Table> interfejs_wybrany()
     info_obrona->SetId("Wybrany-obrona");
     info_obrona->SetClass("WybranyTekst");
     info_obrona->SetAlignment(sf::Vector2f(1.0, 0.5));
-    info_obrona->SetText("Obrona: 200");
 
     table->Attach(wyglad, sf::Rect<sf::Uint32>(0, 0, 1, 5), 0, 3, sf::Vector2f(10, 0));
     table->Attach(info_poziom_etykieta, sf::Rect<sf::Uint32>(1, 0, 1, 1), 0);
@@ -468,7 +466,7 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
                 pomoc->SetImage(pomoc_obraz);
             
             auto info = interfejs_wybrany();
-            interfejs_wybrany_ustaw(interfejs, wyswietlacz, wybrany);
+            interfejs_wybrany_ustaw(interfejs, rozgrywka, wyswietlacz, wybrany);
 
             auto tabela_interfejsu = sfg::Table::Create();
             tabela_interfejsu->Attach(ranking, sf::Rect<sf::Uint32>(0, 0, 1, 1));
@@ -502,7 +500,7 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
             }
         }
 
-        interfejs_wybrany_ustaw(interfejs, wyswietlacz, wybrany);
+        interfejs_wybrany_ustaw(interfejs, rozgrywka, wyswietlacz, wybrany);
     }
     return interfejs;
 }

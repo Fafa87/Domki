@@ -251,7 +251,8 @@ void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgr
         info_poziom_etykieta->SetText(L"Poziom:");
         info_poziom->SetText(string_format("%d", wybrany->poziom));
         info_zapelnienie_etykieta->SetText(L"Zapełnienie:");
-        info_zapelnienie->SetText(to_wstring(100 * (int)wybrany->liczebnosc / (int)wybrany->max_liczebnosc) + L"%");
+        if(wybrany->typdomku!=TypDomku::kPole)info_zapelnienie->SetText(to_wstring(100 * (int)wybrany->liczebnosc / (int)wybrany->max_liczebnosc) + L"%");
+		else info_zapelnienie->SetText("Fafa%");
         info_ulepsz_etykieta->SetText(L"Koszt ulepszenia:");
         if (wybrany->poziom < 5)
             info_ulepsz->SetText(string_format("%d", wybrany->max_liczebnosc / 2));

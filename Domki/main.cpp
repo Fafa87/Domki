@@ -9,6 +9,9 @@
 #include "os.h"
 #include "kampania.h"
 
+#include "multi.h"
+#include "multi_dzialacze.h"
+
 const string WERSJA = "DOMKI 0.9.1";
 
 std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, string nazwa)
@@ -83,19 +86,50 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
 
 void start_klient(sf::Music& muzyka, string nazwa)
 {
-    auto okno = sfg::Window::Create(sfg::Window::Style::TOPLEVEL);
-    okno->SetRequisition(sf::Vector2f(300, 300));
-    okno->SetPosition(sf::Vector2f(150, 50));
+    auto klient = new multi::Klient(nazwa);
+    printf("Klient: %s\n", klient->nazwa.c_str());
 
-    auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
-    auto tytul = sfg::Label::Create("KLIENT MULTI");
-    auto tabelka = sfg::Table::Create();
+    Sleep(3);
+    klient->SpiszSerwery();
+    // TODO poczekaj i spisz serwery
 
-    box->Pack(tytul, false);
-    box->Pack(tabelka, false);
-    okno->Add(box);
+    multi::Adres adres;
+    if (klient->lista_serwerow.size() == 0)
+    {
+        // TODO napisz ze dupa
+        //auto cel = zadanie.substr(7);
+        //auto ip_port = split(cel, ':');
+        //adres = Adres(ip_port[0], stoi(ip_port[1]));
+    }
+    else
+    {
+        adres = klient->lista_serwerow.back();
+    }
+    klient->Podlacz(adres);
 
-    //pulpit.Add(okno);
+    // nie ma co czekac na gotowy
+    //if (zadanie.find("gotowy") == 0)
+    std::pair<bool, MisjaUstawienia> res;
+    do {
+        printf("oczekuje na start misji... ");
+        res = klient->OczekujNaStart();
+        printf("startuje misje %s\n", res.second.nazwa.c_str());
+
+        string test = "A";
+        klient->wtyk->setBlocking(false);
+
+        KlientowyRuszacz ruszacz(*klient);
+
+        res.second.komputery.clear();
+        misja(res.second, ruszacz);
+
+        printf("...misja skonczona\n");
+
+        res.second.WypiszRanking();
+
+        klient->wtyk->setBlocking(true);
+        // TODO sprawdz dlaaczego Ci dalej czekają (cos ten warunek tu nie działa dobrze
+    } while (!(res.second.Zwyciezca() >= 0));
 }
 
 std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)

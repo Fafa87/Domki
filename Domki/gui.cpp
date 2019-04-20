@@ -26,6 +26,10 @@ void GUI::setup_theme()
     pulpit.SetProperty("Label.WybranyTekst", "FontName", "Grafika/BuxtonSketch.ttf");
     pulpit.SetProperty("Label.WybranyTekst", "FontSize", 16);
 
+    pulpit.SetProperty("Entry", "FontSize", 32);
+    pulpit.SetProperty("Entry", "FontName", "Grafika/BuxtonSketch.ttf");
+    pulpit.SetProperty("Entry", "BackgroundColor", sf::Color(100, 50, 50));
+
     pulpit.SetProperty("Label.GridOpis", "FontSize", 10);
 }
 

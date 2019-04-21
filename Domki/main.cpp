@@ -19,7 +19,7 @@ const string WERSJA = "DOMKI 0.9.1";
 
 void start_nowej_gry_dla_wielu(string mapa, int do_ilu, double szybkosc)
 {
-    string parametry = mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc);
+    string parametry = "0 " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc);
     std::system(("MultiSerwer.exe " + parametry).c_str());
 }
 

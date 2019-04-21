@@ -54,7 +54,7 @@ void multi::Serwer::Start(MisjaUstawienia ustawienia)
 {
 	for (int i = 0; i < ludzie.size(); i++)
 	{
-		ustawienia.nr_gracza = i + 1; // TODO uproszczenie
+		ustawienia.nr_gracza = i + 1;
 		std::stringstream ss;
 		{
 			cereal::BinaryOutputArchive archive(ss);

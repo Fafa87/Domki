@@ -17,6 +17,7 @@ using namespace multi;
 Serwer* serwer = NULL;
 Klient* klient = NULL;
 MisjaUstawienia misja_ustawienia;
+bool cichociemny = false;
 
 #include <iterator>
 
@@ -41,7 +42,7 @@ void konfiguruj(int l, const char * argv[])
 {
     if (l == 0)
     {
-        wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]));
+        wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]));
         wykonaj("start");
         exit(0);
     }
@@ -104,7 +105,7 @@ void wykonaj(string zadanie)
             misja_ustawienia.nazwa = misja_nazwa;
             misja_ustawienia.do_ilu_wygranych = liczba_gier;
             misja_ustawienia.ile_kto_wygranych = vector<int>(5);
-            misja_ustawienia.szybkosc = predkosc; // TODO cos to nie dziala
+            misja_ustawienia.szybkosc = predkosc;
 
             int liczba_graczy = misja_ustawienia.komputery.size() + 1;
             printf("Stworzona gra na planszy %s\n", misja_nazwa.c_str());

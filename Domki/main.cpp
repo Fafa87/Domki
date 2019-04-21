@@ -138,7 +138,6 @@ void start_klient(sf::Music& muzyka, string nazwa)
 
     while (GUI::aplikacja.zalozone_gry.size())
     {
-        GUI::aplikacja.zalozone_gry.back().detach();
         GUI::aplikacja.zalozone_gry.pop_back();
     }
 }
@@ -255,9 +254,12 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
 
     auto dolacz = sfg::Button::Create(L"Dołącz");
     dolacz->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [&muzyka, nazwa_edit] {
+        [okno, &muzyka, nazwa_edit] {
+        muzyka.stop();
+        GUI::aplikacja.hide_all_windows();
         start_klient(muzyka, nazwa_edit->GetText());
-        //GUI::aplikacja.pop_active_window(okno);
+        muzyka.play();
+        GUI::aplikacja.set_active_window(okno);
     });
 
     auto powrot = sfg::Button::Create("Powrot");

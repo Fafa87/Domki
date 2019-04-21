@@ -1,4 +1,6 @@
-﻿#include <SFGUI/SFGUI.hpp>
+﻿#include <thread>
+
+#include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Widgets.hpp>
 
 #include <SFML/Graphics.hpp>
@@ -13,6 +15,13 @@
 #include "multi_dzialacze.h"
 
 const string WERSJA = "DOMKI 0.9.1";
+
+
+void start_nowej_gry_dla_wielu(string mapa, int do_ilu, double szybkosc)
+{
+    string parametry = mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc);
+    std::system(("MultiSerwer.exe " + parametry).c_str());
+}
 
 std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, string nazwa)
 {
@@ -48,9 +57,8 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
 
     auto zakladaj = sfg::Button::Create(L"Zakładaj!");
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [&muzyka, nazwa] {
-        //start_klient(muzyka, nazwa_edit->GetText());
-        //GUI::aplikacja.pop_active_window(okno);
+        [&muzyka, nazwa, do_ilu_pasek, szybkosc_pasek, wybor_lista] {
+        GUI::aplikacja.zalozone_gry.push_back(thread(start_nowej_gry_dla_wielu, wybor_lista->GetSelectedText(), (int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue()));
     });
 
     auto powrot = sfg::Button::Create("Powrot");
@@ -128,8 +136,14 @@ void start_klient(sf::Music& muzyka, string nazwa)
         res.second.WypiszRanking();
 
         klient->wtyk->setBlocking(true);
-        // TODO sprawdz dlaaczego Ci dalej czekają (cos ten warunek tu nie działa dobrze
+        // TODO sprawdz dlaaczego Ci dalej czekają (cos ten warunek tu nie działa dobrze)
     } while (!(res.second.Zwyciezca() >= 0));
+
+    while (GUI::aplikacja.zalozone_gry.size())
+    {
+        GUI::aplikacja.zalozone_gry.back().detach();
+        GUI::aplikacja.zalozone_gry.pop_back();
+    }
 }
 
 std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)

@@ -99,12 +99,11 @@ void start_klient(sf::Music& muzyka, string nazwa)
 
     Sleep(3);
     klient->SpiszSerwery();
-    // TODO poczekaj i spisz serwery
 
     multi::Adres adres;
     if (klient->lista_serwerow.size() == 0)
     {
-        // TODO napisz ze dupa
+        printf("Brak serwera!\n");
         //auto cel = zadanie.substr(7);
         //auto ip_port = split(cel, ':');
         //adres = Adres(ip_port[0], stoi(ip_port[1]));
@@ -115,8 +114,6 @@ void start_klient(sf::Music& muzyka, string nazwa)
     }
     klient->Podlacz(adres);
 
-    // nie ma co czekac na gotowy
-    //if (zadanie.find("gotowy") == 0)
     std::pair<bool, MisjaUstawienia> res;
     do {
         printf("oczekuje na start misji... ");

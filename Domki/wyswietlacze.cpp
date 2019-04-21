@@ -38,7 +38,7 @@ Animation ZestawAnimacji::ZaladujAnimacje(string& sciezka)
     }
 
     int klatek = (tekstura->getSize().x + dlugosc_klatki / 2) / dlugosc_klatki;
-    for (int i = 0; i < klatek; i++) // TODO trzeba kiedy� nauczy� si� czyta� te� w pionie
+    for (int i = 0; i < klatek; i++)
         res.addFrame(sf::IntRect(dlugosc_klatki * i, 0, dlugosc_klatki, tekstura->getSize().y));
 
     if (klatek <= 4)

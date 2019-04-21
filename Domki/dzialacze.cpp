@@ -212,7 +212,6 @@ void Ruszacz::WykonajRuchy()
         {
             auto ulepsz = (UlepszRozkaz*)r;
 
-            // TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)//DONE?
             if (ulepsz->kogo->ulepszanie == true&&ulepsz->kogo->poziom>0&&ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0 > 0&&ulepsz->kogo->poziom<=4&&ulepsz->kogo->poziom>0)
                 {
                 rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0);
@@ -224,7 +223,6 @@ void Ruszacz::WykonajRuchy()
         {
             auto ulepsz = (BurzRozkaz*)r;
 
-            // TODO sprawdz czy nie oszukuje ktoś (czy ma wystarczająco ludków)//DONE?
             if (ulepsz->kogo->ulepszanie == true && ulepsz->kogo->poziom>0&&ulepsz->kogo->liczebnosc > 25.0)
             {
                 ulepsz->kogo->poziom--;

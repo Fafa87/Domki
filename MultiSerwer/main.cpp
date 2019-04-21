@@ -162,7 +162,6 @@ void wykonaj(string zadanie)
                 res.second.WypiszRanking();
                 
                 klient->wtyk->setBlocking(true);
-                // TODO sprawdz dlaaczego Ci dalej czekaj¹ (cos ten warunek tu nie dzia³a dobrze
             } while (!(res.second.Zwyciezca() >= 0));
 
             auto wygrany = res.second.Zwyciezca();

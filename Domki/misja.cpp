@@ -252,7 +252,7 @@ void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgr
         info_poziom->SetText(string_format("%d", wybrany->poziom));
         info_zapelnienie_etykieta->SetText(L"Zapełnienie:");
         if(wybrany->typdomku!=TypDomku::kPole)info_zapelnienie->SetText(to_wstring(100 * (int)wybrany->liczebnosc / (int)wybrany->max_liczebnosc) + L"%");
-		else info_zapelnienie->SetText("Fafa%");
+        else info_zapelnienie->SetText("Fafa%");
         info_ulepsz_etykieta->SetText(L"Koszt ulepszenia:");
         if (wybrany->poziom < 5)
             info_ulepsz->SetText(string_format("%d", wybrany->max_liczebnosc / 2));
@@ -685,7 +685,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     ruszacz.rozgrywka = &rozgrywka;
     ruszacz.szybkosc *= predkosc;
     
-    shared_ptr<sfg::Window> interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, wyswietlacz, nullptr);
+    shared_ptr<sfg::Window> interfejs = interfejs_rozgrywki(nullptr, misja_ustawienia, rozgrywka, wyswietlacz, nullptr);
     sf::View view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
     window.setView(view);
     odliczanie(wyswietlacz, view, interfejs);

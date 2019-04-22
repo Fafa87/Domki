@@ -136,10 +136,12 @@ void start_klient(sf::Music& muzyka, string nazwa)
         // TODO sprawdz dlaaczego Ci dalej czekają (cos ten warunek tu nie działa dobrze)
     } while (!(res.second.Zwyciezca() >= 0));
 
+    /* niszczenie istniejące wątku kończy się wyjątkiem
     while (GUI::aplikacja.zalozone_gry.size())
     {
         GUI::aplikacja.zalozone_gry.pop_back();
     }
+    */
 }
 
 std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)

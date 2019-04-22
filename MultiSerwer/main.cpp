@@ -43,7 +43,8 @@ void konfiguruj(int l, const char * argv[])
     if (l == 0)
     {
         wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]));
-        wykonaj("start");
+        while(misja_ustawienia.Zwyciezca() < 0)
+            wykonaj("start");
         exit(0);
     }
     else if (l==1)
@@ -201,10 +202,7 @@ void wykonaj(string zadanie)
                 delete serwer;
                 serwer = nullptr;
             }
-            else
-            {
-                misja_ustawienia = ustawienia;
-            }
+            misja_ustawienia = ustawienia;
         }
     }
     

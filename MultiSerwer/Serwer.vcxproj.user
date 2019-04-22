@@ -3,11 +3,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>0 0 2 4.2</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>0 test_mini.txt 2 4.2</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>0 0 2 4.2</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>0 test_mini.txt 2 4.2</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

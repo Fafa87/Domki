@@ -7,7 +7,7 @@ SerwerowyRuszacz::SerwerowyRuszacz(multi::Serwer & serwer) : serwer(serwer)
 
 void SerwerowyRuszacz::Ruszaj(double czas)
 {
-    // pobierz ruchy z klientów
+    // pobierz ruchy z klientï¿½w
     auto& rozkazy = serwer.Odbierz();
     multi::Podepnij(*rozgrywka, rozkazy);
     PrzyjmijRuch(rozkazy);
@@ -17,7 +17,7 @@ void SerwerowyRuszacz::Ruszaj(double czas)
     this->czas_od_synchro += czas;
     if (this->czas_od_synchro > this->okres_synchronizacji)
     {
-        // rozeslij stan gry do wszystkich klientów
+        // rozeslij stan gry do wszystkich klientï¿½w
         auto res = serwer.Rozeslij(*rozgrywka);
         this->czas_od_synchro = 0;
         if (res == false)
@@ -31,7 +31,7 @@ KlientowyRuszacz::KlientowyRuszacz(multi::Klient & klient) : klient(klient)
 
 void KlientowyRuszacz::Ruszaj(double czas)
 {
-    // wyœlij swoje rozkazy
+    // wyï¿½lij swoje rozkazy
     auto wyslane = klient.Wyslij(kolejka_do_wykonania);
     //if (wyslane == false)
     //    exit(-1);
@@ -42,7 +42,7 @@ void KlientowyRuszacz::Ruszaj(double czas)
     auto& res = klient.Odbierz();
     if (res.first)
     {
-        // uaktualnij rozgrywkê - zast¹p t¹ - przepisuj¹c, adres ma zostaæ ten sam
+        // uaktualnij rozgrywkï¿½ - zastï¿½p tï¿½ - przepisujï¿½c, adres ma zostaï¿½ ten sam
         *rozgrywka = res.second;
         multi::Podepnij(*rozgrywka);
     }

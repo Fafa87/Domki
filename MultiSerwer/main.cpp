@@ -235,12 +235,14 @@ void wykonaj(string zadanie)
 
 int main(int argc, const char * argv[]) {
     string zadanie;
-
+    
     GUI::aplikacja.setup_theme();
     GUI::aplikacja.okno.close();
-
     if (argc > 1)
+    {
+        cichociemny = true;
         konfiguruj(int(argv[1][0] - '0'), argv);
+    }
 
     do 
     {

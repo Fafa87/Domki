@@ -179,8 +179,8 @@ namespace multi
     void Podepnij(Rozgrywka& rozgrywka);
     void Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy);
     vector<string> Pobierz(sf::TcpSocket& wtyk);
-    void Wyslij(sf::TcpSocket& wtyk, string dane);
-    void Wyslij(sf::TcpSocket& wtyk, vector<string> dane);
+    bool Wyslij(sf::TcpSocket& wtyk, string dane);
+    bool Wyslij(sf::TcpSocket& wtyk, vector<string> dane);
 
     typedef Rozgrywka MRozgrywka;
 
@@ -194,7 +194,7 @@ namespace multi
 
         // wy�lij info o starcie do graczy
         void Start(MisjaUstawienia ustawienia);
-        void Rozeslij(MRozgrywka& stan);
+        bool Rozeslij(MRozgrywka& stan);
         vector<Rozkaz*> Odbierz();
 
         vector<Zawodnik> ludzie;
@@ -212,7 +212,7 @@ namespace multi
         void Podlacz(Adres serwer);
 
         pair<bool, MisjaUstawienia> OczekujNaStart();
-        void Wyslij(vector<Rozkaz*> rozkazy);
+        bool Wyslij(vector<Rozkaz*> rozkazy);
         pair<bool, MRozgrywka> Odbierz();
 
         string nazwa;

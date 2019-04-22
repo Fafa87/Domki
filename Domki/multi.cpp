@@ -77,7 +77,7 @@ bool multi::Serwer::Rozeslij(MRozgrywka& stan)
     bool res = true;
     for (int i = 0; i < ludzie.size(); i++)
     {
-        res &= multi::Wyslij(*ludzie[i].wtyk, ss.str());
+        res |= multi::Wyslij(*ludzie[i].wtyk, ss.str());
     }
     return res;
 }

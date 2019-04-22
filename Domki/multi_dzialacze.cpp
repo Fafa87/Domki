@@ -33,8 +33,8 @@ void KlientowyRuszacz::Ruszaj(double czas)
 {
     // wyœlij swoje rozkazy
     auto wyslane = klient.Wyslij(kolejka_do_wykonania);
-    if (wyslane == false)
-        exit(-1);
+    //if (wyslane == false)
+    //    exit(-1);
 
     //kolejka_do_wykonania.clear();
     Ruszacz::Ruszaj(czas);

@@ -51,6 +51,7 @@ public:
     sf::View zwykly_widok;
     vector<shared_ptr<sfg::Window>> windows;
     vector<thread> zalozone_gry;
+    int dzwieki_glosnosc = 100;
 
     void setup_theme();
     void center_window(shared_ptr<sfg::Window> window);

@@ -544,12 +544,14 @@ void odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::W
 
         if (a > 0)
         {
-            pikPik.play();
+            if (GUI::aplikacja.dzwieki_glosnosc)
+                pikPik.play();
             Sleep(1500);
         }
         else
         {
-            puk.play();
+            if (GUI::aplikacja.dzwieki_glosnosc)
+                puk.play();
             Sleep(800);
         }
     }
@@ -572,7 +574,8 @@ void zakonczenie_gry(Gracz& gracz_wygrany, int grajacy)
 
     if (gracz_wygrany.numer == grajacy)
     {
-        oklaski.play();
+        if (GUI::aplikacja.dzwieki_glosnosc)
+            oklaski.play();
         komunikat_koncowy->SetText("GRATULACJE DLA GRACZA:\n" + gracz_wygrany.nazwa);
     }
     else
@@ -648,7 +651,10 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     sf::RenderWindow& window = GUI::aplikacja.okno;
 
     if (misja_ustawienia.nr_gracza == 0)
+    {
         window.setVisible(false);
+        GUI::aplikacja.dzwieki_glosnosc = 0;
+    }
 
     // tworzymy rozgrywke
     Rozgrywka rozgrywka = zwarcie_rozgrywka(sciezka);
@@ -672,7 +678,6 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     
     //KOMPUTEROWIE
     vector<Komputer*> kompiutery;
-    printf("%d\n", misja_ustawienia.komputery.size());
     for (auto nr : misja_ustawienia.komputery)
     {
         //rozgrywka.Gracz(nr).nazwa = "KOMPUTER" + nr;
@@ -692,7 +697,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     window.setView(view);
     odliczanie(wyswietlacz, view, interfejs);
 
-    if (misja_ustawienia.nr_gracza == 0)
+    if (GUI::aplikacja.dzwieki_glosnosc)
         muzykant.wyciszony = true;
     
     muzykant.Przygrywaj();

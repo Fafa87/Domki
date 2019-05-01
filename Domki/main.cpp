@@ -49,7 +49,6 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     auto wybor_lista = sfg::ComboBox::Create();
     for (auto l : wczytaj_liste_plansz())
         wybor_lista->AppendItem(l);
-    wybor_lista->SelectItem(0);
     wybor_lista->GetSignal(sfg::ComboBox::OnSelect).Connect(
         [ile_ludzi_pasek, wybor_lista] {
         auto misja_wybrana = "Plansza\\" + wybor_lista->GetSelectedText();
@@ -58,6 +57,8 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
         ile_ludzi_pasek->SetRange(0, max_ludzi);
         ile_ludzi_pasek->SetValue(max_ludzi);
     });
+    wybor_lista->SelectItem(0);
+    wybor_lista->GetSignal(sfg::ComboBox::OnSelect)();
 
     auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
     auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
@@ -72,8 +73,6 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
         [do_ilu_wartosc, do_ilu_pasek] {
         do_ilu_wartosc->SetText(to_string((int)do_ilu_pasek->GetValue()));
     });
-
-
 
     auto zakladaj = sfg::Button::Create(L"Zakładaj!");
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
@@ -160,12 +159,11 @@ void start_klient(sf::Music& muzyka, string nazwa)
         // TODO sprawdz dlaaczego Ci dalej czekają (cos ten warunek tu nie działa dobrze)
     } while (!(res.second.Zwyciezca() >= 0));
 
-    /* niszczenie istniejące wątku kończy się wyjątkiem
     while (GUI::aplikacja.zalozone_gry.size())
     {
+        GUI::aplikacja.zalozone_gry.back().join();
         GUI::aplikacja.zalozone_gry.pop_back();
     }
-    */
 }
 
 std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)

@@ -156,7 +156,6 @@ void start_klient(sf::Music& muzyka, string nazwa)
         res.second.WypiszRanking();
 
         klient->wtyk->setBlocking(true);
-        // TODO sprawdz dlaaczego Ci dalej czekają (cos ten warunek tu nie działa dobrze)
     } while (!(res.second.Zwyciezca() >= 0));
 
     while (GUI::aplikacja.zalozone_gry.size())

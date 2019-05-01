@@ -252,7 +252,7 @@ void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgr
         info_poziom->SetText(string_format("%d", wybrany->poziom));
         info_zapelnienie_etykieta->SetText(L"Zapełnienie:");
         if(wybrany->typdomku!=TypDomku::kPole)info_zapelnienie->SetText(to_wstring(100 * (int)wybrany->liczebnosc / (int)wybrany->max_liczebnosc) + L"%");
-        else info_zapelnienie->SetText("Fafa%");
+        else info_zapelnienie->SetText("---");
         info_ulepsz_etykieta->SetText(L"Koszt ulepszenia:");
         if (wybrany->poziom < 5)
             info_ulepsz->SetText(string_format("%d", wybrany->max_liczebnosc / 2));
@@ -692,6 +692,9 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     window.setView(view);
     odliczanie(wyswietlacz, view, interfejs);
 
+    if (misja_ustawienia.nr_gracza == 0)
+        muzykant.wyciszony = true;
+    
     muzykant.Przygrywaj();
 
     //czasomierz

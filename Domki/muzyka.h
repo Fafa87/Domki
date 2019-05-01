@@ -9,23 +9,25 @@
 class Muzykant
 {
 public:
-	Muzykant(Rozgrywka& rozgrywka);
-	void Zaladuj(string wybrana_skora);
-	void Przygrywaj();
-	void NoGraj();
-	void Zamilcz();
-	void GrajEfekty(Ruszacz& ruchy);
+    Muzykant(Rozgrywka& rozgrywka);
+    void Zaladuj(string wybrana_skora);
+    void Przygrywaj();
+    void NoGraj();
+    void Zamilcz();
+    void GrajEfekty(Ruszacz& ruchy);
+
+    bool wyciszony = false;
 private:
-	Rozgrywka& rozgrywka;
+    Rozgrywka& rozgrywka;
 
-	sf::SoundBuffer marszBuffer;
-	sf::Sound marsz;
+    sf::SoundBuffer marszBuffer;
+    sf::Sound marsz;
 
-	sf::Music przygrywka;
-	sf::Music przygrywkaOkrzyki;
+    sf::Music przygrywka;
+    sf::Music przygrywkaOkrzyki;
 
-	sf::SoundBuffer zdobycieBuffer;
-	sf::Sound zdobycie;
+    sf::SoundBuffer zdobycieBuffer;
+    sf::Sound zdobycie;
 
-	string skorka;
+    string skorka;
 };

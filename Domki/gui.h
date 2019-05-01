@@ -17,7 +17,7 @@ private:
     static int styl_okna() 
     {
         auto res = sf::Style::Fullscreen;
-        #ifdef _DEBUG
+        #if defined(_DEBUG) || defined(_WINDOW)
         res = sf::Style::Default;
         #endif
         return res;

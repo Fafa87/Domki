@@ -15,26 +15,38 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
+		ReleaseWindow|x64 = ReleaseWindow|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F45B812D-B8C1-4931-AB22-A8AC650CF562}.Debug|x64.ActiveCfg = Debug|x64
 		{F45B812D-B8C1-4931-AB22-A8AC650CF562}.Debug|x64.Build.0 = Debug|x64
 		{F45B812D-B8C1-4931-AB22-A8AC650CF562}.Release|x64.ActiveCfg = Release|x64
 		{F45B812D-B8C1-4931-AB22-A8AC650CF562}.Release|x64.Build.0 = Release|x64
+		{F45B812D-B8C1-4931-AB22-A8AC650CF562}.ReleaseWindow|x64.ActiveCfg = ReleaseWindow|x64
+		{F45B812D-B8C1-4931-AB22-A8AC650CF562}.ReleaseWindow|x64.Build.0 = ReleaseWindow|x64
 		{315AF451-80C1-47DC-BA55-AEC9C2407E34}.Debug|x64.ActiveCfg = Debug|x64
 		{315AF451-80C1-47DC-BA55-AEC9C2407E34}.Debug|x64.Build.0 = Debug|x64
 		{315AF451-80C1-47DC-BA55-AEC9C2407E34}.Release|x64.ActiveCfg = Release|x64
 		{315AF451-80C1-47DC-BA55-AEC9C2407E34}.Release|x64.Build.0 = Release|x64
+		{315AF451-80C1-47DC-BA55-AEC9C2407E34}.ReleaseWindow|x64.ActiveCfg = ReleaseWindow|x64
+		{315AF451-80C1-47DC-BA55-AEC9C2407E34}.ReleaseWindow|x64.Build.0 = ReleaseWindow|x64
 		{B60FD275-083E-43CF-9024-2ADF8D5109BD}.Debug|x64.ActiveCfg = Debug|x64
 		{B60FD275-083E-43CF-9024-2ADF8D5109BD}.Debug|x64.Build.0 = Debug|x64
 		{B60FD275-083E-43CF-9024-2ADF8D5109BD}.Release|x64.ActiveCfg = Release|x64
 		{B60FD275-083E-43CF-9024-2ADF8D5109BD}.Release|x64.Build.0 = Release|x64
+		{B60FD275-083E-43CF-9024-2ADF8D5109BD}.ReleaseWindow|x64.ActiveCfg = ReleaseWindow|x64
+		{B60FD275-083E-43CF-9024-2ADF8D5109BD}.ReleaseWindow|x64.Build.0 = ReleaseWindow|x64
 		{6B157FCC-8162-4905-91C3-15AB7C20A52F}.Debug|x64.ActiveCfg = Debug|x64
 		{6B157FCC-8162-4905-91C3-15AB7C20A52F}.Debug|x64.Build.0 = Debug|x64
 		{6B157FCC-8162-4905-91C3-15AB7C20A52F}.Release|x64.ActiveCfg = Release|x64
 		{6B157FCC-8162-4905-91C3-15AB7C20A52F}.Release|x64.Build.0 = Release|x64
+		{6B157FCC-8162-4905-91C3-15AB7C20A52F}.ReleaseWindow|x64.ActiveCfg = ReleaseWindow|x64
+		{6B157FCC-8162-4905-91C3-15AB7C20A52F}.ReleaseWindow|x64.Build.0 = ReleaseWindow|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0701617-D0D0-43B5-B3EC-2456C761BB0E}
 	EndGlobalSection
 EndGlobal

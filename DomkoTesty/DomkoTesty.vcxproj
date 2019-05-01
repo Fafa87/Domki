@@ -120,7 +120,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);_WINDOW</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <AdditionalIncludeDirectories>$(SolutionDir)\_Biblioteki\include;$(SolutionDir)\SFML-2.4.2\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
     </ClCompile>

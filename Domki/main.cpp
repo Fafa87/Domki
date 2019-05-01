@@ -17,9 +17,9 @@
 const string WERSJA = "DOMKI 0.9.1";
 
 
-void start_nowej_gry_dla_wielu(string mapa, int do_ilu, double szybkosc)
+void start_nowej_gry_dla_wielu(string mapa, int do_ilu, double szybkosc, int ile_ludzi)
 {
-    string parametry = "0 " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc);
+    string parametry = "0 " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc) + " " + to_string(ile_ludzi);
     std::system(("MultiSerwer.exe " + parametry).c_str());
 }
 
@@ -34,12 +34,30 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     auto tytul = sfg::Label::Create(WERSJA);
     tytul->SetId("Naglowek");
 
+    auto ile_ludzi_etykieta = sfg::Label::Create("Ile ludzi: ");
+    auto ile_ludzi_wartosc = sfg::Label::Create("1");
+    auto ile_ludzi_pasek = sfg::Scale::Create(1, 6, 1);
+    ile_ludzi_pasek->SetValue(0);
+    ile_ludzi_pasek->SetIncrements(1, 2);
+    ile_ludzi_pasek->GetAdjustment()->GetSignal(sfg::Adjustment::OnChange).Connect(
+        [ile_ludzi_wartosc, ile_ludzi_pasek] {
+        ile_ludzi_wartosc->SetText(to_string((int)ile_ludzi_pasek->GetValue()));
+    });
+
     auto wybor_etykieta = sfg::Label::Create("Misja: ");
     auto separator = sfg::Label::Create("");
     auto wybor_lista = sfg::ComboBox::Create();
     for (auto l : wczytaj_liste_plansz())
         wybor_lista->AppendItem(l);
     wybor_lista->SelectItem(0);
+    wybor_lista->GetSignal(sfg::ComboBox::OnSelect).Connect(
+        [ile_ludzi_pasek, wybor_lista] {
+        auto misja_wybrana = "Plansza\\" + wybor_lista->GetSelectedText();
+        auto misja_ustawienia = wczytaj_meta(misja_wybrana);
+        auto max_ludzi = misja_ustawienia.komputery.size() + 1;
+        ile_ludzi_pasek->SetRange(0, max_ludzi);
+        ile_ludzi_pasek->SetValue(max_ludzi);
+    });
 
     auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
     auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
@@ -55,10 +73,13 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
         do_ilu_wartosc->SetText(to_string((int)do_ilu_pasek->GetValue()));
     });
 
+
+
     auto zakladaj = sfg::Button::Create(L"Zakładaj!");
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [&muzyka, nazwa, do_ilu_pasek, szybkosc_pasek, wybor_lista] {
-        GUI::aplikacja.zalozone_gry.push_back(thread(start_nowej_gry_dla_wielu, wybor_lista->GetSelectedText(), (int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue()));
+        [&muzyka, nazwa, do_ilu_pasek, szybkosc_pasek, wybor_lista, ile_ludzi_pasek] {
+        GUI::aplikacja.zalozone_gry.push_back(thread(start_nowej_gry_dla_wielu, wybor_lista->GetSelectedText(), (int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue()));
+        //GUI::aplikacja.zalozone_gry.back().detach();
     });
 
     auto powrot = sfg::Button::Create("Powrot");
@@ -79,6 +100,9 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     tabelka->Attach(do_ilu_etykieta, sf::Rect<sf::Uint32>(0, 3, 1, 1));
     tabelka->Attach(do_ilu_pasek, sf::Rect<sf::Uint32>(1, 3, 1, 1));
     tabelka->Attach(do_ilu_wartosc, sf::Rect<sf::Uint32>(2, 3, 1, 1));
+    tabelka->Attach(ile_ludzi_etykieta, sf::Rect<sf::Uint32>(0, 4, 1, 1));
+    tabelka->Attach(ile_ludzi_pasek, sf::Rect<sf::Uint32>(1, 4, 1, 1));
+    tabelka->Attach(ile_ludzi_wartosc, sf::Rect<sf::Uint32>(2, 4, 1, 1));
 
     box->SetSpacing(10);
     box->Pack(tytul, false, false);

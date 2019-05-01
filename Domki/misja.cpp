@@ -672,14 +672,16 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     
     //KOMPUTEROWIE
     vector<Komputer*> kompiutery;
-    int nr_kompa = 1;
+    printf("%d\n", misja_ustawienia.komputery.size());
     for (auto nr : misja_ustawienia.komputery)
     {
         //rozgrywka.Gracz(nr).nazwa = "KOMPUTER" + nr;
         if (poziomy_trudnosci[0] == trudnosc)
-            kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr),misja_ustawienia.szybkosc));
+            kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc));
         else if (poziomy_trudnosci[1] == trudnosc)
-            kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr),misja_ustawienia.szybkosc));
+            kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc));
+        else
+            throw exception();
     }
 
     ruszacz.rozgrywka = &rozgrywka;

@@ -24,7 +24,7 @@ struct MisjaUstawienia
 	string grupa = "Plansza";
 	string nazwa = "";
 	double szybkosc = 1.5;
-	string trudnosc = "podstawa";
+	string trudnosc = poziomy_trudnosci[0];
 	string skorka = "rycerze_hd";
 	bool walka_w_polu = true;
 

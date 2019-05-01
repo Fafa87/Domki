@@ -42,7 +42,7 @@ void konfiguruj(int l, const char * argv[])
 {
     if (l == 0)
     {
-        wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]));
+        wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]));
         while(misja_ustawienia.Zwyciezca() < 0)
             wykonaj("start");
         exit(0);
@@ -101,20 +101,26 @@ void wykonaj(string zadanie)
             {
                 predkosc = atof(czastki[3].c_str());
             }
+            int liczba_graczy = misja_ustawienia.komputery.size() + 1;
+            int liczba_ludzi = liczba_graczy;
+            if (czastki.size() >= 5)
+            {
+                liczba_ludzi = atof(czastki[4].c_str());
+            }
 
             misja_ustawienia = wczytaj_meta(misja_sciezka);
             misja_ustawienia.nazwa = misja_nazwa;
             misja_ustawienia.do_ilu_wygranych = liczba_gier;
             misja_ustawienia.ile_kto_wygranych = vector<int>(5);
             misja_ustawienia.szybkosc = predkosc;
-
-            int liczba_graczy = misja_ustawienia.komputery.size() + 1;
+            
             printf("Stworzona gra na planszy %s\n", misja_nazwa.c_str());
-            printf("Oczekuj na podlaczenie %d graczy\n", liczba_graczy);
+            printf("Plansza na %d graczy\n", liczba_graczy);
+            printf("Oczekuj na podlaczenie %d graczy\n", liczba_ludzi);
             printf("Gramy do %d\n", liczba_gier);
 
             misja_ustawienia.nazwy_graczow.push_back("Neutralny");
-            for (int i = 0; i < liczba_graczy; i++)
+            for (int i = 0; i < liczba_ludzi; i++)
             {
                 serwer->OczekujNaGracza();
                 misja_ustawienia.nazwy_graczow.push_back(serwer->ludzie.back().nazwa);
@@ -175,7 +181,11 @@ void wykonaj(string zadanie)
         if (zadanie.find("start") == 0)
         {
             MisjaUstawienia ustawienia = misja_ustawienia;
+            
+            vector<int> komputery_mapy = ustawienia.komputery;
             ustawienia.komputery.clear();
+            for (int i = ustawienia.nazwy_graczow.size()-2; i < komputery_mapy.size(); i++)
+                ustawienia.komputery.push_back(komputery_mapy[i]);
             ustawienia.nr_gracza = 0;
 
             serwer->Start(ustawienia);

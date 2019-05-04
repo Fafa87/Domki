@@ -36,7 +36,9 @@ struct MisjaUstawienia
 	vector<int> ile_kto_wygranych;
 };
 
-vector<string> wczytaj_liste_plansz();
+vector<string> wczytaj_liste_plansz(string folder);
+
+vector<string> wczytaj_liste_folderow(string folder);
 
 MisjaUstawienia wczytaj_meta(string sciezka);
 

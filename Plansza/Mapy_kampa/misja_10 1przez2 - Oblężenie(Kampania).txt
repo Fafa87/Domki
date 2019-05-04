@@ -1,0 +1,179 @@
+28
+1 5
+koordynaty 650 700
+drogi 2 2 8
+gracz 1
+poziom 3
+liczebnosc 100
+2 5
+koordynaty 750 700
+drogi 3 1 3 9
+gracz 1
+poziom 3
+liczebnosc 100
+3 5
+koordynaty 850 700
+drogi 3 2 4 10
+gracz 1
+poziom 3
+liczebnosc 100
+4 5
+koordynaty 950 700
+drogi 3 3 5 11
+gracz 1
+poziom 3
+liczebnosc 100
+5 5
+koordynaty 1050 700
+drogi 3 4 6 12
+gracz 1
+poziom 3
+liczebnosc 100
+6 5
+koordynaty 1150 700
+drogi 3 5 7 13
+gracz 1
+poziom 3
+liczebnosc 100
+7 5
+koordynaty 1250 700
+drogi 2 6 14
+gracz 1
+poziom 3
+liczebnosc 100
+8 5
+koordynaty 650 600
+drogi 3 1 18 23
+gracz 0
+poziom 3
+liczebnosc 150
+9 5
+koordynaty 750 600
+drogi 3 2 15 18
+gracz 0
+poziom 3
+liczebnosc 150
+10 5
+koordynaty 850 600
+drogi 3 3 11 15
+gracz 0
+poziom 3
+liczebnosc 150
+11 6
+koordynaty 950 600
+drogi 6 4 10 12 15 16 17
+gracz 0
+poziom 5
+liczebnosc 300
+typ zamek
+12 5
+koordynaty 1050 600
+drogi 3 5 11 17
+gracz 0
+poziom 3
+liczebnosc 150
+13 5
+koordynaty 1150 600
+drogi 3 6 17 22
+gracz 0
+poziom 3
+liczebnosc 150
+14 5
+koordynaty 1250 600
+drogi 3 7 22 28
+gracz 0
+poziom 3
+liczebnosc 150
+15 6
+koordynaty 850 500
+drogi 6 9 10 11 16 18 19
+gracz 2
+poziom 5
+liczebnosc 50
+typ zamek
+16 5
+koordynaty 950 500
+drogi 4 11 15 17 20
+gracz 2
+poziom 5
+liczebnosc 0
+17 6
+koordynaty 1050 500
+drogi 6 11 12 13 16 21 22
+gracz 2
+poziom 5
+liczebnosc 50
+typ zamek
+18 6
+koordynaty 750 400
+drogi 6 8 9 15 19 23 24
+gracz 2
+poziom 5
+liczebnosc 50
+typ zamek
+19 5 
+koordynaty 850 400
+drogi 4 15 18 20 25
+gracz 2
+poziom 5
+liczebnosc 0
+20 6
+koordynaty 950 400
+drogi 5 16 19 21 25 26
+gracz 2
+poziom 5
+liczebnosc 150
+typ kuznia
+21 5
+koordynaty 1050 400
+drogi 4 17 20 22 26
+gracz 2
+poziom 5
+liczebnosc 0
+22 6
+koordynaty 1150 400
+drogi 6 13 14 17 21 27 28
+gracz 2
+poziom 5
+liczebnosc 50
+typ zamek
+23 6
+koordynaty 650 300
+drogi 3 8 18 24
+gracz 2
+poziom 5
+liczebnosc 50
+typ zamek
+24 5
+koordynaty 750 300
+drogi 3 18 23 25
+gracz 2
+poziom 5
+liczebnosc 0
+25 6
+koordynaty 850 300
+drogi 3 20 24 26
+gracz 2
+poziom 5
+liczebnosc 150
+typ kuznia
+26 6
+koordynaty 1050 300
+drogi 4 20 21 25 27
+gracz 2
+poziom 5
+liczebnosc 150
+typ kuznia
+27 5
+koordynaty 1150 300
+drogi 3 22 26 28
+gracz 2
+poziom 5
+liczebnosc 0
+28 6
+koordynaty 1250 300
+drogi 3 14 22 27
+gracz 2
+poziom 5
+liczebnosc 50
+typ zamek

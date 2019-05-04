@@ -20,14 +20,16 @@ drogi 2 5 7
 7 2
 koordynaty 1100 500
 drogi 2 2 6
-8 3
+8 4
 koordynaty 500 700
 drogi 1 4
 gracz 1
+liczebnosc 100
 9 2
 koordynaty 800 700
 drogi 2 4 6
-10 3
+10 4
 koordynaty 1100 700
 drogi 1 6
 gracz 2
+liczebnosc 100

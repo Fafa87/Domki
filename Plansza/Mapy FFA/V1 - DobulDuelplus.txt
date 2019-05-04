@@ -1,0 +1,127 @@
+29
+1 3
+koordynaty 500 400
+drogi 1 2
+typ kuznia
+2 2
+koordynaty 625 400
+drogi 3 1 3 9
+3 5
+koordynaty 750 400
+drogi 2 2 4
+typ wieza
+poziom 3
+liczebnosc 50
+4 2
+koordynaty 875 400
+drogi 4 3 5 11 23
+5 5
+koordynaty 1000 400
+drogi 2 4 6
+typ zamek
+poziom 3
+liczebnosc 50
+6 2
+koordynaty 1125 400
+drogi 3 5 7 13
+7 3
+koordynaty 1250 400
+drogi 1 6
+typ stajnia
+8 5
+koordynaty 500 500
+drogi 1 9
+typ kuznia
+poziom 3
+liczebnosc 50
+9 4
+koordynaty 625 500
+drogi 3 2 8 16
+gracz 1
+liczebnosc 100
+10 2
+koordynaty 750 500
+drogi 1 11
+11 5
+koordynaty 875 500
+drogi 4 4 10 12 18
+typ wieza
+poziom 3
+liczebnosc 50
+12 2
+koordynaty 1000 500
+drogi 1 11
+13 4
+koordynaty 1125 500
+drogi 3 6 14 20
+gracz 2
+liczebnosc 100
+14 5
+koordynaty 1250 500
+drogi 1 13
+typ kuznia
+poziom 3
+liczebnosc 50
+15 3
+koordynaty 500 600
+drogi 1 16
+typ stajnia
+16 2
+koordynaty 625 600
+drogi 3 9 15 17
+17 5
+koordynaty 750 600
+drogi 2 16 18
+typ zamek
+poziom 3
+liczebnosc 50
+18 2
+koordynaty 875 600
+drogi 5 11 17 18 19 26
+19 5
+koordynaty 1000 600
+drogi 2 18 20
+typ wieza
+poziom 3
+liczebnosc 50
+20 2
+koordynaty 1125 600
+drogi 3 13 19 21
+21 3
+koordynaty 1250 600
+drogi 1 20
+typ kuznia
+22 2
+koordynaty 750 300
+drogi 2 3 23
+23 6
+koordynaty 875 300
+drogi 3 4 22 24
+typ kuznia
+gracz 3
+liczebnosc 100
+poziom 3
+24 2
+koordynaty 1000 300
+drogi 2 5 23
+25 2
+koordynaty 750 700
+drogi 2 17 26
+26 6
+koordynaty 875 700
+drogi 3 18 25 27
+typ kuznia
+poziom 3
+gracz 4
+liczebnosc 100
+27 2
+koordynaty 1000 700
+drogi 2 19 26
+28 3
+koordynaty 1125 300
+drogi 1 24
+typ stajnia
+29 3
+koordynaty 625 700
+drogi 1 25
+typ stajnia

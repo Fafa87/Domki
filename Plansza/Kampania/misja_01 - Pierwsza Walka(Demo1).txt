@@ -1,0 +1,19 @@
+2
+
+1 5
+
+koordynaty 300 400
+
+drogi 1 2
+
+gracz 1
+
+poziom 5
+liczebnosc 35
+2 5
+koordynaty 400 400
+
+drogi 1 1
+gracz 2
+poziom 2
+liczebnosc 10

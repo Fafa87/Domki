@@ -42,7 +42,7 @@ void konfiguruj(int l, const char * argv[])
 {
     if (l == 0)
     {
-        wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]));
+        wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]));
         while(misja_ustawienia.Zwyciezca() < 0)
             wykonaj("start");
         exit(0);
@@ -83,38 +83,40 @@ void wykonaj(string zadanie)
             printf("%s\n", adres.ToString().c_str());
             
             auto czastki = split(zadanie, ' ');
-            auto misja_nazwa = czastki[1];
+            auto misja_folder = czastki[1];
+            auto misja_nazwa = czastki[2];
             if (misja_nazwa.size() == 1)
             {
-                misja_nazwa = wczytaj_liste_plansz()[atoi(misja_nazwa.c_str())];
+                misja_nazwa = wczytaj_liste_plansz("Plansza\\"+ misja_folder)[atoi(misja_nazwa.c_str())];
             }
-            auto misja_sciezka = "Plansza\\" + misja_nazwa;
+            auto misja_sciezka = "Plansza\\" + misja_folder + "\\" + czastki[2] ;
 
             // jak podana liczba wygranych to ja zapisz
             int liczba_gier = 1;
-            if (czastki.size() >= 3) 
+            if (czastki.size() >= 4) 
             {
-                liczba_gier = atoi(czastki[2].c_str());
+                liczba_gier = atoi(czastki[3].c_str());
             }
             double predkosc = misja_ustawienia.szybkosc;
-            if (czastki.size() >= 4)
+            if (czastki.size() >= 5)
             {
-                predkosc = atof(czastki[3].c_str());
+                predkosc = atof(czastki[4].c_str());
             }
             int liczba_graczy = misja_ustawienia.komputery.size() + 1;
             int liczba_ludzi = liczba_graczy;
-            if (czastki.size() >= 5)
+            if (czastki.size() >= 6)
             {
-                liczba_ludzi = atof(czastki[4].c_str());
+                liczba_ludzi = atof(czastki[5].c_str());
             }
 
             misja_ustawienia = wczytaj_meta(misja_sciezka);
             misja_ustawienia.nazwa = misja_nazwa;
+            misja_ustawienia.grupa = "Plansza\\" + misja_folder;
             misja_ustawienia.do_ilu_wygranych = liczba_gier;
             misja_ustawienia.ile_kto_wygranych = vector<int>(5);
             misja_ustawienia.szybkosc = predkosc;
             
-            printf("Stworzona gra na planszy %s\n", misja_nazwa.c_str());
+            printf("Stworzona gra na planszy %s %s\n", misja_folder.c_str(), misja_nazwa.c_str());
             printf("Plansza na %d graczy\n", liczba_graczy);
             printf("Oczekuj na podlaczenie %d graczy\n", liczba_ludzi);
             printf("Gramy do %d\n", liczba_gier);

@@ -8,20 +8,22 @@ drogi 2 5 6
 3 2
 koordynaty 1000 300
 drogi 2 6 7
-4 3
+4 4
 koordynaty 500 500
 drogi 3 1 5 8
 gracz 1
+liczebnosc 100
 5 2
 koordynaty 600 500
 drogi 5 1 2 4 8 9
 6 2
 koordynaty 1000 500
 drogi 5 2 3 7 9 10
-7 3
+7 4
 koordynaty 1100 500
 drogi 3 3 6 10
 gracz 2
+liczebnosc 100
 8 2
 koordynaty 600 700
 drogi 2 4 5

@@ -1,0 +1,37 @@
+10
+1 4
+koordynaty 650 300
+drogi 2 3 5
+gracz 2
+liczebnosc 100
+2 4
+koordynaty 950 300
+drogi 2 5 7
+gracz 3
+liczebnosc 100
+3 2
+koordynaty 500 500
+drogi 2 1 4
+4 2
+koordynaty 650 500
+drogi 4 3 5 8 9
+5 2
+koordynaty 800 500
+drogi 4 1 2 4 6
+6 2
+koordynaty 950 500
+drogi 2 5 7
+7 2
+koordynaty 1100 500
+drogi 2 2 6
+8 2
+koordynaty 500 700
+drogi 1 4
+9 4
+koordynaty 800 700
+drogi 2 4 6
+gracz 1 
+poziom 2
+10 2
+koordynaty 1100 700
+drogi 1 6

@@ -17,9 +17,10 @@
 const string WERSJA = "DOMKI 0.9.1";
 
 
-void start_nowej_gry_dla_wielu(string mapa, int do_ilu, double szybkosc, int ile_ludzi)
+void start_nowej_gry_dla_wielu(string fd, string mapa, int do_ilu, double szybkosc, int ile_ludzi)
 {
-    string parametry = "0 " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc) + " " + to_string(ile_ludzi);
+    string parametry = "0 " + fd + " " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc) + " " + to_string(ile_ludzi);
+    //printf("%s,", parametry.c_str());
     std::system(("MultiSerwer.exe " + parametry).c_str());
 }
 
@@ -46,29 +47,29 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
 
     auto wybor_etykieta = sfg::Label::Create("Misja: ");
     auto separator = sfg::Label::Create("");
-	auto wybor_lista_foldery = sfg::ComboBox::Create();
-	for (auto l : wczytaj_liste_folderow("Plansza"))
-		wybor_lista_foldery->AppendItem(l);
-	wybor_lista_foldery->SelectItem(0);
+    auto wybor_lista_foldery = sfg::ComboBox::Create();
+    for (auto l : wczytaj_liste_folderow("Plansza"))
+        wybor_lista_foldery->AppendItem(l);
+    wybor_lista_foldery->SelectItem(0);
 
-	auto wybor_lista = sfg::ComboBox::Create();
-	for (auto l : wczytaj_liste_plansz("Plansza\\" + wybor_lista_foldery->GetSelectedText()))
-		wybor_lista->AppendItem(l);
-	wybor_lista->SelectItem(0);
-	
-	wybor_lista_foldery->GetSignal(sfg::Widget::OnStateChange).Connect([ile_ludzi_pasek,wybor_lista, wybor_lista_foldery]
-	{
-		wybor_lista->Clear();
-		for (auto l : wczytaj_liste_plansz("Plansza\\" + wybor_lista_foldery->GetSelectedText()))
-			wybor_lista->AppendItem(l);
-		wybor_lista->SelectItem(0);
-		auto misja_wybrana = "Plansza\\" + wybor_lista_foldery->GetSelectedText() + "\\" +  wybor_lista->GetSelectedText();
-		auto misja_ustawienia = wczytaj_meta(misja_wybrana);
-		auto max_ludzi = misja_ustawienia.komputery.size() + 1;
-		ile_ludzi_pasek->SetRange(0, max_ludzi);
-		ile_ludzi_pasek->SetValue(max_ludzi);
-	});
-	
+    auto wybor_lista = sfg::ComboBox::Create();
+    for (auto l : wczytaj_liste_plansz("Plansza\\" + wybor_lista_foldery->GetSelectedText()))
+        wybor_lista->AppendItem(l);
+    wybor_lista->SelectItem(0);
+    
+    wybor_lista_foldery->GetSignal(sfg::ComboBox::OnSelect).Connect([ile_ludzi_pasek,wybor_lista, wybor_lista_foldery]
+    {
+        wybor_lista->Clear();
+        for (auto l : wczytaj_liste_plansz("Plansza\\" + wybor_lista_foldery->GetSelectedText()))
+            wybor_lista->AppendItem(l);
+        wybor_lista->SelectItem(0);
+        auto misja_wybrana = "Plansza\\" + wybor_lista_foldery->GetSelectedText() + "\\" +  wybor_lista->GetSelectedText();
+        auto misja_ustawienia = wczytaj_meta(misja_wybrana);
+        auto max_ludzi = misja_ustawienia.komputery.size() + 1;
+        ile_ludzi_pasek->SetRange(0, max_ludzi);
+        ile_ludzi_pasek->SetValue(max_ludzi);
+    });
+    
     wybor_lista->GetSignal(sfg::ComboBox::OnSelect).Connect(
         [ile_ludzi_pasek, wybor_lista,wybor_lista_foldery] {
         auto misja_wybrana = "Plansza\\" + wybor_lista_foldery->GetSelectedText() + "\\" + wybor_lista->GetSelectedText();
@@ -77,8 +78,8 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
         ile_ludzi_pasek->SetRange(0, max_ludzi);
         ile_ludzi_pasek->SetValue(max_ludzi);
     });
-	 wybor_lista->SelectItem(0);
-	 wybor_lista->GetSignal(sfg::ComboBox::OnSelect)();
+     wybor_lista->SelectItem(0);
+     wybor_lista->GetSignal(sfg::ComboBox::OnSelect)();
 
     auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
     auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
@@ -98,7 +99,6 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [&muzyka, nazwa, do_ilu_pasek, szybkosc_pasek, wybor_lista, wybor_lista_foldery,  ile_ludzi_pasek] {
         GUI::aplikacja.zalozone_gry.push_back(thread(start_nowej_gry_dla_wielu, wybor_lista_foldery->GetSelectedText(), wybor_lista->GetSelectedText(),(int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue()));
-        //GUI::aplikacja.zalozone_gry.back().detach();
     });
 
     auto powrot = sfg::Button::Create("Powrot");
@@ -113,7 +113,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 0, 4, 1));
     tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 1, 1, 1));
     tabelka->Attach(wybor_lista_foldery, sf::Rect<sf::Uint32>(1, 1, 2, 1));
-	tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(1, 2, 2, 1));
+    tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(1, 2, 2, 1));
     tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, 3, 1, 1));
     tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 3, 2, 1));
     tabelka->Attach(do_ilu_etykieta, sf::Rect<sf::Uint32>(0, 4, 1, 1));
@@ -345,21 +345,21 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
 
     auto wybor_lista_foldery = sfg::ComboBox::Create();
     for (auto l : wczytaj_liste_folderow("Plansza"))
-		wybor_lista_foldery->AppendItem(l);
-	wybor_lista_foldery->SelectItem(0);
+        wybor_lista_foldery->AppendItem(l);
+    wybor_lista_foldery->SelectItem(0);
 
-	auto wybor_lista = sfg::ComboBox::Create();
-	for (auto l : wczytaj_liste_plansz("Plansza\\"+wybor_lista_foldery->GetSelectedText()))
-		wybor_lista->AppendItem(l);
-	wybor_lista->SelectItem(0);
+    auto wybor_lista = sfg::ComboBox::Create();
+    for (auto l : wczytaj_liste_plansz("Plansza\\"+wybor_lista_foldery->GetSelectedText()))
+        wybor_lista->AppendItem(l);
+    wybor_lista->SelectItem(0);
 
-	wybor_lista_foldery->GetSignal(sfg::Widget::OnStateChange).Connect([wybor_lista,wybor_lista_foldery]
-	{
-		wybor_lista->Clear();
-		for (auto l : wczytaj_liste_plansz("Plansza\\" + wybor_lista_foldery->GetSelectedText()))
-			wybor_lista->AppendItem(l);
-		wybor_lista->SelectItem(0);
-	});
+    wybor_lista_foldery->GetSignal(sfg::ComboBox::OnSelect).Connect([wybor_lista,wybor_lista_foldery]
+    {
+        wybor_lista->Clear();
+        for (auto l : wczytaj_liste_plansz("Plansza\\" + wybor_lista_foldery->GetSelectedText()))
+            wybor_lista->AppendItem(l);
+        wybor_lista->SelectItem(0);
+    });
 
     auto trudnosc_etykieta = sfg::Label::Create("Poziom: ");
     auto trudnosc_lista = sfg::ComboBox::Create();
@@ -390,7 +390,7 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
         [wybor_lista,wybor_lista_foldery, szybkosc_pasek, trudnosc_lista, walka_w_polu_ptaszek, do_ilu_pasek, okno, &muzyka] {
         MisjaUstawienia ustawienia;
         ustawienia.nazwa = wybor_lista->GetSelectedText();
-		ustawienia.grupa = "Plansza\\" + wybor_lista_foldery->GetSelectedText();
+        ustawienia.grupa = "Plansza\\" + wybor_lista_foldery->GetSelectedText();
         ustawienia.szybkosc = szybkosc_pasek->GetValue();
         ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
         ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
@@ -417,7 +417,7 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
     tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 0, 4, 1));
     tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 1, 1, 1));
     tabelka->Attach(wybor_lista_foldery, sf::Rect<sf::Uint32>(1, 1, 2, 1));
-	tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(1, 2, 2, 1));
+    tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(1, 2, 2, 1));
 
     tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 3, 1, 1));
     tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(1, 3, 2, 1));

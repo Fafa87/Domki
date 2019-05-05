@@ -44,7 +44,7 @@ vector<string> wczytaj_liste_plansz(string folder)
 
 vector<string> wczytaj_liste_folderow(string folder)
 {
-	return get_all_names_within_folder(folder,1);
+    return get_all_names_within_folder(folder,1);
 }
 
 MisjaUstawienia wczytaj_meta(string sciezka)

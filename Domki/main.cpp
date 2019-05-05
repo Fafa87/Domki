@@ -96,8 +96,8 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
 
     auto zakladaj = sfg::Button::Create(L"Zakładaj!");
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [&muzyka, nazwa, do_ilu_pasek, szybkosc_pasek, wybor_lista, ile_ludzi_pasek] {
-        GUI::aplikacja.zalozone_gry.push_back(thread(start_nowej_gry_dla_wielu,wybor_lista->GetSelectedText(), (int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue()));
+        [&muzyka, nazwa, do_ilu_pasek, szybkosc_pasek, wybor_lista, wybor_lista_foldery,  ile_ludzi_pasek] {
+        GUI::aplikacja.zalozone_gry.push_back(thread(start_nowej_gry_dla_wielu, wybor_lista_foldery->GetSelectedText(), wybor_lista->GetSelectedText(),(int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue()));
         //GUI::aplikacja.zalozone_gry.back().detach();
     });
 

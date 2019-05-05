@@ -42,7 +42,7 @@ void konfiguruj(int l, const char * argv[])
 {
     if (l == 0)
     {
-        wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]));
+        wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]));
         while(misja_ustawienia.Zwyciezca() < 0)
             wykonaj("start");
         exit(0);
@@ -83,29 +83,29 @@ void wykonaj(string zadanie)
             printf("%s\n", adres.ToString().c_str());
             
             auto czastki = split(zadanie, ' ');
-            auto misja_nazwa = czastki[1];
+            auto misja_nazwa = czastki[2];
             if (misja_nazwa.size() == 1)
             {
-                misja_nazwa = wczytaj_liste_plansz()[atoi(misja_nazwa.c_str())];
+                misja_nazwa = wczytaj_liste_plansz("Plansza\\"+czastki[1])[atoi(misja_nazwa.c_str())];
             }
-            auto misja_sciezka = "Plansza\\" + misja_nazwa;
+            auto misja_sciezka = "Plansza\\" + czastki[1] + "\\" + czastki[2] ;
 
             // jak podana liczba wygranych to ja zapisz
             int liczba_gier = 1;
-            if (czastki.size() >= 3) 
+            if (czastki.size() >= 4) 
             {
-                liczba_gier = atoi(czastki[2].c_str());
+                liczba_gier = atoi(czastki[3].c_str());
             }
             double predkosc = misja_ustawienia.szybkosc;
-            if (czastki.size() >= 4)
+            if (czastki.size() >= 5)
             {
-                predkosc = atof(czastki[3].c_str());
+                predkosc = atof(czastki[4].c_str());
             }
             int liczba_graczy = misja_ustawienia.komputery.size() + 1;
             int liczba_ludzi = liczba_graczy;
-            if (czastki.size() >= 5)
+            if (czastki.size() >= 6)
             {
-                liczba_ludzi = atof(czastki[4].c_str());
+                liczba_ludzi = atof(czastki[5].c_str());
             }
 
             misja_ustawienia = wczytaj_meta(misja_sciezka);

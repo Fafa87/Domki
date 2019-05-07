@@ -15,7 +15,7 @@ double ile_trzeba_ludkow(double odleglosc,Domek* domek)
 	double przyrostarmii = 2.0;
 	double przesuniecie = 200.0 / 3.0;
 	if (domek->typdomku == TypDomku::kMiasto&&domek->gracz->aktywny==true)return domek->liczebnosc+przyrostarmii * domek->poziom * odleglosc / przesuniecie + 1.0;
-	else if (domek->typdomku == TypDomku::kFort)return domek->liczebnosc*domek->poziom+1.0;
+	else if (domek->typdomku == TypDomku::kFort)return domek->liczebnosc*(domek->poziom+1.0)+1.0;
 	else if (domek->typdomku == TypDomku::kWieza)return domek->liczebnosc + 1.0 + 100*domek->poziom*domek->poziom;
 	return domek->liczebnosc + 1.0;
 }

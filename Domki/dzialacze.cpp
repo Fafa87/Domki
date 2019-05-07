@@ -326,13 +326,13 @@ void Ruszacz::WalczLudkami(double czas)
                     double nowa_liczebnosc;
                     if (cel->typdomku == TypDomku::kFort)
                         {
-                        cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza/(double)cel->poziom);
-                        if (cel->liczebnosc < armia.liczebnosc / (double)cel->poziom)
+                        cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza/((double)cel->poziom+1.0));
+                        if (cel->liczebnosc < armia.liczebnosc / (double)((double)cel->poziom + 1.0))
                         {
-                            armia.liczebnosc -= (double)cel->poziom*cel->liczebnosc;
+                            armia.liczebnosc -= (double)((double)cel->poziom + 1.0)*cel->liczebnosc;
                             nowa_liczebnosc = -armia.liczebnosc;
                         }
-                        else nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc/(double)cel->poziom;
+                        else nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc/(double)((double)cel->poziom + 1.0);
                         }
                     else
                         {

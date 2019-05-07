@@ -2,7 +2,7 @@
 1 4
 koordynaty 800 300
 drogi 2 2 4
-gracz 1
+gracz 3
 liczebnosc 100
 2 4
 koordynaty 500 400
@@ -41,8 +41,10 @@ koordynaty 800 700
 drogi 2 7 9
 gracz 2
 liczebnosc 100
-11 4
+11 6
 koordynaty 800 500
 drogi 4 3 5 6 8
 poziom 0
 typ pole
+gracz 1
+liczebnosc 75

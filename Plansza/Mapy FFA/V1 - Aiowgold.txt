@@ -1,4 +1,4 @@
-11
+13
 1 3
 koordynaty 650 300
 drogi 3 2 4 6
@@ -45,3 +45,13 @@ poziom 5
 koordynaty 950 700
 drogi 3 6 8 10
 poziom 5
+12 4
+koordynaty 800 400
+drogi 2 2 6
+gracz 3
+liczebnosc 75
+13 4
+koordynaty 800 600
+drogi 2 6 10
+gracz 4
+liczebnosc 75

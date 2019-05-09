@@ -17,9 +17,11 @@
 const string WERSJA = "DOMKI 0.9.1";
 
 
-void start_nowej_gry_dla_wielu(string fd, string mapa, int do_ilu, double szybkosc, int ile_ludzi)
+void start_nowej_gry_dla_wielu(string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi)
 {
-    string parametry = "0 " + fd + " " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc) + " " + to_string(ile_ludzi);
+	for (int a = 0, b = folder.size(); a < b; a++)if (folder[a] == ' ')folder[a] = '+';
+	for (int a = 0, b = mapa.size(); a < b; a++)if (mapa[a] == ' ')mapa[a] = '+';
+    string parametry = "0 " + folder + " " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc) + " " + to_string(ile_ludzi);
     //printf("%s,", parametry.c_str());
     std::system(("MultiSerwer.exe " + parametry).c_str());
 }

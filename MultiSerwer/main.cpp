@@ -83,6 +83,10 @@ void wykonaj(string zadanie)
             printf("%s\n", adres.ToString().c_str());
             
             auto czastki = split(zadanie, ' ');
+
+			for (int a = 0, b = czastki[1].size(); a < b; a++)if (czastki[1][a] == '+')czastki[1][a] = ' ';
+			for (int a = 0, b = czastki[2].size(); a < b; a++)if (czastki[2][a] == '+')czastki[2][a] = ' ';
+
             auto misja_folder = czastki[1];
             auto misja_nazwa = czastki[2];
             if (misja_nazwa.size() == 1)

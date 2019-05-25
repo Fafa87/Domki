@@ -187,9 +187,9 @@ void start_klient(sf::Music& muzyka, string nazwa)
     }
 }
 
-std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)
+std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa,string poziom,double szybkosc,bool walka_w_polu)
 {
-    Kampania kampania("Kampania");
+    Kampania kampania("Kampanie\\"+grupa);
     //kampania.akt_misja = 7; do testow
     while (kampania.akt_misja <= kampania.lista_misji.size())
     {
@@ -200,6 +200,9 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string poziom)
 
         if (poziom.size() != 0)
             misja_dane.trudnosc = poziom;
+		misja_dane.szybkosc = szybkosc;
+		misja_dane.walka_w_polu=walka_w_polu;
+
 
         // pokaz opis
         auto okno_opisu = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
@@ -448,6 +451,92 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
     return okno;
 }
 
+std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka)
+{
+	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+
+	//okno->SetRequisition(sf::Vector2f(480, 0));
+	okno->SetRequisition(sf::Vector2f(glowne->GetAllocation().width, 0));
+	okno->SetAllocation(glowne->GetAllocation());
+
+	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+	auto tytul = sfg::Label::Create(WERSJA);
+	tytul->SetId("Naglowek");
+	auto tabelka = sfg::Table::Create();
+
+	auto wybor_etykieta = sfg::Label::Create("Kampanie: ");
+	auto separator = sfg::Label::Create("");
+
+	auto wybor_lista_foldery = sfg::ComboBox::Create();
+	for (auto l : wczytaj_liste_folderow("Kampanie"))
+		wybor_lista_foldery->AppendItem(l);
+	wybor_lista_foldery->SelectItem(0);
+
+	auto trudnosc_etykieta = sfg::Label::Create("Poziom: ");
+	auto trudnosc_lista = sfg::ComboBox::Create();
+	for (auto l : poziomy_trudnosci)
+		trudnosc_lista->AppendItem(l);
+	trudnosc_lista->SelectItem(0);
+
+	auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
+	auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
+	szybkosc_pasek->SetValue(1.5);
+
+	auto inne_etykieta = sfg::Label::Create("Inne: ");
+	auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
+	walka_w_polu_ptaszek->SetActive(true);
+
+	auto uruchom = sfg::Button::Create("Uruchom");
+	uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
+		[wybor_lista_foldery, szybkosc_pasek, trudnosc_lista, walka_w_polu_ptaszek, okno, &muzyka] {
+		MisjaUstawienia ustawienia;
+		ustawienia.grupa = wybor_lista_foldery->GetSelectedText();
+		ustawienia.szybkosc = szybkosc_pasek->GetValue();
+		ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
+		ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
+
+
+		GUI::aplikacja.hide_all_windows();
+		auto okno_kampania = kampania_menu(muzyka, wybor_lista_foldery->GetSelectedText(),ustawienia.trudnosc,ustawienia.szybkosc,ustawienia.walka_w_polu);
+		GUI::aplikacja.set_active_window(okno_kampania);
+	});
+
+	auto powrot = sfg::Button::Create("Powrot");
+	powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
+		[okno] {
+		GUI::aplikacja.pop_active_window(okno);
+	});
+
+	tabelka->SetRowSpacings(10);
+
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 0, 4, 1));
+	tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 1, 1, 1));
+	tabelka->Attach(wybor_lista_foldery, sf::Rect<sf::Uint32>(1, 1, 2, 1));
+
+	tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 3, 1, 1));
+	tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(1, 3, 2, 1));
+
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 4, 4, 1));
+
+	tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, 5, 1, 1));
+	tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 2, 1));
+
+	tabelka->Attach(inne_etykieta, sf::Rect<sf::Uint32>(0, 7, 1, 1));
+	tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 7, 2, 1));
+	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 8, 4, 1));
+
+	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 9, 2, 1));
+	tabelka->Attach(powrot, sf::Rect<sf::Uint32>(1, 10, 2, 1));
+
+	box->Pack(tytul, false, false);
+	box->Pack(tabelka, true, false);
+	okno->Add(box);
+
+	GUI::aplikacja.stretch_up_down(okno);
+
+	return okno;
+}
+
 std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
@@ -459,23 +548,13 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
     tytul->SetId("Naglowek");
     auto tabelka = sfg::Table::Create();
 
-    auto kampania1 = sfg::Button::Create(L"Kampania łatwa");
-    kampania1->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [&muzyka]
-    {
-        auto okno_kampanii = kampania_menu(muzyka, poziomy_trudnosci[0]);
-        if (okno_kampanii != nullptr)
-            GUI::aplikacja.set_active_window(okno_kampanii);
-    });
-
-    auto kampania2 = sfg::Button::Create("Kampania trudna");
-    kampania2->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [&muzyka]
-    {
-        auto okno_kampanii = kampania_menu(muzyka, poziomy_trudnosci[1]);
-        if (okno_kampanii != nullptr)
-            GUI::aplikacja.set_active_window(okno_kampanii);
-    });
+	auto kampania = sfg::Button::Create("Kampania");
+	kampania->GetSignal(sfg::Widget::OnLeftClick).Connect(
+		[&muzyka, okno]
+	{
+		auto okno_kampania = kampania_grand_menu(okno, muzyka);
+		GUI::aplikacja.set_active_window(okno_kampania);
+	});
 
     auto pojedynczy = sfg::Button::Create("Sam");
     pojedynczy->GetSignal(sfg::Widget::OnLeftClick).Connect(
@@ -494,8 +573,7 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
     });
 
     tabelka->SetRowSpacings(10);
-    tabelka->Attach(kampania1, sf::Rect<sf::Uint32>(1, 2, 12, 1), 3, sfg::Table::FILL);
-    tabelka->Attach(kampania2, sf::Rect<sf::Uint32>(1, 4, 12, 1), 3, sfg::Table::FILL);
+    tabelka->Attach(kampania, sf::Rect<sf::Uint32>(1, 2, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(pojedynczy, sf::Rect<sf::Uint32>(1, 6, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(razem, sf::Rect<sf::Uint32>(1, 8, 12, 1), 3, sfg::Table::FILL);
 

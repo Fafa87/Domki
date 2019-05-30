@@ -1,10 +1,13 @@
-﻿#include "misja.h"
+#include "misja.h"
 #include "gui.h"
 
 #include "ext_string.h"
 #include <SFML/Audio.hpp>
 
-MisjaUstawienia::MisjaUstawienia() : ile_kto_wygranych(5) {}
+#include <cstdlib>
+#include <ctime>
+
+MisjaUstawienia::MisjaUstawienia() : ile_kto_wygranych(16) {}
 
 int MisjaUstawienia::Zwyciezca()
 {
@@ -683,15 +686,81 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     
     //KOMPUTEROWIE
     vector<Komputer*> kompiutery;
+	srand(time(NULL));
     for (auto nr : misja_ustawienia.komputery)
     {
-        //rozgrywka.Gracz(nr).nazwa = "KOMPUTER" + nr;
-        if (poziomy_trudnosci[0] == trudnosc)
-            kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc));
-        else if (poziomy_trudnosci[1] == trudnosc)
-            kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc));
-        else
-            throw exception();
+		//NADANIE NAZWY CZYLI ROWNIEZ TRYBU GRY
+		switch (std::rand() % 4)
+			{
+			case 0: 
+				{
+				
+				if (poziomy_trudnosci[0] == trudnosc)
+					{
+					rozgrywka.Gracz(nr).nazwa = "PIRAT";
+					kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'P'));
+					}
+				else if (poziomy_trudnosci[1] == trudnosc)
+					{
+					rozgrywka.Gracz(nr).nazwa = "KAPITAN HAK";
+					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'P'));
+					}
+				else
+					throw exception();
+				break;
+				}
+			case 1:
+				{
+
+				if (poziomy_trudnosci[0] == trudnosc)
+					{
+					rozgrywka.Gracz(nr).nazwa = "STOKFISZ";
+					kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'B'));
+					}
+				else if (poziomy_trudnosci[1] == trudnosc)
+					{
+					rozgrywka.Gracz(nr).nazwa = "DIPBLU";
+					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'B'));
+					}
+				else
+					throw exception();
+				break;
+				}
+			case 2:
+				{
+
+				if (poziomy_trudnosci[0] == trudnosc)
+					{
+					rozgrywka.Gracz(nr).nazwa = "ALFAZERO";
+					kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'A'));
+					}
+				else if (poziomy_trudnosci[1] == trudnosc)
+					{
+					rozgrywka.Gracz(nr).nazwa = "ALFASTAR";
+					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'A'));
+					}
+				else
+					throw exception();
+				break;
+				}
+			case 3:
+				{
+	
+				if (poziomy_trudnosci[0] == trudnosc)
+					{
+					rozgrywka.Gracz(nr).nazwa = "ZELOTA";
+					kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'K'));
+					}
+				else if (poziomy_trudnosci[1] == trudnosc)
+					{
+					rozgrywka.Gracz(nr).nazwa = "PROTOS";
+					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'K'));
+					}
+				else
+					throw exception();
+				break;
+				}
+			}
     }
 
     ruszacz.rozgrywka = &rozgrywka;

@@ -345,6 +345,7 @@ void Ruszacz::WalczLudkami(double czas)
                         cel->gracz = armia.gracz;
                         armia.gracz->liczba_tworow++;		
                         armie_ktore_dotarly++;
+						cel->poziom = std::min(5,cel->poziom);
                     }
                     rozgrywka->ZmienLiczebnosc(*cel, std::abs(nowa_liczebnosc));
                 }

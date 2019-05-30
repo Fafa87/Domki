@@ -19,8 +19,8 @@ const string WERSJA = "DOMKI 0.9.1";
 
 void start_nowej_gry_dla_wielu(string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi)
 {
-	for (int a = 0, b = folder.size(); a < b; a++)if (folder[a] == ' ')folder[a] = '+';
-	for (int a = 0, b = mapa.size(); a < b; a++)if (mapa[a] == ' ')mapa[a] = '+';
+    for (int a = 0, b = folder.size(); a < b; a++)if (folder[a] == ' ')folder[a] = '+';
+    for (int a = 0, b = mapa.size(); a < b; a++)if (mapa[a] == ' ')mapa[a] = '+';
     string parametry = "0 " + folder + " " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc) + " " + to_string(ile_ludzi);
     //printf("%s,", parametry.c_str());
     std::system(("MultiSerwer.exe " + parametry).c_str());
@@ -200,8 +200,8 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa,strin
 
         if (poziom.size() != 0)
             misja_dane.trudnosc = poziom;
-		misja_dane.szybkosc = szybkosc;
-		misja_dane.walka_w_polu=walka_w_polu;
+        misja_dane.szybkosc = szybkosc;
+        misja_dane.walka_w_polu=walka_w_polu;
 
 
         // pokaz opis
@@ -453,88 +453,88 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
 
 std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka)
 {
-	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+    auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 
-	//okno->SetRequisition(sf::Vector2f(480, 0));
-	okno->SetRequisition(sf::Vector2f(glowne->GetAllocation().width, 0));
-	okno->SetAllocation(glowne->GetAllocation());
+    //okno->SetRequisition(sf::Vector2f(480, 0));
+    okno->SetRequisition(sf::Vector2f(glowne->GetAllocation().width, 0));
+    okno->SetAllocation(glowne->GetAllocation());
 
-	auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
-	auto tytul = sfg::Label::Create(WERSJA);
-	tytul->SetId("Naglowek");
-	auto tabelka = sfg::Table::Create();
+    auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+    auto tytul = sfg::Label::Create(WERSJA);
+    tytul->SetId("Naglowek");
+    auto tabelka = sfg::Table::Create();
 
-	auto wybor_etykieta = sfg::Label::Create("Kampanie: ");
-	auto separator = sfg::Label::Create("");
+    auto wybor_etykieta = sfg::Label::Create("Kampanie: ");
+    auto separator = sfg::Label::Create("");
 
-	auto wybor_lista_foldery = sfg::ComboBox::Create();
-	for (auto l : wczytaj_liste_folderow("Kampanie"))
-		wybor_lista_foldery->AppendItem(l);
-	wybor_lista_foldery->SelectItem(0);
+    auto wybor_lista_foldery = sfg::ComboBox::Create();
+    for (auto l : wczytaj_liste_folderow("Kampanie"))
+        wybor_lista_foldery->AppendItem(l);
+    wybor_lista_foldery->SelectItem(0);
 
-	auto trudnosc_etykieta = sfg::Label::Create("Poziom: ");
-	auto trudnosc_lista = sfg::ComboBox::Create();
-	for (auto l : poziomy_trudnosci)
-		trudnosc_lista->AppendItem(l);
-	trudnosc_lista->SelectItem(0);
+    auto trudnosc_etykieta = sfg::Label::Create("Poziom: ");
+    auto trudnosc_lista = sfg::ComboBox::Create();
+    for (auto l : poziomy_trudnosci)
+        trudnosc_lista->AppendItem(l);
+    trudnosc_lista->SelectItem(0);
 
-	auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
-	auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
-	szybkosc_pasek->SetValue(1.5);
+    auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
+    auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
+    szybkosc_pasek->SetValue(1.5);
 
-	auto inne_etykieta = sfg::Label::Create("Inne: ");
-	auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
-	walka_w_polu_ptaszek->SetActive(true);
+    auto inne_etykieta = sfg::Label::Create("Inne: ");
+    auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
+    walka_w_polu_ptaszek->SetActive(true);
 
-	auto uruchom = sfg::Button::Create("Uruchom");
-	uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
-		[wybor_lista_foldery, szybkosc_pasek, trudnosc_lista, walka_w_polu_ptaszek, okno, &muzyka] {
-		MisjaUstawienia ustawienia;
-		ustawienia.grupa = wybor_lista_foldery->GetSelectedText();
-		ustawienia.szybkosc = szybkosc_pasek->GetValue();
-		ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
-		ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
+    auto uruchom = sfg::Button::Create("Uruchom");
+    uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [wybor_lista_foldery, szybkosc_pasek, trudnosc_lista, walka_w_polu_ptaszek, okno, &muzyka] {
+        MisjaUstawienia ustawienia;
+        ustawienia.grupa = wybor_lista_foldery->GetSelectedText();
+        ustawienia.szybkosc = szybkosc_pasek->GetValue();
+        ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
+        ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
 
 
-		GUI::aplikacja.hide_all_windows();
-		auto okno_kampania = kampania_menu(muzyka, wybor_lista_foldery->GetSelectedText(),ustawienia.trudnosc,ustawienia.szybkosc,ustawienia.walka_w_polu);
-		GUI::aplikacja.set_active_window(okno_kampania);
-	});
+        GUI::aplikacja.hide_all_windows();
+        auto okno_kampania = kampania_menu(muzyka, wybor_lista_foldery->GetSelectedText(),ustawienia.trudnosc,ustawienia.szybkosc,ustawienia.walka_w_polu);
+        GUI::aplikacja.set_active_window(okno_kampania);
+    });
 
-	auto powrot = sfg::Button::Create("Powrot");
-	powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
-		[okno] {
-		GUI::aplikacja.pop_active_window(okno);
-	});
+    auto powrot = sfg::Button::Create("Powrot");
+    powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [okno] {
+        GUI::aplikacja.pop_active_window(okno);
+    });
 
-	tabelka->SetRowSpacings(10);
+    tabelka->SetRowSpacings(10);
 
-	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 0, 4, 1));
-	tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 1, 1, 1));
-	tabelka->Attach(wybor_lista_foldery, sf::Rect<sf::Uint32>(1, 1, 2, 1));
+    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 0, 4, 1));
+    tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 1, 1, 1));
+    tabelka->Attach(wybor_lista_foldery, sf::Rect<sf::Uint32>(1, 1, 2, 1));
 
-	tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 3, 1, 1));
-	tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(1, 3, 2, 1));
+    tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 3, 1, 1));
+    tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(1, 3, 2, 1));
 
-	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 4, 4, 1));
+    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 4, 4, 1));
 
-	tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, 5, 1, 1));
-	tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 2, 1));
+    tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, 5, 1, 1));
+    tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 2, 1));
 
-	tabelka->Attach(inne_etykieta, sf::Rect<sf::Uint32>(0, 7, 1, 1));
-	tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 7, 2, 1));
-	tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 8, 4, 1));
+    tabelka->Attach(inne_etykieta, sf::Rect<sf::Uint32>(0, 7, 1, 1));
+    tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 7, 2, 1));
+    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 8, 4, 1));
 
-	tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 9, 2, 1));
-	tabelka->Attach(powrot, sf::Rect<sf::Uint32>(1, 10, 2, 1));
+    tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 9, 2, 1));
+    tabelka->Attach(powrot, sf::Rect<sf::Uint32>(1, 10, 2, 1));
 
-	box->Pack(tytul, false, false);
-	box->Pack(tabelka, true, false);
-	okno->Add(box);
+    box->Pack(tytul, false, false);
+    box->Pack(tabelka, true, false);
+    okno->Add(box);
 
-	GUI::aplikacja.stretch_up_down(okno);
+    GUI::aplikacja.stretch_up_down(okno);
 
-	return okno;
+    return okno;
 }
 
 std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
@@ -548,13 +548,13 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
     tytul->SetId("Naglowek");
     auto tabelka = sfg::Table::Create();
 
-	auto kampania = sfg::Button::Create("Kampania");
-	kampania->GetSignal(sfg::Widget::OnLeftClick).Connect(
-		[&muzyka, okno]
-	{
-		auto okno_kampania = kampania_grand_menu(okno, muzyka);
-		GUI::aplikacja.set_active_window(okno_kampania);
-	});
+    auto kampania = sfg::Button::Create("Kampania");
+    kampania->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [&muzyka, okno]
+    {
+        auto okno_kampania = kampania_grand_menu(okno, muzyka);
+        GUI::aplikacja.set_active_window(okno_kampania);
+    });
 
     auto pojedynczy = sfg::Button::Create("Sam");
     pojedynczy->GetSignal(sfg::Widget::OnLeftClick).Connect(

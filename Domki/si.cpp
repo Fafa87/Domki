@@ -61,7 +61,7 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 					}
 					else if (domek1.poziom == 0 && domek1.liczebnosc*2.0 >= domek1.max_liczebnosc)
 					{
-						PrzebudujRozkaz* r = new PrzebudujRozkaz(&domek1, TypDomku::kFort);
+						PrzebudujRozkaz* r = new PrzebudujRozkaz(&domek1, TypDomku::kMiasto);
 						res.push_back(r);
 						ruch = true;
 					}
@@ -111,6 +111,13 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 					}
 				}
 			}
+        for (Domek& domek1 : rozgrywka.domki)
+            if (domek1.punkt_kontrolny != NULL && 10 * domek1.liczebnosc >= domek1.max_liczebnosc)
+            {
+                auto r = new WymarszRozkaz(&domek1, domek1.punkt_kontrolny);
+                r->ulamek = 1;
+                res.push_back(r);
+            }
 	}
 
 	return res;
@@ -164,7 +171,7 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
 					}
 					else if (domek1.poziom == 0 && domek1.liczebnosc*2.0 >= domek1.max_liczebnosc)
 					{
-						PrzebudujRozkaz* r = new PrzebudujRozkaz(&domek1, TypDomku::kFort);
+						PrzebudujRozkaz* r = new PrzebudujRozkaz(&domek1, TypDomku::kMiasto);
 						res.push_back(r);
 						ruch = true;
 					}
@@ -217,6 +224,13 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
 					}
 				}
 			}
+        for (Domek& domek1 : rozgrywka.domki)
+            if (domek1.punkt_kontrolny != NULL && 10 * domek1.liczebnosc >= domek1.max_liczebnosc)
+            {
+                auto r = new WymarszRozkaz(&domek1, domek1.punkt_kontrolny);
+                r->ulamek = 1;
+                res.push_back(r);
+            }
 	}
 	return res;
 

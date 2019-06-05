@@ -98,8 +98,10 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         nacisniety = 0;
     }
     // po 0.5 sekundy wysy�ane s� ludki
-    if (cel != nullptr && cel != wybrany && (clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC || klikniecia.size()>=3))// do zrobienia(zrobione!) -> klikanie wiecej niz dwukrotne powoduje wyslanie wszystkich ludkow
+    if (cel != nullptr && cel != wybrany && (clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC && klikniecia.size()<3))// do zrobienia(zrobione!) -> klikanie wiecej niz dwukrotne powoduje wyslanie wszystkich ludkow
     {
+        wybrany->punkt_kontrolny = NULL;//punkt kontrolny wylacza sie poprzez wyslanie jednosteks
+
         double frakcja = 1;
         if (klikniecia.size() == 1)
             frakcja = 0.5;
@@ -111,6 +113,14 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 
         if (klikniecia.size() == 2)wybrany = nullptr; // odznaczaj tylko gdy zostala wyslana calosc
         //wybrany = nullptr; 
+        cel = nullptr;
+        nacisniety = 0;
+        klikniecia.clear();
+    }
+    else if (cel != nullptr && cel != wybrany && klikniecia.size() >= 3)// ustawienie punktu kontrolnego
+    {
+        wybrany->punkt_kontrolny = cel;
+
         cel = nullptr;
         nacisniety = 0;
         klikniecia.clear();
@@ -345,7 +355,9 @@ void Ruszacz::WalczLudkami(double czas)
                         cel->gracz = armia.gracz;
                         armia.gracz->liczba_tworow++;		
                         armie_ktore_dotarly++;
+
 						cel->poziom = std::min(5,cel->poziom);
+                        cel->punkt_kontrolny = NULL;
                     }
                     rozgrywka->ZmienLiczebnosc(*cel, std::abs(nowa_liczebnosc));
                 }

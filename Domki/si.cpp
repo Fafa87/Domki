@@ -111,13 +111,6 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 					}
 				}
 			}
-        for (Domek& domek1 : rozgrywka.domki)
-            if (domek1.punkt_kontrolny != NULL && 10 * domek1.liczebnosc >= domek1.max_liczebnosc)
-            {
-                auto r = new WymarszRozkaz(&domek1, domek1.punkt_kontrolny);
-                r->ulamek = 1;
-                res.push_back(r);
-            }
 	}
 
 	return res;
@@ -224,13 +217,6 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
 					}
 				}
 			}
-        for (Domek& domek1 : rozgrywka.domki)
-            if (domek1.punkt_kontrolny != NULL && 10 * domek1.liczebnosc >= domek1.max_liczebnosc)
-            {
-                auto r = new WymarszRozkaz(&domek1, domek1.punkt_kontrolny);
-                r->ulamek = 1;
-                res.push_back(r);
-            }
 	}
 	return res;
 

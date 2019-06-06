@@ -100,7 +100,6 @@ public:
 	int armie_ktore_dotarly = 0;
 protected:
 	vector<Rozkaz*> kolejka_do_wykonania;
-
 private:
 	void WykonajRuchy();
 	void PrzesuwajLudkow(double czas);

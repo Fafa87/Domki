@@ -86,7 +86,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         wybrany = nullptr;
         nacisniety = 0;
     }
-    else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&klikniecia.size()==1)// do zrobienia -> ulepszanie tylko w przypadku szybkiego klikania
+    else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&klikniecia.size()==1&& clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
     {
         auto r = new UlepszRozkaz(wybrany);
         res.push_back(r);
@@ -97,8 +97,21 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         cel = nullptr;
         nacisniety = 0;
     }
+    else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany && klikniecia.size() >=2)
+    {
+        auto r = new UlepszRozkaz(wybrany);
+        res.push_back(r);
+
+        klikniecia.clear();
+
+        wybrany->punkt_kontrolny = wybrany;
+
+        wybrany = nullptr; 
+        cel = nullptr;
+        nacisniety = 0;
+    }
     // po 0.5 sekundy wysy�ane s� ludki
-    if (cel != nullptr && cel != wybrany && (clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC && klikniecia.size()<3))// do zrobienia(zrobione!) -> klikanie wiecej niz dwukrotne powoduje wyslanie wszystkich ludkow
+    if (cel != nullptr && cel != wybrany && (clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC && klikniecia.size()<3))
     {
         wybrany->punkt_kontrolny = NULL;//punkt kontrolny wylacza sie poprzez wyslanie jednosteks
 
@@ -121,11 +134,29 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
     {
         wybrany->punkt_kontrolny = cel;
 
+        auto r = new WymarszRozkaz(wybrany, cel);
+        r->ulamek = 1;
+        res.push_back(r);
+
+        wybrany = nullptr;
         cel = nullptr;
         nacisniety = 0;
         klikniecia.clear();
     }
-
+    for (auto r : rozgrywka.domki)
+    {
+        if (r.punkt_kontrolny==&r)
+        {
+            auto x = new UlepszRozkaz(&r);
+            res.push_back(x);
+        }
+        else if (r.punkt_kontrolny != NULL)
+        {
+            auto x = new WymarszRozkaz(&r,r.punkt_kontrolny);
+            x->ulamek = 1;
+            res.push_back(x);
+        }
+    }
 /*	if (klikniecia.size() > 0 && clock() - klikniecia.back() >= 3.0 * CLOCKS_PER_SEC) // co trzy sekundy braku akcji domek jest odznaczany
     {																																 // do zrobienia -> zmniejszanie się okręgu wokół domku symbolizujące malejący czas
         wybrany = nullptr;

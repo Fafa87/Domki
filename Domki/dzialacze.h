@@ -72,13 +72,14 @@ public:
 
 	virtual vector<Rozkaz*> WykonajRuch();
 
+    map<Domek*, Domek*> punkty_kontrolne;
 	Domek* wybrany = nullptr;
 	char nacisniety = 0;
 	Gracz& gracz;
 
 private:
 	sf::RenderWindow & okno;
-	vector<int> klikniecia;
+	vector<pair<int, sf::Mouse::Button>> klikniecia;
 	Domek* cel = nullptr;
 	Rozgrywka& rozgrywka;
 };

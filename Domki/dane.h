@@ -74,7 +74,6 @@ struct Domek : Twor
 	bool przebudowa = true,
 		ulepszanie = true;
 
-    Domek *punkt_kontrolny=NULL;
 	vector<Domek*> drogi;
 	vector<int> ser_drogi;
 };

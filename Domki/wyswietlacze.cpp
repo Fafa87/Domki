@@ -325,6 +325,27 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 
         okno.draw(kolo);
     }
+
+    for (auto& pk : decydent.punkty_kontrolne)
+    {
+        auto wybrany = pk.first;
+        double rozmiar = wybrany->rozmiar * 1.8;
+        sf::CircleShape kolo(rozmiar);
+        kolo.setPosition(wybrany->polozenie.x, wybrany->polozenie.y);
+        kolo.setRadius(rozmiar);
+        kolo.setOrigin(rozmiar, rozmiar);
+        sf::Color kolor = wybrany->gracz->kolor ;
+        kolor.a = 200;
+        kolor.r *= 0.5;
+        kolor.g *= 0.5;
+        kolor.b *= 0.5;
+        kolo.setFillColor(sf::Color::Transparent);
+        kolo.setOutlineColor(kolor);
+        kolo.setOutlineThickness(2);
+
+        okno.draw(kolo);
+
+    }
 }
 
 Domek* OznaczaczWyborow::WybranyDomek()

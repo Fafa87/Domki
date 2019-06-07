@@ -24,9 +24,10 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
         {
             if (wybrany != (Domek*)klikniety&& klikniety->gracz->numer == gracz.numer&&zdarzenie.mouseButton.button == sf::Mouse::Left)//wybór własnego domku
                 wybrany = (Domek*)klikniety;
-            else if (wybrany != nullptr && wybrany != klikniety&& zdarzenie.mouseButton.button == sf::Mouse::Right)//przesyl ludkow tylko prawym klawiszem myszy
+
+            if (wybrany != nullptr && wybrany != klikniety && zdarzenie.mouseButton.button == sf::Mouse::Right)//przesyl ludkow tylko prawym klawiszem myszy
             {
-                if (cel != klikniety)
+                if (cel != klikniety || klikniecia.back().second != zdarzenie.mouseButton.button)
                 {
                     klikniecia.clear();
                     cel = (Domek*)klikniety;
@@ -34,15 +35,10 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
             }
             else if (wybrany != nullptr && wybrany == klikniety && zdarzenie.mouseButton.button == sf::Mouse::Left)//ulepszanie
             {
-                if (cel != klikniety&&(klikniecia.size()==0||clock() - klikniecia.back() < 0.3 * CLOCKS_PER_SEC))
+                if (cel != klikniety || klikniecia.back().second != zdarzenie.mouseButton.button)
                 {
                     klikniecia.clear();
                     cel = (Domek*)klikniety;
-                }
-                else if (klikniecia.size() >= 3)
-                {
-                    klikniecia.clear();
-                    cel = nullptr;
                 }
             }
         }
@@ -52,7 +48,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
             wybrany = nullptr;
             cel = nullptr;	
         }
-        klikniecia.push_back(clock());
+        klikniecia.push_back(make_pair(clock(), zdarzenie.mouseButton.button));
     }
 
     if (zdarzenie.type == sf::Event::KeyPressed)
@@ -86,79 +82,99 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         wybrany = nullptr;
         nacisniety = 0;
     }
-    else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany&&klikniecia.size()==1&& clock() - klikniecia.back() > 0.2 * CLOCKS_PER_SEC)
+    else if (klikniecia.size() > 0 && clock() - klikniecia.back().first > 0.2 * CLOCKS_PER_SEC)
     {
-        auto r = new UlepszRozkaz(wybrany);
-        res.push_back(r);
-
-        klikniecia.clear();
-
-        //wybrany = nullptr; //to mozna dac pod komentarz aby szybciej ulepszac
-        cel = nullptr;
-        nacisniety = 0;
-    }
-    else if (wybrany != nullptr&&cel != nullptr&&cel == wybrany && klikniecia.size() >=2)
-    {
-        auto r = new UlepszRozkaz(wybrany);
-        res.push_back(r);
-
-        klikniecia.clear();
-
-        wybrany->punkt_kontrolny = wybrany;
-
-        wybrany = nullptr; 
-        cel = nullptr;
-        nacisniety = 0;
-    }
-    // po 0.5 sekundy wysy�ane s� ludki
-    if (cel != nullptr && cel != wybrany && (clock() - klikniecia.back() > 0.3 * CLOCKS_PER_SEC && klikniecia.size()<3))
-    {
-        wybrany->punkt_kontrolny = NULL;//punkt kontrolny wylacza sie poprzez wyslanie jednosteks
-
-        double frakcja = 1;
-        if (klikniecia.size() == 1)
-            frakcja = 0.5;
-
-        // utworz i zwroc rozkaz 
-        auto r = new WymarszRozkaz(wybrany, cel);
-        r->ulamek = frakcja;
-        res.push_back(r);
-
-        if (klikniecia.size() == 2)wybrany = nullptr; // odznaczaj tylko gdy zostala wyslana calosc
-        //wybrany = nullptr; 
-        cel = nullptr;
-        nacisniety = 0;
-        klikniecia.clear();
-    }
-    else if (cel != nullptr && cel != wybrany && klikniecia.size() >= 3)// ustawienie punktu kontrolnego
-    {
-        wybrany->punkt_kontrolny = cel;
-
-        auto r = new WymarszRozkaz(wybrany, cel);
-        r->ulamek = 1;
-        res.push_back(r);
-
-        wybrany = nullptr;
-        cel = nullptr;
-        nacisniety = 0;
-        klikniecia.clear();
-    }
-    for (auto r : rozgrywka.domki)
-    {
-        if (r.punkt_kontrolny==&r)
+        if (wybrany != nullptr&&cel != nullptr&&cel == wybrany)
         {
-            auto x = new UlepszRozkaz(&r);
-            res.push_back(x);
+            // ulepszanie
+            if (klikniecia.size() == 2)
+            {
+                punkty_kontrolne.erase(wybrany); //punkt kontrolny wylacza sie poprzez ulepszenie
+
+                auto r = new UlepszRozkaz(wybrany);
+                res.push_back(r);
+
+                klikniecia.clear();
+                cel = nullptr;
+                nacisniety = 0;
+            }
+            else if (klikniecia.size() >= 3)
+            {
+                klikniecia.clear();
+
+                punkty_kontrolne[wybrany] = wybrany;
+
+                wybrany = nullptr;
+                cel = nullptr;
+                nacisniety = 0;
+            }
         }
-        else if (r.punkt_kontrolny != NULL)
+        else if (wybrany != nullptr&&cel != nullptr&&cel != wybrany)
         {
-            auto x = new WymarszRozkaz(&r,r.punkt_kontrolny);
-            x->ulamek = 1;
-            res.push_back(x);
+            // wysylanie
+            if (klikniecia.size() <= 2)
+            {
+                punkty_kontrolne.erase(wybrany); //punkt kontrolny wylacza sie poprzez wyslanie jednosteks
+
+                double frakcja = 1;
+                if (klikniecia.size() == 1)
+                    frakcja = 0.5;
+
+                // utworz i zwroc rozkaz 
+                auto r = new WymarszRozkaz(wybrany, cel);
+                r->ulamek = frakcja;
+                res.push_back(r);
+
+                if (klikniecia.size() == 2)wybrany = nullptr; // odznaczaj tylko gdy zostala wyslana calosc
+                //wybrany = nullptr; 
+                cel = nullptr;
+                nacisniety = 0;
+                klikniecia.clear();
+            }
+            else if (klikniecia.size() >= 3)
+            {
+                punkty_kontrolne[wybrany] = cel;
+                //wybrany->punkt_kontrolny = cel;
+
+                auto r = new WymarszRozkaz(wybrany, cel);
+                r->ulamek = 1;
+                res.push_back(r);
+
+                wybrany = nullptr;
+                cel = nullptr;
+                nacisniety = 0;
+                klikniecia.clear();
+            }
+
+        }
+        klikniecia.clear();
+        cel = nullptr;
+    }
+
+    // przetwarzaj punkty kontrolne
+    for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();)
+    {
+        auto pk = *pk_iter;
+        if (pk.first->gracz != &gracz)
+            pk_iter = punkty_kontrolne.erase(pk_iter);
+        else {
+            if (pk.first == pk.second)
+            {
+                auto x = new UlepszRozkaz(pk.first);
+                res.push_back(x);
+            }
+            else if (pk.first->liczebnosc * 10 >= pk.first->max_liczebnosc)
+            {
+                auto x = new WymarszRozkaz(pk.first, pk.second);
+                x->ulamek = 1;
+                res.push_back(x);
+            }
+            pk_iter++;
         }
     }
+
 /*	if (klikniecia.size() > 0 && clock() - klikniecia.back() >= 3.0 * CLOCKS_PER_SEC) // co trzy sekundy braku akcji domek jest odznaczany
-    {																																 // do zrobienia -> zmniejszanie się okręgu wokół domku symbolizujące malejący czas
+    {        // do zrobienia -> zmniejszanie się okręgu wokół domku symbolizujące malejący czas
         wybrany = nullptr;
         cel = nullptr;
         nacisniety = 0;
@@ -388,7 +404,6 @@ void Ruszacz::WalczLudkami(double czas)
                         armie_ktore_dotarly++;
 
 						cel->poziom = std::min(5,cel->poziom);
-                        cel->punkt_kontrolny = NULL;
                     }
                     rozgrywka->ZmienLiczebnosc(*cel, std::abs(nowa_liczebnosc));
                 }

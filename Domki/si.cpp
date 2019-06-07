@@ -18,7 +18,7 @@ double ile_trzeba_ludkow(double odleglosc, Domek* domek,Rozgrywka& rozgrywka)
 	else if (domek->typdomku == TypDomku::kFort)return domek->liczebnosc*(domek->poziom + 1.0) + 1.0;
     else if (domek->typdomku == TypDomku::kWieza)
         {
-        if (std::get<2>(rozgrywka.SilaGracza(domek->gracz->numer)) >= domek->poziom)return domek->liczebnosc + 1;
+        if (std::get<3>(rozgrywka.SilaGracza(domek->gracz->numer)) >= domek->poziom)return domek->liczebnosc + 1;
         else return domek->liczebnosc + 1.0 + 100 * domek->poziom;
         }
 	return domek->liczebnosc + 1.0;

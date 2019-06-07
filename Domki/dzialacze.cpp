@@ -82,7 +82,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         wybrany = nullptr;
         nacisniety = 0;
     }
-    else if (klikniecia.size() > 0 && clock() - klikniecia.back().first > 0.2 * CLOCKS_PER_SEC)
+    else if (klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 4))
     {
         if (wybrany != nullptr&&cel != nullptr&&cel == wybrany)
         {
@@ -155,7 +155,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
     for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();)
     {
         auto pk = *pk_iter;
-        if (pk.first->gracz != &gracz)
+        if (pk.first->gracz != &gracz || (pk.first == pk.second && pk.first->poziom >= 5) || (pk.first != pk.second && pk.first->typdomku != TypDomku::kMiasto) )
             pk_iter = punkty_kontrolne.erase(pk_iter);
         else {
             if (pk.first == pk.second)
@@ -163,7 +163,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
                 auto x = new UlepszRozkaz(pk.first);
                 res.push_back(x);
             }
-            else if (pk.first->liczebnosc * 10 >= pk.first->max_liczebnosc)
+            else if (pk.first->liczebnosc * 10 >= pk.first->max_liczebnosc||pk.first->liczebnosc >= 100.0)
             {
                 auto x = new WymarszRozkaz(pk.first, pk.second);
                 x->ulamek = 1;

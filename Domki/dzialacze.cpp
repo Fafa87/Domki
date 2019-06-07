@@ -23,6 +23,8 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
         if (klikniety != nullptr && IsType<Domek>(klikniety))
         {
             if (wybrany != (Domek*)klikniety&& klikniety->gracz->numer == gracz.numer&&zdarzenie.mouseButton.button == sf::Mouse::Left)//wybór własnego domku
+               wybrany = (Domek*)klikniety;
+            else if (wybrany != (Domek*)klikniety&& klikniety->gracz->numer != gracz.numer && zdarzenie.mouseButton.button == sf::Mouse::Middle)//wybór nie wlasnego domku
                 wybrany = (Domek*)klikniety;
 
             if (wybrany != nullptr && wybrany != klikniety && zdarzenie.mouseButton.button == sf::Mouse::Right)//przesyl ludkow tylko prawym klawiszem myszy
@@ -53,7 +55,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 
     if (zdarzenie.type == sf::Event::KeyPressed)
     {
-        if (wybrany != nullptr && wybrany->gracz == &gracz)
+        if (wybrany != nullptr )// + && wybrany->gracz == &gracz
         {
             if (zdarzenie.key.code == sf::Keyboard::Tilde)
                 nacisniety = '`';
@@ -76,13 +78,14 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 vector<Rozkaz*> MyszDecydent::WykonajRuch()
 {
     vector<Rozkaz*> res;
-    if (wybrany != nullptr && wybrany->gracz != &gracz)
-    {
-        cel = nullptr;
-        wybrany = nullptr;
-        nacisniety = 0;
-    }
-    else if (klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 4))
+  //  if (wybrany != nullptr && wybrany->gracz != &gracz) // to jest pod komentarzem aby moc sterowac kompem - trzeba wczesniej wcisnac srodkowy klawisz
+  //  {
+       // cel = nullptr;
+       // wybrany = nullptr;
+       // nacisniety = 0;
+ //   }
+    
+    if (klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 4)) // tutaj trzeba dodac else z przodu bo wczesniej jest if w komentarzu
     {
         if (wybrany != nullptr&&cel != nullptr&&cel == wybrany)
         {
@@ -114,7 +117,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
             // wysylanie
             if (klikniecia.size() <= 2)
             {
-                punkty_kontrolne.erase(wybrany); //punkt kontrolny wylacza sie poprzez wyslanie jednosteks
+                punkty_kontrolne.erase(wybrany); //punkt kontrolny wylacza sie poprzez wyslanie jednostek
 
                 double frakcja = 1;
                 if (klikniecia.size() == 1)
@@ -155,7 +158,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
     for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();)
     {
         auto pk = *pk_iter;
-        if (pk.first->gracz != &gracz || (pk.first == pk.second && pk.first->poziom >= 5) || (pk.first != pk.second && pk.first->typdomku != TypDomku::kMiasto) )
+        if ( (pk.first == pk.second && pk.first->poziom >= 5) || (pk.first != pk.second && pk.first->typdomku != TypDomku::kMiasto) )//pk.first->gracz != &gracz ||
             pk_iter = punkty_kontrolne.erase(pk_iter);
         else {
             if (pk.first == pk.second)

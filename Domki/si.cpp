@@ -57,7 +57,7 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 						{
 							wrogie_ludki += romeczek->liczebnosc*((float)(std::get<2>(rozgrywka.SilaGracza(romeczek->gracz->numer))) + 10.0) / 10.0;
 						}
-					if (domek1.poziom >= 1 && 2.0 * domek1.liczebnosc >= domek1.max_liczebnosc && (2.0 * domek1.liczebnosc - domek1.max_liczebnosc >= 2.0 * wrogie_ludki || (domek1.typdomku == TypDomku::kFort&&2.0 * domek1.liczebnosc *domek1.poziom - domek1.max_liczebnosc* domek1.poziom >= 2.0 * wrogie_ludki)) && (domek1.poziom <= 4 || styl == 'P'))
+					if (domek1.poziom >= 1 && 2.0 * domek1.liczebnosc >= domek1.max_liczebnosc && (2.0 * domek1.liczebnosc - domek1.max_liczebnosc >= 2.0 * wrogie_ludki || (domek1.typdomku == TypDomku::kFort&&2.0 * domek1.liczebnosc *domek1.poziom - domek1.max_liczebnosc* domek1.poziom >= 2.0 * wrogie_ludki)))
 					{
 						UlepszRozkaz* r = new UlepszRozkaz(&domek1);
 						res.push_back(r);

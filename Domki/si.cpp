@@ -10,13 +10,17 @@ Komputer::Komputer(Rozgrywka & rozgrywka, Gracz & gracz, double szybkosc_kompute
 	czas = (double)(rand() % 30) / 10.0;
 }
 
-double ile_trzeba_ludkow(double odleglosc, Domek* domek)
+double ile_trzeba_ludkow(double odleglosc, Domek* domek,Rozgrywka& rozgrywka)
 {
 	double przyrostarmii = 2.0;
 	double przesuniecie = 200.0 / 3.0;
 	if (domek->typdomku == TypDomku::kMiasto&&domek->gracz->aktywny == true)return domek->liczebnosc + przyrostarmii * domek->poziom * odleglosc / przesuniecie + 1.0;
 	else if (domek->typdomku == TypDomku::kFort)return domek->liczebnosc*(domek->poziom + 1.0) + 1.0;
-	else if (domek->typdomku == TypDomku::kWieza)return domek->liczebnosc + 1.0 + 100 * domek->poziom*domek->poziom;
+    else if (domek->typdomku == TypDomku::kWieza)
+        {
+        if (std::get<2>(rozgrywka.SilaGracza(domek->gracz->numer)) >= domek->poziom)return domek->liczebnosc + 1;
+        else return domek->liczebnosc + 1.0 + 100 * domek->poziom;
+        }
 	return domek->liczebnosc + 1.0;
 }
 
@@ -36,7 +40,7 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 				graniczy = false;
 				for (Domek* domek2 : domek1.drogi)
 				{
-					if (domek2->gracz->numer != gracz.numer && 2 * ile_trzeba_ludkow(rozgrywka.Odleglosc(domek1, (*domek2)), domek2) + 1.0 <= domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0)
+					if (domek2->gracz->numer != gracz.numer && 2 * ile_trzeba_ludkow(rozgrywka.Odleglosc(domek1, (*domek2)), domek2,rozgrywka) + 1.0 <= domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0)
 					{
 						auto r = new WymarszRozkaz(&domek1, domek2);
 						r->ulamek = 0.5;
@@ -136,7 +140,7 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
 				graniczy = false;
 				for (Domek* domek2 : domek1.drogi)
 				{
-					if (domek2->gracz->numer != gracz.numer && ile_trzeba_ludkow(rozgrywka.Odleglosc(domek1, (*domek2)), domek2) + 1.0 <= domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0)
+					if (domek2->gracz->numer != gracz.numer && ile_trzeba_ludkow(rozgrywka.Odleglosc(domek1, (*domek2)), domek2, rozgrywka) + 1.0 <= domek1.liczebnosc*(10.0 + (float)(std::get<2>(rozgrywka.SilaGracza(gracz.numer)))) / 10.0)
 					{
 						auto r = new WymarszRozkaz(&domek1, domek2);
 						r->ulamek = 1.0;

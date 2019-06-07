@@ -25,7 +25,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
             if (wybrany != (Domek*)klikniety&& klikniety->gracz->numer == gracz.numer&&zdarzenie.mouseButton.button == sf::Mouse::Left)//wybór własnego domku
                 wybrany = (Domek*)klikniety;
 
-            if (wybrany != nullptr && wybrany != klikniety&& zdarzenie.mouseButton.button == sf::Mouse::Right)//przesyl ludkow tylko prawym klawiszem myszy
+            if (wybrany != nullptr && wybrany != klikniety && zdarzenie.mouseButton.button == sf::Mouse::Right)//przesyl ludkow tylko prawym klawiszem myszy
             {
                 if (cel != klikniety || klikniecia.back().second != zdarzenie.mouseButton.button)
                 {
@@ -39,11 +39,6 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
                 {
                     klikniecia.clear();
                     cel = (Domek*)klikniety;
-                }
-                else if (klikniecia.size() >= 3)
-                {
-                    klikniecia.clear();
-                    cel = nullptr;
                 }
             }
         }
@@ -155,23 +150,28 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         klikniecia.clear();
         cel = nullptr;
     }
- 
-    for (auto pk : punkty_kontrolne)
+
+    // przetwarzaj punkty kontrolne
+    for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();)
     {
-        if (pk.first==pk.second)
-        {
-            auto x = new UlepszRozkaz(pk.first);
-            res.push_back(x);
-        }
-        else if (pk.first->liczebnosc * 10 >= pk.first->max_liczebnosc)
-        {
-            auto x = new WymarszRozkaz(pk.first,pk.second);
-            x->ulamek = 1;
-            res.push_back(x);
+        auto pk = *pk_iter;
+        if (pk.first->gracz != &gracz)
+            pk_iter = punkty_kontrolne.erase(pk_iter);
+        else {
+            if (pk.first == pk.second)
+            {
+                auto x = new UlepszRozkaz(pk.first);
+                res.push_back(x);
+            }
+            else if (pk.first->liczebnosc * 10 >= pk.first->max_liczebnosc)
+            {
+                auto x = new WymarszRozkaz(pk.first, pk.second);
+                x->ulamek = 1;
+                res.push_back(x);
+            }
+            pk_iter++;
         }
     }
-
-    // TODO usun gdy zostanie przejety
 
 /*	if (klikniecia.size() > 0 && clock() - klikniecia.back() >= 3.0 * CLOCKS_PER_SEC) // co trzy sekundy braku akcji domek jest odznaczany
     {        // do zrobienia -> zmniejszanie się okręgu wokół domku symbolizujące malejący czas

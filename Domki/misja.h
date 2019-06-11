@@ -30,7 +30,7 @@ struct MisjaUstawienia
 
 	int nr_gracza = 1;
 	vector<string> nazwy_graczow;
-	vector<int> komputery = { 2, 3, 4 };
+    vector<int> komputery = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
 	int do_ilu_wygranych = 0;
 	vector<int> ile_kto_wygranych;

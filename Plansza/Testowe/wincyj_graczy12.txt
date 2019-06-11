@@ -1,0 +1,37 @@
+12
+1 2
+koordynaty 600 300
+gracz 1
+2 2
+koordynaty 850 300
+gracz 2
+3 2
+koordynaty 975 300
+gracz 3
+4 2
+koordynaty 1200 300
+gracz 4
+5 2
+koordynaty 600 500
+gracz 5
+6 2
+koordynaty 850 500
+gracz 6
+7 2
+koordynaty 975 500
+gracz 7
+8 2
+koordynaty 1200 500
+gracz 8
+9 2
+koordynaty 600 700
+gracz 9
+10 2
+koordynaty 850 700
+gracz 10
+11 2
+koordynaty 975 700
+gracz 11
+12 2
+koordynaty 1200 700
+gracz 12

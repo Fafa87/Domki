@@ -117,7 +117,7 @@ void wykonaj(string zadanie)
             misja_ustawienia.nazwa = misja_nazwa;
             misja_ustawienia.grupa = "Plansza\\" + misja_folder;
             misja_ustawienia.do_ilu_wygranych = liczba_gier;
-            misja_ustawienia.ile_kto_wygranych = vector<int>(5);
+            misja_ustawienia.ile_kto_wygranych = vector<int>(13);
             misja_ustawienia.szybkosc = predkosc;
             
             printf("Stworzona gra na planszy %s %s\n", misja_folder.c_str(), misja_nazwa.c_str());

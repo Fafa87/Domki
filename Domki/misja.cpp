@@ -76,7 +76,7 @@ MisjaUstawienia wczytaj_meta(string sciezka)
     sort(res.komputery.begin(), res.komputery.end());
     res.komputery.erase(unique(res.komputery.begin(), res.komputery.end()), res.komputery.end());
     res.komputery.erase(res.komputery.begin()); // usun pierwszego
-    res.ile_kto_wygranych = vector<int>(5);
+    res.ile_kto_wygranych = vector<int>(13);
 
     plikmapa.close();
 
@@ -87,33 +87,22 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 {
     Rozgrywka gra;
     //gracze
-    gra.gracze.push_back(Gracz());
-    Gracz& gracz0 = gra.gracze.back();
-    gracz0.numer = 0; gracz0.nazwa = "NEUTRAL";
-    gracz0.kolor = sf::Color(128,128,128);
-    gracz0.aktywny = false;
+    sf::Color kolory[] = { sf::Color(128,128,128) , sf::Color(255,0,0), sf::Color(0,0,255), sf::Color(0,255,0),      // 0 - szary, 1 - czerwony, 2 - niebieski, 3 - zielony
+    sf::Color(255,255,0) , sf::Color(255,128,0), sf::Color(0,255,255), sf::Color(127,0,255),                              // 4 - zolty, 5 - pomaranczowy, 6 - jasnoniebieski, 7- fioletowy
+    sf::Color(255,0,255) , sf::Color(102,0,51), sf::Color(102,102,0), sf::Color(51,25,0),                        // 8 - rozowy, 9 - bordowy, 10 - ciemnozloty, 11 - brazowy
+    sf::Color(255,255,255), };                                                                                                                             // 12 - bialy
 
-    gra.gracze.push_back(Gracz());
-    Gracz& gracz1 = gra.gracze.back();
-    gracz1.numer = 1; gracz1.nazwa = "GRACZ";
-    gracz1.kolor = sf::Color::Red;
+    for (int a = 0; a <= 12 ; a++)
+    {
+        gra.gracze.push_back(Gracz());
+        Gracz& gracz = gra.gracze.back();
+        gracz.numer = a;
+        if (a == 0)gracz.aktywny = false;
+        else if (a == 1)gracz.nazwa = "GRACZ";
+        gracz.kolor = kolory[a];
+    }
 
-    gra.gracze.push_back(Gracz());
-    Gracz& gracz2 = gra.gracze.back();
-    gracz2.numer = 2; gracz2.nazwa = "CIENIAS";
-    gracz2.kolor = sf::Color::Blue;
-
-    gra.gracze.push_back(Gracz());
-    Gracz& gracz3 = gra.gracze.back();
-    gracz3.numer = 3; gracz3.nazwa = "CZERESNIAK";
-    gracz3.kolor = sf::Color::Green;
-
-    gra.gracze.push_back(Gracz());
-    Gracz& gracz4 = gra.gracze.back();
-    gracz4.numer = 4; gracz4.nazwa = "CWANIACZEK";
-    gracz4.kolor = sf::Color::Yellow;
-
-    gra.liczba_aktywnych_graczy = 4;
+    gra.liczba_aktywnych_graczy = 12;
     //domki
     ifstream plikmapa;
     plikmapa.open(sciezka);
@@ -152,16 +141,10 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
                 }
             else if (parametr == "gracz")
                 {
-                char znak;
-                plikmapa >> znak;
-                if (znak == '1')domek.gracz = &gracz1;
-                else if (znak == '2')domek.gracz = &gracz2;
-                else if (znak == '3')domek.gracz = &gracz3;
-                else if (znak == '4')domek.gracz = &gracz4;
-                if (znak == '1')gracz1.liczba_tworow++;
-                else if (znak == '2')gracz2.liczba_tworow++;
-                else if (znak == '3')gracz3.liczba_tworow++;
-                else if (znak == '4')gracz4.liczba_tworow++;
+                int numer;
+                plikmapa >> numer;
+                domek.gracz = &gra.Gracz(numer);
+                gra.Gracz(numer).liczba_tworow++;
                 }
             else if(parametr == "typ")
                 {
@@ -202,7 +185,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
         domek.wyglad = Wyglad::kMiasto;
         if (domek.gracz == nullptr)
         {
-            domek.gracz = &gracz0;
+            domek.gracz = &gra.Gracz(0);
             if(domek.liczebnosc==-1)gra.ZmienLiczebnosc(domek, 25);
         }
         else if(domek.liczebnosc==-1)gra.ZmienLiczebnosc(domek, 50);
@@ -697,12 +680,12 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 				
 				if (poziomy_trudnosci[0] == trudnosc)
 					{
-					rozgrywka.Gracz(nr).nazwa = "PIRAT";
+					rozgrywka.Gracz(nr).nazwa = "PIRACIK";
 					kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'P'));
 					}
 				else if (poziomy_trudnosci[1] == trudnosc)
 					{
-					rozgrywka.Gracz(nr).nazwa = "KAPITAN HAK";
+					rozgrywka.Gracz(nr).nazwa = "KAPITAN";
 					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'P'));
 					}
 				else
@@ -748,7 +731,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 	
 				if (poziomy_trudnosci[0] == trudnosc)
 					{
-					rozgrywka.Gracz(nr).nazwa = "ZELOTA";
+					rozgrywka.Gracz(nr).nazwa = "NUBTOS";
 					kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'K'));
 					}
 				else if (poziomy_trudnosci[1] == trudnosc)

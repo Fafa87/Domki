@@ -1,37 +1,37 @@
 12
 1 2
-koordynaty 600 300
+koordynaty 300 300
 gracz 1
 2 2
-koordynaty 850 300
+koordynaty 375 300
 gracz 2
 3 2
-koordynaty 975 300
+koordynaty 450 300
 gracz 3
 4 2
-koordynaty 1200 300
+koordynaty 525 300
 gracz 4
 5 2
-koordynaty 600 500
+koordynaty 600 300
 gracz 5
 6 2
-koordynaty 850 500
+koordynaty 675 300
 gracz 6
 7 2
-koordynaty 975 500
+koordynaty 750 300
 gracz 7
 8 2
-koordynaty 1200 500
+koordynaty 825 300
 gracz 8
 9 2
-koordynaty 600 700
+koordynaty 900 300
 gracz 9
 10 2
-koordynaty 850 700
+koordynaty 975 300
 gracz 10
 11 2
-koordynaty 975 700
+koordynaty 1050 300
 gracz 11
 12 2
-koordynaty 1200 700
+koordynaty 1125 300
 gracz 12

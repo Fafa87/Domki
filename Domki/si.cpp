@@ -27,9 +27,9 @@ double ile_trzeba_ludkow(double odleglosc, Domek* domek,Rozgrywka& rozgrywka)
 vector<Rozkaz*> Komputer::WykonajRuch()
 {
 	vector<Rozkaz*> res;
-	if (czas*szybkosc_komputera >= 1.0)
+	if (czas*szybkosc_komputera >= (1.0+gracz.liczba_tworow/3))
 	{
-		czas -= 1.0 / szybkosc_komputera;
+		czas -= (1.0 + gracz.liczba_tworow / 3) / szybkosc_komputera;
 		bool ruch, graniczy;
 		double odleglosc = 0;
 		Domek* domekx = NULL;

@@ -387,18 +387,25 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
     });
     
     auto inne_etykieta = sfg::Label::Create("Inne: ");
+
+    auto oszustwa_ptaszek = sfg::CheckButton::Create("Oszustwa: ");
+    oszustwa_ptaszek->SetActive(false);
     auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
     walka_w_polu_ptaszek->SetActive(true);
+    auto punkty_kontrolne_ptaszek = sfg::CheckButton::Create("Punkty kontrolne: ");
+    punkty_kontrolne_ptaszek->SetActive(true);
 
     auto uruchom = sfg::Button::Create("Uruchom");
     uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [wybor_lista,wybor_lista_foldery, szybkosc_pasek, trudnosc_lista, walka_w_polu_ptaszek, do_ilu_pasek, okno, &muzyka] {
+        [wybor_lista,wybor_lista_foldery, szybkosc_pasek, trudnosc_lista, oszustwa_ptaszek, walka_w_polu_ptaszek, punkty_kontrolne_ptaszek, do_ilu_pasek, okno, &muzyka] {
         MisjaUstawienia ustawienia;
         ustawienia.nazwa = wybor_lista->GetSelectedText();
         ustawienia.grupa = "Plansza\\" + wybor_lista_foldery->GetSelectedText();
         ustawienia.szybkosc = szybkosc_pasek->GetValue();
         ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
+        ustawienia.oszustwa = oszustwa_ptaszek->IsActive();
         ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
+        ustawienia.punkty_kontrolne = punkty_kontrolne_ptaszek->IsActive();
         ustawienia.do_ilu_wygranych = do_ilu_pasek->GetValue();
 
         muzyka.stop();
@@ -436,11 +443,15 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
     tabelka->Attach(do_ilu_wartosc, sf::Rect<sf::Uint32>(2, 6, 1, 1));
     
     tabelka->Attach(inne_etykieta, sf::Rect<sf::Uint32>(0, 7, 1, 1));
-    tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 7, 2, 1));
+    tabelka->Attach(oszustwa_ptaszek, sf::Rect<sf::Uint32>(1, 7, 2, 1));
     tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 8, 4, 1));
+    tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 8, 2, 1));
+    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 9, 4, 1));
+    tabelka->Attach(punkty_kontrolne_ptaszek, sf::Rect<sf::Uint32>(1, 9, 2, 1));
+    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 10, 4, 1));
 
-    tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 9, 2, 1));
-    tabelka->Attach(powrot, sf::Rect<sf::Uint32>(1, 10, 2, 1));
+    tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 10, 2, 1));
+    tabelka->Attach(powrot, sf::Rect<sf::Uint32>(1, 11, 2, 1));
 
     box->Pack(tytul, false, false);
     box->Pack(tabelka, true, false);
@@ -483,12 +494,17 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
     szybkosc_pasek->SetValue(1.5);
 
     auto inne_etykieta = sfg::Label::Create("Inne: ");
+
+    auto oszustwa_ptaszek = sfg::CheckButton::Create("Oszustwa: ");
+    oszustwa_ptaszek->SetActive(false);
     auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
     walka_w_polu_ptaszek->SetActive(true);
+    auto punkty_kontrolne_ptaszek = sfg::CheckButton::Create("Punkty kontrolne: ");
+    punkty_kontrolne_ptaszek->SetActive(true);
 
     auto uruchom = sfg::Button::Create("Uruchom");
     uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [wybor_lista_foldery, szybkosc_pasek, trudnosc_lista, walka_w_polu_ptaszek, okno, &muzyka] {
+        [wybor_lista_foldery, szybkosc_pasek, trudnosc_lista, oszustwa_ptaszek, walka_w_polu_ptaszek, punkty_kontrolne_ptaszek, okno, &muzyka] {
         MisjaUstawienia ustawienia;
         ustawienia.grupa = wybor_lista_foldery->GetSelectedText();
         ustawienia.szybkosc = szybkosc_pasek->GetValue();
@@ -522,11 +538,15 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
     tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 2, 1));
 
     tabelka->Attach(inne_etykieta, sf::Rect<sf::Uint32>(0, 7, 1, 1));
-    tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 7, 2, 1));
+    tabelka->Attach(oszustwa_ptaszek, sf::Rect<sf::Uint32>(1, 7, 2, 1));
     tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 8, 4, 1));
+    tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 8, 2, 1));
+    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 9, 4, 1));
+    tabelka->Attach(punkty_kontrolne_ptaszek, sf::Rect<sf::Uint32>(1, 9, 2, 1));
+    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 10, 4, 1));
 
-    tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 9, 2, 1));
-    tabelka->Attach(powrot, sf::Rect<sf::Uint32>(1, 10, 2, 1));
+    tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 10, 2, 1));
+    tabelka->Attach(powrot, sf::Rect<sf::Uint32>(1, 11, 2, 1));
 
     box->Pack(tytul, false, false);
     box->Pack(tabelka, true, false);

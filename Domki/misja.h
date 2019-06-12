@@ -26,7 +26,10 @@ struct MisjaUstawienia
 	double szybkosc = 1.5;
 	string trudnosc = poziomy_trudnosci[0];
 	string skorka = "rycerze_hd";
-	bool walka_w_polu = true;
+
+	bool oszustwa = false,
+        walka_w_polu = true,
+        punkty_kontrolne = true;
 
 	int nr_gracza = 1;
 	vector<string> nazwy_graczow;

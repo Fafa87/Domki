@@ -24,7 +24,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
         {
             if (wybrany != (Domek*)klikniety&& klikniety->gracz->numer == gracz.numer&&zdarzenie.mouseButton.button == sf::Mouse::Left)//wybór własnego domku
                wybrany = (Domek*)klikniety;
-            else if (wybrany != (Domek*)klikniety&& klikniety->gracz->numer != gracz.numer && zdarzenie.mouseButton.button == sf::Mouse::Middle)//wybór nie wlasnego domku
+            else if (rozgrywka.oszustwa && wybrany != (Domek*)klikniety&& klikniety->gracz->numer != gracz.numer && zdarzenie.mouseButton.button == sf::Mouse::Middle)//wybór nie wlasnego domku tylko w przypadku oszust
                 wybrany = (Domek*)klikniety;
 
             if (wybrany != nullptr && wybrany != klikniety && zdarzenie.mouseButton.button == sf::Mouse::Right)//przesyl ludkow tylko prawym klawiszem myszy
@@ -78,21 +78,20 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 vector<Rozkaz*> MyszDecydent::WykonajRuch()
 {
     vector<Rozkaz*> res;
-  //  if (wybrany != nullptr && wybrany->gracz != &gracz) // to jest pod komentarzem aby moc sterowac kompem - trzeba wczesniej wcisnac srodkowy klawisz
-  //  {
-       // cel = nullptr;
-       // wybrany = nullptr;
-       // nacisniety = 0;
- //   }
-    
-    if (klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 4)) // tutaj trzeba dodac else z przodu bo wczesniej jest if w komentarzu
+    if (!rozgrywka.oszustwa && wybrany != nullptr && wybrany->gracz != &gracz) // to jest pod komentarzem aby moc sterowac kompem - trzeba wczesniej wcisnac srodkowy klawisz
+    {
+       cel = nullptr;
+        wybrany = nullptr;
+        nacisniety = 0;
+    } 
+    else if (klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 4)) // tutaj trzeba dodac else z przodu bo wczesniej jest if w komentarzu
     {
         if (wybrany != nullptr&&cel != nullptr&&cel == wybrany)
         {
             // ulepszanie
             if (klikniecia.size() == 2)
             {
-                punkty_kontrolne.erase(wybrany); //punkt kontrolny wylacza sie poprzez ulepszenie
+                if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany); //punkt kontrolny wylacza sie poprzez ulepszenie
 
                 auto r = new UlepszRozkaz(wybrany);
                 res.push_back(r);
@@ -105,7 +104,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
             {
                 klikniecia.clear();
 
-                punkty_kontrolne[wybrany] = wybrany;
+                if (rozgrywka.punkty_kontrolne)punkty_kontrolne[wybrany] = wybrany;
 
                 wybrany = nullptr;
                 cel = nullptr;
@@ -117,7 +116,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
             // wysylanie
             if (klikniecia.size() <= 2)
             {
-                punkty_kontrolne.erase(wybrany); //punkt kontrolny wylacza sie poprzez wyslanie jednostek
+                if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany); //punkt kontrolny wylacza sie poprzez wyslanie jednostek
 
                 double frakcja = 1;
                 if (klikniecia.size() == 1)
@@ -136,7 +135,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
             }
             else if (klikniecia.size() >= 3)
             {
-                punkty_kontrolne[wybrany] = cel;
+                if (rozgrywka.punkty_kontrolne) punkty_kontrolne[wybrany] = cel;
                 //wybrany->punkt_kontrolny = cel;
 
                 auto r = new WymarszRozkaz(wybrany, cel);
@@ -155,6 +154,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
     }
 
     // przetwarzaj punkty kontrolne
+    if(rozgrywka.punkty_kontrolne)// jesli wlaczone punkty kontrolne
     for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();)
     {
         auto pk = *pk_iter;
@@ -312,7 +312,7 @@ void Ruszacz::WykonajRuchy()
             }
             // TODO ustaw odpowiednio wartości jeśli ulepszenie jest możliwe
         }
-        else if (IsType<Testpower>(r))
+        else if (rozgrywka->oszustwa && IsType<Testpower>(r))
         {
             auto testpoweruj = (Testpower*)r;
             if (testpoweruj->kogo->poziom == 0)testpoweruj->kogo->typdomku = TypDomku::kMiasto;

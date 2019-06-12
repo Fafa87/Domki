@@ -649,7 +649,9 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
     // tworzymy rozgrywke
     Rozgrywka rozgrywka = zwarcie_rozgrywka(sciezka);
+    rozgrywka.walka_w_polu = misja_ustawienia.oszustwa;
     rozgrywka.walka_w_polu = misja_ustawienia.walka_w_polu;
+    rozgrywka.walka_w_polu = misja_ustawienia.punkty_kontrolne;
     // przygotowujemy dzialaczy
     Wyswietlacz wyswietlacz(rozgrywka);
     wyswietlacz.Zaladuj(misja_ustawienia.skorka);

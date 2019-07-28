@@ -26,9 +26,11 @@ struct Rozgrywka
     list<Domek> domki;
     list<Ludek> armie;
     int liczba_aktywnych_graczy=0;
+
     Gracz& Gracz(int numer);
     void ZmienLiczebnosc(Domek& domek, double nowa);
     void ZmienLiczebnosc(Ludek& ludek, double nowa);
+    void ZmienPoziom(Domek& domek, int nowy_poziom);
     void TracLudki(Ludek& ludek,double ile);
     double Odleglosc(const Twor& twor1, const Twor& twor2);
     Ludek* Spotkanie(Ludek& ludek);

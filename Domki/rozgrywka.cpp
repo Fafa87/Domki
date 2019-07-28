@@ -54,6 +54,20 @@ void Rozgrywka::ZmienLiczebnosc(Ludek & ludek, double nowa)
     ludek.rozmiar = 10 + 10 * log(nowa+1.0) / log(1000);
 }
 
+void Rozgrywka::ZmienPoziom(Domek & domek, int nowy_poziom)
+{
+    if (nowy_poziom > 0)
+    {
+        domek.max_liczebnosc = 100 * (1 << (nowy_poziom - 1));
+    }
+    else
+    {
+        domek.typdomku = TypDomku::kPole;
+        domek.max_liczebnosc = 0;
+    }
+    domek.poziom = nowy_poziom;
+}
+
 void Rozgrywka::TracLudki(Ludek & ludek, double ile)
 {
     ludek.tarcza = std::max(0,ludek.tarcza - (int)ile);

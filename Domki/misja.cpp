@@ -175,9 +175,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
                 {
                     int lev;
                     plikmapa >> lev;
-                    domek.poziom = lev;
-                    domek.max_liczebnosc = 100;
-                    domek.max_liczebnosc *= 1 << (domek.poziom - 1);
+                    gra.ZmienPoziom(domek, lev);
                 }
             }
         domek.produkcja = 2;

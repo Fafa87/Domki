@@ -101,9 +101,6 @@
     <ClInclude Include="multi.h">
       <Filter>Header Files\multi</Filter>
     </ClInclude>
-    <ClInclude Include="ruszacze.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="multi_dzialacze.h">
       <Filter>Header Files\multi</Filter>
     </ClInclude>

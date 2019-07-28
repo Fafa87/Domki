@@ -274,9 +274,8 @@ void Ruszacz::WykonajRuchy()
 
             if (ulepsz->kogo->ulepszanie == true&&ulepsz->kogo->poziom>0&&ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0 > 0&&ulepsz->kogo->poziom<=4&&ulepsz->kogo->poziom>0)
                 {
+                rozgrywka->ZmienPoziom(*ulepsz->kogo, ulepsz->kogo->poziom + 1);
                 rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0);
-                ulepsz->kogo->poziom++;
-                ulepsz->kogo->max_liczebnosc = 2 * ulepsz->kogo->max_liczebnosc;
                 }
         }
         else if (IsType<BurzRozkaz>(r))
@@ -285,13 +284,7 @@ void Ruszacz::WykonajRuchy()
 
             if (ulepsz->kogo->ulepszanie == true && ulepsz->kogo->poziom>0&&ulepsz->kogo->liczebnosc > 25.0)
             {
-                ulepsz->kogo->poziom--;
-                if(ulepsz->kogo->poziom>0)ulepsz->kogo->max_liczebnosc = ulepsz->kogo->max_liczebnosc / 2.0;
-                else
-                    {
-                    ulepsz->kogo->typdomku = TypDomku::kPole;
-                    ulepsz->kogo->max_liczebnosc = 0;
-                    }
+                rozgrywka->ZmienPoziom(*ulepsz->kogo, ulepsz->kogo->poziom - 1);
                 rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - 25.0);
             }
         }
@@ -306,8 +299,7 @@ void Ruszacz::WykonajRuchy()
             else if (przebuduj->kogo->przebudowa == true && przebuduj->kogo->typdomku != przebuduj->naco&&przebuduj->kogo->liczebnosc >= 25.0&&przebuduj->kogo->poziom == 0)
             {
                 przebuduj->kogo->typdomku = przebuduj->naco;
-                przebuduj->kogo->poziom = 1;
-                przebuduj->kogo->max_liczebnosc = 100.0;
+                rozgrywka->ZmienPoziom(*przebuduj->kogo, 1);
                 rozgrywka->ZmienLiczebnosc(*przebuduj->kogo, przebuduj->kogo->liczebnosc - 25.0);
             }
             // TODO ustaw odpowiednio wartości jeśli ulepszenie jest możliwe
@@ -315,9 +307,8 @@ void Ruszacz::WykonajRuchy()
         else if (rozgrywka->oszustwa && IsType<Testpower>(r))
         {
             auto testpoweruj = (Testpower*)r;
-            if (testpoweruj->kogo->poziom == 0)testpoweruj->kogo->typdomku = TypDomku::kMiasto;
-            testpoweruj->kogo->poziom = 5;
-            testpoweruj->kogo->max_liczebnosc = 1600.0;
+            if (testpoweruj->kogo->poziom == 0) testpoweruj->kogo->typdomku = TypDomku::kMiasto;
+            rozgrywka->ZmienPoziom(*testpoweruj->kogo, 5);
             rozgrywka->ZmienLiczebnosc(*testpoweruj->kogo, 1600.0);
         }
     }
@@ -406,7 +397,7 @@ void Ruszacz::WalczLudkami(double czas)
                         armia.gracz->liczba_tworow++;		
                         armie_ktore_dotarly++;
 
-						cel->poziom = std::min(5,cel->poziom);
+                        cel->poziom = std::min(5,cel->poziom);
                     }
                     rozgrywka->ZmienLiczebnosc(*cel, std::abs(nowa_liczebnosc));
                 }

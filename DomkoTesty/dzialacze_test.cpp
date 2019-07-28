@@ -41,7 +41,7 @@ namespace DomkoTesty
         {
             auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 100, PD(1, 1));
             auto& domek_1 = tworca::DodajDomek(rozgrywka, 1, 100, PD(5, 5));
-            auto& armia_atak = tworca::DodajLudka(rozgrywka, domek_0, 1, 99, PD(1,1));
+            auto& armia_atak = tworca::DodajLudka(rozgrywka, domek_0, 1, 99, PD(1, 1));
             auto rozkaz = new WymarszRozkaz(&domek_0, &domek_1);
             rozkaz->ulamek = 0.5;
             vector<Rozkaz*> rozkazy = { rozkaz };
@@ -76,7 +76,7 @@ namespace DomkoTesty
 
         }
 
-        void SprawdzSilaGracza(int liczba, int produkcja, int kuznia, int szybkosc, tuple<int,int,int,int> wyliczone)
+        void SprawdzSilaGracza(int liczba, int produkcja, int kuznia, int szybkosc, tuple<int, int, int, int> wyliczone)
         {
             Assert::AreEqual(liczba, get<0>(wyliczone));
             Assert::AreEqual(produkcja, get<1>(wyliczone));
@@ -89,7 +89,7 @@ namespace DomkoTesty
             auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 10, PD());
             tworca::DodajDomek(rozgrywka, 1, 30, PD());
             tworca::DodajDomek(rozgrywka, 1, 7, PD());
-            
+
             SprawdzSilaGracza(10, 1, 0, 0, rozgrywka.SilaGracza(0));
             SprawdzSilaGracza(37, 2, 0, 0, rozgrywka.SilaGracza(1));
             tworca::DodajLudka(rozgrywka, domek_0, 1, 12, PD());
@@ -122,7 +122,7 @@ namespace DomkoTesty
         TEST_METHOD(AtakObronaSzybkoscDomku)
         {
             auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 10, PD());
-            auto& domek_1 = tworca::DodajDomek(rozgrywka, 0, 5, PD(100,100));
+            auto& domek_1 = tworca::DodajDomek(rozgrywka, 0, 5, PD(100, 100));
 
             Assert::AreEqual(10.0, rozgrywka.PoliczAtakDomku(domek_0));
             Assert::AreEqual(10.0, rozgrywka.PoliczObroneDomku(domek_0));
@@ -157,6 +157,31 @@ namespace DomkoTesty
             Assert::AreEqual(6.5, rozgrywka.PoliczAtakDomku(domek_1));
             Assert::AreEqual(5.0, rozgrywka.PoliczObroneDomku(domek_1));
             Assert::AreEqual(1.0, rozgrywka.PoliczSzybkoscDomku(domek_1));
+        }
+
+        TEST_METHOD(ZmienPoziom)
+        {
+            auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 10, PD());
+            Assert::AreEqual(1, domek_0.poziom);
+            Assert::AreEqual(100, domek_0.max_liczebnosc);
+            rozgrywka.ZmienPoziom(domek_0, 2);
+            Assert::AreEqual(2, domek_0.poziom);
+            Assert::AreEqual(200, domek_0.max_liczebnosc);
+            rozgrywka.ZmienPoziom(domek_0, 3);
+            Assert::AreEqual(3, domek_0.poziom);
+            Assert::AreEqual(400, domek_0.max_liczebnosc);
+            rozgrywka.ZmienPoziom(domek_0, 4);
+            Assert::AreEqual(4, domek_0.poziom);
+            Assert::AreEqual(800, domek_0.max_liczebnosc);
+            rozgrywka.ZmienPoziom(domek_0, 5);
+            Assert::AreEqual(5, domek_0.poziom);
+            Assert::AreEqual(1600, domek_0.max_liczebnosc);
+
+
+            rozgrywka.ZmienPoziom(domek_0, 0);
+            Assert::AreEqual(0, domek_0.poziom);
+            Assert::AreEqual(0, domek_0.max_liczebnosc);
+            Assert::AreEqual((int)TypDomku::kPole, (int)domek_0.typdomku);
         }
 
         TEST_METHOD(Osy)

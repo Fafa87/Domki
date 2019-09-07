@@ -271,11 +271,11 @@ void Ruszacz::WykonajRuchy()
         else if (IsType<UlepszRozkaz>(r))
         {
             auto ulepsz = (UlepszRozkaz*)r;
-
-            if (ulepsz->kogo->ulepszanie == true&&ulepsz->kogo->poziom>0&&ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0 > 0&&ulepsz->kogo->poziom<=4&&ulepsz->kogo->poziom>0)
+            auto koszt = ulepsz->kogo->max_liczebnosc / 2.0;
+            if (ulepsz->kogo->ulepszanie == true&&ulepsz->kogo->poziom>0&&ulepsz->kogo->liczebnosc - koszt > 0&&ulepsz->kogo->poziom<=4&&ulepsz->kogo->poziom>0)
                 {
                 rozgrywka->ZmienPoziom(*ulepsz->kogo, ulepsz->kogo->poziom + 1);
-                rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - ulepsz->kogo->max_liczebnosc / 2.0);
+                rozgrywka->ZmienLiczebnosc(*ulepsz->kogo, ulepsz->kogo->liczebnosc - koszt);
                 }
         }
         else if (IsType<BurzRozkaz>(r))

@@ -100,13 +100,13 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     auto zakladaj = sfg::Button::Create(L"Zakładaj!");
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [&muzyka, nazwa, do_ilu_pasek, szybkosc_pasek, wybor_lista, wybor_lista_foldery,  ile_ludzi_pasek] {
-        GUI::aplikacja.zalozone_gry.push_back(thread(start_nowej_gry_dla_wielu, wybor_lista_foldery->GetSelectedText(), wybor_lista->GetSelectedText(),(int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue()));
+        GUI::aplikacja().zalozone_gry.push_back(thread(start_nowej_gry_dla_wielu, wybor_lista_foldery->GetSelectedText(), wybor_lista->GetSelectedText(),(int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue()));
     });
 
     auto powrot = sfg::Button::Create("Powrot");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
-        GUI::aplikacja.pop_active_window(okno);
+        GUI::aplikacja().pop_active_window(okno);
     });
 
     auto tabelka = sfg::Table::Create();
@@ -132,7 +132,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     box->Pack(powrot, false, false);
     okno->Add(box);
 
-    GUI::aplikacja.stretch_up_down(okno);
+    GUI::aplikacja().stretch_up_down(okno);
 
     return okno;
 }
@@ -180,10 +180,10 @@ void start_klient(sf::Music& muzyka, string nazwa)
         klient->wtyk->setBlocking(true);
     } while (!(res.second.Zwyciezca() >= 0));
 
-    while (GUI::aplikacja.zalozone_gry.size())
+    while (GUI::aplikacja().zalozone_gry.size())
     {
-        GUI::aplikacja.zalozone_gry.back().join();
-        GUI::aplikacja.zalozone_gry.pop_back();
+        GUI::aplikacja().zalozone_gry.back().join();
+        GUI::aplikacja().zalozone_gry.pop_back();
     }
 }
 
@@ -225,12 +225,12 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa,strin
         if (przemowa.openFromFile(przemowa_sciezka))
             przemowa.play();
 
-        GUI::aplikacja.show_and_wait_for_anything(okno_opisu);
+        GUI::aplikacja().show_and_wait_for_anything(okno_opisu);
 
         przemowa.stop();
 
         // odpal misje
-        GUI::aplikacja.hide_all_windows();
+        GUI::aplikacja().hide_all_windows();
 
         while (misja_dane.Zwyciezca() != 1)
         {
@@ -238,7 +238,7 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa,strin
 
             if (misja_dane.Zwyciezca() == 0)
             {
-                GUI::aplikacja.show_all_windows();
+                GUI::aplikacja().show_all_windows();
                 return nullptr;
             }
         }
@@ -263,7 +263,7 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa,strin
     auto powrot = sfg::Button::Create("Powrot");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
-        GUI::aplikacja.pop_active_window(okno);
+        GUI::aplikacja().pop_active_window(okno);
     });
 
     box->Pack(tytul);
@@ -272,7 +272,7 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa,strin
 
     okno->Add(box);
 
-    GUI::aplikacja.show_all_windows();
+    GUI::aplikacja().show_all_windows();
     return okno;
 }
 
@@ -297,23 +297,23 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
         [&muzyka, nazwa_edit, glowne]   {
         auto okno_zaloz = start_serwer_menu(glowne, muzyka, nazwa_edit->GetText());
         if (okno_zaloz != nullptr)
-            GUI::aplikacja.set_active_window(okno_zaloz);
+            GUI::aplikacja().set_active_window(okno_zaloz);
     });
 
     auto dolacz = sfg::Button::Create(L"Dołącz");
     dolacz->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno, &muzyka, nazwa_edit] {
         muzyka.stop();
-        GUI::aplikacja.hide_all_windows();
+        GUI::aplikacja().hide_all_windows();
         start_klient(muzyka, nazwa_edit->GetText());
         muzyka.play();
-        GUI::aplikacja.set_active_window(okno);
+        GUI::aplikacja().set_active_window(okno);
     });
 
     auto powrot = sfg::Button::Create("Powrot");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
-        GUI::aplikacja.pop_active_window(okno);
+        GUI::aplikacja().pop_active_window(okno);
     });
 
     box->SetSpacing(10);
@@ -327,7 +327,7 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
     box->Pack(powrot, true, false);
     okno->Add(box);
 
-    GUI::aplikacja.stretch_up_down(okno);
+    GUI::aplikacja().stretch_up_down(okno);
 
     return okno;
 }
@@ -409,19 +409,19 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
         ustawienia.do_ilu_wygranych = do_ilu_pasek->GetValue();
 
         muzyka.stop();
-        GUI::aplikacja.hide_all_windows();
+        GUI::aplikacja().hide_all_windows();
         while (ustawienia.Zwyciezca() == -1)
         {
             misja(ustawienia);
         }
         muzyka.play();
-        GUI::aplikacja.set_active_window(okno);
+        GUI::aplikacja().set_active_window(okno);
     });
     
     auto powrot = sfg::Button::Create("Powrot");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
-        GUI::aplikacja.pop_active_window(okno);
+        GUI::aplikacja().pop_active_window(okno);
     });
 
     tabelka->SetRowSpacings(10);
@@ -457,7 +457,7 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
     box->Pack(tabelka, true, false);
     okno->Add(box);
 
-    GUI::aplikacja.stretch_up_down(okno);
+    GUI::aplikacja().stretch_up_down(okno);
 
     return okno;
 }
@@ -512,15 +512,15 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
         ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
 
 
-        GUI::aplikacja.hide_all_windows();
+        GUI::aplikacja().hide_all_windows();
         auto okno_kampania = kampania_menu(muzyka, wybor_lista_foldery->GetSelectedText(),ustawienia.trudnosc,ustawienia.szybkosc,ustawienia.walka_w_polu);
-        GUI::aplikacja.set_active_window(okno_kampania);
+        GUI::aplikacja().set_active_window(okno_kampania);
     });
 
     auto powrot = sfg::Button::Create("Powrot");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
-        GUI::aplikacja.pop_active_window(okno);
+        GUI::aplikacja().pop_active_window(okno);
     });
 
     tabelka->SetRowSpacings(10);
@@ -552,7 +552,7 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
     box->Pack(tabelka, true, false);
     okno->Add(box);
 
-    GUI::aplikacja.stretch_up_down(okno);
+    GUI::aplikacja().stretch_up_down(okno);
 
     return okno;
 }
@@ -573,7 +573,7 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
         [&muzyka, okno]
     {
         auto okno_kampania = kampania_grand_menu(okno, muzyka);
-        GUI::aplikacja.set_active_window(okno_kampania);
+        GUI::aplikacja().set_active_window(okno_kampania);
     });
 
     auto pojedynczy = sfg::Button::Create("Sam");
@@ -581,7 +581,7 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
         [&muzyka, okno]
     {
         auto okno_sam = pojedynczy_gracz_menu(okno, muzyka);
-        GUI::aplikacja.set_active_window(okno_sam);
+        GUI::aplikacja().set_active_window(okno_sam);
     });
 
     auto razem = sfg::Button::Create("Razem");
@@ -589,7 +589,7 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
         [&muzyka, okno]
     {
         auto okno_razem = wielu_graczy_menu(okno, muzyka);
-        GUI::aplikacja.set_active_window(okno_razem);
+        GUI::aplikacja().set_active_window(okno_razem);
     });
 
     tabelka->SetRowSpacings(10);
@@ -614,15 +614,15 @@ int main() {
     sf::Sprite background(backtexture);
     background.setScale(0.45, 0.45);
 
-    auto& okno_menu = GUI::aplikacja.okno;
-    GUI::aplikacja.setup_theme();
+    auto& okno_menu = GUI::aplikacja().okno;
+    GUI::aplikacja().setup_theme();
     
     auto okno = grand_menu(muzyka);
 
-    GUI::aplikacja.put_right_to(okno, background.getGlobalBounds().width);
-    GUI::aplikacja.stretch_up_down(okno);
+    GUI::aplikacja().put_right_to(okno, background.getGlobalBounds().width);
+    GUI::aplikacja().stretch_up_down(okno);
 
-    GUI::aplikacja.set_active_window(okno);
+    GUI::aplikacja().set_active_window(okno);
 
     sf::Event event;
     sf::Clock clock;
@@ -637,7 +637,7 @@ int main() {
         while (okno_menu.isOpen()) {
             while (okno_menu.pollEvent(event))
             {
-                GUI::aplikacja.pulpit.HandleEvent(event);
+                GUI::aplikacja().pulpit.HandleEvent(event);
 
                 switch (event.type)
                 {
@@ -651,16 +651,16 @@ int main() {
                 case sf::Event::Closed:
                     return 0;
                 case sf::Event::Resized:
-                    GUI::aplikacja.put_right_to(okno, background.getGlobalBounds().width);
-                    GUI::aplikacja.stretch_up_down(okno);
+                    GUI::aplikacja().put_right_to(okno, background.getGlobalBounds().width);
+                    GUI::aplikacja().stretch_up_down(okno);
                 }
             }
 
-            GUI::aplikacja.pulpit.Update(clock.restart().asSeconds());
+            GUI::aplikacja().pulpit.Update(clock.restart().asSeconds());
 
             okno_menu.clear();
             okno_menu.draw(background);
-            GUI::aplikacja.render();
+            GUI::aplikacja().render();
         }
     }
     catch (const std::exception&)

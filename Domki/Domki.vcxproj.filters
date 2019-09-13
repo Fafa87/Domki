@@ -116,5 +116,8 @@
     <ClInclude Include="ext_string.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pakowanie.h">
+      <Filter>Header Files\multi</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

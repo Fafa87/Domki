@@ -169,6 +169,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClInclude Include="Narzedzia\AnimatedSprite.hpp" />
     <ClInclude Include="Narzedzia\Animation.hpp" />
     <ClInclude Include="os.h" />
+    <ClInclude Include="pakowanie.h" />
     <ClInclude Include="rozgrywka.h" />
     <ClInclude Include="si.h" />
     <ClInclude Include="wyswietlacze.h" />

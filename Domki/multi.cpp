@@ -66,7 +66,7 @@ void multi::Serwer::Start(MisjaUstawienia ustawienia)
     }
 }
 
-bool multi::Serwer::Rozeslij(MRozgrywka& stan)
+bool multi::Serwer::Rozeslij(Rozgrywka& stan)
 {
     std::stringstream ss;
     {
@@ -245,9 +245,9 @@ bool multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 }
 
 
-pair<bool, MRozgrywka> multi::Klient::Odbierz()
+pair<bool, Rozgrywka> multi::Klient::Odbierz()
 {
-    MRozgrywka res;
+    Rozgrywka res;
     string last;
     vector<string> data;
 

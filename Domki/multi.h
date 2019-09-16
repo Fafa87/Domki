@@ -46,8 +46,6 @@ namespace multi
     bool Wyslij(sf::TcpSocket& wtyk, string dane);
     bool Wyslij(sf::TcpSocket& wtyk, vector<string> dane);
 
-    typedef Rozgrywka MRozgrywka;
-
     class Serwer
     {
     public:
@@ -58,7 +56,7 @@ namespace multi
 
         // wy�lij info o starcie do graczy
         void Start(MisjaUstawienia ustawienia);
-        bool Rozeslij(MRozgrywka& stan);
+        bool Rozeslij(Rozgrywka& stan);
         vector<Rozkaz*> Odbierz();
 
         vector<Zawodnik> ludzie;
@@ -77,7 +75,7 @@ namespace multi
 
         pair<bool, MisjaUstawienia> OczekujNaStart();
         bool Wyslij(vector<Rozkaz*> rozkazy);
-        pair<bool, MRozgrywka> Odbierz();
+        pair<bool, Rozgrywka> Odbierz();
 
         string nazwa;
         sf::TcpSocket* wtyk;

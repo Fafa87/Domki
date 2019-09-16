@@ -6,6 +6,11 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
+#include <iostream>
+#include "Narzedzia/INIReader.h"
+#include "Narzedzia/easylogging++.h"
+INITIALIZE_EASYLOGGINGPP
+
 #include "misja.h"
 #include "gui.h"
 #include "os.h"
@@ -22,7 +27,8 @@ void start_nowej_gry_dla_wielu(string folder, string mapa, int do_ilu, double sz
     for (int a = 0, b = folder.size(); a < b; a++)if (folder[a] == ' ')folder[a] = '+';
     for (int a = 0, b = mapa.size(); a < b; a++)if (mapa[a] == ' ')mapa[a] = '+';
     string parametry = "0 " + folder + " " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc) + " " + to_string(ile_ludzi);
-    //printf("%s,", parametry.c_str());
+
+    LOG(INFO) << "Startujemy serwer " + parametry;
     std::system(("MultiSerwer.exe " + parametry).c_str());
 }
 
@@ -101,6 +107,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [&muzyka, nazwa, do_ilu_pasek, szybkosc_pasek, wybor_lista, wybor_lista_foldery,  ile_ludzi_pasek] {
         GUI::aplikacja.zalozone_gry.push_back(thread(start_nowej_gry_dla_wielu, wybor_lista_foldery->GetSelectedText(), wybor_lista->GetSelectedText(),(int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue()));
+        LOG(INFO) << "Zalozone gry: " << GUI::aplikacja.zalozone_gry.size();
     });
 
     auto powrot = sfg::Button::Create("Powrot");
@@ -139,16 +146,20 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
 
 void start_klient(sf::Music& muzyka, string nazwa)
 {
+
     auto klient = new multi::Klient(nazwa);
-    printf("Klient: %s\n", klient->nazwa.c_str());
+    LOG(INFO) << "Klient: " << klient->nazwa.c_str();
+    //printf("Klient: %s\n", klient->nazwa.c_str());
 
     Sleep(3);
+    LOG(TRACE) << "Spisuje serwery";
     klient->SpiszSerwery();
 
     multi::Adres adres;
     if (klient->lista_serwerow.size() == 0)
     {
-        printf("Brak serwera!\n");
+        LOG(WARNING) << "Brak serwera";
+        // printf("Brak serwera!\n");
         //auto cel = zadanie.substr(7);
         //auto ip_port = split(cel, ':');
         //adres = Adres(ip_port[0], stoi(ip_port[1]));
@@ -157,6 +168,8 @@ void start_klient(sf::Music& muzyka, string nazwa)
     {
         adres = klient->lista_serwerow.back();
     }
+
+    LOG(INFO) << "Znaleziony serwer: " << adres.ToString();
     klient->Podlacz(adres);
 
     std::pair<bool, MisjaUstawienia> res;
@@ -605,8 +618,12 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
 }
 
 int main() {
-    sf::Music muzyka;
+    el::Configurations conf("log.conf");
+    el::Loggers::reconfigureAllLoggers(conf);
+    INIReader reader("Domki.conf");
 
+    sf::Music muzyka;
+    
     sf::Texture backtexture;
     backtexture.loadFromFile("Grafika\\houseofhouses2.png");
     backtexture.setRepeated(false);
@@ -627,7 +644,7 @@ int main() {
     sf::Event event;
     sf::Clock clock;
 
-    if (muzyka.openFromFile("Muzyka\\Tytulowa.ogg"))
+    if (reader.GetBoolean("przelaczniki", "muzyka", true) && muzyka.openFromFile("Muzyka\\Tytulowa.ogg"))
     {	
         muzyka.setVolume(30);
         muzyka.play();

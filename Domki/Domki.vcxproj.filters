@@ -119,5 +119,19 @@
     <ClInclude Include="pakowanie.h">
       <Filter>Header Files\multi</Filter>
     </ClInclude>
+    <ClInclude Include="Narzedzia\easylogging++.h">
+      <Filter>Header Files\narzedzia</Filter>
+    </ClInclude>
+    <ClInclude Include="Narzedzia\INIReader.h">
+      <Filter>Header Files\narzedzia</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="log.conf">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Domki.conf">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

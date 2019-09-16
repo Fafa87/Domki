@@ -1,4 +1,5 @@
 #include "multi.h"
+#include "Narzedzia/easylogging++.h"
 
 #include <fstream>
 
@@ -143,11 +144,13 @@ void multi::Klient::Podlacz(Adres serwer)
     sf::Socket::Status status = wtyk->connect(serwer.ip, serwer.port);
     if (status != sf::Socket::Done)
     {
-        printf("Buraka!\n");
+        //printf("Buraka!\n");
+        LOG(WARNING) << "Buraka! " << status;
     }
     else
     {
-        printf("Polaczony!\n%s\n", serwer.ToString().c_str());
+        LOG(INFO) << "Polaczony " << serwer.ToString();
+        //printf("Polaczony!\n%s\n", serwer.ToString().c_str());
         multi::Wyslij(*wtyk, nazwa);
     }
 }
@@ -165,7 +168,7 @@ bool multi::Klient::SpiszSerwery()
     data[received] = 0;
     if (status != sf::Socket::Done) 
     {
-        printf("Klient::SpiszSerwery buraka!:%d\n", status);
+        LOG(WARNING) << "Klient::SpiszSerwery buraka! Status " << status;
         odbieracz.unbind();
         return status != sf::Socket::Error;
     }
@@ -174,7 +177,8 @@ bool multi::Klient::SpiszSerwery()
         Adres nowy_adres(serwer.toString(), (int)port);
         if (count(lista_serwerow.begin(), lista_serwerow.end(), nowy_adres) == 0)
         {
-            printf("Serwerek na: %s\n", nowy_adres.ToString().c_str());
+            LOG(INFO) << "Serwerek na: " << nowy_adres.ToString();
+            //printf("Serwerek na: %s\n", nowy_adres.ToString().c_str());
             lista_serwerow.push_back(nowy_adres);
         }
     }
@@ -276,8 +280,11 @@ vector<string> multi::Pobierz(sf::TcpSocket& wtyk)
 {
     vector<string> res;
     sf::Packet pakiet;
-    if (wtyk.receive(pakiet) != sf::Socket::Done)
+
+    auto status = wtyk.receive(pakiet);
+    if (status != sf::Socket::Done)
     {
+        LOG(WARNING) << "Gracz::Pobierz buraka! Status " << status;
         return res;
     }
 
@@ -343,9 +350,11 @@ bool multi::Wyslij(sf::TcpSocket& wtyk, vector<string> dane)
     sf::Packet pakiet;
     for (auto& d : dane)
         pakiet << d;
-    if (wtyk.send(pakiet) != sf::Socket::Done)
+
+    auto status = wtyk.send(pakiet);
+    if (status != sf::Socket::Done)
     {
-        printf("Gracz::Wyslij buraka!");
+        LOG(WARNING) << "Gracz::Wyslij buraka! Status " << status;
         return false;
     }
     return true;
@@ -355,9 +364,10 @@ bool multi::Wyslij(sf::TcpSocket& wtyk, string dane)
 {
     sf::Packet pakiet;
     pakiet << dane;
-    if (wtyk.send(pakiet) != sf::Socket::Done)
+    auto status = wtyk.send(pakiet);
+    if (status != sf::Socket::Done)
     {
-        printf("Gracz::Wyslij buraka!");
+        LOG(WARNING) << "Gracz::Wyslij buraka! Status " << status;
         return false;
     }
     return true;

@@ -11,6 +11,9 @@
 #include "../Domki/multi.h"
 #include "../Domki/multi_dzialacze.h"
 
+#include "../Domki/Narzedzia/easylogging++.h" 
+INITIALIZE_EASYLOGGINGPP
+
 using namespace std;
 using namespace multi;
 

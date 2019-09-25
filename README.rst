@@ -7,6 +7,11 @@ Walka domków o życie!
 
 .. image:: https://img.shields.io/appveyor/ci/fafa87/domki/master.svg
 
+Dostępne na 
+------------
+
+* GameJolt (v.0.9.0): https://gamejolt.com/games/domki/441021 
+
 Ściągnij 
 ------------
 

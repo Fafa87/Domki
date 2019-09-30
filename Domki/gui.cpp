@@ -1,7 +1,7 @@
 #include "gui.h"
 #include "windows.h"
 
-GUI GUI::aplikacja;
+GUI* GUI::apa;
 
 void GUI::setup_theme()
 {
@@ -147,7 +147,7 @@ void GUI::hide_all_windows()
 void GUI::render()
 {
     pulpit.Update(0.001f);
-    GUI::aplikacja.sfgui.Display(okno);
+    GUI::aplikacja().sfgui.Display(okno);
     okno.display();
 }
 

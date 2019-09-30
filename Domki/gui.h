@@ -78,5 +78,11 @@ public:
     void render();
     void reset_view();
 
-    static GUI aplikacja;
+	static GUI* apa;
+	static GUI& aplikacja() {
+		if (apa == NULL)
+			apa = new GUI();
+		return *apa;
+
+	}
 };

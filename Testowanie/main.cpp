@@ -176,9 +176,9 @@ std::shared_ptr<sfg::Window> probne_gui()
 	auto canvas = sfg::Canvas::Create();
 
 	auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
-	okno->SetRequisition(sf::Vector2f(GUI::aplikacja.okno.getSize().x, 100));
+	okno->SetRequisition(sf::Vector2f(GUI::aplikacja().okno.getSize().x, 100));
 	
-	GUI::aplikacja.bottom_window(okno);
+	GUI::aplikacja().bottom_window(okno);
 
 	auto lewy = sfg::Label::Create("Lewy panel");
 
@@ -186,15 +186,15 @@ std::shared_ptr<sfg::Window> probne_gui()
 	komunikat_koncowy->SetId("Naglowek");
 	komunikat_koncowy->SetAlignment(sf::Vector2f(0.5, 0.5));
 	komunikat_koncowy->SetText("GRATULACJE DLA GRACZA");
-	GUI::aplikacja.pulpit.SetProperty("Label", "Color", sf::Color::White);
-	GUI::aplikacja.pulpit.SetProperty("Label", "FontSize", 28);
-	GUI::aplikacja.pulpit.SetProperty("Label#Naglowek", "FontSize", 48);
+	GUI::aplikacja().pulpit.SetProperty("Label", "Color", sf::Color::White);
+	GUI::aplikacja().pulpit.SetProperty("Label", "FontSize", 28);
+	GUI::aplikacja().pulpit.SetProperty("Label#Naglowek", "FontSize", 48);
 
 	auto prawy = sfg::Label::Create("Prawy panel");
 
 	auto table = sfg::Table::Create();
-	GUI::aplikacja.pulpit.SetProperty("Label", "BorderColor", sf::Color(79, 45, 4));
-	GUI::aplikacja.pulpit.SetProperty("Label", "BorderWidth", 8);
+	GUI::aplikacja().pulpit.SetProperty("Label", "BorderColor", sf::Color(79, 45, 4));
+	GUI::aplikacja().pulpit.SetProperty("Label", "BorderWidth", 8);
 	table->Attach(lewy, sf::Rect<sf::Uint32>(0, 0, 1, 1));
 	table->Attach(canvas, sf::Rect<sf::Uint32>(1, 0, 1, 1));
 	table->Attach(komunikat_koncowy, sf::Rect<sf::Uint32>(1, 0, 1, 1));
@@ -206,14 +206,14 @@ std::shared_ptr<sfg::Window> probne_gui()
 	canvas->Clear();
 	canvas->Draw(papierek);
 
-	GUI::aplikacja.set_active_window(okno);
+	GUI::aplikacja().set_active_window(okno);
 	return okno;
 }
 
 int pokazowa_misja()
 {
-	sf::RenderWindow& window = GUI::aplikacja.okno;
-	GUI::aplikacja.setup_theme();
+	sf::RenderWindow& window = GUI::aplikacja().okno;
+	GUI::aplikacja().setup_theme();
 
 	// tworzymy rozgrywke
 	Rozgrywka rozgrywka = pokazowa_rozgrywka();
@@ -274,13 +274,13 @@ int pokazowa_misja()
 		
 		interfejs_rozgrywki(gujak, ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek());
 
-		GUI::aplikacja.show_bottom_gui(view, gujak);
+		GUI::aplikacja().show_bottom_gui(view, gujak);
 		
 		wyswietlacz.WyswietlTlo(window);
 		ruchGracza.Wyswietlaj(window);
 		wyswietlacz.Wyswietlaj(window);
 
-		GUI::aplikacja.okno.display();
+		GUI::aplikacja().okno.display();
 
 		Sleep(16);
 	}

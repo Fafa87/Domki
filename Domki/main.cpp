@@ -7,7 +7,6 @@
 #include <SFML/Audio.hpp>
 
 #include <iostream>
-#include "Narzedzia/INIReader.h"
 #include "Narzedzia/easylogging++.h"
 INITIALIZE_EASYLOGGINGPP
 
@@ -620,7 +619,6 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
 int main() {
     el::Configurations conf("log.conf");
     el::Loggers::reconfigureAllLoggers(conf);
-    INIReader reader("Domki.conf");
 
     sf::Music muzyka;
     
@@ -644,7 +642,7 @@ int main() {
     sf::Event event;
     sf::Clock clock;
 
-    if (reader.GetBoolean("przelaczniki", "muzyka", true) && muzyka.openFromFile("Muzyka\\Tytulowa.ogg"))
+    if (GUI::aplikacja().ini.GetBoolean("przelaczniki", "muzyka", true) && muzyka.openFromFile("Muzyka\\Tytulowa.ogg"))
     {	
         muzyka.setVolume(30);
         muzyka.play();

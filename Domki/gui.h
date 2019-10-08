@@ -8,6 +8,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include "Narzedzia/INIReader.h"
+
 using namespace std;
 
 class GUI
@@ -35,7 +37,7 @@ private:
         return sf::VideoMode(1280, 719);
     }
 public:
-    GUI() : okno(ekran(), "Domki Forever!", styl_okna(), ustawienia()) {
+    GUI() : okno(ekran(), "Domki Forever!", styl_okna(), ustawienia()), ini("Domki.conf") {
         okno.resetGLStates();
         zwykly_widok = sf::View(sf::FloatRect(0, 0, 1280, 719));
         okno.setView(zwykly_widok);
@@ -52,6 +54,8 @@ public:
     vector<shared_ptr<sfg::Window>> windows;
     vector<thread> zalozone_gry;
     int dzwieki_glosnosc = 100;
+
+    INIReader ini;
 
     void setup_theme();
     void center_window(shared_ptr<sfg::Window> window);

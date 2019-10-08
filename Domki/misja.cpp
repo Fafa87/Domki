@@ -4,6 +4,8 @@
 #include "ext_string.h"
 #include <SFML/Audio.hpp>
 
+#include "Narzedzia/easylogging++.h"
+
 #include <cstdlib>
 #include <ctime>
 
@@ -759,13 +761,16 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     
     muzykant.Przygrywaj();
 
-    //czasomierz
+    // Czasomierz i FPS
     auto czasomierz = clock();
-    int czasik = 0;
     double czas;
-    //APM
+    double fpsy;
+    int ostatni_pokaz_fps = 0;
+
+    // APM
     long long akcje = 0;
-    double czas_przeminal = clock();
+    double start_gry = clock();
+    double czas_gry = 0;
 
     bool trwa_gra = true;
     while (trwa_gra)
@@ -802,6 +807,15 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         }
         ///FPSY
         czas = (double)(clock() - czasomierz) / CLOCKS_PER_SEC;
+        fpsy = (int)(1 / czas + 0.5);
+
+        if (czas_gry - ostatni_pokaz_fps > 2 && GUI::aplikacja().ini.GetBoolean("przelaczniki", "fps", false))
+        {
+            printf("FPS: %d\n", fpsy);
+            LOG(INFO) << "FPS: " << fpsy;
+            ostatni_pokaz_fps = czas_gry;
+        }
+
         czasomierz = clock();
         auto& ruchy = myszkaGracza.WykonajRuch();
         ruszacz.PrzyjmijRuch(ruchy);
@@ -832,8 +846,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         GUI::aplikacja().show_bottom_gui(view, interfejs);
         wyswietlacz.WyswietlTlo(window);
 
-        czasik = (int)(1.0 / czas + 0.5);
-        czas_przeminal = (double)(clock() - czas_przeminal) / CLOCKS_PER_SEC;
+        czas_gry = (double)(clock() - start_gry) / CLOCKS_PER_SEC;
 
         ruchGracza.Wyswietlaj(window);
         wyswietlacz.Wyswietlaj(window);

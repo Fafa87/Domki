@@ -3,9 +3,13 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../Domki/Narzedzia/easylogging++.h"
+INITIALIZE_EASYLOGGINGPP
+
 #include "../Domki/gui.h"
 #include "../Domki/misja.h"
 #include "../Domki/os.h"
+
 
 using namespace std;
 

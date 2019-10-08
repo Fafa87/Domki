@@ -75,7 +75,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\_Biblioteki\include;$(SolutionDir)\SFML-2.4.2\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>
-_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);</PreprocessorDefinitions>
+_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);_DEBUG;</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>sfml-audio-d.lib;sfml-network-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfgui-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -100,7 +100,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\_Biblioteki\include;$(SolutionDir)\SFML-2.4.2\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>
-_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);</PreprocessorDefinitions>
+_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);NDEBUG;</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -127,7 +127,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\_Biblioteki\include;$(SolutionDir)\SFML-2.4.2\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>
-_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);_WINDOW</PreprocessorDefinitions>
+_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);_WINDOW;NDEBUG;</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

@@ -842,7 +842,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
             przyspieszenie_bez_gracza = true;
         }
 
-        //window.clear();
+        window.clear();
 
         //interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek());
         //GUI::aplikacja().show_bottom_gui(view, interfejs);
@@ -883,9 +883,9 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
             break;
         }
 
-        //GUI::aplikacja().okno.display();
+        GUI::aplikacja().okno.display();
 
-        //Sleep(16);
+        //Sleep(16); zaimplementujmy sensowne ograniczenie tutaj? inaczej zawsze jest max 50 fpsów, a gdy faktycznie gra każda klatka trwa długo (mamy 40 fps, to nas to przesuwa do 24)
     }
 
     //GUI::aplikacja().finish_viewport_render(view);

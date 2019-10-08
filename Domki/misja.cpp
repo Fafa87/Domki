@@ -883,7 +883,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
         GUI::aplikacja().okno.display();
 
-        Sleep(16);
+        //Sleep(16);
     }
 
     GUI::aplikacja().finish_viewport_render(view);

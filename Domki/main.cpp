@@ -161,7 +161,7 @@ void start_klient(sf::Music& muzyka, string nazwa)
         // printf("Brak serwera!\n");
         //auto cel = zadanie.substr(7);
         //auto ip_port = split(cel, ':');
-        //adres = Adres(ip_port[0], stoi(ip_port[1]));
+        adres = multi::Adres("domki.westeurope.cloudapp.azure.com", 85);
     }
     else
     {

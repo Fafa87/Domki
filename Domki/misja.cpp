@@ -497,6 +497,17 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
     return interfejs;
 }
 
+void odliczanie()
+{
+    for (int a = 5; a >= 0; a--)
+    {
+        if (a > 0)
+            Sleep(1500);
+        else
+            Sleep(800);
+    }
+}
+
 void odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::Window> gui_pasek)
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
@@ -643,7 +654,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
     bool to_serwer = nr_gracza == 0;
 
-    if (true || to_serwer)
+    if (to_serwer)
     {
         window.setVisible(false);
         GUI::aplikacja().dzwieki_glosnosc = 0;
@@ -655,8 +666,9 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     rozgrywka.walka_w_polu = misja_ustawienia.walka_w_polu;
     rozgrywka.walka_w_polu = misja_ustawienia.punkty_kontrolne;
     // przygotowujemy dzialaczy
-    //Wyswietlacz wyswietlacz(rozgrywka);
-    //wyswietlacz.Zaladuj(misja_ustawienia.skorka);
+    Wyswietlacz wyswietlacz(rozgrywka);
+    if (!to_serwer)
+        wyswietlacz.Zaladuj(misja_ustawienia.skorka);
     MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
     OznaczaczWyborow ruchGracza(myszkaGracza);
     Muzykant muzykant(rozgrywka);
@@ -673,90 +685,97 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     
     //KOMPUTEROWIE
     vector<Komputer*> kompiutery;
-	srand(time(NULL));
+    srand(time(NULL));
     for (auto nr : misja_ustawienia.komputery)
     {
-		//NADANIE NAZWY CZYLI ROWNIEZ TRYBU GRY
-		switch (std::rand() % 4)
-			{
-			case 0: 
-				{
-				
-				if (poziomy_trudnosci[0] == trudnosc)
-					{
-					rozgrywka.Gracz(nr).nazwa = "PIRACIK";
-					kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'P'));
-					}
-				else if (poziomy_trudnosci[1] == trudnosc)
-					{
-					rozgrywka.Gracz(nr).nazwa = "KAPITAN";
-					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'P'));
-					}
-				else
-					throw exception();
-				break;
-				}
-			case 1:
-				{
+        //NADANIE NAZWY CZYLI ROWNIEZ TRYBU GRY
+        switch (std::rand() % 4)
+            {
+            case 0: 
+                {
+                
+                if (poziomy_trudnosci[0] == trudnosc)
+                    {
+                    rozgrywka.Gracz(nr).nazwa = "PIRACIK";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'P'));
+                    }
+                else if (poziomy_trudnosci[1] == trudnosc)
+                    {
+                    rozgrywka.Gracz(nr).nazwa = "KAPITAN";
+                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'P'));
+                    }
+                else
+                    throw exception();
+                break;
+                }
+            case 1:
+                {
 
-				if (poziomy_trudnosci[0] == trudnosc)
-					{
-					rozgrywka.Gracz(nr).nazwa = "STOKFISZ";
-					kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'B'));
-					}
-				else if (poziomy_trudnosci[1] == trudnosc)
-					{
-					rozgrywka.Gracz(nr).nazwa = "DIPBLU";
-					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'B'));
-					}
-				else
-					throw exception();
-				break;
-				}
-			case 2:
-				{
+                if (poziomy_trudnosci[0] == trudnosc)
+                    {
+                    rozgrywka.Gracz(nr).nazwa = "STOKFISZ";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'B'));
+                    }
+                else if (poziomy_trudnosci[1] == trudnosc)
+                    {
+                    rozgrywka.Gracz(nr).nazwa = "DIPBLU";
+                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'B'));
+                    }
+                else
+                    throw exception();
+                break;
+                }
+            case 2:
+                {
 
-				if (poziomy_trudnosci[0] == trudnosc)
-					{
-					rozgrywka.Gracz(nr).nazwa = "ALFAZERO";
-					kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'A'));
-					}
-				else if (poziomy_trudnosci[1] == trudnosc)
-					{
-					rozgrywka.Gracz(nr).nazwa = "ALFASTAR";
-					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'A'));
-					}
-				else
-					throw exception();
-				break;
-				}
-			case 3:
-				{
-	
-				if (poziomy_trudnosci[0] == trudnosc)
-					{
-					rozgrywka.Gracz(nr).nazwa = "NUBTOS";
-					kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'K'));
-					}
-				else if (poziomy_trudnosci[1] == trudnosc)
-					{
-					rozgrywka.Gracz(nr).nazwa = "PROTOS";
-					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'K'));
-					}
-				else
-					throw exception();
-				break;
-				}
-			}
+                if (poziomy_trudnosci[0] == trudnosc)
+                    {
+                    rozgrywka.Gracz(nr).nazwa = "ALFAZERO";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'A'));
+                    }
+                else if (poziomy_trudnosci[1] == trudnosc)
+                    {
+                    rozgrywka.Gracz(nr).nazwa = "ALFASTAR";
+                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'A'));
+                    }
+                else
+                    throw exception();
+                break;
+                }
+            case 3:
+                {
+    
+                if (poziomy_trudnosci[0] == trudnosc)
+                    {
+                    rozgrywka.Gracz(nr).nazwa = "NUBTOS";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'K'));
+                    }
+                else if (poziomy_trudnosci[1] == trudnosc)
+                    {
+                    rozgrywka.Gracz(nr).nazwa = "PROTOS";
+                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'K'));
+                    }
+                else
+                    throw exception();
+                break;
+                }
+            }
     }
 
     ruszacz.rozgrywka = &rozgrywka;
     ruszacz.szybkosc *= predkosc;
     
-    //shared_ptr<sfg::Window> interfejs = interfejs_rozgrywki(nullptr, misja_ustawienia, rozgrywka, wyswietlacz, nullptr);
-   // sf::View view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
-    //window.setView(view);
-    //odliczanie(wyswietlacz, view, interfejs);
+    shared_ptr<sfg::Window> interfejs;
+    sf::View view;
+    if (!to_serwer)
+    {
+        interfejs = interfejs_rozgrywki(nullptr, misja_ustawienia, rozgrywka, wyswietlacz, nullptr);
+        view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
+        window.setView(view);
+        odliczanie(wyswietlacz, view, interfejs);
+    }
+    else 
+        odliczanie();
 
     if (!GUI::aplikacja().dzwieki_glosnosc)
         muzykant.wyciszony = true;
@@ -797,7 +816,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
                     trwa_gra = false;
                     break;
                 case sf::Keyboard::F3:
-                    //wyswietlacz.ZaladujInne();
+                    wyswietlacz.ZaladujInne();
                     break;
                 }
                 break;
@@ -844,24 +863,32 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
         window.clear();
 
-        //interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek());
-        //GUI::aplikacja().show_bottom_gui(view, interfejs);
-        //wyswietlacz.WyswietlTlo(window);
+        if (!to_serwer)
+        {
+            interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek());
+            GUI::aplikacja().show_bottom_gui(view, interfejs);
+            wyswietlacz.WyswietlTlo(window);
+        }
 
         czas_gry = (double)(clock() - start_gry) / CLOCKS_PER_SEC;
 
-        //ruchGracza.Wyswietlaj(window);
-        //wyswietlacz.Wyswietlaj(window);
-
+        if (!to_serwer)
+        {
+            ruchGracza.Wyswietlaj(window);
+            wyswietlacz.Wyswietlaj(window);
+        }
 
         //ZAKONCZENIE GRY
         if (rozgrywka.liczba_aktywnych_graczy == 1)
         {
             muzykant.Zamilcz();
 
-            //GUI::aplikacja().finish_viewport_render(view);
-            //if (interfejs != nullptr)
-            //    GUI::aplikacja().remove_active_window(interfejs);
+            if (!to_serwer)
+            {
+                GUI::aplikacja().finish_viewport_render(view);
+                if (interfejs != nullptr)
+                    GUI::aplikacja().remove_active_window(interfejs);
+            }
 
             for (auto& g : rozgrywka.gracze)
             {
@@ -888,11 +915,13 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         //Sleep(16); zaimplementujmy sensowne ograniczenie tutaj? inaczej zawsze jest max 50 fpsów, a gdy faktycznie gra każda klatka trwa długo (mamy 40 fps, to nas to przesuwa do 24)
     }
 
-    //GUI::aplikacja().finish_viewport_render(view);
+    if (!to_serwer)
+        GUI::aplikacja().finish_viewport_render(view);
+
     GUI::aplikacja().reset_view();
 
-    //if(interfejs != nullptr)
-    //    GUI::aplikacja().remove_active_window(interfejs);
+    if(!to_serwer && interfejs != nullptr)
+        GUI::aplikacja().remove_active_window(interfejs);
     return 0;
 }
 

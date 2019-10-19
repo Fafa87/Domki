@@ -642,9 +642,12 @@ int main() {
     sf::Event event;
     sf::Clock clock;
 
+    if (!GUI::aplikacja().ini.GetBoolean("przelaczniki", "muzyka", true))
+        GUI::aplikacja().dzwieki_glosnosc = 0;
+
     if (GUI::aplikacja().ini.GetBoolean("przelaczniki", "muzyka", true) && muzyka.openFromFile("Muzyka\\Tytulowa.ogg"))
-    {	
-        muzyka.setVolume(30);
+    {
+        muzyka.setVolume(GUI::aplikacja().dzwieki_glosnosc / 3);
         muzyka.play();
     }
 

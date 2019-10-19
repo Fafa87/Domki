@@ -619,6 +619,7 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
 int main() {
     el::Configurations conf("Domki_log.conf");
     el::Loggers::reconfigureAllLoggers(conf);
+    LOG(INFO) << "Domki odpalone!";
 
     sf::Music muzyka;
     

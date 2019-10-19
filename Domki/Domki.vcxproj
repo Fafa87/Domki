@@ -74,7 +74,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\_Biblioteki\include;$(SolutionDir)\SFML-2.4.2\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>
+      <PreprocessorDefinitions>ELPP_NO_DEFAULT_LOG_FILE;
 _CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);_DEBUG;</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -99,7 +99,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\_Biblioteki\include;$(SolutionDir)\SFML-2.4.2\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>
+      <PreprocessorDefinitions>ELPP_NO_DEFAULT_LOG_FILE;
 _CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);NDEBUG;</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -126,7 +126,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\_Biblioteki\include;$(SolutionDir)\SFML-2.4.2\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>
+      <PreprocessorDefinitions>ELPP_NO_DEFAULT_LOG_FILE;
 _CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);_WINDOW;NDEBUG;</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -182,7 +182,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClInclude Include="wyswietlacze.h" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="log.conf">
+    <CopyFileToFolders Include="Domki_log.conf">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <FileType>Document</FileType>

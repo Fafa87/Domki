@@ -497,6 +497,17 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
     return interfejs;
 }
 
+void odliczanie()
+{
+    for (int a = 5; a >= 0; a--)
+    {
+        if (a > 0)
+            Sleep(1500);
+        else
+            Sleep(800);
+    }
+}
+
 void odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::Window> gui_pasek)
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
@@ -641,7 +652,9 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
     sf::RenderWindow& window = GUI::aplikacja().okno;
 
-    if (misja_ustawienia.nr_gracza == 0)
+    bool to_serwer = nr_gracza == 0;
+
+    if (to_serwer)
     {
         window.setVisible(false);
         GUI::aplikacja().dzwieki_glosnosc = 0;
@@ -654,7 +667,8 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     rozgrywka.walka_w_polu = misja_ustawienia.punkty_kontrolne;
     // przygotowujemy dzialaczy
     Wyswietlacz wyswietlacz(rozgrywka);
-    wyswietlacz.Zaladuj(misja_ustawienia.skorka);
+    if (!to_serwer)
+        wyswietlacz.Zaladuj(misja_ustawienia.skorka);
     MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
     OznaczaczWyborow ruchGracza(myszkaGracza);
     Muzykant muzykant(rozgrywka);
@@ -751,12 +765,19 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     ruszacz.rozgrywka = &rozgrywka;
     ruszacz.szybkosc *= predkosc;
     
-    shared_ptr<sfg::Window> interfejs = interfejs_rozgrywki(nullptr, misja_ustawienia, rozgrywka, wyswietlacz, nullptr);
-    sf::View view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
-    window.setView(view);
-    odliczanie(wyswietlacz, view, interfejs);
+    shared_ptr<sfg::Window> interfejs;
+    sf::View view;
+    if (!to_serwer)
+    {
+        interfejs = interfejs_rozgrywki(nullptr, misja_ustawienia, rozgrywka, wyswietlacz, nullptr);
+        view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
+        window.setView(view);
+        odliczanie(wyswietlacz, view, interfejs);
+    }
+    else 
+        odliczanie();
 
-    if (GUI::aplikacja().dzwieki_glosnosc)
+    if (!GUI::aplikacja().dzwieki_glosnosc)
         muzykant.wyciszony = true;
     
     muzykant.Przygrywaj();
@@ -831,7 +852,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         muzykant.GrajEfekty(ruszacz);
 
         // przyspiesz jesli zostaly same komputery
-        if (!przyspieszenie_bez_gracza && misja_ustawienia.JedenGracz() && !rozgrywka.Gracz(misja_ustawienia.nr_gracza).aktywny)
+        if (!przyspieszenie_bez_gracza && misja_ustawienia.JedenGracz() && !rozgrywka.Gracz(nr_gracza).aktywny)
         {
             int mnoznik_czasu = 5;
             for (auto komp : kompiutery)
@@ -842,38 +863,46 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
         window.clear();
 
-        interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek());
-        GUI::aplikacja().show_bottom_gui(view, interfejs);
-        wyswietlacz.WyswietlTlo(window);
+        if (!to_serwer)
+        {
+            interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek());
+            GUI::aplikacja().show_bottom_gui(view, interfejs);
+            wyswietlacz.WyswietlTlo(window);
+        }
 
         czas_gry = (double)(clock() - start_gry) / CLOCKS_PER_SEC;
 
-        ruchGracza.Wyswietlaj(window);
-        wyswietlacz.Wyswietlaj(window);
-
+        if (!to_serwer)
+        {
+            ruchGracza.Wyswietlaj(window);
+            wyswietlacz.Wyswietlaj(window);
+        }
 
         //ZAKONCZENIE GRY
         if (rozgrywka.liczba_aktywnych_graczy == 1)
         {
             muzykant.Zamilcz();
 
-            GUI::aplikacja().finish_viewport_render(view);
-            if (interfejs != nullptr)
-                GUI::aplikacja().remove_active_window(interfejs);
+            if (!to_serwer)
+            {
+                GUI::aplikacja().finish_viewport_render(view);
+                if (interfejs != nullptr)
+                    GUI::aplikacja().remove_active_window(interfejs);
+            }
 
             for (auto& g : rozgrywka.gracze)
             {
                 if (g.aktywny)
                 {
                     misja_ustawienia.ile_kto_wygranych[g.numer]++;
-                    if (misja_ustawienia.Zwyciezca() < 0 && misja_ustawienia.nr_gracza != 0)
+                    if (misja_ustawienia.Zwyciezca() < 0 && !to_serwer)
                         zakonczenie_gry(g, nr_gracza);
                     break;
                 }
             }
 
             auto zwyciezca_meczu = misja_ustawienia.Zwyciezca();
-            if (zwyciezca_meczu >= 0 && misja_ustawienia.nr_gracza != 0)
+            if (zwyciezca_meczu >= 0 && !to_serwer)
             {
                 zakonczenie_meczu(misja_ustawienia, rozgrywka);
             }
@@ -883,13 +912,15 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
         GUI::aplikacja().okno.display();
 
-        Sleep(16);
+        //Sleep(16); zaimplementujmy sensowne ograniczenie tutaj? inaczej zawsze jest max 50 fpsów, a gdy faktycznie gra każda klatka trwa długo (mamy 40 fps, to nas to przesuwa do 24)
     }
 
-    GUI::aplikacja().finish_viewport_render(view);
+    if (!to_serwer)
+        GUI::aplikacja().finish_viewport_render(view);
+
     GUI::aplikacja().reset_view();
 
-    if(interfejs != nullptr)
+    if(!to_serwer && interfejs != nullptr)
         GUI::aplikacja().remove_active_window(interfejs);
     return 0;
 }

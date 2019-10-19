@@ -127,10 +127,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="log.conf">
+    <CopyFileToFolders Include="Domki.conf">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="Domki.conf">
+    <CopyFileToFolders Include="Domki_log.conf">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
   </ItemGroup>

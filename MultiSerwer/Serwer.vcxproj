@@ -79,7 +79,8 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ELPP_NO_DEFAULT_LOG_FILE;
+_WINDOWS;%(PreprocessorDefinitions);_DEBUG</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\_Biblioteki\include;$(SolutionDir)\SFML-2.4.2\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -100,7 +101,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ELPP_NO_DEFAULT_LOG_FILE;
+_WINDOWS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\_Biblioteki\include;$(SolutionDir)\SFML-2.4.2\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -123,7 +125,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);_WINDOW</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ELPP_NO_DEFAULT_LOG_FILE;
+_WINDOWS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\_Biblioteki\include;$(SolutionDir)\SFML-2.4.2\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -163,6 +166,15 @@
     <ProjectReference Include="..\Domki\Domki.vcxproj">
       <Project>{f45b812d-b8c1-4931-ab22-a8ac650cf562}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\Domki\MultiSerwer_log.conf">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseWindow|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <DeploymentContent>true</DeploymentContent>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

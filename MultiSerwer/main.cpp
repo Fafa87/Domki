@@ -252,6 +252,10 @@ void wykonaj(string zadanie)
 
 int main(int argc, const char * argv[]) {
     string zadanie;
+
+    el::Configurations conf("MultiSerwer_log.conf");
+    el::Loggers::reconfigureAllLoggers(conf);
+    LOG(INFO) << "MultiSerwer odpalony!";
     
     GUI::aplikacja().setup_theme();
     GUI::aplikacja().okno.close();

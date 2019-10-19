@@ -284,7 +284,7 @@ vector<string> multi::Pobierz(sf::TcpSocket& wtyk)
     auto status = wtyk.receive(pakiet);
     if (status != sf::Socket::Done)
     {
-        LOG(WARNING) << "Gracz::Pobierz buraka! Status " << status;
+        LOG_EVERY_N(10, WARNING) << "Gracz::Pobierz buraka! Status " << status;
         return res;
     }
 
@@ -354,7 +354,7 @@ bool multi::Wyslij(sf::TcpSocket& wtyk, vector<string> dane)
     auto status = wtyk.send(pakiet);
     if (status != sf::Socket::Done)
     {
-        LOG(WARNING) << "Gracz::Wyslij buraka! Status " << status;
+        LOG_EVERY_N(10, WARNING) << "Gracz::Wyslij buraka! Status " << status;
         return false;
     }
     return true;
@@ -367,7 +367,7 @@ bool multi::Wyslij(sf::TcpSocket& wtyk, string dane)
     auto status = wtyk.send(pakiet);
     if (status != sf::Socket::Done)
     {
-        LOG(WARNING) << "Gracz::Wyslij buraka! Status " << status;
+        LOG_EVERY_N(10, WARNING) << "Gracz::Wyslij buraka! Status " << status;
         return false;
     }
     return true;

@@ -265,23 +265,30 @@ int main(int argc, const char * argv[]) {
         konfiguruj(int(argv[1][0] - '0'), argv);
     }
 
-    do 
+    try {
+        do
+        {
+            komunikat();
+            char tmp[1000];
+            gets_s(tmp);
+            zadanie = tmp;
+
+            wykonaj(zadanie);
+
+            if (klient != nullptr)
+            {
+                klient->lista_serwerow.clear();
+                klient->SpiszSerwery();
+            }
+
+            Sleep(10);
+        } while (zadanie != "k");
+    }
+    catch (const std::exception& ex)
     {
-        komunikat();
-        char tmp[1000];
-        gets_s(tmp);
-        zadanie = tmp;
-
-        wykonaj(zadanie);
-
-        if (klient != nullptr)
-        {			
-            klient->lista_serwerow.clear();
-            klient->SpiszSerwery();
-        }
-
-        Sleep(10);
-    } while (zadanie != "k");
+        LOG(ERROR) << ex.what();
+        return -1;
+    }
 
     return 0;
 }

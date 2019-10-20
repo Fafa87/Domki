@@ -21,14 +21,21 @@ INITIALIZE_EASYLOGGINGPP
 const string WERSJA = "DOMKI 0.9.1";
 
 
-void start_nowej_gry_dla_wielu(string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi)
+PROCESS_INFORMATION start_nowej_gry_dla_wielu(string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi)
 {
     for (int a = 0, b = folder.size(); a < b; a++)if (folder[a] == ' ')folder[a] = '+';
     for (int a = 0, b = mapa.size(); a < b; a++)if (mapa[a] == ' ')mapa[a] = '+';
     string parametry = "0 " + folder + " " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc) + " " + to_string(ile_ludzi);
 
     LOG(INFO) << "Startujemy serwer " + parametry;
-    std::system(("MultiSerwer.exe " + parametry).c_str());
+    string komenda = "MultiSerwer.exe " + parametry;
+    //std::system(komenda.c_str());
+
+    STARTUPINFO info = { sizeof(info) };
+    PROCESS_INFORMATION processInfo;
+    if (!CreateProcess("MultiSerwer.exe", _strdup(komenda.c_str()), NULL, NULL, TRUE, 0, NULL, NULL, &info, &processInfo))
+        throw exception("Nie udalo sie odpalic serwera.");
+    return processInfo;
 }
 
 std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, string nazwa)
@@ -105,7 +112,8 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     auto zakladaj = sfg::Button::Create(L"Zakładaj!");
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [&muzyka, nazwa, do_ilu_pasek, szybkosc_pasek, wybor_lista, wybor_lista_foldery,  ile_ludzi_pasek] {
-        GUI::aplikacja().zalozone_gry.push_back(thread(start_nowej_gry_dla_wielu, wybor_lista_foldery->GetSelectedText(), wybor_lista->GetSelectedText(),(int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue()));
+        GUI::aplikacja().zalozone_gry.push_back(
+            start_nowej_gry_dla_wielu(wybor_lista_foldery->GetSelectedText(), wybor_lista->GetSelectedText(),(int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue()));
         LOG(INFO) << "Zalozone gry: " << GUI::aplikacja().zalozone_gry.size();
     });
 
@@ -194,7 +202,7 @@ void start_klient(sf::Music& muzyka, string nazwa)
 
     while (GUI::aplikacja().zalozone_gry.size())
     {
-        GUI::aplikacja().zalozone_gry.back().join();
+        TerminateProcess(GUI::aplikacja().zalozone_gry.back().hProcess, -2);
         GUI::aplikacja().zalozone_gry.pop_back();
     }
 }
@@ -682,8 +690,9 @@ int main() {
             GUI::aplikacja().render();
         }
     }
-    catch (const std::exception&)
+    catch (const std::exception& ex)
     {
+        LOG(ERROR) << ex.what();
         return -1;
     }
 

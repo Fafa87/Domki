@@ -1,6 +1,7 @@
 #pragma once
 
 #include <thread>
+#include <windows.h>
 
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Widgets.hpp>
@@ -52,7 +53,7 @@ public:
     sf::RenderWindow okno;
     sf::View zwykly_widok;
     vector<shared_ptr<sfg::Window>> windows;
-    vector<thread> zalozone_gry;
+    vector<PROCESS_INFORMATION> zalozone_gry;
     int dzwieki_glosnosc = 100;
 
     INIReader ini;
@@ -82,11 +83,11 @@ public:
     void render();
     void reset_view();
 
-	static GUI* apa;
-	static GUI& aplikacja() {
-		if (apa == NULL)
-			apa = new GUI();
-		return *apa;
+    static GUI* apa;
+    static GUI& aplikacja() {
+        if (apa == NULL)
+            apa = new GUI();
+        return *apa;
 
-	}
+    }
 };

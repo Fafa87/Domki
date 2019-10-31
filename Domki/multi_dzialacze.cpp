@@ -33,7 +33,7 @@ void SerwerowyRuszacz::Ruszaj(double czas)
     for (auto& g : this->serwer.ludzie)
     {
         if (g.ostatnio == sf::Socket::Status::Disconnected)
-            rozgrywka->PoddajGracza(g);
+            rozgrywka->PoddajGracza(rozgrywka->Graczu(g.nazwa));
     }
 }
 

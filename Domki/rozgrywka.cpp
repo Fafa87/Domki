@@ -22,6 +22,12 @@ Gracz & Rozgrywka::Graczu(int numer)
     std::advance(it, numer);
     return *it;
 }
+
+Gracz & Rozgrywka::Graczu(string nazwa)
+{
+    return *std::find_if(gracze.begin(), gracze.end(), [nazwa](Gracz& g) { return g.nazwa == nazwa; });
+}
+
 std::tuple<int,int,int,int> Rozgrywka::SilaGracza(int nr_gracza)
 {
     int ludki=0, produkcja=0, modernizacja=0,szybkosc=0;

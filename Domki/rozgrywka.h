@@ -33,6 +33,8 @@ struct Rozgrywka
     void PrzerwijGre();
 
     Gracz& Graczu(int numer);
+    Gracz& Graczu(int nazwa);
+
     void ZmienLiczebnosc(Domek& domek, double nowa);
     void ZmienLiczebnosc(Ludek& ludek, double nowa);
     void ZmienPoziom(Domek& domek, int nowy_poziom);

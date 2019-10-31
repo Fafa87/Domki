@@ -16,6 +16,9 @@ void Rozgrywka::PoddajGracza(Gracz & gracz)
     for (auto& twor : this->domki)
         if (gracz.numer == twor.gracz->numer)
             twor.gracz = &this->Graczu(0);
+
+    gracz.liczba_tworow = 0;
+    liczba_aktywnych_graczy--;
 }
 
 Gracz & Rozgrywka::Graczu(int numer)

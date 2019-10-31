@@ -30,10 +30,13 @@ void SerwerowyRuszacz::Ruszaj(double czas)
     }
 
     // usun graczy ktorzy sa rozlaczeni
-    for (auto& g : this->serwer.ludzie)
+    for (auto& g : this->serwer.ludzie) if (g.aktywny)
     {
         if (g.ostatnio == sf::Socket::Status::Disconnected)
+        {
             rozgrywka->PoddajGracza(rozgrywka->Graczu(g.nazwa));
+            g.aktywny = false;
+        }
     }
 }
 

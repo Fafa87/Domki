@@ -37,6 +37,7 @@ namespace multi
     struct Zawodnik {
         Adres adres;
         string nazwa;
+        bool aktywny=true;
         sf::TcpSocket* wtyk;
         sf::Socket::Status ostatnio = sf::Socket::Status::NotReady;
 

@@ -81,7 +81,7 @@ bool multi::Serwer::Rozeslij(Rozgrywka& stan)
     }
 
     bool res = true;
-    for (int i = 0; i < ludzie.size(); i++)
+    for (int i = 0; i < ludzie.size(); i++)  if (ludzie[i].aktywny)
     {
         auto stan_wyslania = multi::Wyslij(*ludzie[i].wtyk, ss.str());
         ludzie[i].ostatnio = stan_wyslania;
@@ -95,7 +95,7 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
     vector<Rozkaz*> res;
     if (wtykowiec.wait(sf::seconds(0.01)))
     {
-        for (int i = 0; i < ludzie.size(); i++)
+        for (int i = 0; i < ludzie.size(); i++) if (ludzie[i].aktywny)
         {
             if (wtykowiec.isReady(*ludzie[i].wtyk))
             {

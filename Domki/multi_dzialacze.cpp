@@ -33,10 +33,7 @@ void SerwerowyRuszacz::Ruszaj(double czas)
     for (auto& g : this->serwer.ludzie)
     {
         if (g.ostatnio == sf::Socket::Status::Disconnected)
-        {
-            // TODO usun to 
-
-        }
+            rozgrywka->PoddajGracza(g);
     }
 }
 
@@ -48,7 +45,7 @@ void KlientowyRuszacz::Ruszaj(double czas)
 {
     // wy�lij swoje rozkazy
     auto wyslane = klient.Wyslij(kolejka_do_wykonania);
-    if (wyslane == false)
+    if (wyslane != sf::Socket::Done)
     {
         LOG(WARNING) << "Wyslij rozkazy: wyslane=false, cicho sza!";
     }
@@ -57,7 +54,7 @@ void KlientowyRuszacz::Ruszaj(double czas)
     Ruszacz::Ruszaj(czas);
 
     auto& res = klient.Odbierz();
-    if (res.first)
+    if (res.first == sf::Socket::Done)
     {
         // uaktualnij rozgrywk� - zast�p t� - przepisuj�c, adres ma zosta� ten sam
         *rozgrywka = res.second;
@@ -66,5 +63,10 @@ void KlientowyRuszacz::Ruszaj(double czas)
     else
     {
         LOG(WARNING) << "Klient odbiera stan: =false, cicho sza!";
+        if (res.first == sf::Socket::Disconnected)
+        {
+            LOG(WARNING) << "Odlaczono od serwera.";
+            rozgrywka->PrzerwijGre();
+        }
     }
 }

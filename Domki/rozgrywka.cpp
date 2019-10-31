@@ -2,6 +2,20 @@
 
 int Twor::last_uid = 0;
 
+void Rozgrywka::PrzerwijGre()
+{
+    liczba_aktywnych_graczy = 1;
+}
+
+void Rozgrywka::PoddajGracza(Gracz & gracz)
+{
+    for (auto twor : this->armie)
+        twor.gracz = this->Gracz(0);
+
+    for (auto twor : this->domki)
+        twor.gracz = this->Gracz(0);
+}
+
 Gracz & Rozgrywka::Gracz(int numer)
 {
     auto it = gracze.begin();

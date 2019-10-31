@@ -63,7 +63,7 @@ void komunikat()
 {
     if (serwer == nullptr && klient == nullptr)
     {
-        printf("Zdecyduj czy jestes serwerem czy graczem:\n- jesli serwer to wpisz: 'serwer <nazwa_planszy>.txt' lub 'serwer <nr_planszy>'\njesli chcesz zagrac wiele razy na jednej mapie to na koncu podaj do ilu wygranych grasz\n- jesli graczem to wpisz: 'klient <nazwa>'\n");
+        printf("Zdecyduj czy jestes serwerem czy graczem:\n- jesli serwer to wpisz: 'serwer <nazwa_planszy>.txt' lub 'serwer <nr_planszy>'\njesli chcesz zagrac wiele razy na jednej mapie to na koncu podaj do ilu wygranych grasz\n w szczegolnosci to: string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi\n - jesli graczem to wpisz: 'klient <nazwa>'\n");
     }
     else if (klient != nullptr)
     {

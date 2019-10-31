@@ -85,7 +85,7 @@ bool multi::Serwer::Rozeslij(Rozgrywka& stan)
     {
         auto stan_wyslania = multi::Wyslij(*ludzie[i].wtyk, ss.str());
         ludzie[i].ostatnio = stan_wyslania;
-        res |= stan_wyslania;
+        res |= stan_wyslania == sf::Socket::Status::Done;
     }
     return res;
 }
@@ -275,6 +275,7 @@ pair<sf::Socket::Status, Rozgrywka> multi::Klient::Odbierz()
             cereal::BinaryInputArchive archive(ss);
             archive(res);
         }
+        return { sf::Socket::Status::Done, res };
     }
 
     return { status_data.first, res };

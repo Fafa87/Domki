@@ -63,7 +63,11 @@ void multi::Serwer::Start(MisjaUstawienia ustawienia)
             archive(ustawienia);
         }
 
-        multi::Wyslij(*ludzie[i].wtyk, ss.str());
+        auto status = multi::Wyslij(*ludzie[i].wtyk, ss.str());
+        if (status != sf::Socket::Done)
+        {
+            LOG(WARNING) << "Wyslanie startu buraka! " << status;
+        }
         wtykowiec.add(*ludzie[i].wtyk);
     }
 }
@@ -148,14 +152,14 @@ void multi::Klient::Podlacz(Adres serwer)
     sf::Socket::Status status = wtyk->connect(serwer.ip, serwer.port);
     if (status != sf::Socket::Done)
     {
-        //printf("Buraka!\n");
-        LOG(WARNING) << "Buraka! " << status;
+        LOG(WARNING) << "Podlaczenie buraka! " << status;
     }
     else
     {
         LOG(INFO) << "Polaczony " << serwer.ToString();
-        //printf("Polaczony!\n%s\n", serwer.ToString().c_str());
-        multi::Wyslij(*wtyk, nazwa);
+        status = multi::Wyslij(*wtyk, nazwa);
+        if (status != sf::Socket::Done)
+            LOG(WARNING) << "Wyslanie nazwy do serwera buraka! " << status;
     }
 }
 
@@ -182,7 +186,6 @@ bool multi::Klient::SpiszSerwery()
         if (count(lista_serwerow.begin(), lista_serwerow.end(), nowy_adres) == 0)
         {
             LOG(INFO) << "Serwerek na: " << nowy_adres.ToString();
-            //printf("Serwerek na: %s\n", nowy_adres.ToString().c_str());
             lista_serwerow.push_back(nowy_adres);
         }
     }

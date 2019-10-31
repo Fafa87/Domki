@@ -62,7 +62,6 @@ void KlientowyRuszacz::Ruszaj(double czas)
     }
     else
     {
-        LOG(WARNING) << "Klient odbiera stan: =false, cicho sza!";
         if (res.first == sf::Socket::Disconnected)
         {
             LOG(WARNING) << "Odlaczono od serwera.";

@@ -40,7 +40,8 @@ void multi::Serwer::OczekujNaGracza()
     }
     else
     {
-        auto nazwa = multi::Pobierz(*gracz.wtyk)[0];
+        auto status_nazwa = multi::Pobierz(*gracz.wtyk);
+        auto nazwa = status_nazwa.second[0];
         gracz.adres = Adres(gracz.wtyk->getRemoteAddress().toString(), gracz.wtyk->getRemotePort());
         gracz.nazwa = nazwa;
         nasluchiwacz.setBlocking(true);
@@ -78,7 +79,9 @@ bool multi::Serwer::Rozeslij(Rozgrywka& stan)
     bool res = true;
     for (int i = 0; i < ludzie.size(); i++)
     {
-        res |= multi::Wyslij(*ludzie[i].wtyk, ss.str());
+        auto stan_wyslania = multi::Wyslij(*ludzie[i].wtyk, ss.str());
+        ludzie[i].ostatnio = stan_wyslania;
+        res |= stan_wyslania;
     }
     return res;
 }
@@ -92,8 +95,9 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
         {
             if (wtykowiec.isReady(*ludzie[i].wtyk))
             {
-                auto data = multi::Pobierz(*ludzie[i].wtyk);
-                for (auto &d : data)
+                auto status_data = multi::Pobierz(*ludzie[i].wtyk);
+                ludzie[i].ostatnio = status_data.first;
+                for (auto &d : status_data.second)
                 {
                     auto rest = d.substr(1);
                     // MULTI_ROZKAZ
@@ -186,11 +190,12 @@ bool multi::Klient::SpiszSerwery()
     return true;
 }
 
-pair<bool, MisjaUstawienia> multi::Klient::OczekujNaStart()
+pair<sf::Socket::Status, MisjaUstawienia> multi::Klient::OczekujNaStart()
 {
     MisjaUstawienia res;
 
-    auto data = multi::Pobierz(*wtyk);
+    auto status_data = multi::Pobierz(*wtyk);
+    auto data = status_data.second;
     if (data.size())
     {
         std::stringstream ss(data[0]);
@@ -198,14 +203,12 @@ pair<bool, MisjaUstawienia> multi::Klient::OczekujNaStart()
             cereal::BinaryInputArchive dearchive(ss);
             dearchive(res);
         }
-
-        return { true, res };
     }
-    return { false, res };
+    return { status_data.first, res };
 }
 
 
-bool multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
+sf::Socket::Status multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 {
     vector<string> dane;
     for (auto r : rozkazy)
@@ -245,22 +248,22 @@ bool multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
 
     if (dane.size() > 0)
         return multi::Wyslij(*wtyk, dane);
-    return true;
+    return sf::Socket::Status::Done;
 }
 
 
-pair<bool, Rozgrywka> multi::Klient::Odbierz()
+pair<sf::Socket::Status, Rozgrywka> multi::Klient::Odbierz()
 {
     Rozgrywka res;
     string last;
-    vector<string> data;
+    pair<sf::Socket::Status, vector<string>> status_data;
 
     do 
     {
-        data = multi::Pobierz(*wtyk);
-        if (data.size())
-            last = data[0];
-    } while (data.size());
+        status_data = multi::Pobierz(*wtyk);
+        if (status_data.second.size())
+            last = status_data.second[0];
+    } while (status_data.second.size());
 
     if (last.size())
     {
@@ -269,14 +272,13 @@ pair<bool, Rozgrywka> multi::Klient::Odbierz()
             cereal::BinaryInputArchive archive(ss);
             archive(res);
         }
-        return { true, res };
     }
 
-    return { false, res };
+    return { status_data.first, res };
 }
 
 
-vector<string> multi::Pobierz(sf::TcpSocket& wtyk)
+pair<sf::Socket::Status, vector<string>> multi::Pobierz(sf::TcpSocket& wtyk)
 {
     vector<string> res;
     sf::Packet pakiet;
@@ -285,7 +287,7 @@ vector<string> multi::Pobierz(sf::TcpSocket& wtyk)
     if (status != sf::Socket::Done)
     {
         LOG_EVERY_N(10, WARNING) << "Gracz::Pobierz buraka! Status " << status;
-        return res;
+        return { status, res };
     }
 
     while (pakiet.endOfPacket() == false)
@@ -294,7 +296,7 @@ vector<string> multi::Pobierz(sf::TcpSocket& wtyk)
         pakiet >> tekst;
         res.push_back(tekst);
     }
-    return res;
+    return { status, res };
 }
 
 void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
@@ -345,7 +347,7 @@ void multi::Podepnij(Rozgrywka& rozgrywka)
 }
 
 
-bool multi::Wyslij(sf::TcpSocket& wtyk, vector<string> dane)
+sf::Socket::Status multi::Wyslij(sf::TcpSocket& wtyk, vector<string> dane)
 {
     sf::Packet pakiet;
     for (auto& d : dane)
@@ -355,12 +357,12 @@ bool multi::Wyslij(sf::TcpSocket& wtyk, vector<string> dane)
     if (status != sf::Socket::Done)
     {
         LOG_EVERY_N(10, WARNING) << "Gracz::Wyslij buraka! Status " << status;
-        return false;
+        return status;
     }
-    return true;
+    return status;
 }
 
-bool multi::Wyslij(sf::TcpSocket& wtyk, string dane)
+sf::Socket::Status multi::Wyslij(sf::TcpSocket& wtyk, string dane)
 {
     sf::Packet pakiet;
     pakiet << dane;
@@ -368,7 +370,7 @@ bool multi::Wyslij(sf::TcpSocket& wtyk, string dane)
     if (status != sf::Socket::Done)
     {
         LOG_EVERY_N(10, WARNING) << "Gracz::Wyslij buraka! Status " << status;
-        return false;
+        return status;
     }
-    return true;
+    return status;
 }

@@ -231,7 +231,7 @@ void wykonaj(string zadanie)
         /*if (serwer != NULL)
         wiad = serwer->Odbierz();*/
         if (klient != NULL)
-            wiad.push_back(Pobierz(*klient->wtyk));
+            wiad.push_back(Pobierz(*klient->wtyk).second);
         printf("Odebralem:\n");
         for (auto l : wiad)
         {

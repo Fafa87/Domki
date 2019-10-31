@@ -9,11 +9,13 @@ void Rozgrywka::PrzerwijGre()
 
 void Rozgrywka::PoddajGracza(Gracz & gracz)
 {
-    for (auto twor : this->armie)
-        twor.gracz = &this->Graczu(0);
+    for (auto& twor : this->armie)
+        if (gracz.numer == twor.gracz->numer)
+            twor.gracz = &this->Graczu(0);
 
-    for (auto twor : this->domki)
-        twor.gracz = &this->Graczu(0);
+    for (auto& twor : this->domki)
+        if (gracz.numer == twor.gracz->numer)
+            twor.gracz = &this->Graczu(0);
 }
 
 Gracz & Rozgrywka::Graczu(int numer)

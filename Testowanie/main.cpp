@@ -265,6 +265,9 @@ int pokazowa_misja()
 					//zakonczenie_meczu()
 					//wyswietlacz.ZaladujInne();
 					break;
+                case sf::Keyboard::Q:
+                    rozgrywka.PoddajGracza(rozgrywka.Graczu("KOMPUTER2"));
+                    break;
 				}
 				break;
 			}

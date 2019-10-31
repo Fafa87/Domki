@@ -145,8 +145,8 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
                 {
                 int numer;
                 plikmapa >> numer;
-                domek.gracz = &gra.Gracz(numer);
-                gra.Gracz(numer).liczba_tworow++;
+                domek.gracz = &gra.Graczu(numer);
+                gra.Graczu(numer).liczba_tworow++;
                 }
             else if(parametr == "typ")
                 {
@@ -185,7 +185,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
         domek.wyglad = Wyglad::kMiasto;
         if (domek.gracz == nullptr)
         {
-            domek.gracz = &gra.Gracz(0);
+            domek.gracz = &gra.Graczu(0);
             if(domek.liczebnosc==-1)gra.ZmienLiczebnosc(domek, 25);
         }
         else if(domek.liczebnosc==-1)gra.ZmienLiczebnosc(domek, 50);
@@ -669,7 +669,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     Wyswietlacz wyswietlacz(rozgrywka);
     if (!to_serwer)
         wyswietlacz.Zaladuj(misja_ustawienia.skorka);
-    MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(nr_gracza));
+    MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Graczu(nr_gracza));
     OznaczaczWyborow ruchGracza(myszkaGracza);
     Muzykant muzykant(rozgrywka);
     muzykant.Zaladuj(misja_ustawienia.skorka);
@@ -679,7 +679,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     {
         for (int i = 0; i < misja_ustawienia.nazwy_graczow.size(); i++)
         {
-            rozgrywka.Gracz(i).nazwa = misja_ustawienia.nazwy_graczow[i];
+            rozgrywka.Graczu(i).nazwa = misja_ustawienia.nazwy_graczow[i];
         }
     }
     
@@ -696,13 +696,13 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
                 
                 if (poziomy_trudnosci[0] == trudnosc)
                     {
-                    rozgrywka.Gracz(nr).nazwa = "PIRACIK";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'P'));
+                    rozgrywka.Graczu(nr).nazwa = "PIRACIK";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'P'));
                     }
                 else if (poziomy_trudnosci[1] == trudnosc)
                     {
-                    rozgrywka.Gracz(nr).nazwa = "KAPITAN";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'P'));
+                    rozgrywka.Graczu(nr).nazwa = "KAPITAN";
+                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'P'));
                     }
                 else
                     throw exception();
@@ -713,13 +713,13 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
                 if (poziomy_trudnosci[0] == trudnosc)
                     {
-                    rozgrywka.Gracz(nr).nazwa = "STOKFISZ";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'B'));
+                    rozgrywka.Graczu(nr).nazwa = "STOKFISZ";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'B'));
                     }
                 else if (poziomy_trudnosci[1] == trudnosc)
                     {
-                    rozgrywka.Gracz(nr).nazwa = "DIPBLU";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'B'));
+                    rozgrywka.Graczu(nr).nazwa = "DIPBLU";
+                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'B'));
                     }
                 else
                     throw exception();
@@ -730,13 +730,13 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
                 if (poziomy_trudnosci[0] == trudnosc)
                     {
-                    rozgrywka.Gracz(nr).nazwa = "ALFAZERO";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'A'));
+                    rozgrywka.Graczu(nr).nazwa = "ALFAZERO";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'A'));
                     }
                 else if (poziomy_trudnosci[1] == trudnosc)
                     {
-                    rozgrywka.Gracz(nr).nazwa = "ALFASTAR";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'A'));
+                    rozgrywka.Graczu(nr).nazwa = "ALFASTAR";
+                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'A'));
                     }
                 else
                     throw exception();
@@ -747,13 +747,13 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     
                 if (poziomy_trudnosci[0] == trudnosc)
                     {
-                    rozgrywka.Gracz(nr).nazwa = "NUBTOS";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'K'));
+                    rozgrywka.Graczu(nr).nazwa = "NUBTOS";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'K'));
                     }
                 else if (poziomy_trudnosci[1] == trudnosc)
                     {
-                    rozgrywka.Gracz(nr).nazwa = "PROTOS";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Gracz(nr), misja_ustawienia.szybkosc,'K'));
+                    rozgrywka.Graczu(nr).nazwa = "PROTOS";
+                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'K'));
                     }
                 else
                     throw exception();
@@ -852,7 +852,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         muzykant.GrajEfekty(ruszacz);
 
         // przyspiesz jesli zostaly same komputery
-        if (!przyspieszenie_bez_gracza && misja_ustawienia.JedenGracz() && !rozgrywka.Gracz(nr_gracza).aktywny)
+        if (!przyspieszenie_bez_gracza && misja_ustawienia.JedenGracz() && !rozgrywka.Graczu(nr_gracza).aktywny)
         {
             int mnoznik_czasu = 5;
             for (auto komp : kompiutery)

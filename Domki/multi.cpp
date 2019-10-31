@@ -332,7 +332,7 @@ void multi::Podepnij(Rozgrywka& rozgrywka)
 {
     for (auto& r : rozgrywka.domki)
     {
-        r.gracz = &rozgrywka.Gracz(r.ser_gracz);
+        r.gracz = &rozgrywka.Graczu(r.ser_gracz);
         for (auto dokad : r.ser_drogi)
         {
             r.drogi.push_back(rozgrywka.WskaznikDomek(dokad));
@@ -341,7 +341,7 @@ void multi::Podepnij(Rozgrywka& rozgrywka)
 
     for (auto& r : rozgrywka.armie)
     {
-        r.gracz = &rozgrywka.Gracz(r.ser_gracz);
+        r.gracz = &rozgrywka.Graczu(r.ser_gracz);
         r.cel = rozgrywka.WskaznikDomek(r.ser_cel);
     }
 }

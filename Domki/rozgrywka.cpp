@@ -10,13 +10,13 @@ void Rozgrywka::PrzerwijGre()
 void Rozgrywka::PoddajGracza(Gracz & gracz)
 {
     for (auto twor : this->armie)
-        twor.gracz = this->Gracz(0);
+        twor.gracz = &this->Graczu(0);
 
     for (auto twor : this->domki)
-        twor.gracz = this->Gracz(0);
+        twor.gracz = &this->Graczu(0);
 }
 
-Gracz & Rozgrywka::Gracz(int numer)
+Gracz & Rozgrywka::Graczu(int numer)
 {
     auto it = gracze.begin();
     std::advance(it, numer);

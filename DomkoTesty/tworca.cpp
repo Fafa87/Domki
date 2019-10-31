@@ -18,7 +18,7 @@ void dodaj_gracza_gdy_brak(Rozgrywka& gra, int nr_gracza)
 Ludek& tworca::DodajLudka(Rozgrywka& gra, Domek& dokad, int nr_gracza, int liczba, PD pos)
 {
     dodaj_gracza_gdy_brak(gra, nr_gracza);
-    auto& g = gra.Gracz(nr_gracza);
+    auto& g = gra.Graczu(nr_gracza);
     gra.armie.push_back(Ludek(dokad));
     Ludek & ludek = gra.armie.back();
     ludek.polozenie = pos;
@@ -31,7 +31,7 @@ Ludek& tworca::DodajLudka(Rozgrywka& gra, Domek& dokad, int nr_gracza, int liczb
 Domek& tworca::DodajDomek(Rozgrywka& gra, int nr_gracza, int liczba, PD pos)
 {
     dodaj_gracza_gdy_brak(gra, nr_gracza);
-    auto& g = gra.Gracz(nr_gracza);
+    auto& g = gra.Graczu(nr_gracza);
     gra.domki.push_back(Domek());
     Domek& domek = gra.domki.back();
     domek.polozenie = pos;

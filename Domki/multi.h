@@ -37,14 +37,17 @@ namespace multi
     struct Zawodnik {
         Adres adres;
         string nazwa;
+        bool aktywny=true;
         sf::TcpSocket* wtyk;
+        sf::Socket::Status ostatnio = sf::Socket::Status::NotReady;
+
     };
 
     void Podepnij(Rozgrywka& rozgrywka);
     void Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy);
-    vector<string> Pobierz(sf::TcpSocket& wtyk);
-    bool Wyslij(sf::TcpSocket& wtyk, string dane);
-    bool Wyslij(sf::TcpSocket& wtyk, vector<string> dane);
+    pair<sf::Socket::Status, vector<string>> Pobierz(sf::TcpSocket& wtyk);
+    sf::Socket::Status Wyslij(sf::TcpSocket& wtyk, string dane);
+    sf::Socket::Status Wyslij(sf::TcpSocket& wtyk, vector<string> dane);
 
     class Serwer
     {
@@ -73,9 +76,9 @@ namespace multi
 
         void Podlacz(Adres serwer);
 
-        pair<bool, MisjaUstawienia> OczekujNaStart();
-        bool Wyslij(vector<Rozkaz*> rozkazy);
-        pair<bool, Rozgrywka> Odbierz();
+        pair<sf::Socket::Status, MisjaUstawienia> OczekujNaStart();
+        sf::Socket::Status Wyslij(vector<Rozkaz*> rozkazy);
+        pair<sf::Socket::Status, Rozgrywka> Odbierz();
 
         string nazwa;
         sf::TcpSocket* wtyk;

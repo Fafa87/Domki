@@ -63,7 +63,7 @@ void komunikat()
 {
     if (serwer == nullptr && klient == nullptr)
     {
-        printf("Zdecyduj czy jestes serwerem czy graczem:\n- jesli serwer to wpisz: 'serwer <nazwa_planszy>.txt' lub 'serwer <nr_planszy>'\njesli chcesz zagrac wiele razy na jednej mapie to na koncu podaj do ilu wygranych grasz\n- jesli graczem to wpisz: 'klient <nazwa>'\n");
+        printf("Zdecyduj czy jestes serwerem czy graczem:\n- jesli serwer to wpisz: 'serwer <nazwa_planszy>.txt' lub 'serwer <nr_planszy>'\njesli chcesz zagrac wiele razy na jednej mapie to na koncu podaj do ilu wygranych grasz\n w szczegolnosci to: string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi\n - jesli graczem to wpisz: 'klient <nazwa>'\n");
     }
     else if (klient != nullptr)
     {
@@ -160,29 +160,33 @@ void wykonaj(string zadanie)
 
             // nie ma co czekac na gotowy
             //if (zadanie.find("gotowy") == 0)
-            std::pair<bool, MisjaUstawienia> res;
+            std::pair<sf::Socket::Status, MisjaUstawienia> res;
             do {
                 printf("oczekuje na start misji... ");
-                res = klient->OczekujNaStart();
-                printf("startuje misje %s\n", res.second.nazwa.c_str());
+                auto status_misja_ustawienia = klient->OczekujNaStart();
+                auto misja_ustawienia = status_misja_ustawienia.second;
+                if (status_misja_ustawienia.first != sf::Socket::Done)
+                    LOG(WARNING) << "Odebranie ustawien misji buraka! " << status_misja_ustawienia.first;
+
+                printf("startuje misje %s\n", misja_ustawienia.nazwa.c_str());
 
                 string test = "A";
                 klient->wtyk->setBlocking(false);
 
                 KlientowyRuszacz ruszacz(*klient);
 
-                res.second.komputery.clear();
-                misja(res.second, ruszacz);
+                misja_ustawienia.komputery.clear();
+                misja(misja_ustawienia, ruszacz);
 
                 printf("...misja skonczona\n");
 
-                res.second.WypiszRanking();
+                misja_ustawienia.WypiszRanking();
                 
                 klient->wtyk->setBlocking(true);
-            } while (!(res.second.Zwyciezca() >= 0));
+            } while (!(misja_ustawienia.Zwyciezca() >= 0));
 
-            auto wygrany = res.second.Zwyciezca();
-            printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", res.second.nazwy_graczow[wygrany].c_str());
+            auto wygrany = misja_ustawienia.Zwyciezca();
+            printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", misja_ustawienia.nazwy_graczow[wygrany].c_str());
         }
     }
     else if (serwer != nullptr)
@@ -231,7 +235,7 @@ void wykonaj(string zadanie)
         /*if (serwer != NULL)
         wiad = serwer->Odbierz();*/
         if (klient != NULL)
-            wiad.push_back(Pobierz(*klient->wtyk));
+            wiad.push_back(Pobierz(*klient->wtyk).second);
         printf("Odebralem:\n");
         for (auto l : wiad)
         {

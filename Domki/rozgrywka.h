@@ -27,7 +27,14 @@ struct Rozgrywka
     list<Ludek> armie;
     int liczba_aktywnych_graczy=0;
 
-    Gracz& Gracz(int numer);
+    void ZniszczLudka(Ludek* ludek);
+    void ZabierzTwor(const Twor* twor1);
+    void PoddajGracza(Gracz& gracz);
+    void PrzerwijGre();
+
+    Gracz& Graczu(int numer);
+    Gracz& Graczu(string nazwa);
+
     void ZmienLiczebnosc(Domek& domek, double nowa);
     void ZmienLiczebnosc(Ludek& ludek, double nowa);
     void ZmienPoziom(Domek& domek, int nowy_poziom);
@@ -40,9 +47,6 @@ struct Rozgrywka
     double PoliczObroneDomku(const Domek& domek);
     double PoliczSzybkoscDomku(const Domek& domek);
     std::tuple<int,int,int,int> SilaGracza(int nr_gracza);
-
-    void ZniszczLudka(Ludek* ludek);
-    void ZabierzTwor(const Twor* twor1);
     
     Domek* WskaznikDomek(int uid);
 };

@@ -2,12 +2,37 @@
 
 int Twor::last_uid = 0;
 
-Gracz & Rozgrywka::Gracz(int numer)
+void Rozgrywka::PrzerwijGre()
+{
+    liczba_aktywnych_graczy = 1;
+}
+
+void Rozgrywka::PoddajGracza(Gracz & gracz)
+{
+    for (auto& twor : this->armie)
+        if (gracz.numer == twor.gracz->numer)
+            twor.gracz = &this->Graczu(0);
+
+    for (auto& twor : this->domki)
+        if (gracz.numer == twor.gracz->numer)
+            twor.gracz = &this->Graczu(0);
+
+    gracz.liczba_tworow = 0;
+    liczba_aktywnych_graczy--;
+}
+
+Gracz & Rozgrywka::Graczu(int numer)
 {
     auto it = gracze.begin();
     std::advance(it, numer);
     return *it;
 }
+
+Gracz & Rozgrywka::Graczu(string nazwa)
+{
+    return *std::find_if(gracze.begin(), gracze.end(), [nazwa](Gracz& g) { return g.nazwa == nazwa; });
+}
+
 std::tuple<int,int,int,int> Rozgrywka::SilaGracza(int nr_gracza)
 {
     int ludki=0, produkcja=0, modernizacja=0,szybkosc=0;

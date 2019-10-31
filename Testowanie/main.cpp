@@ -225,7 +225,7 @@ int pokazowa_misja()
 	// przygotowujemy dzialaczy
 	Wyswietlacz wyswietlacz(rozgrywka);
 	wyswietlacz.Zaladuj("rycerze_hd");
-	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Gracz(1));
+	MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Graczu(1));
 	OznaczaczWyborow ruchGracza(myszkaGracza);
 
 	auto gujak = interfejs_rozgrywki(nullptr, ustawienia, rozgrywka, wyswietlacz, nullptr);
@@ -265,6 +265,9 @@ int pokazowa_misja()
 					//zakonczenie_meczu()
 					//wyswietlacz.ZaladujInne();
 					break;
+                case sf::Keyboard::Q:
+                    rozgrywka.PoddajGracza(rozgrywka.Graczu("KOMPUTER2"));
+                    break;
 				}
 				break;
 			}

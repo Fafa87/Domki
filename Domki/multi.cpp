@@ -290,7 +290,8 @@ pair<sf::Socket::Status, vector<string>> multi::Pobierz(sf::TcpSocket& wtyk)
     auto status = wtyk.receive(pakiet);
     if (status != sf::Socket::Done)
     {
-        LOG_EVERY_N(10, WARNING) << "Gracz::Pobierz buraka! Status " << status;
+        if (status != sf::Socket::NotReady)
+            LOG_EVERY_N(10, WARNING) << "Gracz::Pobierz buraka! Status " << status;
         return { status, res };
     }
 

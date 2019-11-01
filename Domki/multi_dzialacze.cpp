@@ -34,6 +34,7 @@ void SerwerowyRuszacz::Ruszaj(double czas)
     {
         if (g.ostatnio == sf::Socket::Status::Disconnected)
         {
+            LOG(INFO) << "Odlaczam gracza: " << g.nazwa;
             rozgrywka->PoddajGracza(rozgrywka->Graczu(g.nazwa));
             g.aktywny = false;
         }

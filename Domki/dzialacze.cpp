@@ -78,6 +78,15 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 vector<Rozkaz*> MyszDecydent::WykonajRuch()
 {
     vector<Rozkaz*> res;
+	if (rozgrywka.punkty_kontrolne && wybrany != nullptr && (cel == nullptr || cel == wybrany))// jesli jest wybrany domek z punktem kontrolnym to odznacz punkt kontrolny
+		for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();pk_iter++)
+			{
+			if (wybrany == (*pk_iter).first)
+				{
+				punkty_kontrolne.erase(pk_iter);
+				break;
+				}
+			}
     if (!rozgrywka.oszustwa && wybrany != nullptr && wybrany->gracz != &gracz) // to jest pod komentarzem aby moc sterowac kompem - trzeba wczesniej wcisnac srodkowy klawisz
     {
        cel = nullptr;
@@ -158,7 +167,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
     for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();)
     {
         auto pk = *pk_iter;
-        if ( (pk.first == pk.second && pk.first->poziom >= 5) || (pk.first != pk.second && pk.first->typdomku != TypDomku::kMiasto) )//pk.first->gracz != &gracz ||
+        if ((pk.first->gracz != &gracz) || (pk.first == pk.second && pk.first->poziom >= 5) || (pk.first != pk.second && pk.first->typdomku != TypDomku::kMiasto) )
             pk_iter = punkty_kontrolne.erase(pk_iter);
         else {
             if (pk.first == pk.second)

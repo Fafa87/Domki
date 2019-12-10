@@ -11,7 +11,7 @@ koordynaty 750 400
 drogi 2 2 4
 typ zamek
 poziom 3
-liczebnosc 50
+liczebnosc 150
 4 2
 koordynaty 875 400
 drogi 4 3 5 11 23
@@ -20,7 +20,7 @@ koordynaty 1000 400
 drogi 2 4 6
 typ zamek
 poziom 3
-liczebnosc 50
+liczebnosc 150
 6 2
 koordynaty 1125 400
 drogi 3 5 7 13
@@ -74,7 +74,7 @@ koordynaty 750 600
 drogi 2 16 18
 typ zamek
 poziom 3
-liczebnosc 50
+liczebnosc 150
 18 2
 koordynaty 875 600
 drogi 5 11 17 18 19 26
@@ -83,7 +83,7 @@ koordynaty 1000 600
 drogi 2 18 20
 typ zamek
 poziom 3
-liczebnosc 50
+liczebnosc 150
 20 2
 koordynaty 1125 600
 drogi 3 13 19 21

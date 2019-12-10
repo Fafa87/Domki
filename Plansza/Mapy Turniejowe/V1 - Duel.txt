@@ -14,7 +14,7 @@ poziom 3
 liczebnosc 50
 4 2
 koordynaty 875 300
-drogi 2 3 5
+drogi 3 3 5 12
 5 5
 koordynaty 1000 300
 drogi 2 4 6
@@ -36,12 +36,12 @@ poziom 3
 liczebnosc 50
 9 4
 koordynaty 625 500
-drogi 3 2 8 16
+drogi 4 2 8 10 16
 gracz 1
 liczebnosc 100
 10 2
 koordynaty 750 500
-drogi 2 3 11
+drogi 4 3 9 11 18
 11 5
 koordynaty 875 500
 drogi 2 10 12
@@ -50,10 +50,10 @@ poziom 3
 liczebnosc 50
 12 2
 koordynaty 1000 500
-drogi 2 11 19
+drogi 4 4 11 13 19
 13 4
 koordynaty 1125 500
-drogi 3 6 14 20
+drogi 4 6 12 14 20
 gracz 2
 liczebnosc 100
 14 5
@@ -77,7 +77,7 @@ poziom 3
 liczebnosc 50
 18 2
 koordynaty 875 700
-drogi 2 17 19
+drogi 3 10 17 19
 19 5
 koordynaty 1000 700
 drogi 3 12 18 20

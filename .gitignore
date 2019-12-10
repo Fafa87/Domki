@@ -16,3 +16,5 @@ DomkoTesty/x64/**
 *.log
 
 Domki\.VC\.VC\.opendb
+
+Domki/Domki.vcxproj.user

@@ -3,7 +3,7 @@ environment:
   PYTHON: C:\Python35
 image:
 - Visual Studio 2017
-configuration: Release
+configuration: ReleaseWindow
 before_build:
 - cmd: ''
 install: 

@@ -210,7 +210,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
     for (auto& ludek : rozgrywka.armie)
     {
         double procent_tarczy = ludek.tarcza / (double)ludek.liczebnosc;
-        ludek.wyglad_rodzaj = procent_tarczy > 0.5 ? 3 : (procent_tarczy > 0.25 ? 2 : 1);
+        ludek.wyglad_rodzaj = procent_tarczy > 1.0 ? 3 : (procent_tarczy > 0.25 ? 2 : 1);
         ludek.wyglad_rodzaj += ludek.szybkosc_ludka > 2 ? 3 : 0;
     }
 

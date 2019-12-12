@@ -93,7 +93,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         wybrany = nullptr;
         nacisniety = 0;
     } 
-    else if (wybrany != nullptr && cel != nullptr && klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.5 * CLOCKS_PER_SEC || klikniecia.size() >= 2))
+    else if (wybrany != nullptr && cel != nullptr && klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 2))
     {
         if (cel == wybrany)
         {
@@ -108,7 +108,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 				auto r = new UlepszRozkaz(wybrany);
 				res.push_back(r);
 			}
-            else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.5 * CLOCKS_PER_SEC)
+            else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC)
             {
                 if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
 
@@ -147,7 +147,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
                 r->ulamek = 1.0;
                 res.push_back(r);
             }
-			else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.5 * CLOCKS_PER_SEC)
+			else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC)
 			{
 				if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
 

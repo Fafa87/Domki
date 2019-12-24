@@ -1,5 +1,5 @@
 #include "multi.h"
-#include "Narzedzia/easylogging++.h"
+#include "easylogging++.h"
 
 #include <fstream>
 

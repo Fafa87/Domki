@@ -65,12 +65,6 @@
     <ClInclude Include="..\Domki\multi_dzialacze.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Domki\Narzedzia\easylogging++.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Domki\Narzedzia\INIReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="..\Domki\MultiSerwer_log.conf">

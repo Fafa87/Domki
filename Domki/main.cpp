@@ -7,7 +7,7 @@
 #include <SFML/Audio.hpp>
 
 #include <iostream>
-#include "Narzedzia/easylogging++.h"
+#include "easylogging++.h"
 INITIALIZE_EASYLOGGINGPP
 
 #include "misja.h"

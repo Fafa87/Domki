@@ -4,7 +4,7 @@
 #include "ext_string.h"
 #include <SFML/Audio.hpp>
 
-#include "Narzedzia/easylogging++.h"
+#include "easylogging++.h"
 
 #include <cstdlib>
 #include <ctime>

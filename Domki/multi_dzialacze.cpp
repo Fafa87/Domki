@@ -1,6 +1,6 @@
 #include "multi_dzialacze.h"
 
-#include "Narzedzia/easylogging++.h"
+#include "easylogging++.h"
 
 
 SerwerowyRuszacz::SerwerowyRuszacz(multi::Serwer & serwer) : serwer(serwer)

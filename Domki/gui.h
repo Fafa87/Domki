@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-#include "Narzedzia/INIReader.h"
+#include "INIReader.h"
 
 using namespace std;
 

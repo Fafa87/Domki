@@ -16,18 +16,17 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 {
     if (zdarzenie.type == sf::Event::MouseButtonPressed)
     {
-        //zdarzenie.mouseButton.button == sf::Mouse::Left <---wazna formula
         sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
         auto polozenie_kliku = okno.mapPixelToCoords(pixelPos);
         Twor* klikniety = rozgrywka.Zlokalizuj(polozenie_kliku.x, polozenie_kliku.y);
         if (klikniety != nullptr && IsType<Domek>(klikniety))
         {
-            if (wybrany != (Domek*)klikniety&& klikniety->gracz->numer == gracz.numer&&zdarzenie.mouseButton.button == sf::Mouse::Left)//wybór własnego domku
-               wybrany = (Domek*)klikniety;
-            else if (rozgrywka.oszustwa && wybrany != (Domek*)klikniety&& klikniety->gracz->numer != gracz.numer && zdarzenie.mouseButton.button == sf::Mouse::Middle)//wybór nie wlasnego domku tylko w przypadku oszust
-                wybrany = (Domek*)klikniety;
+            if (wybrany != (Domek*)klikniety&& klikniety->gracz->numer == gracz.numer&&zdarzenie.mouseButton.button == sf::Mouse::Left)
+				wybrany = (Domek*)klikniety;
+            else if (rozgrywka.oszustwa && wybrany != (Domek*)klikniety&& klikniety->gracz->numer != gracz.numer && zdarzenie.mouseButton.button == sf::Mouse::Middle)
+				wybrany = (Domek*)klikniety;
 
-            if (wybrany != nullptr && wybrany != klikniety && zdarzenie.mouseButton.button == sf::Mouse::Right)//przesyl ludkow tylko prawym klawiszem myszy
+            if (wybrany != nullptr && wybrany != klikniety && zdarzenie.mouseButton.button == sf::Mouse::Right)
             {
                 if (cel != klikniety || klikniecia.back().second != zdarzenie.mouseButton.button)
                 {
@@ -35,7 +34,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
                     cel = (Domek*)klikniety;
                 }
             }
-            else if (wybrany != nullptr && wybrany == klikniety && zdarzenie.mouseButton.button == sf::Mouse::Left)//ulepszanie
+            else if (wybrany != nullptr && wybrany == klikniety && zdarzenie.mouseButton.button == sf::Mouse::Left)
             {
                 if (cel != klikniety || klikniecia.back().second != zdarzenie.mouseButton.button)
                 {
@@ -55,7 +54,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 
     if (zdarzenie.type == sf::Event::KeyPressed)
     {
-        if (wybrany != nullptr )// + && wybrany->gracz == &gracz
+        if (wybrany != nullptr )
         {
             if (zdarzenie.key.code == sf::Keyboard::Tilde)
                 nacisniety = '`';
@@ -78,7 +77,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
 vector<Rozkaz*> MyszDecydent::WykonajRuch()
 {
     vector<Rozkaz*> res;
-	if (rozgrywka.punkty_kontrolne && wybrany != nullptr && (cel == nullptr || cel == wybrany))// jesli jest wybrany domek z punktem kontrolnym to odznacz punkt kontrolny
+	if (rozgrywka.punkty_kontrolne && wybrany != nullptr && (cel == nullptr || cel == wybrany))
 		for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();pk_iter++)
 			{
 			if (wybrany == (*pk_iter).first)
@@ -87,23 +86,31 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 				break;
 				}
 			}
-    if (!rozgrywka.oszustwa && wybrany != nullptr && wybrany->gracz != &gracz) // to jest pod komentarzem aby moc sterowac kompem - trzeba wczesniej wcisnac srodkowy klawisz
+
+    if (!rozgrywka.oszustwa && wybrany != nullptr && wybrany->gracz != &gracz) 
     {
-       cel = nullptr;
+		cel = nullptr;
         wybrany = nullptr;
         nacisniety = 0;
     } 
-    else if (klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 4)) // tutaj trzeba dodac else z przodu bo wczesniej jest if w komentarzu
+    else if (wybrany != nullptr && cel != nullptr && klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 2))
     {
-        if (wybrany != nullptr&&cel != nullptr&&cel == wybrany)
+        if (cel == wybrany)
         {
-            // ulepszanie
-            if (klikniecia.size() == 2)
+			if (klikniecia.size() == 1)
+			{
+				klikniecia.clear();
+				cel = nullptr;
+				nacisniety = 0;
+			}
+			else if (klikniecia.size() == 2 && clock() - klikniecia.back().first < 0.05 * CLOCKS_PER_SEC)
+			{
+				auto r = new UlepszRozkaz(wybrany);
+				res.push_back(r);
+			}
+            else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC)
             {
-                if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany); //punkt kontrolny wylacza sie poprzez ulepszenie
-
-                auto r = new UlepszRozkaz(wybrany);
-                res.push_back(r);
+                if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
 
                 klikniecia.clear();
                 cel = nullptr;
@@ -120,36 +127,38 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
                 nacisniety = 0;
             }
         }
-        else if (wybrany != nullptr&&cel != nullptr&&cel != wybrany)
+        else if (cel != wybrany)
         {
-            // wysylanie
-            if (klikniecia.size() <= 2)
+			if (klikniecia.size() == 1)
+			{
+				if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
+
+				auto r = new WymarszRozkaz(wybrany, cel);
+				r->ulamek = 0.5;
+				res.push_back(r);
+
+				cel = nullptr;
+				nacisniety = 0;
+				klikniecia.clear();
+			}
+            else if (klikniecia.size() == 2 && clock() - klikniecia.back().first < 0.05 * CLOCKS_PER_SEC)
             {
-                if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany); //punkt kontrolny wylacza sie poprzez wyslanie jednostek
-
-                double frakcja = 1;
-                if (klikniecia.size() == 1)
-                    frakcja = 0.5;
-
-                // utworz i zwroc rozkaz 
-                auto r = new WymarszRozkaz(wybrany, cel);
-                r->ulamek = frakcja;
+				auto r = new WymarszRozkaz(wybrany, cel);
+                r->ulamek = 1.0;
                 res.push_back(r);
-
-                if (klikniecia.size() == 2)wybrany = nullptr; // odznaczaj tylko gdy zostala wyslana calosc
-                //wybrany = nullptr; 
-                cel = nullptr;
-                nacisniety = 0;
-                klikniecia.clear();
             }
+			else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC)
+			{
+				if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
+
+				wybrany = nullptr;
+				cel = nullptr;
+				nacisniety = 0;
+				klikniecia.clear();
+			}
             else if (klikniecia.size() >= 3)
             {
                 if (rozgrywka.punkty_kontrolne) punkty_kontrolne[wybrany] = cel;
-                //wybrany->punkt_kontrolny = cel;
-
-                auto r = new WymarszRozkaz(wybrany, cel);
-                r->ulamek = 1;
-                res.push_back(r);
 
                 wybrany = nullptr;
                 cel = nullptr;
@@ -158,12 +167,9 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
             }
 
         }
-        klikniecia.clear();
-        cel = nullptr;
     }
 
-    // przetwarzaj punkty kontrolne
-    if(rozgrywka.punkty_kontrolne)// jesli wlaczone punkty kontrolne
+    if(rozgrywka.punkty_kontrolne)
     for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();)
     {
         auto pk = *pk_iter;
@@ -184,14 +190,6 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
             pk_iter++;
         }
     }
-
-/*	if (klikniecia.size() > 0 && clock() - klikniecia.back() >= 3.0 * CLOCKS_PER_SEC) // co trzy sekundy braku akcji domek jest odznaczany
-    {        // do zrobienia -> zmniejszanie się okręgu wokół domku symbolizujące malejący czas
-        wybrany = nullptr;
-        cel = nullptr;
-        nacisniety = 0;
-        klikniecia.clear();
-    }*/ //narazie bez tego
 
     if (nacisniety != 0 && wybrany != nullptr)
     {
@@ -219,7 +217,6 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
             res.push_back(new Testpower(wybrany));
             break;
         }
-        //wybrany = nullptr; //to umozliwia szybkie burzenie lub/oraz przebudowę 
         cel = nullptr;
         nacisniety = 0;
     }

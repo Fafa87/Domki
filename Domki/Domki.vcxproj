@@ -84,7 +84,7 @@ _CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);_DEBUG;</PreprocessorD
       <AdditionalOptions>/ENTRY:"mainCRTStartup" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /d /y "$(SolutionDir)\SFML-2.4.2\bin\*.*" "$(OutDir)"
+      <Command>xcopy /d /y "$(SolutionDir)\_Biblioteki\bin\*.*" "$(OutDir)"
 xcopy /I /e /y "$(SolutionDir)\plansza" "$(OutDir)\Plansza"
 xcopy /I /e /y "$(SolutionDir)\kampanie" "$(OutDir)\Kampanie"
 xcopy /I /e /y "$(SolutionDir)\muzyka" "$(OutDir)\Muzyka"
@@ -111,7 +111,7 @@ _CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);NDEBUG;</PreprocessorD
       <AdditionalOptions>/ENTRY:"mainCRTStartup" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /d /y "$(SolutionDir)\SFML-2.4.2\bin\*.*" "$(OutDir)"
+      <Command>xcopy /d /y "$(SolutionDir)\_Biblioteki\bin\*.*" "$(OutDir)"
 xcopy /I /e /y "$(SolutionDir)\plansza" "$(OutDir)\Plansza"
 xcopy /I /e /y "$(SolutionDir)\kampanie" "$(OutDir)\Kampanie"
 xcopy /I /e /y "$(SolutionDir)\muzyka" "$(OutDir)\Muzyka"
@@ -138,7 +138,7 @@ _CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);_WINDOW;NDEBUG;</Prepr
       <AdditionalOptions>/ENTRY:"mainCRTStartup" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /d /y "$(SolutionDir)\SFML-2.4.2\bin\*.*" "$(OutDir)"
+      <Command>xcopy /d /y "$(SolutionDir)\_Biblioteki\bin\*.*" "$(OutDir)"
 xcopy /I /e /y "$(SolutionDir)\plansza" "$(OutDir)\Plansza"
 xcopy /I /e /y "$(SolutionDir)\kampanie" "$(OutDir)\Kampanie"
 xcopy /I /e /y "$(SolutionDir)\muzyka" "$(OutDir)\Muzyka"

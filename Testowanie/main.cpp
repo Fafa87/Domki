@@ -29,7 +29,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 
     gra.domki.push_back(Domek());
     Domek& domek2 = gra.domki.back();
-    domek2.polozenie = { x,y + 150};
+    domek2.polozenie = { x,y + 150 };
     domek2.produkcja = 2;
     domek2.max_liczebnosc = 100;
     domek2.wyglad = Wyglad::kMiasto;
@@ -106,7 +106,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
     Ludek & ludek3 = gra.armie.back();
     ludek3.polozenie = { x + 100,y + 100 };
     ludek3.gracz = &g;
-    ludek3.tarcza = 200;
+    ludek3.tarcza = 250;
     ludek3.wyglad = Wyglad::kWojownik;
     gra.ZmienLiczebnosc(ludek3, 240);
 
@@ -114,10 +114,64 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
     Ludek & ludek4 = gra.armie.back();
     ludek4.polozenie = { x - 100,y + 100 };
     ludek4.gracz = &g;
-    ludek4.tarcza = 200;
+    ludek4.tarcza = 250;
     ludek4.szybkosc_ludka = 3;
     ludek4.wyglad = Wyglad::kWojownik;
     gra.ZmienLiczebnosc(ludek4, 240);
+}
+
+void dodaj_konie(Rozgrywka & gra, Gracz& g, double x, double y)
+{
+    gra.armie.push_back(Ludek(gra.domki.front()));
+    Ludek & ludek = gra.armie.back();
+    ludek.polozenie = { x - 100,y - 100 };
+    ludek.gracz = &g;
+    ludek.wyglad = Wyglad::kWojownik;
+    ludek.tarcza = 0;
+    gra.ZmienLiczebnosc(ludek, 240);
+
+    gra.armie.push_back(Ludek(gra.domki.front()));
+    Ludek & ludek2 = gra.armie.back();
+    ludek2.polozenie = { x ,y - 100 };
+    ludek2.gracz = &g;
+    ludek2.tarcza = 90;
+    ludek2.wyglad = Wyglad::kWojownik;
+    gra.ZmienLiczebnosc(ludek2, 240);
+
+    gra.armie.push_back(Ludek(gra.domki.front()));
+    Ludek & ludek3 = gra.armie.back();
+    ludek3.polozenie = { x + 100,y - 100 };
+    ludek3.gracz = &g;
+    ludek3.tarcza = 250;
+    ludek3.wyglad = Wyglad::kWojownik;
+    gra.ZmienLiczebnosc(ludek3, 240);
+
+    gra.armie.push_back(Ludek(gra.domki.front()));
+    Ludek & ludek4 = gra.armie.back();
+    ludek4.polozenie = { x - 100,y };
+    ludek4.gracz = &g;
+    ludek4.tarcza = 0;
+    ludek4.szybkosc_ludka = 3;
+    ludek4.wyglad = Wyglad::kWojownik;
+    gra.ZmienLiczebnosc(ludek4, 240);
+
+    gra.armie.push_back(Ludek(gra.domki.front()));
+    Ludek & ludek5 = gra.armie.back();
+    ludek5.polozenie = { x,y };
+    ludek5.gracz = &g;
+    ludek5.tarcza = 150;
+    ludek5.szybkosc_ludka = 3;
+    ludek5.wyglad = Wyglad::kWojownik;
+    gra.ZmienLiczebnosc(ludek5, 240);
+
+    gra.armie.push_back(Ludek(gra.domki.front()));
+    Ludek & ludek6 = gra.armie.back();
+    ludek6.polozenie = { x + 100,y };
+    ludek6.gracz = &g;
+    ludek6.tarcza = 250;
+    ludek6.szybkosc_ludka = 3;
+    ludek6.wyglad = Wyglad::kWojownik;
+    gra.ZmienLiczebnosc(ludek6, 240);
 }
 
 
@@ -128,7 +182,7 @@ Rozgrywka pokazowa_rozgrywka()
     gra.gracze.push_back(Gracz());
     Gracz& gracz0 = gra.gracze.back();
     gracz0.numer = 0; gracz0.nazwa = "NEUTRAL";
-    gracz0.kolor = sf::Color(128,128,128);
+    gracz0.kolor = sf::Color(128, 128, 128);
     gracz0.aktywny = false;
 
     gra.gracze.push_back(Gracz());
@@ -150,12 +204,14 @@ Rozgrywka pokazowa_rozgrywka()
     Gracz& gracz4 = gra.gracze.back();
     gracz4.numer = 4; gracz4.nazwa = "KOMPUTER4";
     gracz4.kolor = sf::Color::Yellow;
-    
+
     dodaj_gracza(gra, gracz0, 500, 100);
     dodaj_gracza(gra, gracz1, 800, 100);
     dodaj_gracza(gra, gracz2, 800, 500);
     dodaj_gracza(gra, gracz3, 1100, 100);
     dodaj_gracza(gra, gracz4, 1100, 500);
+
+    dodaj_konie(gra, gracz1, 500, 700);
 
     return gra;
 }
@@ -181,7 +237,7 @@ std::shared_ptr<sfg::Window> probne_gui()
 
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
     okno->SetRequisition(sf::Vector2f(GUI::aplikacja().okno.getSize().x, 100));
-    
+
     GUI::aplikacja().bottom_window(okno);
 
     auto lewy = sfg::Label::Create("Lewy panel");
@@ -203,7 +259,7 @@ std::shared_ptr<sfg::Window> probne_gui()
     table->Attach(canvas, sf::Rect<sf::Uint32>(1, 0, 1, 1));
     table->Attach(komunikat_koncowy, sf::Rect<sf::Uint32>(1, 0, 1, 1));
     table->Attach(prawy, sf::Rect<sf::Uint32>(2, 0, 1, 1));
-    
+
     okno->Add(table);
 
     canvas->Bind();
@@ -283,11 +339,11 @@ int pokazowa_misja()
         ruszacz.Ruszaj(0.0001);
 
         window.clear();
-        
+
         interfejs_rozgrywki(gujak, ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek());
 
         GUI::aplikacja().show_bottom_gui(view, gujak);
-        
+
         wyswietlacz.WyswietlTlo(window);
         ruchGracza.Wyswietlaj(window);
         wyswietlacz.Wyswietlaj(window);

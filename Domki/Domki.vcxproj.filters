@@ -119,6 +119,9 @@
     <ClInclude Include="pakowanie.h">
       <Filter>Header Files\multi</Filter>
     </ClInclude>
+    <ClInclude Include="historia.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="Domki.conf">

@@ -226,6 +226,11 @@ int pokazowa_misja()
     Wyswietlacz wyswietlacz(rozgrywka);
     wyswietlacz.Zaladuj("rycerze_hd");
     MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Graczu(1));
+
+    // przygotuj punkty kontrolne
+    myszkaGracza.punkty_kontrolne[rozgrywka.WskaznikDomek(23)] = rozgrywka.WskaznikDomek(23);
+    myszkaGracza.punkty_kontrolne[rozgrywka.WskaznikDomek(24)] = rozgrywka.WskaznikDomek(22);
+
     OznaczaczWyborow ruchGracza(myszkaGracza);
 
     auto gujak = interfejs_rozgrywki(nullptr, ustawienia, rozgrywka, wyswietlacz, nullptr);

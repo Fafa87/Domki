@@ -52,4 +52,6 @@ public:
     Domek* WybranyDomek();
 private:
     MyszDecydent& decydent;
+    float cykl_czasowy();
+    void rysuj_strzalke(sf::RenderWindow & okno, sf::Vector2f start, sf::Vector2f kierunek, sf::Color color, float grubosc);
 };

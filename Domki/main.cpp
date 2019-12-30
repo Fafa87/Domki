@@ -18,7 +18,7 @@ INITIALIZE_EASYLOGGINGPP
 #include "multi.h"
 #include "multi_dzialacze.h"
 
-const string WERSJA = "DOMKI 0.9.1";
+const string WERSJA = "DOMKI 0.9.2";
 
 
 PROCESS_INFORMATION start_nowej_gry_dla_wielu(string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi)

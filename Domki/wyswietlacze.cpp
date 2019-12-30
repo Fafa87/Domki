@@ -1,6 +1,8 @@
 #include "Narzedzia\AnimatedSprite.hpp"
 #include "wyswietlacze.h"
 
+#include "Thor/Shapes/Arrow.hpp"
+
 #include<set>
 #include<string>
 #include<ctime>
@@ -309,6 +311,8 @@ OznaczaczWyborow::OznaczaczWyborow(MyszDecydent & decydent) : decydent(decydent)
 {
 }
 
+
+
 void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 {
     if (decydent.wybrany != nullptr)
@@ -325,26 +329,30 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 
         okno.draw(kolo);
     }
-
+    
     for (auto& pk : decydent.punkty_kontrolne)
     {
         auto wybrany = pk.first;
-        double rozmiar = wybrany->rozmiar * 1.8;
-        sf::CircleShape kolo(rozmiar);
-        kolo.setPosition(wybrany->polozenie.x, wybrany->polozenie.y);
-        kolo.setRadius(rozmiar);
-        kolo.setOrigin(rozmiar, rozmiar);
-        sf::Color kolor = wybrany->gracz->kolor ;
-        kolor.a = 200;
-        kolor.r *= 0.5;
-        kolor.g *= 0.5;
-        kolor.b *= 0.5;
-        kolo.setFillColor(sf::Color::Transparent);
-        kolo.setOutlineColor(kolor);
-        kolo.setOutlineThickness(2);
+        auto docelowy = pk.second;
+        auto centrum = sf::Vector2f(wybrany->polozenie.x, wybrany->polozenie.y);
+        if (wybrany == docelowy) // ulepszanie automatyczne
+        {
+            // rysuj strzalke do gory
+            auto ulepszanie = sf::Vector2f(wybrany->rozmiar * 1.2, 0);
+            auto polowa_dlugosci = sf::Vector2f(0, 15);
+            auto cykl = polowa_dlugosci * abs(cykl_czasowy() - 0.5f);
 
-        okno.draw(kolo);
+            rysuj_strzalke(okno, centrum + ulepszanie + polowa_dlugosci - cykl, -polowa_dlugosci * 2.0f, wybrany->gracz->kolor, 4);
+        }
+        else // wysylanie automatyczne
+        {
+            auto start_drogi = sf::Vector2f(wybrany->polozenie.x, wybrany->polozenie.y + 15);
+            auto koniec_drogi = sf::Vector2f(docelowy->polozenie.x, docelowy->polozenie.y + 15);
+            auto kierunek = koniec_drogi - start_drogi;
+            auto cykl = 0.25f * abs(cykl_czasowy() - 0.5f);
 
+            rysuj_strzalke(okno, start_drogi, kierunek * (0.60f + cykl), wybrany->gracz->kolor, 5);
+        }
     }
 }
 
@@ -352,3 +360,26 @@ Domek* OznaczaczWyborow::WybranyDomek()
 {
     return decydent.wybrany;
 }
+float OznaczaczWyborow::cykl_czasowy()
+{
+    int czas_cyklu = 1;
+    float sekundy = (clock() / (float)CLOCKS_PER_SEC);
+    float reszta = sekundy - (int)(sekundy / czas_cyklu)*czas_cyklu;
+    return reszta / (float)czas_cyklu;
+}
+
+void OznaczaczWyborow::rysuj_strzalke(sf::RenderWindow & okno, sf::Vector2f start, sf::Vector2f kierunek, sf::Color color, float grubosc)
+{
+    thor::Arrow cien(start, kierunek, sf::Color::Black, grubosc + 1);
+    okno.draw(cien);
+
+    thor::Arrow strzala(start, kierunek, color, grubosc);
+    okno.draw(strzala);
+}
+
+/*
+9ov'p-pou09pou9ioobohookkyi76kkfkkl;l7luj;lp9[p[pi;l;p0/jj;,kuklhg.''\''
+ckcm,cm,c.,v
+kkrrrrrrrrrrrrrrrrrrrrrrrrroooooooooooooooooooooooooooolllllllllllllllllllll                              leeeeeeeeeewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+'rrrrrrrrrrrrooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooozaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaC x'f/cf. c   c     fgfvvc\|dlfl,gk,kfkgkkhk6ogkfmmg
+*/

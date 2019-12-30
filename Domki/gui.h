@@ -26,6 +26,16 @@ private:
         return res;
     }
 
+    int styl_okna_ini()
+    {
+        auto ini_ekran = ini.Get("przelaczniki", "ekran", "");
+        if (ini_ekran == "pelen")
+            return sf::Style::Fullscreen;
+        else if (ini_ekran == "okno")
+            return sf::Style::Default;
+        return 0;
+    }
+
     static sf::ContextSettings ustawienia()
     {
         sf::ContextSettings res;
@@ -38,7 +48,11 @@ private:
         return sf::VideoMode(1280, 719);
     }
 public:
-    GUI() : okno(ekran(), "Domki Forever!", styl_okna(), ustawienia()), ini("Domki.conf") {
+    GUI() : ini("Domki.conf"), okno(ekran(), "Domki Forever!", styl_okna(), ustawienia()) {
+        auto ini_styl = styl_okna_ini();
+        if (ini_styl)
+            okno.create(ekran(), "Domki Forever!", ini_styl, ustawienia());
+        
         okno.resetGLStates();
         zwykly_widok = sf::View(sf::FloatRect(0, 0, 1280, 719));
         okno.setView(zwykly_widok);

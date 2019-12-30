@@ -290,7 +290,23 @@ int main(int argc, const char * argv[]) {
     }
     catch (const std::exception& ex)
     {
-        LOG(ERROR) << ex.what();
+        LOG(ERROR) << "Wyjatek ladny" << ex.what();
+        el::Loggers::flushAll();
+        return -1;
+    }
+    catch (const std::string& ex) {
+        LOG(ERROR) << "Wyjatek string" << ex;
+        el::Loggers::flushAll();
+        return -1;
+    }
+    catch (int err) {
+        LOG(ERROR) << "Wyjatek err" << err;
+        el::Loggers::flushAll();
+        return -1;
+    }
+    catch (...) {
+        LOG(ERROR) << "Wyjatek noname";
+        el::Loggers::flushAll();
         return -1;
     }
 

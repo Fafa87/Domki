@@ -16,15 +16,15 @@
     <Filter Include="Source Files\Domki">
       <UniqueIdentifier>{4524af4c-eb78-4744-9cce-20234a3137a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Multi">
+      <UniqueIdentifier>{3a2d9baa-7d89-41eb-b02b-e8c543a6f7f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Multi">
+      <UniqueIdentifier>{926b08af-9a31-4ac8-9f6f-0bf5fe01a753}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Domki\multi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Domki\multi_dzialacze.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Domki\Narzedzia\AnimatedSprite.cpp">
@@ -57,13 +57,31 @@
     <ClCompile Include="..\Domki\wyswietlacze.cpp">
       <Filter>Source Files\Domki</Filter>
     </ClCompile>
+    <ClCompile Include="serwer_gry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="serwer_klient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domki\multi.cpp">
+      <Filter>Source Files\Multi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domki\multi_dzialacze.cpp">
+      <Filter>Source Files\Multi</Filter>
+    </ClCompile>
+    <ClCompile Include="serwery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Domki\multi.h">
+    <ClInclude Include="serwery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Domki\multi.h">
+      <Filter>Header Files\Multi</Filter>
+    </ClInclude>
     <ClInclude Include="..\Domki\multi_dzialacze.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Multi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

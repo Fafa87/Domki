@@ -762,6 +762,8 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
             }
     }
 
+    bool gotowe_do_rozpoczecia = false;
+
     ruszacz.rozgrywka = &rozgrywka;
     ruszacz.szybkosc *= predkosc;
     
@@ -770,12 +772,24 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     if (!to_serwer)
     {
         interfejs = interfejs_rozgrywki(nullptr, misja_ustawienia, rozgrywka, wyswietlacz, nullptr);
-        view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
-        window.setView(view);
-        odliczanie(wyswietlacz, view, interfejs);
+        if (interfejs == nullptr)
+        {
+            LOG(WARNING) << "Nie utworzyl sie interfejs." << "Liczba domków=" << rozgrywka.domki.size();
+            gotowe_do_rozpoczecia = false; 
+        }
+        else
+        {
+            view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
+            window.setView(view);
+            odliczanie(wyswietlacz, view, interfejs);
+            gotowe_do_rozpoczecia = true;
+        }
     }
-    else 
+    else
+    {
         odliczanie();
+        gotowe_do_rozpoczecia = true;
+    }
 
     if (!GUI::aplikacja().dzwieki_glosnosc)
         muzykant.wyciszony = true;
@@ -794,6 +808,8 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     double czas_gry = 0;
 
     bool trwa_gra = true;
+
+    if (gotowe_do_rozpoczecia)
     while (trwa_gra)
     {
         sf::Event event;

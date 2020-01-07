@@ -161,9 +161,11 @@ _WINDOWS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
     <ClCompile Include="..\Domki\si.cpp" />
     <ClCompile Include="..\Domki\wyswietlacze.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="masterklient.cpp" />
     <ClCompile Include="serwery.cpp" />
     <ClCompile Include="serwer_gry.cpp" />
     <ClCompile Include="serwer_klient.cpp" />
+    <ClCompile Include="masterserwer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domki\Domki.vcxproj">

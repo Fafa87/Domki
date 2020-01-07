@@ -49,7 +49,6 @@ void komunikat()
 {
     auto& serwer = Kontekst::o().serwer;
     auto& klient = Kontekst::o().klient;
-    // TODO dorzucic tutaj masterserwer i masterklient
 
     if (serwer == nullptr && klient == nullptr)
     {
@@ -67,7 +66,6 @@ void wykonaj(string zadanie)
 
     auto& serwer = Kontekst::o().serwer;
     auto& klient = Kontekst::o().klient;
-    // TODO dorzucic tutaj masterserwer i masterklient
 
     if (serwer == nullptr && klient == nullptr)
     {
@@ -85,7 +83,6 @@ void wykonaj(string zadanie)
         wykonaj_serwer_gry(zadanie);
     }
     
-    // TODO do usuniecia potem (gdy bedzie masterserwer)
     if (zadanie.find("odbierz") == 0)
     {
         vector<vector<string>> wiad;

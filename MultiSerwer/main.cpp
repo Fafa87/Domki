@@ -12,7 +12,6 @@
 #include "../Domki/multi_dzialacze.h"
 
 #include "../MultiSerwer/serwery.h"
-#include "../MultiSerwer/mastery.h"
 
 #include "easylogging++.h" 
 INITIALIZE_EASYLOGGINGPP
@@ -84,6 +83,31 @@ void wykonaj(string zadanie)
     else if (serwer != nullptr)
     {
         wykonaj_serwer_gry(zadanie);
+    }
+    
+    // TODO do usuniecia potem (gdy bedzie masterserwer)
+    if (zadanie.find("odbierz") == 0)
+    {
+        vector<vector<string>> wiad;
+        /*if (serwer != NULL)
+        wiad = serwer->Odbierz();*/
+        if (klient != NULL)
+            wiad.push_back(Pobierz(*klient->wtyk).second);
+        printf("Odebralem:\n");
+        for (auto l : wiad)
+        {
+            for (auto s : l)
+                printf("'%s'\n", s.c_str());
+            printf("----\n");
+        }
+    }
+    if (zadanie.find("napisz") == 0)
+    {
+        auto text = zadanie.substr(7);
+        /*if (serwer != NULL)
+            serwer->Rozeslij(text);
+        if (klient != NULL)
+            Wyslij(*klient->wtyk, text);*/
     }
 }
 

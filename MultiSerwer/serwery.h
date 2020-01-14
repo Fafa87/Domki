@@ -48,3 +48,11 @@ void wykonaj_klient_gry(string zadanie);
 void pobierz_serwery_gry();
 
 
+void komunikat_masterserwer();
+void komunikat_masterklient();
+
+void start_masterserwer(string zadanie);
+void wykonaj_masterserwer(string zadanie);
+
+void start_masterklient(string zadanie);
+void wykonaj_masterklient(string zadanie);

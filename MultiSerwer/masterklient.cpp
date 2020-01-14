@@ -16,34 +16,6 @@ void start_masterklient_gry(string zadanie)
 
 void wykonaj_masterklient_gry(string zadanie)
 {
-
-
-
-    // TODO do usuniecia potem (gdy bedzie masterserwer)
-    //if (zadanie.find("odbierz") == 0)
-    //{
-    //    vector<vector<string>> wiad;
-    //    /*if (serwer != NULL)
-    //    wiad = serwer->Odbierz();*/
-    //    if (klient != NULL)
-    //        wiad.push_back(Pobierz(*klient->wtyk).second);
-    //    printf("Odebralem:\n");
-    //    for (auto l : wiad)
-    //    {
-    //        for (auto s : l)
-    //            printf("'%s'\n", s.c_str());
-    //        printf("----\n");
-    //    }
-    //}
-    //if (zadanie.find("napisz") == 0)
-    //{
-    //    auto text = zadanie.substr(7);
-    //    /*if (serwer != NULL)
-    //        serwer->Rozeslij(text);
-    //    if (klient != NULL)
-    //        Wyslij(*klient->wtyk, text);*/
-    //}
-
     //auto& klient = Kontekst::o().klient;
     //auto& misja_ustawienia = Kontekst::o().misja_ustawienia;
 

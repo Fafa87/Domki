@@ -92,6 +92,9 @@
     <ClInclude Include="..\Domki\multi_dzialacze.h">
       <Filter>Header Files\Multi</Filter>
     </ClInclude>
+    <ClInclude Include="mastery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="..\Domki\MultiSerwer_log.conf">

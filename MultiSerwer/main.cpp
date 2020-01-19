@@ -22,27 +22,6 @@ using namespace multi;
 bool cichociemny = false;
 
 void wykonaj(string zadanie);
-void konfiguruj(int l, const char * argv[])
-{
-    auto& misja_ustawienia = Kontekst::o().misja_ustawienia;
-    auto& serwer = Kontekst::o().serwer;
-    auto& klient = Kontekst::o().klient;
-
-    if (l == 0)
-    {
-        LOG(INFO) << "Konfiguruje serwer...";
-        wybierz_i_wystartuj_tryb("serwer", string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]));
-        while(misja_ustawienia.Zwyciezca() < 0)
-            wykonaj("start");
-        exit(0);
-    }
-    else if (l==1)
-    { 
-        LOG(INFO) << "Konfiguruje klienta...";
-        wybierz_i_wystartuj_tryb("klient", std::to_string(l));
-        pobierz_serwery_gry();
-    }
-}
 
 void wybierz_i_wystartuj_tryb(string tryb, string komenda)
 {
@@ -73,7 +52,7 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
     {
         if (!komenda.size())
         {
-            printf("Jak sie nazywasz?");
+            printf("Jak sie nazywasz?\n");
         }
         start_klient_gry(komenda);
     }
@@ -81,35 +60,47 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
     {
         if (!komenda.size())
         {
-            printf("Jak sie nazywasz?");
+            printf("Podaj port:\n");
+            gets_s(tmp);
+            komenda = tmp;
         }
-
+        start_masterserwer(komenda);
     }
     else if (tryb == "masterklient")
     {
-
-
+        if (!komenda.size())
+        {
+            printf("Jak sie nazywasz?\n");
+            gets_s(tmp);
+            komenda = tmp;
+        }
+        start_masterklient(komenda);
     }
 }
 
 void komunikat()
 {
-    auto& serwer = Kontekst::o().serwer;
-    auto& klient = Kontekst::o().klient;
-    // TODO dorzucic tutaj masterserwer i masterklient
+    auto& serwer = KontekstGry::o().serwer;
+    auto& klient = KontekstGry::o().klient;
+    auto masterserwer = KontekstSwiata::o().serwer;
+    auto masterklient = KontekstSwiata::o().klient;
 
     if (klient != nullptr)
         komunikat_serwer_klient();
     else if (serwer != nullptr)
         komunikat_serwer_gry();
+    else if (serwer != nullptr)
+        komunikat_masterserwer(masterserwer);
+    else if (serwer != nullptr)
+        komunikat_masterklient(masterklient);
 }
 
 void wykonaj(string zadanie)
 {
     LOG(INFO) << "Wykonuje: '" << zadanie << "'";
 
-    auto& serwer = Kontekst::o().serwer;
-    auto& klient = Kontekst::o().klient;
+    auto& serwer = KontekstGry::o().serwer;
+    auto& klient = KontekstGry::o().klient;
     // TODO dorzucic tutaj masterserwer i masterklient
 
     if (klient != nullptr)
@@ -119,6 +110,28 @@ void wykonaj(string zadanie)
     else if (serwer != nullptr)
     {
         wykonaj_serwer_gry(zadanie);
+    }
+}
+
+void konfiguruj(int l, const char * argv[])
+{
+    auto& misja_ustawienia = KontekstGry::o().misja_ustawienia;
+    auto& serwer = KontekstGry::o().serwer;
+    auto& klient = KontekstGry::o().klient;
+
+    if (l == 0)
+    {
+        LOG(INFO) << "Konfiguruje serwer...";
+        wybierz_i_wystartuj_tryb("serwer", string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]));
+        while (misja_ustawienia.Zwyciezca() < 0)
+            wykonaj("start");
+        exit(0);
+    }
+    else if (l == 1)
+    {
+        LOG(INFO) << "Konfiguruje klienta...";
+        wybierz_i_wystartuj_tryb("klient", std::to_string(l));
+        pobierz_serwery_gry();
     }
 }
 
@@ -139,8 +152,8 @@ int main(int argc, const char * argv[]) {
 
     wybierz_i_wystartuj_tryb("", "");
 
-    auto serwer = Kontekst::o().serwer;
-    auto klient = Kontekst::o().klient;
+    auto serwer = KontekstGry::o().serwer;
+    auto klient = KontekstGry::o().klient;
 
     try {
         do

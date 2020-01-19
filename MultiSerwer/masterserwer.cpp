@@ -1,9 +1,9 @@
-#include "../MultiSerwer/serwery.h"
+#include "../MultiSerwer/mastery.h"
 
 
-void komunikat_masterserwer()
+void komunikat_masterserwer(mastery::Serwer* serwer)
 {
-    //printf("Jestes graczem, musisz sie polaczyc z serwerm. Wpisz: 'polacz' lub 'polacz <adres_ip_serwera>'\n");
+    printf("Jestes postawionym multiserwerem. Napisz Stop aby umrzec:'n");
 }
 
 void start_masterserwer_gry(string zadanie)
@@ -14,7 +14,7 @@ void start_masterserwer_gry(string zadanie)
     printf("Klient: %s\n", klient->nazwa.c_str());*/
 }
 
-void wykonaj_masterserwer_gry(string zadanie)
+void wykonaj_masterserwer_gry(mastery::Serwer* serwer, string zadanie)
 {
     //auto& klient = Kontekst::o().klient;
     //auto& misja_ustawienia = Kontekst::o().misja_ustawienia;

@@ -8,33 +8,24 @@
 #include "easylogging++.h" 
 
 using namespace std;
-using namespace multi;
-
-void komunikat_masterserwer();
-void komunikat_masterklient();
-
-void start_masterserwer(string zadanie);
-void wykonaj_masterserwer(string zadanie);
-
-void start_masterklient(string zadanie);
-void wykonaj_masterklient(string zadanie);
 
 namespace mastery
 {
     const int PORT_MASTER = 90;
     const string ADRES_MASTER = "domki.westeurope.cloudapp.azure.com";
 
-    class MasterKlient
+    class Klient
     {
     private:
         const string adres;
     public:
-        Zawodnik gracz;
-        MasterKlient(string nazwa) : gracz() {
+        multi::Zawodnik gracz;
+        Klient(string nazwa) : gracz() {
             gracz.nazwa = nazwa;
-            gracz.adres = Adres(sf::IpAddress::getLocalAddress().toString(), PORT_MASTER - 1); // TODO TMP
+            gracz.adres = multi::Adres(sf::IpAddress::getLocalAddress().toString(), PORT_MASTER - 1); // TODO TMP
         }
 
+        bool polaczony;
         bool Podlacz();
     };
 
@@ -42,12 +33,12 @@ namespace mastery
     {
     public:
         string nazwa;
-        vector<Zawodnik*> pokojnicy;
+        vector<multi::Zawodnik*> pokojnicy;
 
         Pokoj(string nazwa) : nazwa(nazwa) {}
     };
 
-    class MasterSerwer
+    class Serwer
     {
     private:
         sf::TcpListener nasluchiwacz;
@@ -55,11 +46,34 @@ namespace mastery
         sf::UdpSocket rozsylacz;
 
     public:
-        vector<Zawodnik> podpieci;
+        vector<multi::Zawodnik> podpieci;
         vector<Pokoj> pokoje;
         bool stop = false;
 
-        Adres Postaw(string adres = ADRES_MASTER);
+        multi::Adres Postaw(string adres = ADRES_MASTER);
     };
-
 }
+
+class KontekstSwiata {
+public:
+    mastery::Serwer* serwer = NULL;
+    mastery::Klient* klient = NULL;
+
+    static KontekstSwiata* obiekt;
+    static KontekstSwiata& o() {
+        if (obiekt == NULL)
+            obiekt = new KontekstSwiata();
+        return *obiekt;
+
+    }
+};
+
+
+void komunikat_masterserwer(mastery::Serwer* serwer);
+void komunikat_masterklient(mastery::Klient* klient);
+
+void start_masterserwer(string zadanie);
+void wykonaj_masterserwer(mastery::Serwer* serwer, string zadanie);
+
+void start_masterklient(string zadanie);
+void wykonaj_masterklient(mastery::Klient* klient, string zadanie);

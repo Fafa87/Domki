@@ -1,6 +1,6 @@
 #include "../MultiSerwer/serwery.h"
 
-Kontekst* Kontekst::obiekt;
+KontekstGry* KontekstGry::obiekt;
 
 void komunikat_serwer_gry()
 {
@@ -9,9 +9,9 @@ void komunikat_serwer_gry()
 
 void start_serwer_gry(string zadanie)
 {
-    Kontekst::o().serwer = new Serwer();
-    auto& serwer = Kontekst::o().serwer;
-    auto& misja_ustawienia = Kontekst::o().misja_ustawienia;
+    KontekstGry::o().serwer = new Serwer();
+    auto& serwer = KontekstGry::o().serwer;
+    auto& misja_ustawienia = KontekstGry::o().misja_ustawienia;
 
     auto adres = serwer->Postaw();
     printf("%s\n", adres.ToString().c_str());
@@ -72,8 +72,8 @@ void start_serwer_gry(string zadanie)
 
 void wykonaj_serwer_gry(string zadanie)
 {
-    auto& misja_ustawienia = Kontekst::o().misja_ustawienia;
-    auto& serwer = Kontekst::o().serwer;
+    auto& misja_ustawienia = KontekstGry::o().misja_ustawienia;
+    auto& serwer = KontekstGry::o().serwer;
     if (zadanie.find("start") == 0)
     {
         MisjaUstawienia ustawienia = misja_ustawienia;

@@ -1,20 +1,23 @@
-#include "../MultiSerwer/serwery.h"
+#include "../MultiSerwer/mastery.h"
 
 
-void komunikat_masterklient()
+void komunikat_masterklient(mastery::Klient* klient)
 {
-    //printf("Jestes graczem, musisz sie polaczyc z serwerm. Wpisz: 'polacz' lub 'polacz <adres_ip_serwera>'\n");
+    printf("Jestes zwiedzajacym. Mozesz sie podlaczyc do masterserwera, a potem z nim konwersowac.\n");
+    if (klient->polaczony)
+        printf("Jestes juz polaczony, mozesz napisac tekst lub zapytac serwer o to /KTO? jest w pokoju serwera.'\n");
+    else
+        printf("Nie jestes jeszcze polaczony do serwera. Napisz polacz <adres>, <port>, aby sprobowac sie polaczyc do msa.");
 }
 
-void start_masterklient_gry(string zadanie)
+void start_masterklient_gry(string nazwa)
 {
-    /*Kontekst::o().klient = new Klient(zadanie.substr(7));
-    auto& klient = Kontekst::o().klient;
+    KontekstSwiata::o().klient = new mastery::Klient(nazwa);
+    auto& klient = KontekstSwiata::o().klient;
 
-    printf("Klient: %s\n", klient->nazwa.c_str());*/
 }
 
-void wykonaj_masterklient_gry(string zadanie)
+void wykonaj_masterklient_gry(mastery::Klient* klient, string zadanie)
 {
 
 

@@ -22,16 +22,16 @@ void split(const std::string &s, char delim, Out result) {
 
 std::vector<std::string> split(const std::string &s, char delim);
 
-class Kontekst {
+class KontekstGry {
 public:
     Serwer* serwer = NULL;
     Klient* klient = NULL;
     MisjaUstawienia misja_ustawienia;
 
-    static Kontekst* obiekt;
-    static Kontekst& o() {
+    static KontekstGry* obiekt;
+    static KontekstGry& o() {
         if (obiekt == NULL)
-            obiekt = new Kontekst();
+            obiekt = new KontekstGry();
         return *obiekt;
 
     }

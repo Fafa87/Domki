@@ -8,7 +8,7 @@ void komunikat_serwer_klient()
 
 void start_klient_gry(string zadanie)
 {
-    Kontekst::o().klient = new Klient(zadanie);
+    Kontekst::o().klient = new Klient(zadanie.substr(7));
     auto& klient = Kontekst::o().klient;
 
     printf("Klient: %s\n", klient->nazwa.c_str());

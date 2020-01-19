@@ -31,7 +31,8 @@ void konfiguruj(int l, const char * argv[])
     if (l == 0)
     {
         LOG(INFO) << "Konfiguruje serwer...";
-        wybierz_i_wystartuj_tryb("serwer", string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6])));
+
+        wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]));
         while(misja_ustawienia.Zwyciezca() < 0)
             wykonaj("start");
         exit(0);
@@ -39,56 +40,9 @@ void konfiguruj(int l, const char * argv[])
     else if (l==1)
     { 
         LOG(INFO) << "Konfiguruje klienta...";
-        wybierz_i_wystartuj_tryb("klient", std::to_string(l));
+
+        wykonaj("klient " + std::to_string(l));
         pobierz_serwery_gry();
-    }
-}
-
-void wybierz_i_wystartuj_tryb(string tryb, string komenda)
-{
-    char tmp[1000];
-    if (!tryb.size())
-    {
-        printf("Zdecyduj kim jestes:\n"
-            "- serwer - prowadzisz gre dla wielu graczy\n"
-            "- klient - chcesz dolaczyc do gry zalozonej przez serwer\n"
-            "- masterserwer - prowadzisz pokoje dla graczy z calego swiata i stawiasz serwery\n"
-            "- masterklient - poszukujesz graczy aby zagrac przez internet\n");
-        
-        gets_s(tmp);
-        tryb = tmp;
-    }
-
-    if (tryb == "serwer")
-    {
-        if (!komenda.size())
-        {
-            printf("Jaka plansza (folder nazwa)? Opcjonalnie do ilu wygranych.\nA dokladnie mozna podac: string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi\n");
-            gets_s(tmp);
-            komenda = tmp;
-        }
-        start_serwer_gry(komenda);
-    }
-    else if (tryb == "klient")
-    {
-        if (!komenda.size())
-        {
-            printf("Jak sie nazywasz?");
-        }
-        start_klient_gry(komenda);
-    }
-    else if (tryb == "masterserwer")
-    {
-        if (!komenda.size())
-        {
-            printf("Jak sie nazywasz?");
-        }
-
-    }
-    else if (tryb == "masterklient")
-    {
-
-
     }
 }
 
@@ -98,7 +52,11 @@ void komunikat()
     auto& klient = Kontekst::o().klient;
     // TODO dorzucic tutaj masterserwer i masterklient
 
-    if (klient != nullptr)
+    if (serwer == nullptr && klient == nullptr)
+    {
+        printf("Zdecyduj czy jestes serwerem czy graczem:\n- jesli serwer to wpisz: 'serwer <nazwa_planszy>.txt' lub 'serwer <nr_planszy>'\njesli chcesz zagrac wiele razy na jednej mapie to na koncu podaj do ilu wygranych grasz\n w szczegolnosci to: string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi\n - jesli graczem to wpisz: 'klient <nazwa>'\n");
+    }
+    else if (klient != nullptr)
         komunikat_serwer_klient();
     else if (serwer != nullptr)
         komunikat_serwer_gry();
@@ -112,7 +70,14 @@ void wykonaj(string zadanie)
     auto& klient = Kontekst::o().klient;
     // TODO dorzucic tutaj masterserwer i masterklient
 
-    if (klient != nullptr)
+    if (serwer == nullptr && klient == nullptr)
+    {
+        if (zadanie.find("serwer") == 0)
+            start_serwer_gry(zadanie);
+        if (zadanie.find("klient") == 0)
+            start_klient_gry(zadanie);
+    }
+    else if (klient != nullptr)
     {
         wykonaj_klient_gry(zadanie);
     }
@@ -136,8 +101,6 @@ int main(int argc, const char * argv[]) {
         cichociemny = true;
         konfiguruj(int(argv[1][0] - '0'), argv);
     }
-
-    wybierz_i_wystartuj_tryb("", "");
 
     auto serwer = Kontekst::o().serwer;
     auto klient = Kontekst::o().klient;

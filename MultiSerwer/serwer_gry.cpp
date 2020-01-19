@@ -18,33 +18,33 @@ void start_serwer_gry(string zadanie)
 
     auto czastki = split(zadanie, ' ');
 
-    for (int a = 0, b = czastki[0].size(); a < b; a++)if (czastki[0][a] == '+')czastki[0][a] = ' ';
     for (int a = 0, b = czastki[1].size(); a < b; a++)if (czastki[1][a] == '+')czastki[1][a] = ' ';
+    for (int a = 0, b = czastki[2].size(); a < b; a++)if (czastki[2][a] == '+')czastki[2][a] = ' ';
 
-    auto misja_folder = czastki[0];
-    auto misja_nazwa = czastki[1];
+    auto misja_folder = czastki[1];
+    auto misja_nazwa = czastki[2];
     if (misja_nazwa.size() == 1)
     {
         misja_nazwa = wczytaj_liste_plansz("Plansza\\" + misja_folder)[atoi(misja_nazwa.c_str())];
     }
-    auto misja_sciezka = "Plansza\\" + misja_folder + "\\" + czastki[1];
+    auto misja_sciezka = "Plansza\\" + misja_folder + "\\" + czastki[2];
 
     // jak podana liczba wygranych to ja zapisz
     int liczba_gier = 1;
-    if (czastki.size() >= 3)
-    {
-        liczba_gier = atoi(czastki[2].c_str());
-    }
-    double predkosc = misja_ustawienia.szybkosc;
     if (czastki.size() >= 4)
     {
-        predkosc = atof(czastki[3].c_str());
+        liczba_gier = atoi(czastki[3].c_str());
+    }
+    double predkosc = misja_ustawienia.szybkosc;
+    if (czastki.size() >= 5)
+    {
+        predkosc = atof(czastki[4].c_str());
     }
     int liczba_graczy = misja_ustawienia.komputery.size() + 1;
     int liczba_ludzi = liczba_graczy;
-    if (czastki.size() >= 5)
+    if (czastki.size() >= 6)
     {
-        liczba_ludzi = atof(czastki[4].c_str());
+        liczba_ludzi = atof(czastki[5].c_str());
     }
 
     misja_ustawienia = wczytaj_meta(misja_sciezka);

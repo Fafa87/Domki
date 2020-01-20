@@ -1,4 +1,4 @@
-﻿#include <thread>
+#include <thread>
 
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Widgets.hpp>

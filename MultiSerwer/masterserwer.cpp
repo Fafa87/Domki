@@ -1,67 +1,50 @@
 #include "../MultiSerwer/mastery.h"
 
+#include <thread>
+
+KontekstSwiata* KontekstSwiata::obiekt;
 
 void komunikat_masterserwer(mastery::Serwer* serwer)
 {
-    printf("Jestes postawionym multiserwerem. Napisz Stop aby umrzec:'n");
+    if (serwer->dziala)
+        printf("Jestes postawionym multiserwerem. Napisz stop aby umrzec:'\n");
+    else
+        printf("Jestes spiacym multiserwerem. Napisz postaw <port> aby sie obudzic.'\n");
 }
 
-void start_masterserwer_gry(string zadanie)
+void start_masterserwer(int port)
 {
-    /*Kontekst::o().klient = new Klient(zadanie.substr(7));
-    auto& klient = Kontekst::o().klient;
-
-    printf("Klient: %s\n", klient->nazwa.c_str());*/
+    KontekstSwiata::o().serwer = new mastery::Serwer();
+    auto& serwer = KontekstSwiata::o().serwer;
+    std::thread([&serwer, port]() { serwer->Postaw(port); }).detach();
 }
 
-void wykonaj_masterserwer_gry(mastery::Serwer* serwer, string zadanie)
+void wykonaj_masterserwer(mastery::Serwer* serwer, string zadanie)
 {
-    //auto& klient = Kontekst::o().klient;
-    //auto& misja_ustawienia = Kontekst::o().misja_ustawienia;
+    if (zadanie.find("stop") == 0 && serwer->dziala == true)
+    {
+        LOG(INFO) << "Zatrzymuje serwer...";
+        serwer->dziala = false;
+    }
+    if (zadanie.find("postaw") == 0 && serwer->dziala == false)
+    {
+        auto port = stoi(zadanie.substr(7));
+        std::thread([serwer, port]() { serwer->Postaw(port); }).detach();
+    }
+}
 
-    //if (zadanie.find("polacz") == 0)
-    //{
-    //    Adres adres;
-    //    if (klient->lista_serwerow.size() == 0)
-    //    {
-    //        auto cel = zadanie.substr(7);
-    //        auto ip_port = split(cel, ':');
-    //        adres = Adres(ip_port[0], stoi(ip_port[1]));
-    //    }
-    //    else
-    //    {
-    //        adres = klient->lista_serwerow.back();
-    //    }
-    //    klient->Podlacz(adres);
+void mastery::Serwer::Postaw(int port)
+{
+    LOG(INFO) << "Serwer stoi na porcie: " << port;
+    this->dziala = true;
+    while (this->dziala)
+    {
+        // sprawdz czy nikt nie chce sie dostac
 
-    //    // nie ma co czekac na gotowy
-    //    //if (zadanie.find("gotowy") == 0)
-    //    std::pair<sf::Socket::Status, MisjaUstawienia> res;
-    //    do {
-    //        printf("oczekuje na start misji... ");
-    //        auto status_misja_ustawienia = klient->OczekujNaStart();
-    //        auto misja_ustawienia = status_misja_ustawienia.second;
-    //        if (status_misja_ustawienia.first != sf::Socket::Done)
-    //            LOG(WARNING) << "Odebranie ustawien misji buraka! " << status_misja_ustawienia.first;
+        // sprawdz czy nikt nic nie pisze
 
-    //        printf("startuje misje %s\n", misja_ustawienia.nazwa.c_str());
-
-    //        string test = "A";
-    //        klient->wtyk->setBlocking(false);
-
-    //        KlientowyRuszacz ruszacz(*klient);
-
-    //        misja_ustawienia.komputery.clear();
-    //        misja(misja_ustawienia, ruszacz);
-
-    //        printf("...misja skonczona\n");
-
-    //        misja_ustawienia.WypiszRanking();
-
-    //        klient->wtyk->setBlocking(true);
-    //    } while (!(misja_ustawienia.Zwyciezca() >= 0));
-
-    //    auto wygrany = misja_ustawienia.Zwyciezca();
-    //    printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", misja_ustawienia.nazwy_graczow[wygrany].c_str());
-    //}
+        Sleep(100);
+    }
+    LOG(INFO) << "Serwer wylaczony.";
+    this->dziala = false;
 }

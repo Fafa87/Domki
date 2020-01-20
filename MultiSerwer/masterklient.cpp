@@ -10,14 +10,13 @@ void komunikat_masterklient(mastery::Klient* klient)
         printf("Nie jestes jeszcze polaczony do serwera. Napisz polacz <adres>, <port>, aby sprobowac sie polaczyc do msa.");
 }
 
-void start_masterklient_gry(string nazwa)
+void start_masterklient(string nazwa)
 {
     KontekstSwiata::o().klient = new mastery::Klient(nazwa);
     auto& klient = KontekstSwiata::o().klient;
-
 }
 
-void wykonaj_masterklient_gry(mastery::Klient* klient, string zadanie)
+void wykonaj_masterklient(mastery::Klient* klient, string zadanie)
 {
 
 

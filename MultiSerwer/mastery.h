@@ -48,9 +48,9 @@ namespace mastery
     public:
         vector<multi::Zawodnik> podpieci;
         vector<Pokoj> pokoje;
-        bool stop = false;
+        bool dziala = false;
 
-        multi::Adres Postaw(string adres = ADRES_MASTER);
+        void Postaw(int port);
     };
 }
 
@@ -72,7 +72,7 @@ public:
 void komunikat_masterserwer(mastery::Serwer* serwer);
 void komunikat_masterklient(mastery::Klient* klient);
 
-void start_masterserwer(string zadanie);
+void start_masterserwer(int port);
 void wykonaj_masterserwer(mastery::Serwer* serwer, string zadanie);
 
 void start_masterklient(string zadanie);

@@ -38,7 +38,7 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
         tryb = tmp;
     }
 
-    if (tryb == "serwer")
+    if (tryb == "serwer" || tryb == "s")
     {
         if (!komenda.size())
         {
@@ -48,7 +48,7 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
         }
         start_serwer_gry(komenda);
     }
-    else if (tryb == "klient")
+    else if (tryb == "klient" || tryb == "k")
     {
         if (!komenda.size())
         {
@@ -56,7 +56,7 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
         }
         start_klient_gry(komenda);
     }
-    else if (tryb == "masterserwer")
+    else if (tryb == "masterserwer" || tryb == "ms")
     {
         if (!komenda.size())
         {
@@ -64,9 +64,9 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
             gets_s(tmp);
             komenda = tmp;
         }
-        start_masterserwer(komenda);
+        start_masterserwer(stoi(komenda));
     }
-    else if (tryb == "masterklient")
+    else if (tryb == "masterklient" || tryb == "mk")
     {
         if (!komenda.size())
         {
@@ -82,35 +82,37 @@ void komunikat()
 {
     auto& serwer = KontekstGry::o().serwer;
     auto& klient = KontekstGry::o().klient;
-    auto masterserwer = KontekstSwiata::o().serwer;
-    auto masterklient = KontekstSwiata::o().klient;
+    auto& masterserwer = KontekstSwiata::o().serwer;
+    auto& masterklient = KontekstSwiata::o().klient;
 
     if (klient != nullptr)
         komunikat_serwer_klient();
     else if (serwer != nullptr)
         komunikat_serwer_gry();
-    else if (serwer != nullptr)
+    else if (masterserwer != nullptr)
         komunikat_masterserwer(masterserwer);
-    else if (serwer != nullptr)
+    else if (masterklient != nullptr)
         komunikat_masterklient(masterklient);
 }
 
 void wykonaj(string zadanie)
 {
-    LOG(INFO) << "Wykonuje: '" << zadanie << "'";
+    if (zadanie.size() > 0)
+        LOG(INFO) << "Wykonuje: '" << zadanie << "'";
 
     auto& serwer = KontekstGry::o().serwer;
     auto& klient = KontekstGry::o().klient;
-    // TODO dorzucic tutaj masterserwer i masterklient
+    auto& masterserwer = KontekstSwiata::o().serwer;
+    auto& masterklient = KontekstSwiata::o().klient;
 
     if (klient != nullptr)
-    {
         wykonaj_klient_gry(zadanie);
-    }
     else if (serwer != nullptr)
-    {
         wykonaj_serwer_gry(zadanie);
-    }
+    else if (masterserwer != nullptr)
+        wykonaj_masterserwer(masterserwer, zadanie);
+    else if (masterklient != nullptr)
+        wykonaj_masterklient(masterklient, zadanie);
 }
 
 void konfiguruj(int l, const char * argv[])

@@ -1,4 +1,5 @@
 #include "../MultiSerwer/mastery.h"
+#include "../Domki/ext_string.h"
 
 
 void komunikat_masterklient(mastery::Klient* klient)
@@ -7,7 +8,7 @@ void komunikat_masterklient(mastery::Klient* klient)
     if (klient->polaczony)
         printf("Jestes juz polaczony, mozesz napisac tekst lub zapytac serwer o to /KTO? jest w pokoju serwera.'\n");
     else
-        printf("Nie jestes jeszcze polaczony do serwera. Napisz polacz <adres>, <port>, aby sprobowac sie polaczyc do msa.");
+        printf("Nie jestes jeszcze polaczony do serwera. Napisz polacz <adres>:<port>, aby sprobowac sie polaczyc do msa.\n");
 }
 
 void start_masterklient(string nazwa)
@@ -18,7 +19,14 @@ void start_masterklient(string nazwa)
 
 void wykonaj_masterklient(mastery::Klient* klient, string zadanie)
 {
+    if (zadanie.find("polacz") == 0)
+    {
+        auto adres_port = zadanie.substr(7);
+        auto ip_port = split(adres_port, ':');
+        auto adres = multi::Adres(ip_port[0], stoi(ip_port[1]));
 
+        klient->Podlacz(adres);
+    }
 
 
     // TODO do usuniecia potem (gdy bedzie masterserwer)
@@ -94,4 +102,37 @@ void wykonaj_masterklient(mastery::Klient* klient, string zadanie)
     //    auto wygrany = misja_ustawienia.Zwyciezca();
     //    printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", misja_ustawienia.nazwy_graczow[wygrany].c_str());
     //}
+}
+
+void mastery::Klient::Podlacz(multi::Adres adres)
+{
+    sf::Socket::Status status = gracz.wtyk->connect(adres.ip, adres.port, sf::seconds(5));
+    this->polaczony = false;
+    gracz.ostatnio = status;
+    if (status != sf::Socket::Done)
+    {
+        LOG(WARNING) << "Nie udalo sie polaczyc: " << status;
+    }
+    else
+    {
+        LOG(INFO) << "Polaczony z: " << adres.ToString();
+        status = multi::Wyslij(*gracz.wtyk, gracz.nazwa);
+        gracz.ostatnio = status;
+        if (status != sf::Socket::Done)
+        {
+            LOG(WARNING) << "Nazwa nie dotarla: " << status;
+            gracz.wtyk->disconnect();
+        }
+        else
+        {
+            LOG(INFO) << "Imie wyslane i przyjete.";
+            this->polaczony = true;
+
+            // obsluguj polaczenie
+
+            //while (this->dziala)
+            //{
+            //}
+        }
+    }
 }

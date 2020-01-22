@@ -2,6 +2,7 @@
 
 #include <iterator>
 
+#include "../Domki/ext_string.h"
 #include "../Domki/multi.h"
 #include "../Domki/multi_dzialacze.h"
 
@@ -9,18 +10,6 @@
 
 using namespace std;
 using namespace multi;
-
-template<typename Out>
-void split(const std::string &s, char delim, Out result) {
-    std::stringstream ss;
-    ss.str(s);
-    std::string item;
-    while (std::getline(ss, item, delim)) {
-        *(result++) = item;
-    }
-}
-
-std::vector<std::string> split(const std::string &s, char delim);
 
 class KontekstGry {
 public:

@@ -23,10 +23,11 @@ namespace mastery
         Klient(string nazwa) : gracz() {
             gracz.nazwa = nazwa;
             gracz.adres = multi::Adres(sf::IpAddress::getLocalAddress().toString(), PORT_MASTER - 1); // TODO TMP
+            gracz.wtyk = new sf::TcpSocket();
         }
 
-        bool polaczony;
-        bool Podlacz();
+        bool polaczony = false;
+        void Podlacz(multi::Adres adres);
     };
 
     class Pokoj
@@ -43,8 +44,6 @@ namespace mastery
     private:
         sf::TcpListener nasluchiwacz;
         sf::SocketSelector wtykowiec;
-        sf::UdpSocket rozsylacz;
-
     public:
         vector<multi::Zawodnik> podpieci;
         vector<Pokoj> pokoje;

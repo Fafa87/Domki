@@ -78,6 +78,40 @@ void mastery::Serwer::Postaw(int port)
             }
         }
 
+        if (wtykowiec.wait(sf::seconds(0.1)))
+        {
+            for (auto& ludek : this->podpieci)
+            {
+                if (wtykowiec.isReady(*ludek.wtyk))
+                {
+                    LOG(INFO) << "Ludek sie odezwal: " << ludek.nazwa;
+                    auto status_dane = multi::Pobierz(*ludek.wtyk);
+                    // TODO zareaguj gdyby sie okazalo ze jednak jest rozlaczone
+                    if (status_dane.first == sf::Socket::Done)
+                    {
+                        // TODO przeanalizuj co dostales
+
+                        // jak napis to wyslij go do wszystkich ludkow
+                        for (auto& ludek2 : this->podpieci) if (&ludek2 != &ludek)
+                        {
+                            LOG(INFO) << "Przesylam to do: " << ludek2.nazwa;
+                            // TODO tutaj sprawdz czy zyja?
+                            multi::Wyslij(*ludek2.wtyk, status_dane.second);
+                            // TODO  jak nie zyja to odlacz
+
+                        }
+
+                    }
+
+
+                }
+
+            }
+            
+
+
+        }
+
         // sprawdz czy nikt nic nie pisze
 
         Sleep(100);

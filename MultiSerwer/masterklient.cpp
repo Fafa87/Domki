@@ -4,7 +4,6 @@
 
 void komunikat_masterklient(mastery::Klient* klient)
 {
-    printf("Jestes zwiedzajacym. Mozesz sie podlaczyc do masterserwera, a potem z nim konwersowac.\n");
     if (klient->polaczony)
         printf("Jestes juz polaczony, mozesz napisac tekst lub zapytac serwer o to /KTO? jest w pokoju serwera.'\n");
     else
@@ -25,83 +24,21 @@ void wykonaj_masterklient(mastery::Klient* klient, string zadanie)
         auto ip_port = split(adres_port, ':');
         auto adres = multi::Adres(ip_port[0], stoi(ip_port[1]));
 
-        klient->Podlacz(adres);
+        std::thread([&klient, adres]() { klient->Podlacz(adres); }).detach();
+    }
+    else if (zadanie == "rozlacz")
+    {
+        // TODO odlacz sie od serwera
+
+    }
+    else if (zadanie.size() > 0)
+    {
+        // mowi cos
+        klient->komendy.add(zadanie);
     }
 
 
-    // TODO do usuniecia potem (gdy bedzie masterserwer)
-    //if (zadanie.find("odbierz") == 0)
-    //{
-    //    vector<vector<string>> wiad;
-    //    /*if (serwer != NULL)
-    //    wiad = serwer->Odbierz();*/
-    //    if (klient != NULL)
-    //        wiad.push_back(Pobierz(*klient->wtyk).second);
-    //    printf("Odebralem:\n");
-    //    for (auto l : wiad)
-    //    {
-    //        for (auto s : l)
-    //            printf("'%s'\n", s.c_str());
-    //        printf("----\n");
-    //    }
-    //}
-    //if (zadanie.find("napisz") == 0)
-    //{
-    //    auto text = zadanie.substr(7);
-    //    /*if (serwer != NULL)
-    //        serwer->Rozeslij(text);
-    //    if (klient != NULL)
-    //        Wyslij(*klient->wtyk, text);*/
-    //}
 
-    //auto& klient = Kontekst::o().klient;
-    //auto& misja_ustawienia = Kontekst::o().misja_ustawienia;
-
-    //if (zadanie.find("polacz") == 0)
-    //{
-    //    Adres adres;
-    //    if (klient->lista_serwerow.size() == 0)
-    //    {
-    //        auto cel = zadanie.substr(7);
-    //        auto ip_port = split(cel, ':');
-    //        adres = Adres(ip_port[0], stoi(ip_port[1]));
-    //    }
-    //    else
-    //    {
-    //        adres = klient->lista_serwerow.back();
-    //    }
-    //    klient->Podlacz(adres);
-
-    //    // nie ma co czekac na gotowy
-    //    //if (zadanie.find("gotowy") == 0)
-    //    std::pair<sf::Socket::Status, MisjaUstawienia> res;
-    //    do {
-    //        printf("oczekuje na start misji... ");
-    //        auto status_misja_ustawienia = klient->OczekujNaStart();
-    //        auto misja_ustawienia = status_misja_ustawienia.second;
-    //        if (status_misja_ustawienia.first != sf::Socket::Done)
-    //            LOG(WARNING) << "Odebranie ustawien misji buraka! " << status_misja_ustawienia.first;
-
-    //        printf("startuje misje %s\n", misja_ustawienia.nazwa.c_str());
-
-    //        string test = "A";
-    //        klient->wtyk->setBlocking(false);
-
-    //        KlientowyRuszacz ruszacz(*klient);
-
-    //        misja_ustawienia.komputery.clear();
-    //        misja(misja_ustawienia, ruszacz);
-
-    //        printf("...misja skonczona\n");
-
-    //        misja_ustawienia.WypiszRanking();
-
-    //        klient->wtyk->setBlocking(true);
-    //    } while (!(misja_ustawienia.Zwyciezca() >= 0));
-
-    //    auto wygrany = misja_ustawienia.Zwyciezca();
-    //    printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", misja_ustawienia.nazwy_graczow[wygrany].c_str());
-    //}
 }
 
 void mastery::Klient::Podlacz(multi::Adres adres)
@@ -130,9 +67,41 @@ void mastery::Klient::Podlacz(multi::Adres adres)
 
             // obsluguj polaczenie
 
-            //while (this->dziala)
-            //{
-            //}
+            while (this->polaczony)
+            {
+                // jesli co jest do powiedzenia to to napisz
+                {
+                    string tekst;
+                    auto status = komendy.try_take(tekst);
+                    if (status == code_machina::BlockingCollectionStatus::Ok)
+                    {
+                        LOG(INFO) << "Napisalem: " << tekst;
+                        auto status_wyslania = multi::Wyslij(*gracz.wtyk, tekst);
+                        // TODO obluz status (osobna funkcja ktora w roznych momentach zareaguje logiem lub oficjalnym rozlaczeniem sie)
+                        //if (status_wyslania == sf::Socket::Disconnected)
+                        //{
+
+                        //}
+                    }
+                }
+
+                // Czy to siê wykonuje?????
+                // czy tylko raz na nacisniecie czegos?
+
+                // jesli cos przyszlo to to wypisz
+                {
+                    auto status_dane = multi::Pobierz(*gracz.wtyk, sf::seconds(0.1));
+                    if (status_dane.first == sf::Socket::Done)
+                    {
+                        LOG(INFO) << "Odebralem: " << status_dane.second[0];
+
+                    }
+
+
+                }
+
+                Sleep(100);
+            }
         }
     }
 }

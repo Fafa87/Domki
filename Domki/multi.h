@@ -46,6 +46,7 @@ namespace multi
     void Podepnij(Rozgrywka& rozgrywka);
     void Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy);
     pair<sf::Socket::Status, vector<string>> Pobierz(sf::TcpSocket& wtyk);
+    pair<sf::Socket::Status, vector<string>> Pobierz(sf::TcpSocket& wtyk, sf::Time limit_czasu);
     sf::Socket::Status Wyslij(sf::TcpSocket& wtyk, string dane);
     sf::Socket::Status Wyslij(sf::TcpSocket& wtyk, vector<string> dane);
 

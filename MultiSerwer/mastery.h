@@ -6,6 +6,7 @@
 #include "../Domki/multi_dzialacze.h"
 
 #include "easylogging++.h" 
+#include "BlockingCollection.h"
 
 using namespace std;
 
@@ -20,6 +21,8 @@ namespace mastery
         const string adres;
     public:
         multi::Zawodnik gracz;
+        code_machina::BlockingCollection<string> komendy;
+
         Klient(string nazwa) : gracz() {
             gracz.nazwa = nazwa;
             gracz.adres = multi::Adres(sf::IpAddress::getLocalAddress().toString(), PORT_MASTER - 1); // TODO TMP

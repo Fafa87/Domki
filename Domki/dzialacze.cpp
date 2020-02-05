@@ -340,7 +340,8 @@ void Ruszacz::PrzesuwajLudkow(double czas)
             PD jednostkowy = wektor_do_celu / dlugosc;
             jednostkowy *= przesuniecie*armia.szybkosc_ludka*czas;
 
-            armia.polozenie += jednostkowy;
+			if (przesuniecie*armia.szybkosc_ludka*czas >= dlugosc)armia.polozenie = armia.cel->polozenie;
+            else armia.polozenie += jednostkowy;
         }
     }
 }
@@ -368,7 +369,7 @@ void Ruszacz::WalczLudkami(double czas)
                 do_usuniecia.push_back(spotkanie);
             }
         }
-        if (odleglosc < min(armia.cel->rozmiar,armia.rozmiar))
+        else if (odleglosc < min(armia.cel->rozmiar,armia.rozmiar))
         {
             if (IsType<Domek>(armia.cel))
             {

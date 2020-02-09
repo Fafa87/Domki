@@ -435,7 +435,6 @@ void Ruszacz::Produkuj(double czas)
 void Ruszacz::Strzelaj(double czas)
 {
     int sila_strzalu = 10.0;
-    //tego na razie nie ma
     vector<Ludek*> do_usuniecia;
     for (Ludek& ludek : rozgrywka->armie)
         {

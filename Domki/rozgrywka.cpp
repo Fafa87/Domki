@@ -123,7 +123,7 @@ Ludek * Rozgrywka::Spotkanie(Ludek & ludek)
 {
     if (walka_w_polu)
     {
-        for (auto& armia : armie) if (&armia != &ludek && armia.gracz != ludek.gracz)
+        for (auto& armia : armie) if (&armia != &ludek)
         {
             double odl = Odleglosc(ludek, armia);
             if (odl < (armia.rozmiar + ludek.rozmiar) / 2)
@@ -142,6 +142,13 @@ Twor * Rozgrywka::Zlokalizuj(int x, int y)
         if (sqrt(roz.x * roz.x + roz.y * roz.y) < dom.rozmiar)
             return &dom;
     }
+	for (auto& armia : armie)
+	{
+		PD punkt(x, y);
+		PD roz = punkt - armia.polozenie;
+		if (sqrt(roz.x * roz.x + roz.y * roz.y) < armia.rozmiar)
+			return &armia;
+	}
     return nullptr;
 }
 

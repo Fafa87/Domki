@@ -360,7 +360,20 @@ void Ruszacz::WalczLudkami(double czas)
         Ludek& armia = *it;
         double odleglosc = rozgrywka->Odleglosc(armia, *armia.cel);
         auto spotkanie = rozgrywka->Spotkanie(armia);
-        if (spotkanie != NULL)
+		if (spotkanie != NULL && spotkanie->gracz == armia.gracz)
+		{
+			if (spotkanie->liczebnosc <= armia.liczebnosc)
+			{
+				rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc + spotkanie->liczebnosc);
+				do_usuniecia.push_back(spotkanie);
+			}
+			else
+			{
+				rozgrywka->ZmienLiczebnosc(*spotkanie, armia.liczebnosc + spotkanie->liczebnosc);
+				do_usuniecia.push_back(&(*it));
+			}
+		}
+        else if (spotkanie != NULL)
         {
             rozgrywka->TracLudki(armia, std::max(5.0+ czas * szybkosc,0.3 * (*spotkanie).liczebnosc*czas * szybkosc));
             rozgrywka->TracLudki(*spotkanie, std::max(5.0+ czas * szybkosc, 0.3 * armia.liczebnosc*czas * szybkosc));

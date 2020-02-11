@@ -315,6 +315,20 @@ OznaczaczWyborow::OznaczaczWyborow(MyszDecydent & decydent) : decydent(decydent)
 
 void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 {
+	if (decydent.skupiony != nullptr && decydent.skupiony != decydent.wybrany)
+	{
+		double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaæ wielkoœæ okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)
+		double rozmiar = decydent.skupiony->rozmiar * wspolczynnik_czas_odznaczenia;
+		sf::CircleShape kolo(rozmiar);
+		kolo.setPosition(decydent.skupiony->polozenie.x, decydent.skupiony->polozenie.y);
+		kolo.setRadius(rozmiar);
+		kolo.setOrigin(rozmiar, rozmiar);
+		sf::Color kolor = decydent.skupiony->gracz->kolor;
+		kolor.a = 96;
+		kolo.setFillColor(kolor);
+
+		okno.draw(kolo);
+	}
     if (decydent.wybrany != nullptr)
     {
         double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaæ wielkoœæ okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)

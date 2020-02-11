@@ -74,6 +74,7 @@ public:
 
     map<Domek*, Domek*> punkty_kontrolne;
 	Domek* wybrany = nullptr;
+	Twor* skupiony = nullptr;
 	char nacisniety = 0;
 	Gracz& gracz;
 

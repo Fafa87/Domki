@@ -230,56 +230,43 @@ void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgr
     auto info_obrona = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-obrona"));
     auto info_obrona_etykieta = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-etk-obrona"));
     
-    if (wybrany != nullptr)
+	auto do_pokazania = skupiony != nullptr ? skupiony : wybrany;
+    if (do_pokazania != nullptr)
     {
-        auto& obrazek = wyswietlacz.PobierzWyglad(wybrany);
+        auto& obrazek = wyswietlacz.PobierzWyglad(do_pokazania);
         obrazek.setPosition(50, 50);
         obrazek.setSize(sf::Vector2f(100, 100));
         obrazek.setOrigin(sf::Vector2f(50, 50));
         wyglad->Clear(sf::Color::Transparent);
         wyglad->Draw(obrazek);
 
-        info_poziom_etykieta->SetText(L"Poziom:");
-        info_poziom->SetText(string_format("%d", wybrany->poziom));
-        info_zapelnienie_etykieta->SetText(L"Zapełnienie:");
-        if(wybrany->typdomku!=TypDomku::kPole)info_zapelnienie->SetText(to_wstring(100 * (int)wybrany->liczebnosc / (int)wybrany->max_liczebnosc) + L"%");
-        else info_zapelnienie->SetText("---");
-        info_ulepsz_etykieta->SetText(L"Koszt ulepszenia:");
-        if (wybrany->poziom < 5)
-            info_ulepsz->SetText(string_format("%d", wybrany->max_liczebnosc / 2));
-        else 
-            info_ulepsz->SetText(" --- ");
-        info_atak_etykieta->SetText(L"Atak:");
-        info_atak->SetText(string_format("%d", (int)rozgrywka.PoliczAtakDomku(*wybrany)));
-        info_obrona_etykieta->SetText(L"Obrona:");
-        info_obrona->SetText(string_format("%d", (int)rozgrywka.PoliczObroneDomku(*wybrany)));
-    }
-	else if(skupiony != nullptr)
-	{
-		auto& obrazek = wyswietlacz.PobierzWyglad(skupiony);
-		obrazek.setPosition(50, 50);
-		obrazek.setSize(sf::Vector2f(100, 100));
-		obrazek.setOrigin(sf::Vector2f(50, 50));
-		wyglad->Clear(sf::Color::Transparent);
-		wyglad->Draw(obrazek);
-
-
-		//	Moze byc ludkiem, wtedy interfejs dla domku nie zadziala
-		/*info_poziom_etykieta->SetText(L"Poziom:");
-		info_poziom->SetText(string_format("%d", wybrany->poziom));
-		info_zapelnienie_etykieta->SetText(L"Zapełnienie:");
-		if (skupiony->typdomku != TypDomku::kPole)info_zapelnienie->SetText(to_wstring(100 * (int)wybrany->liczebnosc / (int)wybrany->max_liczebnosc) + L"%");
-		else info_zapelnienie->SetText("---");
-		info_ulepsz_etykieta->SetText(L"Koszt ulepszenia:");
-		if (wybrany->poziom < 5)
-			info_ulepsz->SetText(string_format("%d", wybrany->max_liczebnosc / 2));
+		if (IsType<Domek>(do_pokazania))
+		{
+			auto pokaz_domek = (Domek*)do_pokazania;
+			info_poziom_etykieta->SetText(L"Poziom:");
+			info_poziom->SetText(string_format("%d", pokaz_domek->poziom));
+			info_zapelnienie_etykieta->SetText(L"Zapełnienie:");
+			if (pokaz_domek->typdomku != TypDomku::kPole)info_zapelnienie->SetText(to_wstring(100 * (int)pokaz_domek->liczebnosc / (int)pokaz_domek->max_liczebnosc) + L"%");
+			else info_zapelnienie->SetText("---");
+			info_ulepsz_etykieta->SetText(L"Koszt ulepszenia:");
+			if (pokaz_domek->poziom < 5)
+				info_ulepsz->SetText(string_format("%d", pokaz_domek->max_liczebnosc / 2));
+			else
+				info_ulepsz->SetText(" --- ");
+			info_atak_etykieta->SetText(L"Atak:");
+			info_atak->SetText(string_format("%d", (int)rozgrywka.PoliczAtakDomku(*pokaz_domek)));
+			info_obrona_etykieta->SetText(L"Obrona:");
+			info_obrona->SetText(string_format("%d", (int)rozgrywka.PoliczObroneDomku(*pokaz_domek)));
+		}
 		else
-			info_ulepsz->SetText(" --- ");
-		info_atak_etykieta->SetText(L"Atak:");
-		info_atak->SetText(string_format("%d", (int)rozgrywka.PoliczAtakDomku(*wybrany)));
-		info_obrona_etykieta->SetText(L"Obrona:");
-		info_obrona->SetText(string_format("%d", (int)rozgrywka.PoliczObroneDomku(*wybrany)));*/
-	}
+		{
+			auto pokaz_ludek = (Ludek*)do_pokazania;
+			info_poziom_etykieta->SetText(L"Szybkość:");
+			info_poziom->SetText(string_format("%d", pokaz_ludek->szybkosc_ludka));
+			info_zapelnienie_etykieta->SetText(L"Tarcza:");
+			info_zapelnienie->SetText(string_format("%d", pokaz_ludek->tarcza));
+		}
+    }
     else
     {
         wyglad->Clear(sf::Color::Transparent);

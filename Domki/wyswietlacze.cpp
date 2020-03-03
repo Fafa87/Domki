@@ -315,7 +315,7 @@ OznaczaczWyborow::OznaczaczWyborow(MyszDecydent & decydent) : decydent(decydent)
 
 void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 {
-	if (decydent.skupiony != nullptr && decydent.skupiony != decydent.wybrany)
+	if (decydent.skupiony != nullptr && decydent.skupiony->uid >= 0 && decydent.skupiony->uid <= decydent.skupiony->last_uid && decydent.skupiony != decydent.wybrany) // TMP TODO
 	{
 		double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaæ wielkoœæ okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)
 		double rozmiar = decydent.skupiony->rozmiar * wspolczynnik_czas_odznaczenia;

@@ -702,77 +702,32 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     for (auto nr : misja_ustawienia.komputery)
     {
         //NADANIE NAZWY CZYLI ROWNIEZ TRYBU GRY
-        switch (std::rand() % 4)
-            {
-            case 0: 
-                {
-                
-                if (poziomy_trudnosci[0] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "PIRACIK";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'P'));
-                    }
-                else if (poziomy_trudnosci[1] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "KAPITAN";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'P'));
-                    }
-                else
-                    throw exception();
-                break;
-                }
-            case 1:
-                {
-
-                if (poziomy_trudnosci[0] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "STOKFISZ";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'B'));
-                    }
-                else if (poziomy_trudnosci[1] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "DIPBLU";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'B'));
-                    }
-                else
-                    throw exception();
-                break;
-                }
-            case 2:
-                {
-
-                if (poziomy_trudnosci[0] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "ALFAZERO";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'A'));
-                    }
-                else if (poziomy_trudnosci[1] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "ALFASTAR";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'A'));
-                    }
-                else
-                    throw exception();
-                break;
-                }
-            case 3:
-                {
-    
-                if (poziomy_trudnosci[0] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "NUBTOS";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'K'));
-                    }
-                else if (poziomy_trudnosci[1] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "PROTOS";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'K'));
-                    }
-                else
-                    throw exception();
-                break;
-                }
+		if(misja_ustawienia.trudnosc==poziomy_trudnosci[1])
+			switch (std::rand() % 4)
+			{
+				case 0:
+				{
+					rozgrywka.Graczu(nr).nazwa = "Kapuniak";
+					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'K'));
+					break;
+				}
+				case 1:
+				{
+					rozgrywka.Graczu(nr).nazwa = "Grubas";
+					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'G'));
+					break;
+				}
+				case 2:
+				{
+					rozgrywka.Graczu(nr).nazwa = "Alfa";
+					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'A'));
+					break;
+				}
             }
+		else {
+			rozgrywka.Graczu(nr).nazwa = "Przeciwnik";
+			kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'P'));
+		}
     }
 
     bool gotowe_do_rozpoczecia = false;
@@ -936,6 +891,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
                 zakonczenie_meczu(misja_ustawienia, rozgrywka);
             }
             trwa_gra = false;
+
             break;
         }
 

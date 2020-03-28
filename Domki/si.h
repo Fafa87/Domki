@@ -10,7 +10,7 @@ public:
 	Gracz& gracz;
 	double czas = 0.0,
 		szybkosc_komputera=1.0;
-	char styl='P';// 'P' - oszust 'S' - budowniczy 'A' - agresor 'Z' - kawalerzysta
+	char styl;// 'K' - kapuniak 'G' - grubas 'A' - alfa
 	virtual vector<Rozkaz*> WykonajRuch();
 };
 

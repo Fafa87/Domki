@@ -237,7 +237,7 @@ void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgr
         obrazek.setPosition(50, 50);
         obrazek.setSize(sf::Vector2f(100, 100));
         obrazek.setOrigin(sf::Vector2f(50, 50));
-        wyglad->Clear(sf::Color::Transparent);
+        wyglad->Clear(do_pokazania->gracz->kolor);
         wyglad->Draw(obrazek);
 
 		if (IsType<Domek>(do_pokazania))
@@ -833,6 +833,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         }
 
         ruszacz.Ruszaj(czas);
+        myszkaGracza.Potworz(event);
         muzykant.GrajEfekty(ruszacz);
 
         // przyspiesz jesli zostaly same komputery

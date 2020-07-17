@@ -66,6 +66,17 @@ void Rozgrywka::ZniszczLudka(Ludek* ludek)
     }
 }
 
+bool Rozgrywka::Zyje(Ludek * ludek)
+{
+    auto it = armie.begin();
+    for (; it != armie.end(); it++)
+    {
+        if (&(*it) == ludek)
+            return true;
+    }
+    return false;
+}
+
 void Rozgrywka::ZmienLiczebnosc(Domek & domek, double nowa)
 {
     domek.liczebnosc = nowa;

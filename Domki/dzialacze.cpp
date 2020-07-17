@@ -14,12 +14,6 @@ void MyszDecydent::Klik(double x, double y)
 
 void MyszDecydent::Przetworz(sf::Event zdarzenie)
 {
-	if (zdarzenie.type == sf::Event::MouseMoved || skupiony != nullptr)
-	{
-		sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
-		auto polozenie_kursora = okno.mapPixelToCoords(pixelPos);
-		skupiony = rozgrywka.Zlokalizuj(polozenie_kursora.x, polozenie_kursora.y);
-	}
     if (zdarzenie.type == sf::Event::MouseButtonPressed)
     {
         sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
@@ -77,6 +71,15 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
             else if (zdarzenie.key.code == sf::Keyboard::T)
                 nacisniety = 'T';
         }
+    }
+}
+
+void MyszDecydent::Potworz(sf::Event zdarzenie) {
+    if (zdarzenie.type == sf::Event::MouseMoved || skupiony != nullptr)
+    {
+        sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
+        auto polozenie_kursora = okno.mapPixelToCoords(pixelPos);
+        skupiony = rozgrywka.Zlokalizuj(polozenie_kursora.x, polozenie_kursora.y);
     }
 }
 

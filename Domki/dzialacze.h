@@ -58,7 +58,6 @@ class Decydent // wprowadza rozkazy graczy
 {
 public:
 	virtual vector<Rozkaz*> WykonajRuch() = 0;
-	virtual void Przetworz() {}
 };
 
 class MyszDecydent : public Decydent
@@ -69,6 +68,7 @@ public:
 
 	virtual void Przetworz() {}
 	void Przetworz(sf::Event zdarzenie);
+    void Potworz(sf::Event zdarzenie);
 
 	virtual vector<Rozkaz*> WykonajRuch();
 

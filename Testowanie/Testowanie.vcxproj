@@ -136,6 +136,7 @@ _CRT_SECURE_NO_DEPRECATE;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</Preprocesso
     <ClCompile Include="..\Domki\dzialacze.cpp" />
     <ClCompile Include="..\Domki\gui.cpp" />
     <ClCompile Include="..\Domki\misja.cpp" />
+    <ClCompile Include="..\Domki\misja_gui.cpp" />
     <ClCompile Include="..\Domki\muzyka.cpp" />
     <ClCompile Include="..\Domki\Narzedzia\AnimatedSprite.cpp" />
     <ClCompile Include="..\Domki\Narzedzia\Animation.cpp" />

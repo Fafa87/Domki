@@ -150,6 +150,7 @@ _WINDOWS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
     <ClCompile Include="..\Domki\dzialacze.cpp" />
     <ClCompile Include="..\Domki\gui.cpp" />
     <ClCompile Include="..\Domki\misja.cpp" />
+    <ClCompile Include="..\Domki\misja_gui.cpp" />
     <ClCompile Include="..\Domki\multi_dzialacze.cpp" />
     <ClCompile Include="..\Domki\muzyka.cpp" />
     <ClCompile Include="..\Domki\Narzedzia\AnimatedSprite.cpp" />

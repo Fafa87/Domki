@@ -58,7 +58,6 @@ class Decydent // wprowadza rozkazy graczy
 {
 public:
 	virtual vector<Rozkaz*> WykonajRuch() = 0;
-	virtual void Przetworz() {}
 };
 
 class MyszDecydent : public Decydent
@@ -69,11 +68,13 @@ public:
 
 	virtual void Przetworz() {}
 	void Przetworz(sf::Event zdarzenie);
+    void Potworz(sf::Event zdarzenie);
 
 	virtual vector<Rozkaz*> WykonajRuch();
 
     map<Domek*, Domek*> punkty_kontrolne;
 	Domek* wybrany = nullptr;
+	Twor* skupiony = nullptr;
 	char nacisniety = 0;
 	Gracz& gracz;
 

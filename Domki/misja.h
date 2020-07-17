@@ -12,7 +12,7 @@
 #include<windows.h>
 #include<fstream>
 
-const string poziomy_trudnosci[] = { "pokojowy", "agresywny" };
+const string poziomy_trudnosci[] = { "podstawa", "rozszerzenie" };
 
 struct MisjaUstawienia
 {
@@ -49,7 +49,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka);
 
 sf::View wysrodkowany_widok(list<Domek> &domki, int bottom_space=0);
 
-shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany);
+shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany, Twor* skupiony);
 
 int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz);
 

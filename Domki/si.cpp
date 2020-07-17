@@ -132,7 +132,7 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
 	vector<Rozkaz*> res;
 	if (czas*szybkosc_komputera >= 1.0)
 	{
-		czas -= 1.0 / szybkosc_komputera;
+		czas -= 1.0 / szybkosc_komputera;//KGA
 		
 	}
 	return res;

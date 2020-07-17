@@ -74,6 +74,15 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
     }
 }
 
+void MyszDecydent::Potworz(sf::Event zdarzenie) {
+    if (zdarzenie.type == sf::Event::MouseMoved || skupiony != nullptr)
+    {
+        sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
+        auto polozenie_kursora = okno.mapPixelToCoords(pixelPos);
+        skupiony = rozgrywka.Zlokalizuj(polozenie_kursora.x, polozenie_kursora.y);
+    }
+}
+
 vector<Rozkaz*> MyszDecydent::WykonajRuch()
 {
     vector<Rozkaz*> res;
@@ -354,7 +363,20 @@ void Ruszacz::WalczLudkami(double czas)
         Ludek& armia = *it;
         double odleglosc = rozgrywka->Odleglosc(armia, *armia.cel);
         auto spotkanie = rozgrywka->Spotkanie(armia);
-        if (spotkanie != NULL)
+		if (spotkanie != NULL && spotkanie->gracz == armia.gracz)
+		{
+			if (spotkanie->liczebnosc <= armia.liczebnosc)
+			{
+				rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc + spotkanie->liczebnosc);
+				do_usuniecia.push_back(spotkanie);
+			}
+			else
+			{
+				rozgrywka->ZmienLiczebnosc(*spotkanie, armia.liczebnosc + spotkanie->liczebnosc);
+				do_usuniecia.push_back(&(*it));
+			}
+		}
+        else if (spotkanie != NULL)
         {
             rozgrywka->TracLudki(armia, std::max(5.0+ czas * szybkosc,0.3 * (*spotkanie).liczebnosc*czas * szybkosc));
             rozgrywka->TracLudki(*spotkanie, std::max(5.0+ czas * szybkosc, 0.3 * armia.liczebnosc*czas * szybkosc));
@@ -435,7 +457,6 @@ void Ruszacz::Produkuj(double czas)
 void Ruszacz::Strzelaj(double czas)
 {
     int sila_strzalu = 10.0;
-    //tego na razie nie ma
     vector<Ludek*> do_usuniecia;
     for (Ludek& ludek : rozgrywka->armie)
         {

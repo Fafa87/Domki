@@ -216,7 +216,7 @@ string ranking_widget_id(int instance, int gracz, string sufix)
     return "Ins-" + to_string(instance) + "-Inter-Gracz-" + to_string(gracz) + "-" + sufix;
 }
 
-void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany)
+void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany, Twor* skupiony)
 {
     auto wyglad = std::static_pointer_cast<sfg::Canvas>(interfejs->GetWidgetById("Wybrany-wyglad"));
     auto info_poziom = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-poziom"));
@@ -230,29 +230,42 @@ void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgr
     auto info_obrona = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-obrona"));
     auto info_obrona_etykieta = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Wybrany-etk-obrona"));
     
-    if (wybrany != nullptr)
+	auto do_pokazania = skupiony != nullptr ? skupiony : wybrany;
+    if (do_pokazania != nullptr)
     {
-        auto& obrazek = wyswietlacz.PobierzWyglad(wybrany);
+        auto& obrazek = wyswietlacz.PobierzWyglad(do_pokazania);
         obrazek.setPosition(50, 50);
         obrazek.setSize(sf::Vector2f(100, 100));
         obrazek.setOrigin(sf::Vector2f(50, 50));
-        wyglad->Clear(sf::Color::Transparent);
+        wyglad->Clear(do_pokazania->gracz->kolor);
         wyglad->Draw(obrazek);
 
-        info_poziom_etykieta->SetText(L"Poziom:");
-        info_poziom->SetText(string_format("%d", wybrany->poziom));
-        info_zapelnienie_etykieta->SetText(L"Zapełnienie:");
-        if(wybrany->typdomku!=TypDomku::kPole)info_zapelnienie->SetText(to_wstring(100 * (int)wybrany->liczebnosc / (int)wybrany->max_liczebnosc) + L"%");
-        else info_zapelnienie->SetText("---");
-        info_ulepsz_etykieta->SetText(L"Koszt ulepszenia:");
-        if (wybrany->poziom < 5)
-            info_ulepsz->SetText(string_format("%d", wybrany->max_liczebnosc / 2));
-        else 
-            info_ulepsz->SetText(" --- ");
-        info_atak_etykieta->SetText(L"Atak:");
-        info_atak->SetText(string_format("%d", (int)rozgrywka.PoliczAtakDomku(*wybrany)));
-        info_obrona_etykieta->SetText(L"Obrona:");
-        info_obrona->SetText(string_format("%d", (int)rozgrywka.PoliczObroneDomku(*wybrany)));
+		if (IsType<Domek>(do_pokazania))
+		{
+			auto pokaz_domek = (Domek*)do_pokazania;
+			info_poziom_etykieta->SetText(L"Poziom:");
+			info_poziom->SetText(string_format("%d", pokaz_domek->poziom));
+			info_zapelnienie_etykieta->SetText(L"Zapełnienie:");
+			if (pokaz_domek->typdomku != TypDomku::kPole)info_zapelnienie->SetText(to_wstring(100 * (int)pokaz_domek->liczebnosc / (int)pokaz_domek->max_liczebnosc) + L"%");
+			else info_zapelnienie->SetText("---");
+			info_ulepsz_etykieta->SetText(L"Koszt ulepszenia:");
+			if (pokaz_domek->poziom < 5)
+				info_ulepsz->SetText(string_format("%d", pokaz_domek->max_liczebnosc / 2));
+			else
+				info_ulepsz->SetText(" --- ");
+			info_atak_etykieta->SetText(L"Atak:");
+			info_atak->SetText(string_format("%d", (int)rozgrywka.PoliczAtakDomku(*pokaz_domek)));
+			info_obrona_etykieta->SetText(L"Obrona:");
+			info_obrona->SetText(string_format("%d", (int)rozgrywka.PoliczObroneDomku(*pokaz_domek)));
+		}
+		else
+		{
+			auto pokaz_ludek = (Ludek*)do_pokazania;
+			info_poziom_etykieta->SetText(L"Szybkość:");
+			info_poziom->SetText(string_format("%d", pokaz_ludek->szybkosc_ludka));
+			info_zapelnienie_etykieta->SetText(L"Tarcza:");
+			info_zapelnienie->SetText(string_format("%d", pokaz_ludek->tarcza));
+		}
     }
     else
     {
@@ -439,7 +452,7 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
     return table;
 }
 
-shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany)
+shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany, Twor* skupiony)
 {
     
     if (interfejs == nullptr)
@@ -458,7 +471,7 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
                 pomoc->SetImage(pomoc_obraz);
             
             auto info = interfejs_wybrany();
-            interfejs_wybrany_ustaw(interfejs, rozgrywka, wyswietlacz, wybrany);
+            interfejs_wybrany_ustaw(interfejs, rozgrywka, wyswietlacz, wybrany, skupiony);
 
             auto tabela_interfejsu = sfg::Table::Create();
             tabela_interfejsu->Attach(ranking, sf::Rect<sf::Uint32>(0, 0, 1, 1));
@@ -492,7 +505,7 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
             }
         }
 
-        interfejs_wybrany_ustaw(interfejs, rozgrywka, wyswietlacz, wybrany);
+        interfejs_wybrany_ustaw(interfejs, rozgrywka, wyswietlacz, wybrany, skupiony);
     }
     return interfejs;
 }
@@ -689,77 +702,32 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     for (auto nr : misja_ustawienia.komputery)
     {
         //NADANIE NAZWY CZYLI ROWNIEZ TRYBU GRY
-        switch (std::rand() % 4)
-            {
-            case 0: 
-                {
-                
-                if (poziomy_trudnosci[0] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "PIRACIK";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'P'));
-                    }
-                else if (poziomy_trudnosci[1] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "KAPITAN";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'P'));
-                    }
-                else
-                    throw exception();
-                break;
-                }
-            case 1:
-                {
-
-                if (poziomy_trudnosci[0] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "STOKFISZ";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'B'));
-                    }
-                else if (poziomy_trudnosci[1] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "DIPBLU";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'B'));
-                    }
-                else
-                    throw exception();
-                break;
-                }
-            case 2:
-                {
-
-                if (poziomy_trudnosci[0] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "ALFAZERO";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'A'));
-                    }
-                else if (poziomy_trudnosci[1] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "ALFASTAR";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'A'));
-                    }
-                else
-                    throw exception();
-                break;
-                }
-            case 3:
-                {
-    
-                if (poziomy_trudnosci[0] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "NUBTOS";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'K'));
-                    }
-                else if (poziomy_trudnosci[1] == trudnosc)
-                    {
-                    rozgrywka.Graczu(nr).nazwa = "PROTOS";
-                    kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc,'K'));
-                    }
-                else
-                    throw exception();
-                break;
-                }
+		if(misja_ustawienia.trudnosc==poziomy_trudnosci[1])
+			switch (std::rand() % 4)
+			{
+				case 0:
+				{
+					rozgrywka.Graczu(nr).nazwa = "Kapuniak";
+					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'K'));
+					break;
+				}
+				case 1:
+				{
+					rozgrywka.Graczu(nr).nazwa = "Grubas";
+					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'G'));
+					break;
+				}
+				case 2:
+				{
+					rozgrywka.Graczu(nr).nazwa = "Alfa";
+					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'A'));
+					break;
+				}
             }
+		else {
+			rozgrywka.Graczu(nr).nazwa = "Przeciwnik";
+			kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'P'));
+		}
     }
 
     bool gotowe_do_rozpoczecia = false;
@@ -771,7 +739,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     sf::View view;
     if (!to_serwer)
     {
-        interfejs = interfejs_rozgrywki(nullptr, misja_ustawienia, rozgrywka, wyswietlacz, nullptr);
+        interfejs = interfejs_rozgrywki(nullptr, misja_ustawienia, rozgrywka, wyswietlacz, nullptr, nullptr);
         if (interfejs == nullptr)
         {
             LOG(WARNING) << "Nie utworzyl sie interfejs." << "Liczba domków=" << rozgrywka.domki.size();
@@ -865,6 +833,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         }
 
         ruszacz.Ruszaj(czas);
+        myszkaGracza.Potworz(event);
         muzykant.GrajEfekty(ruszacz);
 
         // przyspiesz jesli zostaly same komputery
@@ -881,7 +850,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
         if (!to_serwer)
         {
-            interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek());
+            interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek(), myszkaGracza.skupiony);
             GUI::aplikacja().show_bottom_gui(view, interfejs);
             wyswietlacz.WyswietlTlo(window);
         }
@@ -923,6 +892,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
                 zakonczenie_meczu(misja_ustawienia, rozgrywka);
             }
             trwa_gra = false;
+
             break;
         }
 

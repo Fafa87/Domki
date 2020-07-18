@@ -154,7 +154,7 @@ void GUI::show_bottom_gui(sf::View& view, std::shared_ptr<sfg::Window> gui_okno)
     okno.setView(view);
 
     okno.draw(nico);
-    pulpit.Update(0.001f);
+    pulpit.Update(0.001f); // -> 1300 MB
     sfgui.Display(okno);
 
     set_viewport_abs(view, sf::FloatRect(0.0f, 0.0f, 0.0f, -gui_okno->GetAllocation().height));

@@ -229,7 +229,7 @@ void odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::W
     GUI::aplikacja().center_window(okno);
 
     auto odliczanie_etykieta = sfg::Label::Create("");
-    odliczanie_etykieta->SetId("Alarm");
+    odliczanie_etykieta->SetId("Alarm"); // 677 MB -> 772 MB
     okno->Add(odliczanie_etykieta);
     GUI::aplikacja().pulpit.Add(okno);
 
@@ -245,7 +245,7 @@ void odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::W
     sf::Sound puk(pukBuffer);
     puk.setPitch(2);
 
-    GUI::aplikacja().show_bottom_gui(widok, gui_pasek);
+    GUI::aplikacja().show_bottom_gui(widok, gui_pasek); // 784 MB -> 1300 MB
     for (int a = 3; a >= 0; a--)
     {
         GUI::aplikacja().okno.clear();

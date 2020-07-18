@@ -20,11 +20,13 @@ Animation ZestawAnimacji::ZaladujAnimacje(string& sciezka)
     if (ZestawAnimacji::ZaladowaneObrazy.count(sciezka))
         tekstura = ZestawAnimacji::ZaladowaneObrazy[sciezka];
     else
+    {
         tekstura = new sf::Texture();
         tekstura->loadFromFile(sciezka);
         tekstura->setSmooth(true);
         tekstura->generateMipmap();
         ZestawAnimacji::ZaladowaneObrazy[sciezka] = tekstura;
+    }
 
     res.setSpriteSheet(*tekstura);
 

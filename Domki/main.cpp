@@ -643,9 +643,9 @@ int main() {
     background.setScale(0.45, 0.45);
 
     auto& okno_menu = GUI::aplikacja().okno;
-    GUI::aplikacja().setup_theme();
+    GUI::aplikacja().setup_theme(); // <- 74 MB
     
-    auto okno = grand_menu(muzyka);
+    auto okno = grand_menu(muzyka); // 148 MB
 
     GUI::aplikacja().put_right_to(okno, background.getGlobalBounds().width);
     GUI::aplikacja().stretch_up_down(okno);
@@ -687,7 +687,7 @@ int main() {
                 }
             }
 
-            GUI::aplikacja().pulpit.Update(clock.restart().asSeconds());
+            GUI::aplikacja().pulpit.Update(clock.restart().asSeconds()); // 466 MB
 
             okno_menu.clear();
             okno_menu.draw(background);

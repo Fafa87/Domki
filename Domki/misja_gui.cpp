@@ -182,6 +182,8 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 
     i++;
 
+    table->SetClass("Ranking");
+
     for (auto& gracz : gracze)
     {
         auto nr = gracz.numer;
@@ -193,44 +195,58 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
             auto graczModernizacjaId = ranking_widget_id(instance, nr, "modernizacja");
             auto graczSzybkoscId = ranking_widget_id(instance, nr, "szybkosc");
 
-            // to zajmuje jakos duzo czasu, nie wiem czemu!
-            GUI::aplikacja().pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
-            GUI::aplikacja().pulpit.SetProperty("Button#" + graczId, "FontSize", 26);
-            GUI::aplikacja().pulpit.SetProperty("Label#" + graczId, "FontSize", 28);
-            GUI::aplikacja().pulpit.SetProperty("Label#" + graczId, "FontName", "Grafika/BuxtonSketch.ttf");
-            GUI::aplikacja().pulpit.SetProperty("Label#" + graczProdukcjaId, "Color", gracz.kolor);
-            GUI::aplikacja().pulpit.SetProperty("Label#" + graczProdukcjaId, "FontSize", 28);
-            GUI::aplikacja().pulpit.SetProperty("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
-            GUI::aplikacja().pulpit.SetProperty("Label#" + graczModernizacjaId, "FontSize", 28);
-            GUI::aplikacja().pulpit.SetProperty("Label#" + graczSzybkoscId, "Color", sf::Color::Black);
-            GUI::aplikacja().pulpit.SetProperty("Label#" + graczSzybkoscId, "FontSize", 28);
-            GUI::aplikacja().pulpit.SetProperty("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");
-            GUI::aplikacja().pulpit.SetProperty("Label#" + graczLudkiId, "FontSize", 28);
+            // to zajmuje jakos duzo czasu, nie wiem czemu! 
+            GUI::aplikacja().add_property_to_batch("Button#" + graczId, "BackgroundColor", gracz.kolor);
+            //GUI::aplikacja().pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
+            //GUI::aplikacja().pulpit.SetProperty("Button#" + graczId, "FontSize", 28);           
+            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczId, "FontSize", 28);
+            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczId, "FontName", "Grafika/BuxtonSketch.ttf");
+            GUI::aplikacja().add_property_to_batch("Label#" + graczProdukcjaId, "Color", gracz.kolor);
+            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczProdukcjaId, "Color", gracz.kolor);
+            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczProdukcjaId, "FontSize", 28);
+            GUI::aplikacja().add_property_to_batch("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
+            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
+            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczModernizacjaId, "FontSize", 28);
+            GUI::aplikacja().add_property_to_batch("Label#" + graczSzybkoscId, "Color", sf::Color::Black);
+            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczSzybkoscId, "Color", sf::Color::Black);
+            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczSzybkoscId, "FontSize", 28);
+            GUI::aplikacja().add_property_to_batch("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");
+            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");
+            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczLudkiId, "FontSize", 28);
             if (stan.Zwyciezca() == nr)
             {
-                GUI::aplikacja().pulpit.SetProperty("Button#" + graczId, "FontSize", 80.f);
-                GUI::aplikacja().pulpit.SetProperty("Label#" + graczId, "FontSize", 80.f);
+                GUI::aplikacja().add_property_to_batch("Button#" + graczId, "FontSize", 80.f);
+                GUI::aplikacja().add_property_to_batch("Label#" + graczId, "FontSize", 80.f);
+
+                //GUI::aplikacja().pulpit.SetProperty("Button#" + graczId, "FontSize", 80.f);
+                //GUI::aplikacja().pulpit.SetProperty("Label#" + graczId, "FontSize", 80.f);
             }
 
             auto wartosc = sfg::Button::Create(to_string(stan.ile_kto_wygranych[nr]));
             wartosc->SetId(graczId);
+            wartosc->SetClass("Wartosci");
             auto nazwa = sfg::Label::Create(gracz.nazwa);
             nazwa->SetAlignment(sf::Vector2f(0.5, 0.5));
             nazwa->SetId(graczId);
+            nazwa->SetClass("Wartosci");
 
             auto sila_gracza = rozgrywka.SilaGracza(nr);
             auto ludki = sfg::Label::Create(to_string(std::get<0>(sila_gracza)));
             ludki->SetAlignment(sf::Vector2f(0.5, 0.5));
             ludki->SetId(graczLudkiId);
+            ludki->SetClass("Wartosci_Ludki");
             auto produkcja = sfg::Label::Create(to_string(std::get<1>(sila_gracza)));
             produkcja->SetAlignment(sf::Vector2f(0.5, 0.5));
             produkcja->SetId(graczProdukcjaId);
+            produkcja->SetClass("Wartosci");
             auto modernizacja = sfg::Label::Create(to_string(std::get<2>(sila_gracza)));
             modernizacja->SetAlignment(sf::Vector2f(0.5, 0.5));
             modernizacja->SetId(graczModernizacjaId);
+            modernizacja->SetClass("Wartosci");
             auto szybkosc = sfg::Label::Create(to_string(std::get<3>(sila_gracza)));
             szybkosc->SetAlignment(sf::Vector2f(0.5, 0.5));
             szybkosc->SetId(graczSzybkoscId);
+            szybkosc->SetClass("Wartosci");
 
             table->Attach(wartosc, sf::Rect<sf::Uint32>(0, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);// , sf::Vector2f(10.f, 10.f));
             table->Attach(nazwa, sf::Rect<sf::Uint32>(1, i, 1, 1), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL);//, sf::Vector2f(10.f, 10.f));
@@ -241,6 +257,8 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
             i++;
         }
     }
+
+    GUI::aplikacja().commit_properties_batch();
 
     return table;
 }

@@ -6,26 +6,6 @@ GUI* GUI::apa;
 void GUI::setup_theme()
 {
     pulpit.LoadThemeFromFile("Grafika\\bazowy.theme");
-    /*
-    
-
-    pulpit.SetProperty("Label#Naglowek", "FontSize", 48);
-    pulpit.SetProperty("Label#Alarm", "FontSize", 80);
-    pulpit.SetProperty("Label#Alarm", "Color", sf::Color::Yellow);
-
-
-    pulpit.SetProperty("ComboBox", "BackgroundColor", sf::Color(79, 45, 4));
-    pulpit.SetProperty("ComboBox", "BorderColorShift", 10);
-    pulpit.SetProperty("Button", "BackgroundColor", sf::Color(79, 45, 4));
-    pulpit.SetProperty("Button", "BorderColorShift", 10);
-    pulpit.SetProperty("Button", "FontName", "Grafika/BuxtonSketch.ttf");
-    pulpit.SetProperty("Button", "FontSize", 18);
-    pulpit.SetProperty("Label.WybranyTekst", "FontName", "Grafika/BuxtonSketch.ttf");
-    pulpit.SetProperty("Label.WybranyTekst", "FontSize", 16);
-
-      
-    pulpit.SetProperty("Label.GridOpis", "FontSize", 10);*/
-    
 }
 
 void GUI::center_window(shared_ptr<sfg::Window> window)
@@ -150,6 +130,12 @@ void GUI::reset_view()
 {
     okno.setView(zwykly_widok);
     okno.draw(nico);
+}
+
+void GUI::commit_properties_batch()
+{
+    GUI::aplikacja().pulpit.SetProperties(new_theme_string.str());
+    new_theme_string.clear();
 }
 
 void GUI::set_viewport_abs(sf::View& view, sf::FloatRect rect)

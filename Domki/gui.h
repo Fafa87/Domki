@@ -66,6 +66,7 @@ public:
     sfg::Desktop pulpit;
     sf::RenderWindow okno;
     sf::View zwykly_widok;
+    
     vector<shared_ptr<sfg::Window>> windows;
     vector<PROCESS_INFORMATION> zalozone_gry;
     int dzwieki_glosnosc = 100;
@@ -97,6 +98,13 @@ public:
     void render();
     void reset_view();
 
+
+    std::ostringstream new_theme_string;
+
+    template <typename T>
+    void add_property_to_batch(const string& selector, const string& property, const T& value);
+    void commit_properties_batch();
+
     static GUI* apa;
     static GUI& aplikacja() {
         if (apa == NULL)
@@ -105,3 +113,9 @@ public:
 
     }
 };
+
+template<typename T>
+inline void GUI::add_property_to_batch(const string& selector, const string& property, const T& value)
+{
+    new_theme_string << selector << " {\n\t" << property << ": " << value << ";\n}\n";
+}

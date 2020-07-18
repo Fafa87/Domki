@@ -18,12 +18,46 @@ Label {
     FontName: Grafika/BuxtonSketch.ttf;
 }
 
-Label > Naglowek {
+Label.WybranyTekst {
+    FontSize: 16;
+    FontName: Grafika/BuxtonSketch.ttf;
+}
+
+Label.GridOpis {
+    FontSize: 10;
+}
+
+Label # Naglowek {
     FontSize: 48;
 }
 
+Label # Alarm {
+    Color: #ffff00ff;
+    FontSize: 80;
+}
+
+ComboBox {
+    BackgroundColor: #4f2d04ff;
+    BorderColorShift: 10;
+}
+
 Button {
-    Color: #ff00ffff;
-	FontSize: 32;
+    BackgroundColor: #4f2d04ff;
+    BorderColorShift: 10;
+	FontSize: 18;
     FontName: Grafika/BuxtonSketch.ttf;
 }
+
+Table.Ranking Button.Wartosc, Table.Ranking Label.Wartosc {
+    FontSize: 28;
+    FontName: Grafika/BuxtonSketch.ttf;
+    BackgroundColor: #ffff00ff;
+}
+
+Table.Ranking Button.Wartosci_Ludki {
+    FontSize: 28;
+    FontName: Grafika/waltographUI.ttf;
+    BackgroundColor: #ffff00ff;
+}
+
+

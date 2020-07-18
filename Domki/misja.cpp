@@ -359,7 +359,7 @@ sf::View wysrodkowany_widok(list<Domek> &domki, int bottom_space)
 int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 {
     string sciezka = join(misja_ustawienia.grupa, misja_ustawienia.nazwa);
-    string trudnosc = misja_ustawienia.trudnosc;
+    double trudnosc = misja_ustawienia.trudnosc;
     double predkosc = misja_ustawienia.szybkosc;
     int nr_gracza = misja_ustawienia.nr_gracza;
     bool przyspieszenie_bez_gracza = false;
@@ -396,40 +396,77 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
             rozgrywka.Graczu(i).nazwa = misja_ustawienia.nazwy_graczow[i];
         }
     }
-    
+
     //KOMPUTEROWIE
     vector<Komputer*> kompiutery;
     srand(time(NULL));
     for (auto nr : misja_ustawienia.komputery)
     {
         //NADANIE NAZWY CZYLI ROWNIEZ TRYBU GRY
-		if(misja_ustawienia.trudnosc==poziomy_trudnosci[1])
-			switch (std::rand() % 3)
-			{
-				case 0:
-				{
-					rozgrywka.Graczu(nr).nazwa = "Kapuniak";
-					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'K'));
-					break;
-				}
-				case 1:
-				{
-					rozgrywka.Graczu(nr).nazwa = "Grubas";
-					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'G'));
-					break;
-				}
-				case 2:
-				{
-					rozgrywka.Graczu(nr).nazwa = "Alfa";
-					kompiutery.emplace_back(new KomputerSilver(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'A'));
-					break;
-				}
-            }
-		else {
-			rozgrywka.Graczu(nr).nazwa = "Przeciwnik";
-			kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), misja_ustawienia.szybkosc, 'P'));
-		}
-    }
+        switch ((int)trudnosc)
+        {
+                case 1:
+                {
+                    rozgrywka.Graczu(nr).nazwa = "1";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
+                    break;
+                }
+                case 2:
+                {
+                    rozgrywka.Graczu(nr).nazwa = "2";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
+                    break;
+                }
+                case 3:
+                {
+                    rozgrywka.Graczu(nr).nazwa = "3";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
+                    break;
+                }
+                case 4:
+                {
+                    rozgrywka.Graczu(nr).nazwa = "4";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
+                    break;
+                }
+                case 5:
+                {
+                    rozgrywka.Graczu(nr).nazwa = "5";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
+                    break;
+                }
+                case 6:
+                {
+                    rozgrywka.Graczu(nr).nazwa = "6";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
+                    break;
+                }
+                case 7:
+                {
+                    rozgrywka.Graczu(nr).nazwa = "7";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
+                    break;
+                }
+                case 8:
+                {
+                    rozgrywka.Graczu(nr).nazwa = "8";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
+                    break;
+                }
+                case 9:
+                {
+                    rozgrywka.Graczu(nr).nazwa = "9";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
+                    break;
+                }
+                case 10:
+                {
+                    rozgrywka.Graczu(nr).nazwa = "10";
+                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
+                    break;
+                }
+              }
+           }
 
     bool gotowe_do_rozpoczecia = false;
 

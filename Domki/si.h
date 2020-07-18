@@ -5,18 +5,17 @@
 class Komputer : public Decydent
 {
 public:
-	Komputer(Rozgrywka& rozgrywka, Gracz& gracz,double szybkosc_komputera,char styl);
+	Komputer(Rozgrywka& rozgrywka, Gracz& gracz,double szybkosc_komputera);
 	Rozgrywka& rozgrywka;
 	Gracz& gracz;
 	double czas = 0.0,
 		szybkosc_komputera=1.0;
-	char styl;// 'K' - kapuniak 'G' - grubas 'A' - alfa
 	virtual vector<Rozkaz*> WykonajRuch();
 };
 
 class KomputerSilver : public Komputer
 {
 public:
-	KomputerSilver(Rozgrywka& rozgrywka, Gracz& gracz,double szybkosc_komputera,char styl);
+	KomputerSilver(Rozgrywka& rozgrywka, Gracz& gracz,double szybkosc_komputera);
 	virtual vector<Rozkaz*> WykonajRuch();
 };

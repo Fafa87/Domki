@@ -152,8 +152,8 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
     if (czas*szybkosc_komputera >= 1.0)
     {
         czas -= 1.0 / szybkosc_komputera;
-        ruch = true;
-        for (Domek& domek : rozgrywka.domki) if (ruch&&domek.gracz->numer == gracz.numer) {
+        for (Domek& domek : rozgrywka.domki) if (domek.gracz->numer == gracz.numer) {
+            ruch = true;
             if (otoczenie(&domek, rozgrywka, false) > 0.0) {//sasiad to wrog
                 double ludki = 0.0;
                 Domek* ktojestromek = NULL;
@@ -233,9 +233,18 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
                         ruch = false;
                     }
                 }
-
-                /////////////////////////////////////////////////////////////////////////////////todododtodt
-                if (ruch&&domek.liczebnosc * 4 >= domek.max_liczebnosc && (domek.typdomku == TypDomku::kMiasto || domek.typdomku == TypDomku::kWieza)) {
+                if (ruch&&domek.liczebnosc * 2.0 >= domek.max_liczebnosc&&domek.poziom < 5) {
+                        if (domek.typdomku != TypDomku::kMiasto) {
+                            PrzebudujRozkaz* r = new PrzebudujRozkaz(&domek, TypDomku::kMiasto);
+                            res.push_back(r);
+                        }
+                        else {
+                            UlepszRozkaz* r = new UlepszRozkaz(&domek);
+                            res.push_back(r);
+                        }
+                        ruch = false;
+                  }
+                else if (ruch&&domek.liczebnosc * 2.0 > domek.max_liczebnosc && (domek.typdomku == TypDomku::kMiasto || domek.typdomku == TypDomku::kWieza)) {
                     for (Domek* romek : domek.drogi) if (romek->gracz->numer != gracz.numer) {
                         auto r = new WymarszRozkaz(&domek, ktojestromek);
                         r->ulamek = 1.0;
@@ -270,20 +279,22 @@ vector<Rozkaz*> KomputerSilver::WykonajRuch()
                     UlepszRozkaz* r = new UlepszRozkaz(&domek);
                     res.push_back(r);
                 }
-                int max_otoczenie = 0.0;
-                Domek* ktojestromek = NULL;
-                for (Domek* romek : domek.drogi)
-                {
-                    if (otoczenie(romek, rozgrywka, true) > max_otoczenie)
+                else if (domek.liczebnosc * 4 >= domek.max_liczebnosc) {
+                    int max_otoczenie = 0.0;
+                    Domek* ktojestromek = NULL;
+                    for (Domek* romek : domek.drogi)
                     {
-                        max_otoczenie = otoczenie(romek, rozgrywka, true);
-                        ktojestromek = romek;
+                        if (otoczenie(romek, rozgrywka, true) > max_otoczenie)
+                        {
+                            max_otoczenie = otoczenie(romek, rozgrywka, true);
+                            ktojestromek = romek;
+                        }
                     }
+                    auto r = new WymarszRozkaz(&domek, ktojestromek);
+                    r->ulamek = 1.0;
+                    res.push_back(r);
+                    ruch = false;
                 }
-                auto r = new WymarszRozkaz(&domek, ktojestromek);
-                r->ulamek = 1.0;
-                res.push_back(r);
-                ruch = false;
             }
             else if (!(domek.typdomku == TypDomku::kFort || domek.typdomku == TypDomku::kWieza) && domek.liczebnosc*2.0 >= domek.max_liczebnosc) {//ulepszaj
                 UlepszRozkaz* r = new UlepszRozkaz(&domek);

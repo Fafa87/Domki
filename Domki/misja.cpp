@@ -404,7 +404,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     {
         //NADANIE NAZWY CZYLI ROWNIEZ TRYBU GRY
 		if(misja_ustawienia.trudnosc==poziomy_trudnosci[1])
-			switch (std::rand() % 4)
+			switch (std::rand() % 3)
 			{
 				case 0:
 				{

@@ -14,6 +14,7 @@ public:
     vector<Animation> wszystkieAnimacje;
 
     static map<string, sf::Texture*> ZaladowaneObrazy;
+    static sf::Texture* ZaladujIZapamietaj(string &sciezka);
     static Animation ZaladujAnimacje(string & sciezka);
     static ZestawAnimacji ZaladujZPliku(string & sciezka_szablon);
 

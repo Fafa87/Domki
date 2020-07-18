@@ -13,9 +13,8 @@
 
 map<string, sf::Texture*> ZestawAnimacji::ZaladowaneObrazy;
 
-Animation ZestawAnimacji::ZaladujAnimacje(string& sciezka)
+sf::Texture * ZestawAnimacji::ZaladujIZapamietaj(string & sciezka)
 {
-    Animation res;
     sf::Texture* tekstura;
     if (ZestawAnimacji::ZaladowaneObrazy.count(sciezka))
         tekstura = ZestawAnimacji::ZaladowaneObrazy[sciezka];
@@ -27,7 +26,13 @@ Animation ZestawAnimacji::ZaladujAnimacje(string& sciezka)
         tekstura->generateMipmap();
         ZestawAnimacji::ZaladowaneObrazy[sciezka] = tekstura;
     }
+    return tekstura;
+}
 
+Animation ZestawAnimacji::ZaladujAnimacje(string& sciezka)
+{
+    Animation res;
+    sf::Texture* tekstura = ZestawAnimacji::ZaladujIZapamietaj(sciezka);
     res.setSpriteSheet(*tekstura);
 
     int dlugosc_klatki = 400;
@@ -129,9 +134,7 @@ void Wyswietlacz::Zaladuj(string wybrana_skora)
 
     obrazek_tworow[Wyglad::kPole] = ZestawAnimacji::ZaladujZPliku("Grafika\\" + skorka + "\\pole.png");
 
-    obrazek_tla.loadFromFile("Grafika\\" + skorka + "\\bruk.png");
-    obrazek_tla.setSmooth(true);
-    obrazek_tla.generateMipmap();
+    obrazek_tla = *ZestawAnimacji::ZaladujIZapamietaj("Grafika\\" + skorka + "\\bruk.png");
     obrazek_tla.setRepeated(true);
 }
 

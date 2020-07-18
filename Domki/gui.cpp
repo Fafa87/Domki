@@ -6,17 +6,14 @@ GUI* GUI::apa;
 void GUI::setup_theme()
 {
     pulpit.LoadThemeFromFile("Grafika\\bazowy.theme");
-
-    pulpit.SetProperty("Window", "BackgroundColor", sf::Color(127, 94, 44));
-    pulpit.SetProperty("Window", "BorderColor", sf::Color(79, 45, 4));
-    pulpit.SetProperty("Window", "BorderWidth", 8);
-    pulpit.SetProperty("Window", "BorderColorShift", 5);
+    /*
     
-    pulpit.SetProperty("Label", "Color", sf::Color::White);
-    pulpit.SetProperty("Label", "FontSize", 28);
+
     pulpit.SetProperty("Label#Naglowek", "FontSize", 48);
     pulpit.SetProperty("Label#Alarm", "FontSize", 80);
     pulpit.SetProperty("Label#Alarm", "Color", sf::Color::Yellow);
+
+
     pulpit.SetProperty("ComboBox", "BackgroundColor", sf::Color(79, 45, 4));
     pulpit.SetProperty("ComboBox", "BorderColorShift", 10);
     pulpit.SetProperty("Button", "BackgroundColor", sf::Color(79, 45, 4));
@@ -26,11 +23,9 @@ void GUI::setup_theme()
     pulpit.SetProperty("Label.WybranyTekst", "FontName", "Grafika/BuxtonSketch.ttf");
     pulpit.SetProperty("Label.WybranyTekst", "FontSize", 16);
 
-    pulpit.SetProperty("Entry", "FontSize", 32);
-    pulpit.SetProperty("Entry", "FontName", "Grafika/BuxtonSketch.ttf");
-    pulpit.SetProperty("Entry", "BackgroundColor", sf::Color(100, 50, 50));
-
-    pulpit.SetProperty("Label.GridOpis", "FontSize", 10);
+      
+    pulpit.SetProperty("Label.GridOpis", "FontSize", 10);*/
+    
 }
 
 void GUI::center_window(shared_ptr<sfg::Window> window)

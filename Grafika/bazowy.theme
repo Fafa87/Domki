@@ -1,10 +1,29 @@
 
-Window > * > * > Label {
-	FontSize: 32;
+Entry {
+    FontSize: 32;
+    FontName: Grafika/BuxtonSketch.ttf;
+    BackgroundColor: #643232ff;
+}
+
+Window {
+    BackgroundColor: #7f5e2cff;
+    BorderColor: #4f2d04ff;
+    BorderWidth: 8;
+    BorderColorShift: 5;
+}
+
+Label {
+    Color: #ffffffff;
+    FontSize: 28;
     FontName: Grafika/BuxtonSketch.ttf;
 }
 
-Window > * > Label {
+Label > Naglowek {
+    FontSize: 48;
+}
+
+Button {
+    Color: #ff00ffff;
 	FontSize: 32;
     FontName: Grafika/BuxtonSketch.ttf;
 }

@@ -207,7 +207,7 @@ void start_klient(sf::Music& muzyka, string nazwa)
     }
 }
 
-std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa,string poziom,double szybkosc,bool walka_w_polu)
+std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa,double poziom,double szybkosc,bool walka_w_polu)
 {
     Kampania kampania("Kampanie\\"+grupa);
     //kampania.akt_misja = 7; do testow
@@ -218,8 +218,7 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa,strin
         string przemowa_sciezka = kampania.PobierzOdprawe(kampania.akt_misja);
         sf::Music przemowa;
 
-        if (poziom.size() != 0)
-            misja_dane.trudnosc = poziom;
+           misja_dane.trudnosc = poziom;
         misja_dane.szybkosc = szybkosc;
         misja_dane.walka_w_polu=walka_w_polu;
 
@@ -386,11 +385,15 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
         wybor_lista->SelectItem(0);
     });
 
-    auto trudnosc_etykieta = sfg::Label::Create("Poziom: ");
-    auto trudnosc_lista = sfg::ComboBox::Create();
-    for (auto l : poziomy_trudnosci)
-        trudnosc_lista->AppendItem(l);
-    trudnosc_lista->SelectItem(0);
+    auto trudnosc_etykieta = sfg::Label::Create("Trudnosc: ");
+    auto trudnosc_wartosc = sfg::Label::Create("5");
+    auto trudnosc_pasek = sfg::Scale::Create(1, 10, 1);
+    trudnosc_pasek->SetValue(5);
+    trudnosc_pasek->SetIncrements(1, 3);
+    trudnosc_pasek->GetAdjustment()->GetSignal(sfg::Adjustment::OnChange).Connect(
+        [trudnosc_wartosc, trudnosc_pasek] {
+        trudnosc_wartosc->SetText(to_string((int)trudnosc_pasek->GetValue()));
+    });
 
     auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
     auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
@@ -417,12 +420,12 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
 
     auto uruchom = sfg::Button::Create("Uruchom");
     uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [wybor_lista,wybor_lista_foldery, szybkosc_pasek, trudnosc_lista, oszustwa_ptaszek, walka_w_polu_ptaszek, punkty_kontrolne_ptaszek, do_ilu_pasek, okno, &muzyka] {
+        [wybor_lista,wybor_lista_foldery, szybkosc_pasek, trudnosc_pasek, oszustwa_ptaszek, walka_w_polu_ptaszek, punkty_kontrolne_ptaszek, do_ilu_pasek, okno, &muzyka] {
         MisjaUstawienia ustawienia;
         ustawienia.nazwa = wybor_lista->GetSelectedText();
         ustawienia.grupa = "Plansza\\" + wybor_lista_foldery->GetSelectedText();
         ustawienia.szybkosc = szybkosc_pasek->GetValue();
-        ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
+        ustawienia.trudnosc = trudnosc_pasek->GetValue();
         ustawienia.oszustwa = oszustwa_ptaszek->IsActive();
         ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
         ustawienia.punkty_kontrolne = punkty_kontrolne_ptaszek->IsActive();
@@ -451,10 +454,13 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
     tabelka->Attach(wybor_lista_foldery, sf::Rect<sf::Uint32>(1, 1, 2, 1));
     tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(1, 2, 2, 1));
 
-    tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 3, 1, 1));
-    tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(1, 3, 2, 1));
 
-    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 4, 4, 1));
+    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 3, 4, 1));
+
+    tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 4, 1, 1));
+    tabelka->Attach(trudnosc_pasek, sf::Rect<sf::Uint32>(1, 4, 1, 1));
+    tabelka->Attach(trudnosc_wartosc, sf::Rect<sf::Uint32>(2, 4, 1, 1));
+
 
     tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, 5, 1, 1));
     tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 2, 1));
@@ -503,11 +509,9 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
         wybor_lista_foldery->AppendItem(l);
     wybor_lista_foldery->SelectItem(0);
 
-    auto trudnosc_etykieta = sfg::Label::Create("Poziom: ");
-    auto trudnosc_lista = sfg::ComboBox::Create();
-    for (auto l : poziomy_trudnosci)
-        trudnosc_lista->AppendItem(l);
-    trudnosc_lista->SelectItem(0);
+    auto trudnosc_etykieta = sfg::Label::Create("Trudnosc: ");
+    auto trudnosc_pasek = sfg::Scale::Create(1, 10, 1);
+    trudnosc_pasek->SetValue(5);
 
     auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
     auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
@@ -524,11 +528,11 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
 
     auto uruchom = sfg::Button::Create("Uruchom");
     uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [wybor_lista_foldery, szybkosc_pasek, trudnosc_lista, oszustwa_ptaszek, walka_w_polu_ptaszek, punkty_kontrolne_ptaszek, okno, &muzyka] {
+        [wybor_lista_foldery, szybkosc_pasek, trudnosc_pasek, oszustwa_ptaszek, walka_w_polu_ptaszek, punkty_kontrolne_ptaszek, okno, &muzyka] {
         MisjaUstawienia ustawienia;
         ustawienia.grupa = wybor_lista_foldery->GetSelectedText();
         ustawienia.szybkosc = szybkosc_pasek->GetValue();
-        ustawienia.trudnosc = trudnosc_lista->GetSelectedText();
+        ustawienia.trudnosc = trudnosc_pasek->GetValue();;
         ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
 
 
@@ -549,10 +553,10 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
     tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 1, 1, 1));
     tabelka->Attach(wybor_lista_foldery, sf::Rect<sf::Uint32>(1, 1, 2, 1));
 
-    tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 3, 1, 1));
-    tabelka->Attach(trudnosc_lista, sf::Rect<sf::Uint32>(1, 3, 2, 1));
+    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 2, 4, 1));
 
-    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 4, 4, 1));
+    tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 4, 1, 1));
+    tabelka->Attach(trudnosc_pasek, sf::Rect<sf::Uint32>(1, 4, 2, 1));
 
     tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, 5, 1, 1));
     tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 2, 1));

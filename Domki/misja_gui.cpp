@@ -195,31 +195,15 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
             auto graczModernizacjaId = ranking_widget_id(instance, nr, "modernizacja");
             auto graczSzybkoscId = ranking_widget_id(instance, nr, "szybkosc");
 
-            // to zajmuje jakos duzo czasu, nie wiem czemu! 
             GUI::aplikacja().add_property_to_batch("Button#" + graczId, "BackgroundColor", gracz.kolor);
-            //GUI::aplikacja().pulpit.SetProperty<sf::Color>("Button#" + graczId, "BackgroundColor", gracz.kolor);
-            //GUI::aplikacja().pulpit.SetProperty("Button#" + graczId, "FontSize", 28);           
-            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczId, "FontSize", 28);
-            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczId, "FontName", "Grafika/BuxtonSketch.ttf");
             GUI::aplikacja().add_property_to_batch("Label#" + graczProdukcjaId, "Color", gracz.kolor);
-            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczProdukcjaId, "Color", gracz.kolor);
-            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczProdukcjaId, "FontSize", 28);
             GUI::aplikacja().add_property_to_batch("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
-            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
-            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczModernizacjaId, "FontSize", 28);
             GUI::aplikacja().add_property_to_batch("Label#" + graczSzybkoscId, "Color", sf::Color::Black);
-            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczSzybkoscId, "Color", sf::Color::Black);
-            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczSzybkoscId, "FontSize", 28);
-            GUI::aplikacja().add_property_to_batch("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");
-            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");
-            //GUI::aplikacja().pulpit.SetProperty("Label#" + graczLudkiId, "FontSize", 28);
+            GUI::aplikacja().add_property_to_batch("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");  // nie rozumiem czemu theme tego nie ³apie
             if (stan.Zwyciezca() == nr)
             {
                 GUI::aplikacja().add_property_to_batch("Button#" + graczId, "FontSize", 80.f);
                 GUI::aplikacja().add_property_to_batch("Label#" + graczId, "FontSize", 80.f);
-
-                //GUI::aplikacja().pulpit.SetProperty("Button#" + graczId, "FontSize", 80.f);
-                //GUI::aplikacja().pulpit.SetProperty("Label#" + graczId, "FontSize", 80.f);
             }
 
             auto wartosc = sfg::Button::Create(to_string(stan.ile_kto_wygranych[nr]));

@@ -11,14 +11,20 @@
 #define _USE_MATH_DEFINES
 #include<math.h>
 
+map<string, sf::Texture*> ZestawAnimacji::ZaladowaneObrazy;
 
 Animation ZestawAnimacji::ZaladujAnimacje(string& sciezka)
 {
     Animation res;
-    auto tekstura = new sf::Texture();
-    tekstura->loadFromFile(sciezka);
-    tekstura->setSmooth(true);
-    tekstura->generateMipmap();
+    sf::Texture* tekstura;
+    if (ZestawAnimacji::ZaladowaneObrazy.count(sciezka))
+        tekstura = ZestawAnimacji::ZaladowaneObrazy[sciezka];
+    else
+        tekstura = new sf::Texture();
+        tekstura->loadFromFile(sciezka);
+        tekstura->setSmooth(true);
+        tekstura->generateMipmap();
+        ZestawAnimacji::ZaladowaneObrazy[sciezka] = tekstura;
 
     res.setSpriteSheet(*tekstura);
 
@@ -315,20 +321,20 @@ OznaczaczWyborow::OznaczaczWyborow(MyszDecydent & decydent) : decydent(decydent)
 
 void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 {
-	if (decydent.skupiony != nullptr && decydent.skupiony->uid >= 0 && decydent.skupiony->uid <= decydent.skupiony->last_uid && decydent.skupiony != decydent.wybrany) // TMP TODO
-	{
-		double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaæ wielkoœæ okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)
-		double rozmiar = decydent.skupiony->rozmiar * wspolczynnik_czas_odznaczenia;
-		sf::CircleShape kolo(rozmiar);
-		kolo.setPosition(decydent.skupiony->polozenie.x, decydent.skupiony->polozenie.y);
-		kolo.setRadius(rozmiar);
-		kolo.setOrigin(rozmiar, rozmiar);
-		sf::Color kolor = decydent.skupiony->gracz->kolor;
-		kolor.a = 96;
-		kolo.setFillColor(kolor);
+    if (decydent.skupiony != nullptr && decydent.skupiony->uid >= 0 && decydent.skupiony->uid <= decydent.skupiony->last_uid && decydent.skupiony != decydent.wybrany) // TMP TODO
+    {
+        double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaæ wielkoœæ okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)
+        double rozmiar = decydent.skupiony->rozmiar * wspolczynnik_czas_odznaczenia;
+        sf::CircleShape kolo(rozmiar);
+        kolo.setPosition(decydent.skupiony->polozenie.x, decydent.skupiony->polozenie.y);
+        kolo.setRadius(rozmiar);
+        kolo.setOrigin(rozmiar, rozmiar);
+        sf::Color kolor = decydent.skupiony->gracz->kolor;
+        kolor.a = 96;
+        kolo.setFillColor(kolor);
 
-		okno.draw(kolo);
-	}
+        okno.draw(kolo);
+    }
     if (decydent.wybrany != nullptr)
     {
         double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaæ wielkoœæ okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)

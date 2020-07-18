@@ -13,6 +13,7 @@ class ZestawAnimacji {
 public:
     vector<Animation> wszystkieAnimacje;
 
+    static map<string, sf::Texture*> ZaladowaneObrazy;
     static Animation ZaladujAnimacje(string & sciezka);
     static ZestawAnimacji ZaladujZPliku(string & sciezka_szablon);
 

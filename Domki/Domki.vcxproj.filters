@@ -69,6 +69,9 @@
     <ClCompile Include="kampania.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="misja_gui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">

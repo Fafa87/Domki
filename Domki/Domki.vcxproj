@@ -151,6 +151,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClCompile Include="kampania.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="misja.cpp" />
+    <ClCompile Include="misja_gui.cpp" />
     <ClCompile Include="multi.cpp" />
     <ClCompile Include="multi_dzialacze.cpp" />
     <ClCompile Include="muzyka.cpp" />

@@ -54,5 +54,8 @@
     <ClCompile Include="..\Domki\wyswietlacze.cpp">
       <Filter>Source Files\Domki</Filter>
     </ClCompile>
+    <ClCompile Include="..\Domki\misja_gui.cpp">
+      <Filter>Source Files\Domki</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

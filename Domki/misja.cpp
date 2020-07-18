@@ -399,74 +399,14 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
     //KOMPUTEROWIE
     vector<Komputer*> kompiutery;
-    srand(time(NULL));
+    int numba = 0;
     for (auto nr : misja_ustawienia.komputery)
     {
         //NADANIE NAZWY CZYLI ROWNIEZ TRYBU GRY
-        switch ((int)trudnosc)
-        {
-                case 1:
-                {
-                    rozgrywka.Graczu(nr).nazwa = "1";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
-                    break;
-                }
-                case 2:
-                {
-                    rozgrywka.Graczu(nr).nazwa = "2";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
-                    break;
-                }
-                case 3:
-                {
-                    rozgrywka.Graczu(nr).nazwa = "3";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
-                    break;
-                }
-                case 4:
-                {
-                    rozgrywka.Graczu(nr).nazwa = "4";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
-                    break;
-                }
-                case 5:
-                {
-                    rozgrywka.Graczu(nr).nazwa = "5";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
-                    break;
-                }
-                case 6:
-                {
-                    rozgrywka.Graczu(nr).nazwa = "6";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
-                    break;
-                }
-                case 7:
-                {
-                    rozgrywka.Graczu(nr).nazwa = "7";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
-                    break;
-                }
-                case 8:
-                {
-                    rozgrywka.Graczu(nr).nazwa = "8";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
-                    break;
-                }
-                case 9:
-                {
-                    rozgrywka.Graczu(nr).nazwa = "9";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
-                    break;
-                }
-                case 10:
-                {
-                    rozgrywka.Graczu(nr).nazwa = "10";
-                    kompiutery.emplace_back(new Komputer(rozgrywka, rozgrywka.Graczu(nr), trudnosc));
-                    break;
-                }
-              }
-           }
+        rozgrywka.Graczu(nr).nazwa = misja_ustawienia.nazwy[numba++][(int)trudnosc-1];
+        if (numba == 3)numba = 0;
+        kompiutery.emplace_back(new Komputer(rozgrywka,rozgrywka.Graczu(nr),trudnosc));
+         }
 
     bool gotowe_do_rozpoczecia = false;
 

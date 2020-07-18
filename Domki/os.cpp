@@ -1,5 +1,8 @@
 #include "os.h"
 
+#include <experimental/filesystem>
+#include<clocale>
+
 pair<string, string> split_parent(const string& path)
 {
 	size_t found;
@@ -17,26 +20,19 @@ string join(const string& path, const string& subpath)
 
 vector<string> get_all_names_within_folder(string folder, bool folder_mode, bool get_full_paths)
 {
-	vector<string> names;
-	string search_path = folder + "/*.*";
-	WIN32_FIND_DATA fd;
-	HANDLE hFind = ::FindFirstFile(search_path.c_str(), &fd);
-	if (hFind != INVALID_HANDLE_VALUE) {
-		do {
-			// read all (real) files in current folder
-			// , delete '!' read other 2 default folder . and ..
-			string file_name = fd.cFileName;
-			if (!folder_mode && !(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-				|| folder_mode && (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && file_name != "." && file_name != "..")
-			{
-				if (get_full_paths)
-					file_name = folder + "\\" + file_name;
-				names.push_back(file_name);
-			}
-		} while (::FindNextFile(hFind, &fd));
-		::FindClose(hFind);
-	}
-	return names;
+    vector<string> names;
+    // std::setlocale(LC_ALL, ".1250"); nie dziala
+    // std::locale::global(std::locale(".1250"));
+    for (const auto & entry : std::experimental::filesystem::directory_iterator(folder))
+    {
+        auto path = entry.path();
+        if (folder_mode ^ std::experimental::filesystem::is_directory(path))
+            continue;
+        if (!get_full_paths)
+            path = path.filename();
+        names.push_back(path.generic_string());
+    }
+    return names;
 }
 
 string next_folder_within_folder(string path)

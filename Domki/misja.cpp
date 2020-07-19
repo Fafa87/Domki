@@ -399,12 +399,15 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
     //KOMPUTEROWIE
     vector<Komputer*> kompiutery;
-    int numba = 0;
+    srand(time(NULL));
+    int numba=1;
+    for (int nr = 0; nr < misja_ustawienia.komputery.size(); nr++)numba *= 3;
+    numba = rand() % numba;
     for (auto nr : misja_ustawienia.komputery)
     {
-        //NADANIE NAZWY CZYLI ROWNIEZ TRYBU GRY
-        rozgrywka.Graczu(nr).nazwa = misja_ustawienia.nazwy[numba++][(int)trudnosc-1];
-        if (numba == 3)numba = 0;
+        //LOSOWANIE NAZW
+        rozgrywka.Graczu(nr).nazwa = misja_ustawienia.nazwy[numba%3][(int)trudnosc-1];
+        numba /= 3;
         kompiutery.emplace_back(new Komputer(rozgrywka,rozgrywka.Graczu(nr),trudnosc));
          }
 

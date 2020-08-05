@@ -44,9 +44,9 @@ vector<Rozkaz*> Komputer::WykonajRuch()
 {
     vector<Rozkaz*> res;
     bool ruch;
-    if (czas >= 11 - szybkosc_komputera)
+    if (czas >= (11.0 - szybkosc_komputera)*(1.0+(double)gracz.liczba_tworow/10.0))
     {
-        czas -= 11 - szybkosc_komputera;
+        czas -= (11.0 - szybkosc_komputera)*(1.0 + (double)gracz.liczba_tworow / 10.0);
         for (Domek& domek : rozgrywka.domki) if (domek.gracz->numer == gracz.numer) {
             ruch = true;
             if (otoczenie(&domek, rozgrywka, false) > 0.0) {//sasiad to wrog

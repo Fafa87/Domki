@@ -88,6 +88,8 @@ void GUI::show_and_wait_for_anything(shared_ptr<sfg::Window> window)
 
 void GUI::set_active_window(shared_ptr<sfg::Window> window)
 {
+    if (window == nullptr)
+        return;
     pulpit.Add(window);
     window->Show(true);
     windows.push_back(window);

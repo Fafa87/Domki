@@ -66,10 +66,15 @@ void KlientowyRuszacz::Ruszaj(double czas)
     }
     else
     {
+
         if (res.first == sf::Socket::Disconnected)
         {
             LOG(WARNING) << "Odlaczono od serwera.";
             rozgrywka->PrzerwijGre();
+        }
+        else
+        {
+            LOG(WARNING) << "Nie udalo sie odebrac info z serwera: " << res.first;
         }
     }
 }

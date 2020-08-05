@@ -63,6 +63,7 @@ void multi::Serwer::Start(MisjaUstawienia ustawienia)
             archive(ustawienia);
         }
 
+        LOG(INFO) << "Wysylam do " << ludzie[i].nazwa;
         auto status = multi::Wyslij(*ludzie[i].wtyk, ss.str());
         if (status != sf::Socket::Done)
         {
@@ -197,7 +198,9 @@ pair<sf::Socket::Status, MisjaUstawienia> multi::Klient::OczekujNaStart()
 {
     MisjaUstawienia res;
 
+    LOG(INFO) << "Klient::OczekujNaStart";
     auto status_data = multi::Pobierz(*wtyk);
+    LOG(INFO) << "Klient::OczekujNaStart->status:" << status_data;
     auto data = status_data.second;
     if (data.size())
     {

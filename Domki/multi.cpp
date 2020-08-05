@@ -200,7 +200,7 @@ pair<sf::Socket::Status, MisjaUstawienia> multi::Klient::OczekujNaStart()
 
     LOG(INFO) << "Klient::OczekujNaStart";
     auto status_data = multi::Pobierz(*wtyk);
-    LOG(INFO) << "Klient::OczekujNaStart->status:" << status_data;
+    LOG(INFO) << "Klient::OczekujNaStart->status:" << status_data.first;
     auto data = status_data.second;
     if (data.size())
     {

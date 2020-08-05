@@ -430,13 +430,13 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         {
             view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
             window.setView(view);
-            odliczanie(wyswietlacz, view, interfejs);
+            if (!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))odliczanie(wyswietlacz, view, interfejs);
             gotowe_do_rozpoczecia = true;
         }
     }
     else
     {
-        odliczanie();
+        if(!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))odliczanie();
         gotowe_do_rozpoczecia = true;
     }
 

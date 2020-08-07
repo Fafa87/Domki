@@ -5,8 +5,8 @@ GUI* GUI::apa;
 
 void GUI::setup_theme()
 {
+    GUI::aplikacja().sfgui.AddCharacterSet(0x0000, 0x017D);
     pulpit.LoadThemeFromFile("Grafika\\bazowy.theme");
-    GUI::aplikacja().sfgui.AddCharacterSet(0x0000, 0x007F);
 }
 
 void GUI::center_window(shared_ptr<sfg::Window> window)

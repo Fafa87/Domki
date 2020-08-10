@@ -176,7 +176,9 @@ double Rozgrywka::PoliczAtakDomku(const Domek & domek, int liczba)
 double Rozgrywka::PoliczObroneDomku(const Domek & domek)
 {
     if (domek.typdomku == TypDomku::kFort)
-        return domek.liczebnosc * (domek.poziom+1.0);
+        return domek.liczebnosc * (domek.poziom + 1.0);
+    else if (domek.typdomku == TypDomku::kWieza)
+        return domek.liczebnosc * 6.0 / (6.0 - domek.poziom);
     return domek.liczebnosc;
 }
 

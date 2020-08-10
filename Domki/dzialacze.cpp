@@ -351,6 +351,7 @@ void Ruszacz::PrzesuwajLudkow(double czas)
 
 			if (przesuniecie*armia.szybkosc_ludka*czas >= dlugosc)armia.polozenie = armia.cel->polozenie;
             else armia.polozenie += jednostkowy;
+
         }
     }
 }
@@ -414,6 +415,16 @@ void Ruszacz::WalczLudkami(double czas)
                         }
                         else nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc/(double)((double)cel->poziom + 1.0);
                         }
+                    else if (cel->typdomku == TypDomku::kWieza)
+                    {
+                        cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza * (6.0 - (double)cel->poziom) / 6.0);
+                        if (cel->liczebnosc < armia.liczebnosc * (6.0 - (double)cel->poziom) / 6.0)
+                        {
+                            armia.liczebnosc = armia.liczebnosc * (6.0 - (double)cel->poziom) / 6.0 - cel->liczebnosc;
+                            nowa_liczebnosc = -armia.liczebnosc;
+                        }
+                        else nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc * (6.0 - (double)cel->poziom) / 6.0;
+                    }
                     else
                         {
                         cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza);
@@ -456,21 +467,8 @@ void Ruszacz::Produkuj(double czas)
 
 void Ruszacz::Strzelaj(double czas)
 {
-    int sila_strzalu = 10.0;
-    vector<Ludek*> do_usuniecia;
-    for (Ludek& ludek : rozgrywka->armie)
-        {
-        Domek * domek_cel = ((Domek*)ludek.cel);
-        if (domek_cel->typdomku==TypDomku::kWieza&&domek_cel->gracz->numer!=ludek.gracz->numer&&rozgrywka->Odleglosc(ludek,*domek_cel) < 100.0)
-            {
-            rozgrywka->TracLudki(ludek, sila_strzalu*(double)domek_cel->poziom*(double)domek_cel->poziom*czas* szybkosc);
-            if(ludek.liczebnosc==0.0)do_usuniecia.push_back(&ludek);
-            }
-        }
-    for (auto usunieta : do_usuniecia)
-    {
-        rozgrywka->ZniszczLudka(usunieta);
-    }
+    char X = 'D';
+    ///XD
 }
 
 WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : skad(skad), dokad(dokad)

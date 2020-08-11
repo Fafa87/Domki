@@ -92,6 +92,17 @@ vector<Rozkaz*> Komputer::WykonajRuch()
                     res.push_back(r);
                     ruch = false;
                 }
+                else if (ruch&&domek.liczebnosc * 2.0 >= domek.max_liczebnosc&&domek.poziom < 5) {
+                    if (domek.typdomku != TypDomku::kMiasto) {
+                        PrzebudujRozkaz* r = new PrzebudujRozkaz(&domek, TypDomku::kMiasto);
+                        res.push_back(r);
+                    }
+                    else {
+                        UlepszRozkaz* r = new UlepszRozkaz(&domek);
+                        res.push_back(r);
+                    }
+                    ruch = false;
+                }
             }
             else if (otoczenie(&domek, rozgrywka, true) > 0.0) {//neutralny sasiad
                 double ludki = 0.0;

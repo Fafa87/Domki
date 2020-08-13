@@ -244,7 +244,7 @@ void Ruszacz::Ruszaj(double czas)
     WykonajRuchy();
     PrzesuwajLudkow(czas);
     WalczLudkami(czas);
-    Strzelaj(czas);
+    Strzelaj();
     Produkuj(czas);
 }
 
@@ -278,6 +278,9 @@ void Ruszacz::WykonajRuchy()
                     //ZMIERZ SILE LUDKOW I NADAJ IM SZYBKOSC
                     nowaArmia.tarcza = rozgrywka->PoliczAtakDomku(*ruch.skad, liczba) - liczba;
                     nowaArmia.szybkosc_ludka = rozgrywka->PoliczSzybkoscDomku(*ruch.skad);
+
+                    nowaArmia.droga = rozgrywka->Odleglosc(*ruch.skad, *ruch.dokad);
+                    nowaArmia.dystans = 0.0;
 
                     ruch.skad->gracz->liczba_tworow++;
                 }
@@ -349,9 +352,15 @@ void Ruszacz::PrzesuwajLudkow(double czas)
             PD jednostkowy = wektor_do_celu / dlugosc;
             jednostkowy *= przesuniecie*armia.szybkosc_ludka*czas;
 
-			if (przesuniecie*armia.szybkosc_ludka*czas >= dlugosc)armia.polozenie = armia.cel->polozenie;
-            else armia.polozenie += jednostkowy;
-
+            if (przesuniecie*armia.szybkosc_ludka*czas >= dlugosc) {
+                armia.polozenie = armia.cel->polozenie;
+                armia.dystans += dlugosc;
+            }
+            else {
+                armia.polozenie += jednostkowy;
+                armia.dystans += sqrt(jednostkowy.x * jednostkowy.x + jednostkowy.y * jednostkowy.y);
+            }
+            
         }
     }
 }
@@ -415,16 +424,6 @@ void Ruszacz::WalczLudkami(double czas)
                         }
                         else nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc/(double)((double)cel->poziom + 1.0);
                         }
-                    else if (cel->typdomku == TypDomku::kWieza)
-                    {
-                        cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza * (6.0 - (double)cel->poziom) / 6.0);
-                        if (cel->liczebnosc < armia.liczebnosc * (6.0 - (double)cel->poziom) / 6.0)
-                        {
-                            armia.liczebnosc = armia.liczebnosc * (6.0 - (double)cel->poziom) / 6.0 - cel->liczebnosc;
-                            nowa_liczebnosc = -armia.liczebnosc;
-                        }
-                        else nowa_liczebnosc = cel->liczebnosc - armia.liczebnosc * (6.0 - (double)cel->poziom) / 6.0;
-                    }
                     else
                         {
                         cel->liczebnosc = std::max(0.0, cel->liczebnosc - (double)armia.tarcza);
@@ -465,10 +464,17 @@ void Ruszacz::Produkuj(double czas)
     }
 }
 
-void Ruszacz::Strzelaj(double czas)
+void Ruszacz::Strzelaj()
 {
-    char X = 'D';
-    ///XD
+    for (Ludek& ludek : rozgrywka->armie) {
+        Domek* domek_cel = ((Domek*)ludek.cel);
+        if (domek_cel->typdomku == TypDomku::kWieza&&domek_cel->gracz->numer != ludek.gracz->numer) {
+            if ((ludek.dystans / ludek.droga)*((double)(domek_cel->poziom) / 6.0) >= 1.0 / 1000.0) {
+                rozgrywka->TracLudki(ludek, (ludek.dystans / ludek.droga)*((double)(domek_cel->poziom) / 6.0)*ludek.liczebnosc);
+                ludek.dystans = 0.0;
+            }
+        }
+   }
 }
 
 WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : skad(skad), dokad(dokad)

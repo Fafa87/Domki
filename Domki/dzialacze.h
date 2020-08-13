@@ -107,5 +107,5 @@ private:
 	void PrzesuwajLudkow(double czas);
 	void WalczLudkami(double czas);
 	void Produkuj(double czas);
-	void Strzelaj(double czas);
+	void Strzelaj();
 };

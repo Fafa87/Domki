@@ -2,127 +2,127 @@
 1 4
 koordynaty 600 500
 poziom 1
-liczebnosc 1000
+liczebnosc 100
 typ wieza
 2 4
 koordynaty 750 500
 poziom 2
-liczebnosc 1000
+liczebnosc 100
 typ wieza
 3 4
 koordynaty 900 500
 poziom 3
-liczebnosc 1000
+liczebnosc 100
 typ wieza
 4 4
 koordynaty 1050 500
 poziom 4
-liczebnosc 1000
+liczebnosc 100
 typ wieza
 5 4
 koordynaty 1200 500
 poziom 5
-liczebnosc 1000
+liczebnosc 100
 typ wieza
 6 5
 koordynaty 600 700
 poziom 1
-liczebnosc 100000
+liczebnosc 100
 typ wieza
 gracz 1
 7 5
 koordynaty 1200 700
 poziom 1
-liczebnosc 100000
+liczebnosc 100
 typ wieza
 gracz 2
 8 4
 koordynaty 600 300
 poziom 1
-liczebnosc 0
+liczebnosc 100
 typ wieza
 9 4
 koordynaty 750 300
 poziom 2
-liczebnosc 0
+liczebnosc 100
 typ wieza
 10 4
 koordynaty 900 300
 poziom 3
-liczebnosc 0
+liczebnosc 100
 typ wieza
 11 4
 koordynaty 1050 300
 poziom 4
-liczebnosc 0
+liczebnosc 100
 typ wieza
 12 4
 koordynaty 1200 300
 poziom 5
-liczebnosc 0
+liczebnosc 100
 typ wieza
 13 4
 koordynaty 600 400
 poziom 1
-liczebnosc 250
+liczebnosc 100
 typ wieza
 14 4
 koordynaty 750 400
 poziom 2
-liczebnosc 250
+liczebnosc 100
 typ wieza
 15 4
 koordynaty 900 400
 poziom 3
-liczebnosc 250
+liczebnosc 100
 typ wieza
 16 4
 koordynaty 1050 400
 poziom 4
-liczebnosc 250
+liczebnosc 100
 typ wieza
 17 4
 koordynaty 1200 400
 poziom 5
-liczebnosc 250
+liczebnosc 100
 typ wieza
 18 4
 koordynaty 600 600
 poziom 1
-liczebnosc 10000
+liczebnosc 100
 typ wieza
 19 4
 koordynaty 750 600
 poziom 2
-liczebnosc 10000
+liczebnosc 100
 typ wieza
 20 4
 koordynaty 900 600
 poziom 3
-liczebnosc 10000
+liczebnosc 100
 typ wieza
 21 4
 koordynaty 1050 600
 poziom 4
-liczebnosc 10000
+liczebnosc 100
 typ wieza
 22 4
 koordynaty 1200 600
 poziom 5
-liczebnosc 10000
+liczebnosc 100
 typ wieza
 23 4
 koordynaty 750 700
 poziom 2
-liczebnosc 100000
+liczebnosc 100
 typ wieza
 24 4
 koordynaty 900 700
 poziom 3
-liczebnosc 100000
+liczebnosc 100
 typ wieza
 25 4
 koordynaty 1050 700
 poziom 4
-liczebnosc 100000
+liczebnosc 100
 typ wieza

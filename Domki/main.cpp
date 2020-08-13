@@ -64,12 +64,12 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     auto wybor_lista_foldery = sfg::ComboBox::Create();
     for (auto l : wczytaj_liste_folderow("Plansza"))
         wybor_lista_foldery->AppendItem(l);
-    wybor_lista_foldery->SelectItem(0);
+    wybor_lista_foldery->SelectItem(2);
 
     auto wybor_lista = sfg::ComboBox::Create();
     for (auto l : wczytaj_liste_plansz("Plansza\\" + wybor_lista_foldery->GetSelectedText()))
         wybor_lista->AppendItem(l);
-    wybor_lista->SelectItem(0);
+    wybor_lista->SelectItem(2);
     
     wybor_lista_foldery->GetSignal(sfg::ComboBox::OnSelect).Connect([ile_ludzi_pasek,wybor_lista, wybor_lista_foldery]
     {
@@ -92,7 +92,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
         ile_ludzi_pasek->SetRange(0, max_ludzi);
         ile_ludzi_pasek->SetValue(max_ludzi);
     });
-     wybor_lista->SelectItem(0);
+     wybor_lista->SelectItem(2);
      wybor_lista->GetSignal(sfg::ComboBox::OnSelect)();
 
     auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
@@ -370,12 +370,12 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
     auto wybor_lista_foldery = sfg::ComboBox::Create();
     for (auto l : wczytaj_liste_folderow("Plansza"))
         wybor_lista_foldery->AppendItem(l);
-    wybor_lista_foldery->SelectItem(0);
+    wybor_lista_foldery->SelectItem(2);
 
     auto wybor_lista = sfg::ComboBox::Create();
     for (auto l : wczytaj_liste_plansz("Plansza\\"+wybor_lista_foldery->GetSelectedText()))
         wybor_lista->AppendItem(l);
-    wybor_lista->SelectItem(0);
+    wybor_lista->SelectItem(2);
 
     wybor_lista_foldery->GetSignal(sfg::ComboBox::OnSelect).Connect([wybor_lista,wybor_lista_foldery]
     {

@@ -1,0 +1,97 @@
+25
+1 2 
+koordynaty 600 334
+drogi 2 2 4
+2 3
+koordynaty 725 300
+gracz 1
+drogi 3 1 3 5
+3 2 
+koordynaty 850 334
+drogi 2 2 6
+4 4
+koordynaty 500 425
+drogi 3 1 7 11
+typ zamek
+poziom 5
+5 2 
+koordynaty 725 400
+drogi 3 2 8 9
+6 4 
+koordynaty 950 425
+drogi 3 3 10 15
+typ zamek
+poziom 5
+7 5
+koordynaty 586 475
+drogi 1 4
+typ stajnia
+poziom 5
+gracz 3
+8 2 
+koordynaty 650 410
+drogi 2 5 13
+9 2 
+koordynaty 800 410
+drogi 2 5 13
+10 5 
+koordynaty 864 475
+drogi 1 6
+typ stajnia
+poziom 5
+gracz 2
+11 2 
+koordynaty 475 550
+drogi 2 4 16
+12 2 
+koordynaty 575 550
+drogi 2 13 17
+13 5
+koordynaty 725 550
+drogi 6 8 9 12 14 20 22
+typ wieza
+liczebnosc 500
+poziom 5
+14 2 
+koordynaty 875 550
+drogi 2 13 18
+15 2 
+koordynaty 975 550
+drogi 2 6 19
+16 3
+koordynaty 500 675
+gracz 2
+drogi 3 11 17 23
+17 2 
+koordynaty 586 625
+drogi 3 12 16 20
+18 2 
+koordynaty 864 625
+drogi 3 14 19 22 
+19 3
+koordynaty 950 675
+gracz 3
+drogi 3 15 18 25
+20 2 
+koordynaty 650 680
+drogi 2 13 17 
+21 5
+koordynaty 725 700
+drogi 1 24 
+typ stajnia
+poziom 5
+gracz 1
+22 2 
+koordynaty 800 680
+drogi 2 13 18 
+23 2 
+koordynaty 600 766
+drogi 2 16 24 
+24 4
+koordynaty 725 800
+drogi 3 21 23 25 
+typ zamek
+poziom 5
+25 2 
+koordynaty 850 766
+drogi 2 19 24 

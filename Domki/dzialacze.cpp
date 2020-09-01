@@ -466,15 +466,21 @@ void Ruszacz::Produkuj(double czas)
 
 void Ruszacz::Strzelaj()
 {
+    vector<Ludek*> do_usuniecia;
     for (Ludek& ludek : rozgrywka->armie) {
         Domek* domek_cel = ((Domek*)ludek.cel);
         if (domek_cel->typdomku == TypDomku::kWieza&&domek_cel->gracz->numer != ludek.gracz->numer) {
             if ((ludek.dystans / ludek.droga)*((double)(domek_cel->poziom) / 6.0) >= 1.0 / 1000.0) {
                 rozgrywka->TracLudki(ludek, (ludek.dystans / ludek.droga)*((double)(domek_cel->poziom) / 6.0)*ludek.liczebnosc);
+                if (ludek.liczebnosc==0.0)do_usuniecia.push_back(&ludek);
                 ludek.dystans = 0.0;
             }
         }
    }
+    for (auto usunieta : do_usuniecia)
+    {
+        rozgrywka->ZniszczLudka(usunieta);
+    }
 }
 
 WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : skad(skad), dokad(dokad)

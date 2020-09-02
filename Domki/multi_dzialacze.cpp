@@ -63,6 +63,7 @@ void KlientowyRuszacz::Ruszaj(double czas)
         // uaktualnij rozgrywk� - zast�p t� - przepisuj�c, adres ma zosta� ten sam
         *rozgrywka = res.second;
         multi::Podepnij(*rozgrywka);
+        wystartowal = true;
     }
     else
     {

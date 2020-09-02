@@ -211,9 +211,9 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
     return gra;
 }
 
-void odliczanie()
+void odliczanie(int czas)
 {
-    for (int a = 5; a >= 0; a--)
+    for (int a = czas; a >= 0; a--)
     {
         if (a > 0)
             Sleep(1500);
@@ -430,13 +430,15 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         {
             view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
             window.setView(view);
-            if (!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))odliczanie(wyswietlacz, view, interfejs);
+            if (!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))
+                odliczanie(wyswietlacz, view, interfejs);
             gotowe_do_rozpoczecia = true;
         }
     }
     else
     {
-        if(!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))odliczanie();
+        if(!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))
+            odliczanie(8);
         gotowe_do_rozpoczecia = true;
     }
 
@@ -547,6 +549,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         //ZAKONCZENIE GRY
         if (rozgrywka.liczba_aktywnych_graczy == 1)
         {
+
             muzykant.Zamilcz();
 
             if (!to_serwer)

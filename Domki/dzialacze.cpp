@@ -239,6 +239,7 @@ Ruszacz::Ruszacz()
 
 void Ruszacz::Ruszaj(double czas)
 {
+    wystartowal = true;
     ile_armii_idzie = armie_ktore_dotarly = 0;
 
     WykonajRuchy();

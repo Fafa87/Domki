@@ -8,104 +8,106 @@
 
 struct Rozkaz
 {
-	// to string to cereal serialization?
-	virtual ~Rozkaz() {}
+    // to string to cereal serialization?
+    virtual ~Rozkaz() {}
 };
 
 struct Testpower : Rozkaz
 {
-	Testpower(Domek* kogo);
+    Testpower(Domek* kogo);
 
-	Domek * kogo;
-	int ser_kogo;
+    Domek * kogo;
+    int ser_kogo;
 };
 
 struct WymarszRozkaz : Rozkaz
 {
-	WymarszRozkaz(Domek* skad, Domek* dokad);
+    WymarszRozkaz(Domek* skad, Domek* dokad);
 
-	Domek * skad, * dokad;
-	int ser_skad, ser_dokad;
-	double ulamek = 1;
+    Domek * skad, * dokad;
+    int ser_skad, ser_dokad;
+    double ulamek = 1;
 };
 
 struct UlepszRozkaz : Rozkaz
 {
-	UlepszRozkaz(Domek* kogo);
+    UlepszRozkaz(Domek* kogo);
 
-	Domek * kogo;
-	int ser_kogo;
+    Domek * kogo;
+    int ser_kogo;
 };
 
 struct PrzebudujRozkaz : Rozkaz
 {
-	PrzebudujRozkaz(Domek* kogo, TypDomku naco);
+    PrzebudujRozkaz(Domek* kogo, TypDomku naco);
 
-	Domek * kogo;
-	TypDomku naco;
-	int ser_kogo;
+    Domek * kogo;
+    TypDomku naco;
+    int ser_kogo;
 };
 
 struct BurzRozkaz : Rozkaz
 {
-	BurzRozkaz(Domek* kogo);
+    BurzRozkaz(Domek* kogo);
 
-	Domek * kogo;
-	int ser_kogo;
+    Domek * kogo;
+    int ser_kogo;
 };
 
 class Decydent // wprowadza rozkazy graczy
 {
 public:
-	virtual vector<Rozkaz*> WykonajRuch() = 0;
+    virtual vector<Rozkaz*> WykonajRuch() = 0;
 };
 
 class MyszDecydent : public Decydent
 {
 public:
-	MyszDecydent(sf::RenderWindow& okno, Rozgrywka& rozgrywka, Gracz& gracz);
-	void Klik(double x, double y);
+    MyszDecydent(sf::RenderWindow& okno, Rozgrywka& rozgrywka, Gracz& gracz);
+    void Klik(double x, double y);
 
-	virtual void Przetworz() {}
-	void Przetworz(sf::Event zdarzenie);
+    virtual void Przetworz() {}
+    void Przetworz(sf::Event zdarzenie);
     void Potworz(sf::Event zdarzenie);
 
-	virtual vector<Rozkaz*> WykonajRuch();
+    virtual vector<Rozkaz*> WykonajRuch();
 
     map<Domek*, Domek*> punkty_kontrolne;
-	Domek* wybrany = nullptr;
-	Twor* skupiony = nullptr;
-	char nacisniety = 0;
-	Gracz& gracz;
+    Domek* wybrany = nullptr;
+    Twor* skupiony = nullptr;
+    char nacisniety = 0;
+    Gracz& gracz;
 
 private:
-	sf::RenderWindow & okno;
-	vector<pair<int, sf::Mouse::Button>> klikniecia;
-	Domek* cel = nullptr;
-	Rozgrywka& rozgrywka;
+    sf::RenderWindow & okno;
+    vector<pair<int, sf::Mouse::Button>> klikniecia;
+    Domek* cel = nullptr;
+    Rozgrywka& rozgrywka;
 };
 
 class Ruszacz // wykonuje zaplanowane kroki symulacji
 {
 public:
-	Ruszacz();
-	virtual void Ruszaj(double czas);
-	void PrzyjmijRuch(vector<Rozkaz*> rozkazy);
+    Ruszacz();
+    virtual void Ruszaj(double czas);
+    void PrzyjmijRuch(vector<Rozkaz*> rozkazy);
 
-	Rozgrywka* rozgrywka;
-	double szybkosc = 1;
-	double szybkosc_ruchu = 200.0/3;
+    Rozgrywka* rozgrywka;
+    double szybkosc = 1;
+    double szybkosc_ruchu = 200.0/3;
 
-	virtual ~Ruszacz() {}
+    virtual ~Ruszacz() {}
 
-	int ile_armii_idzie = 0;
-	int armie_ktore_dotarly = 0;
+    int ile_armii_idzie = 0;
+    int armie_ktore_dotarly = 0;
+
+    bool wystartowal;
 protected:
-	vector<Rozkaz*> kolejka_do_wykonania;
+    vector<Rozkaz*> kolejka_do_wykonania;
 private:
-	void WykonajRuchy();
-	void PrzesuwajLudkow(double czas);
-	void WalczLudkami(double czas);
-	void Produkuj(double czas);
-	void Strzelaj();
+    void WykonajRuchy();
+    void PrzesuwajLudkow(double czas);
+    void WalczLudkami(double czas);
+    void Produkuj(double czas);
+    void Strzelaj();
 };

@@ -211,7 +211,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
     return gra;
 }
 
-void odliczanie(int czas)
+bool odliczanie(int czas)
 {
     for (int a = czas; a >= 0; a--)
     {
@@ -220,9 +220,10 @@ void odliczanie(int czas)
         else
             Sleep(800);
     }
+    return true;
 }
 
-void odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::Window> gui_pasek)
+bool odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::Window> gui_pasek, Ruszacz& ruszacz)
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
     okno->SetRequisition(sf::Vector2f(500, 300));
@@ -246,6 +247,7 @@ void odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::W
     puk.setPitch(2);
 
     GUI::aplikacja().show_bottom_gui(widok, gui_pasek); // 784 MB -> 1300 MB
+
     for (int a = 3; a >= 0; a--)
     {
         GUI::aplikacja().okno.clear();
@@ -269,10 +271,18 @@ void odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::W
             if (GUI::aplikacja().dzwieki_glosnosc)
                 puk.play();
             Sleep(800);
+
+            for (int i = 0; i < 100 && !ruszacz.wystartowal; i++)
+            {
+                Sleep(100);
+                ruszacz.Ruszaj(0);
+            }
+
         }
     }
 
     GUI::aplikacja().pulpit.Remove(okno);
+    return ruszacz.wystartowal;
 }
 
 void zakonczenie_gry(Gracz& gracz_wygrany, int grajacy)
@@ -431,15 +441,21 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
             view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
             window.setView(view);
             if (!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))
-                odliczanie(wyswietlacz, view, interfejs);
-            gotowe_do_rozpoczecia = true;
+            {
+                gotowe_do_rozpoczecia = odliczanie(wyswietlacz, view, interfejs, ruszacz);
+                if (!gotowe_do_rozpoczecia)
+                    LOG(WARNING) << "Nie doczekal sie rozpoczecia na serwerze.";
+            }
+            else
+                gotowe_do_rozpoczecia = true;
         }
     }
     else
     {
         if(!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))
-            odliczanie(8);
-        gotowe_do_rozpoczecia = true;
+            gotowe_do_rozpoczecia = odliczanie(5);
+        else
+            gotowe_do_rozpoczecia = true;
     }
 
     if (!GUI::aplikacja().dzwieki_glosnosc)

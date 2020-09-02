@@ -144,22 +144,19 @@ int main(int argc, const char * argv[]) {
     }
     catch (const std::exception& ex)
     {
-        LOG(ERROR) << "Wyjatek ladny?";
-        LOG(ERROR) << "Wyjatek ladny" << ex.what();
+        LOG(ERROR) << "Wyjatek ladny: " << ex.what();
         el::Loggers::flushAll();
         system("pause");
         return -1;
     }
     catch (const std::string& ex) {
-        LOG(ERROR) << "Wyjatek string?";
-        LOG(ERROR) << "Wyjatek string" << ex;
+        LOG(ERROR) << "Wyjatek string: " << ex;
         el::Loggers::flushAll();
         system("pause");
         return -1;
     }
     catch (int err) {
-        LOG(ERROR) << "Wyjatek err?";
-        LOG(ERROR) << "Wyjatek err" << err;
+        LOG(ERROR) << "Wyjatek err: " << err;
         el::Loggers::flushAll();
         system("pause");
         return -1;

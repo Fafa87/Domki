@@ -32,6 +32,8 @@ void wykonaj_klient_gry(string zadanie)
         {
             adres = klient->lista_serwerow.back();
         }
+
+        LOG(INFO) << "Lacze z " << adres.ip;
         klient->Podlacz(adres);
 
         // nie ma co czekac na gotowy

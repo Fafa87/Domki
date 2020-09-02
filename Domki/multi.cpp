@@ -69,6 +69,7 @@ void multi::Serwer::Start(MisjaUstawienia ustawienia)
         {
             LOG(WARNING) << "Wyslanie startu buraka! " << status;
         }
+        // Czy tutaj nie dodajemy wiele razy?
         wtykowiec.add(*ludzie[i].wtyk);
     }
 }

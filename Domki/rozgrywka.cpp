@@ -18,6 +18,7 @@ void Rozgrywka::PoddajGracza(Gracz & gracz)
             twor.gracz = &this->Graczu(0);
 
     gracz.liczba_tworow = 0;
+    gracz.aktywny = 0;
     liczba_aktywnych_graczy--;
 }
 

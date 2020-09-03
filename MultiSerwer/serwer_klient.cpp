@@ -56,12 +56,14 @@ void wykonaj_klient_gry(string zadanie)
             misja_ustawienia.komputery.clear();
             misja(misja_ustawienia, ruszacz);
 
-            printf("...misja skonczona\n");
+            LOG(INFO) << "...misja skonczona";
 
             misja_ustawienia.WypiszRanking();
 
             klient->wtyk->setBlocking(true);
         } while (!(misja_ustawienia.Zwyciezca() >= 0));
+
+        klient->Rozlacz();
 
         auto wygrany = misja_ustawienia.Zwyciezca();
         printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", misja_ustawienia.nazwy_graczow[wygrany].c_str());

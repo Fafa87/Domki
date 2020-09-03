@@ -165,6 +165,12 @@ void multi::Klient::Podlacz(Adres serwer)
     }
 }
 
+void multi::Klient::Rozlacz()
+{
+    wtyk->disconnect();
+    LOG(INFO) << "Odlaczony od serwera";
+}
+
 bool multi::Klient::SpiszSerwery()
 {
     char data[100];

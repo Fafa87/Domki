@@ -181,9 +181,12 @@ void start_klient(sf::Music& muzyka, string nazwa)
 
     std::pair<bool, MisjaUstawienia> res;
     do {
-        printf("oczekuje na start misji... ");
+        LOG(INFO) << "Oczekuje na start misji...";
         res = klient->OczekujNaStart();
-        printf("startuje misje %s\n", res.second.nazwa.c_str());
+        if (res.first != sf::Socket::Done)
+            LOG(WARNING) << "Odebranie ustawien misji buraka! " << res.first;
+
+        LOG(INFO) << "Startuje misje " << res.second.nazwa;
 
         string test = "A";
         klient->wtyk->setBlocking(false);
@@ -192,13 +195,15 @@ void start_klient(sf::Music& muzyka, string nazwa)
 
         res.second.komputery.clear();
         misja(res.second, ruszacz);
-
-        printf("...misja skonczona\n");
+        
+        LOG(INFO) << "... misja skonczona";
 
         res.second.WypiszRanking();
 
         klient->wtyk->setBlocking(true);
     } while (!(res.second.Zwyciezca() >= 0));
+
+    klient->Rozlacz();
 
     while (GUI::aplikacja().zalozone_gry.size())
     {

@@ -75,6 +75,7 @@ namespace multi
         Klient(string nazwa);
 
         void Podlacz(Adres serwer);
+        void Rozlacz();
 
         pair<sf::Socket::Status, MisjaUstawienia> OczekujNaStart();
         sf::Socket::Status Wyslij(vector<Rozkaz*> rozkazy);

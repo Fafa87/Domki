@@ -54,7 +54,7 @@ void multi::Serwer::OczekujNaGracza()
 
 void multi::Serwer::Start(MisjaUstawienia ustawienia)
 {
-    for (int i = 0; i < ludzie.size(); i++)
+    for (int i = 0; i < ludzie.size(); i++) if (ludzie[i].aktywny)
     {
         ustawienia.nr_gracza = i + 1;
         std::stringstream ss;
@@ -141,6 +141,14 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
     }
     
     return res;
+}
+
+bool multi::Serwer::CzyJestZawodnik()
+{
+    for (auto& zaw : this->ludzie)
+        if (zaw.aktywny)
+            return true;
+    return false;
 }
 
 multi::Klient::Klient(string nazwa)

@@ -61,6 +61,7 @@ namespace multi
         void Start(MisjaUstawienia ustawienia);
         bool Rozeslij(Rozgrywka& stan);
         vector<Rozkaz*> Odbierz();
+        bool CzyJestZawodnik();
 
         vector<Zawodnik> ludzie;
     private:

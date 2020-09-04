@@ -40,6 +40,9 @@ void wykonaj_klient_gry(string zadanie)
         //if (zadanie.find("gotowy") == 0)
         std::pair<sf::Socket::Status, MisjaUstawienia> res;
         do {
+            if (!klient->WyslijGotowosc())
+                break;
+
             printf("oczekuje na start misji... ");
             auto status_misja_ustawienia = klient->OczekujNaStart();
             auto misja_ustawienia = status_misja_ustawienia.second;

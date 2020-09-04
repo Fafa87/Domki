@@ -84,6 +84,8 @@ void wykonaj_serwer_gry(string zadanie)
             ustawienia.komputery.push_back(komputery_mapy[i]);
         ustawienia.nr_gracza = 0;
 
+        serwer->CzekajNaGotowosc();
+
         LOG(INFO) << "Wysylam informacje o starcie...";
 
         serwer->Start(ustawienia);

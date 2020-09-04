@@ -215,15 +215,12 @@ bool odliczanie(int czas)
 {
     for (int a = czas; a >= 0; a--)
     {
-        if (a > 0)
-            Sleep(1500);
-        else
-            Sleep(800);
+        Sleep(1000);
     }
     return true;
 }
 
-bool odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::Window> gui_pasek, Ruszacz& ruszacz)
+bool odliczanie(int czas, Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::Window> gui_pasek, Ruszacz& ruszacz)
 {
     auto okno_odliczania = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
     okno_odliczania->SetRequisition(sf::Vector2f(500, 300));
@@ -250,10 +247,10 @@ bool odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::W
 
     sf::RenderWindow& okno = GUI::aplikacja().okno;
     double start_odliczania = clock();
-    double czas_pozostaly = 4;
-    double czas_oczekiwania = 4;
+    double czas_pozostaly = czas;
+    double czas_oczekiwania = czas;
 
-    int ost_pik = 4;
+    int ost_pik = czas;
     while (true)
     {
         sf::Event event;
@@ -462,7 +459,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
             window.setView(view);
             if (!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))
             {
-                gotowe_do_rozpoczecia = odliczanie(wyswietlacz, view, interfejs, ruszacz);
+                gotowe_do_rozpoczecia = odliczanie(4, wyswietlacz, view, interfejs, ruszacz);
                 if (!gotowe_do_rozpoczecia)
                     LOG(WARNING) << "Nie doczekal sie rozpoczecia na serwerze.";
             }

@@ -36,7 +36,7 @@ void multi::Serwer::OczekujNaGracza()
     }
     if (status != sf::Socket::Done)
     {
-        printf("Serwer::OczekujNaGraczy buraka!\n");
+        LOG(INFO) << "Serwer::OczekujNaGraczy buraka!";
     }
     else
     {
@@ -45,11 +45,37 @@ void multi::Serwer::OczekujNaGracza()
         gracz.adres = Adres(gracz.wtyk->getRemoteAddress().toString(), gracz.wtyk->getRemotePort());
         gracz.nazwa = nazwa;
         nasluchiwacz.setBlocking(true);
-        printf("polaczylem gracza %s\n", gracz.nazwa.c_str());
 
         ludzie.emplace_back(gracz);
     }
-    printf("gracze polaczeni w liczbie %d\n", ludzie.size());
+    LOG(INFO) << "Serwer::OczekujNaGraczy Gracze polaczeni w liczbie " << ludzie.size();
+}
+
+void multi::Serwer::CzekajNaGotowosc()
+{
+    // TODO jakis limit czasu?
+    LOG(INFO) << "Rozpoczynam oczekiwanie...";
+    for (int i = 0; i < ludzie.size(); i++) if (ludzie[i].aktywny)
+    {
+        auto status_nazwa = multi::Pobierz(*ludzie[i].wtyk);
+
+        if (status_nazwa.first != sf::Socket::Done)
+        {
+            if (status_nazwa.first == sf::Socket::Disconnected)
+            {
+                LOG(WARNING) << "Gracz " << ludzie[i].nazwa << " sie odlaczyl.";
+                ludzie[i].aktywny = false;
+                continue;
+            }
+            LOG(WARNING) << "Serwer::CzekajNaGotowosc buraka!";
+        }
+        else
+        {
+            if (status_nazwa.second[0] != "GOGO")
+                LOG(WARNING) << "Serwer::CzekajNaGotowosc wiadomosc" << status_nazwa.second[0];
+            LOG(INFO) << "Odhaczylem " << ludzie[i].nazwa;
+        }
+    }
 }
 
 void multi::Serwer::Start(MisjaUstawienia ustawienia)
@@ -177,6 +203,25 @@ void multi::Klient::Rozlacz()
 {
     wtyk->disconnect();
     LOG(INFO) << "Odlaczony od serwera";
+}
+
+bool multi::Klient::WyslijGotowosc()
+{
+    auto status = multi::Wyslij(*this->wtyk, "GOGO");
+    if (status == sf::Socket::Done)
+    {
+        return true;
+    }
+    else if (status == sf::Socket::Disconnected)
+    {
+        LOG(WARNING) << "Klient::WyslijGotowosc rozlaczone!";
+        return false;
+    }
+    else 
+    {
+        LOG(WARNING) << "Klient::WyslijGotowosc buraka!";
+        return false;
+    }
 }
 
 bool multi::Klient::SpiszSerwery()

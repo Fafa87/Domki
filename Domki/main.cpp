@@ -181,6 +181,9 @@ void start_klient(sf::Music& muzyka, string nazwa)
 
     std::pair<bool, MisjaUstawienia> res;
     do {
+        if (!klient->WyslijGotowosc())
+            break;
+
         LOG(INFO) << "Oczekuje na start misji...";
         res = klient->OczekujNaStart();
         if (res.first != sf::Socket::Done)

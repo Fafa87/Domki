@@ -69,6 +69,9 @@ void GUI::wait_for_anything()
         okno.pollEvent(event);
         if (event.type == sf::Event::KeyReleased || event.type == sf::Event::MouseButtonReleased)
             break;
+
+        GUI::aplikacja().pulpit.HandleEvent(event);
+        
         Sleep(100);
     }
 }

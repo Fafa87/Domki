@@ -56,6 +56,7 @@ namespace multi
 
         // oczekuje na pod��czenie si� gracza i podanie danych
         void OczekujNaGracza();
+        void CzekajNaGotowosc();
 
         // wy�lij info o starcie do graczy
         void Start(MisjaUstawienia ustawienia);
@@ -77,6 +78,7 @@ namespace multi
 
         void Podlacz(Adres serwer);
         void Rozlacz();
+        bool WyslijGotowosc();
 
         pair<sf::Socket::Status, MisjaUstawienia> OczekujNaStart();
         sf::Socket::Status Wyslij(vector<Rozkaz*> rozkazy);

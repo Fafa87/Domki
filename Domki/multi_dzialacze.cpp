@@ -43,6 +43,7 @@ void SerwerowyRuszacz::Ruszaj(double czas)
 
 KlientowyRuszacz::KlientowyRuszacz(multi::Klient & klient) : klient(klient)
 {
+    gotowy = false;
 }
 
 void KlientowyRuszacz::Ruszaj(double czas)
@@ -63,7 +64,7 @@ void KlientowyRuszacz::Ruszaj(double czas)
         // uaktualnij rozgrywk� - zast�p t� - przepisuj�c, adres ma zosta� ten sam
         *rozgrywka = res.second;
         multi::Podepnij(*rozgrywka);
-        wystartowal = true;
+        gotowy = true;
     }
     else
     {

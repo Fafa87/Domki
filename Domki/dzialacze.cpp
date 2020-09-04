@@ -22,9 +22,9 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
         if (klikniety != nullptr && IsType<Domek>(klikniety))
         {
             if (wybrany != (Domek*)klikniety&& klikniety->gracz->numer == gracz.numer&&zdarzenie.mouseButton.button == sf::Mouse::Left)
-				wybrany = (Domek*)klikniety;
+                wybrany = (Domek*)klikniety;
             else if (rozgrywka.oszustwa && wybrany != (Domek*)klikniety&& klikniety->gracz->numer != gracz.numer && zdarzenie.mouseButton.button == sf::Mouse::Middle)
-				wybrany = (Domek*)klikniety;
+                wybrany = (Domek*)klikniety;
 
             if (wybrany != nullptr && wybrany != klikniety && zdarzenie.mouseButton.button == sf::Mouse::Right)
             {
@@ -86,19 +86,19 @@ void MyszDecydent::Potworz(sf::Event zdarzenie) {
 vector<Rozkaz*> MyszDecydent::WykonajRuch()
 {
     vector<Rozkaz*> res;
-	if (rozgrywka.punkty_kontrolne && wybrany != nullptr && (cel == nullptr || cel == wybrany))
-		for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();pk_iter++)
-			{
-			if (wybrany == (*pk_iter).first)
-				{
-				punkty_kontrolne.erase(pk_iter);
-				break;
-				}
-			}
+    if (rozgrywka.punkty_kontrolne && wybrany != nullptr && (cel == nullptr || cel == wybrany))
+        for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();pk_iter++)
+            {
+            if (wybrany == (*pk_iter).first)
+                {
+                punkty_kontrolne.erase(pk_iter);
+                break;
+                }
+            }
 
     if (!rozgrywka.oszustwa && wybrany != nullptr && wybrany->gracz != &gracz) 
     {
-		cel = nullptr;
+        cel = nullptr;
         wybrany = nullptr;
         nacisniety = 0;
     } 
@@ -106,17 +106,17 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
     {
         if (cel == wybrany)
         {
-			if (klikniecia.size() == 1)
-			{
-				klikniecia.clear();
-				cel = nullptr;
-				nacisniety = 0;
-			}
-			else if (klikniecia.size() == 2 && clock() - klikniecia.back().first < 0.05 * CLOCKS_PER_SEC)
-			{
-				auto r = new UlepszRozkaz(wybrany);
-				res.push_back(r);
-			}
+            if (klikniecia.size() == 1)
+            {
+                klikniecia.clear();
+                cel = nullptr;
+                nacisniety = 0;
+            }
+            else if (klikniecia.size() == 2 && clock() - klikniecia.back().first < 0.05 * CLOCKS_PER_SEC)
+            {
+                auto r = new UlepszRozkaz(wybrany);
+                res.push_back(r);
+            }
             else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC)
             {
                 if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
@@ -138,33 +138,33 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         }
         else if (cel != wybrany)
         {
-			if (klikniecia.size() == 1)
-			{
-				if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
+            if (klikniecia.size() == 1)
+            {
+                if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
 
-				auto r = new WymarszRozkaz(wybrany, cel);
-				r->ulamek = 0.5;
-				res.push_back(r);
+                auto r = new WymarszRozkaz(wybrany, cel);
+                r->ulamek = 0.5;
+                res.push_back(r);
 
-				cel = nullptr;
-				nacisniety = 0;
-				klikniecia.clear();
-			}
+                cel = nullptr;
+                nacisniety = 0;
+                klikniecia.clear();
+            }
             else if (klikniecia.size() == 2 && clock() - klikniecia.back().first < 0.05 * CLOCKS_PER_SEC)
             {
-				auto r = new WymarszRozkaz(wybrany, cel);
+                auto r = new WymarszRozkaz(wybrany, cel);
                 r->ulamek = 1.0;
                 res.push_back(r);
             }
-			else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC)
-			{
-				if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
+            else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC)
+            {
+                if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
 
-				wybrany = nullptr;
-				cel = nullptr;
-				nacisniety = 0;
-				klikniecia.clear();
-			}
+                wybrany = nullptr;
+                cel = nullptr;
+                nacisniety = 0;
+                klikniecia.clear();
+            }
             else if (klikniecia.size() >= 3)
             {
                 if (rozgrywka.punkty_kontrolne) punkty_kontrolne[wybrany] = cel;
@@ -239,7 +239,6 @@ Ruszacz::Ruszacz()
 
 void Ruszacz::Ruszaj(double czas)
 {
-    wystartowal = true;
     ile_armii_idzie = armie_ktore_dotarly = 0;
 
     WykonajRuchy();
@@ -374,19 +373,19 @@ void Ruszacz::WalczLudkami(double czas)
         Ludek& armia = *it;
         double odleglosc = rozgrywka->Odleglosc(armia, *armia.cel);
         auto spotkanie = rozgrywka->Spotkanie(armia);
-		if (spotkanie != NULL && spotkanie->gracz == armia.gracz)
-		{
-			if (spotkanie->liczebnosc <= armia.liczebnosc)
-			{
-				rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc + spotkanie->liczebnosc);
-				do_usuniecia.push_back(spotkanie);
-			}
-			else
-			{
-				rozgrywka->ZmienLiczebnosc(*spotkanie, armia.liczebnosc + spotkanie->liczebnosc);
-				do_usuniecia.push_back(&(*it));
-			}
-		}
+        if (spotkanie != NULL && spotkanie->gracz == armia.gracz)
+        {
+            if (spotkanie->liczebnosc <= armia.liczebnosc)
+            {
+                rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc + spotkanie->liczebnosc);
+                do_usuniecia.push_back(spotkanie);
+            }
+            else
+            {
+                rozgrywka->ZmienLiczebnosc(*spotkanie, armia.liczebnosc + spotkanie->liczebnosc);
+                do_usuniecia.push_back(&(*it));
+            }
+        }
         else if (spotkanie != NULL)
         {
             rozgrywka->TracLudki(armia, std::max(5.0+ czas * szybkosc,0.3 * (*spotkanie).liczebnosc*czas * szybkosc));

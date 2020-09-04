@@ -27,8 +27,7 @@ class KlientowyRuszacz : public Ruszacz
 public:
     KlientowyRuszacz(multi::Klient& klient);
     virtual void Ruszaj(double czas);
-
 private:
     multi::Klient& klient;
-    bool wystartowal;
+
 };

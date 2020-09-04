@@ -84,6 +84,8 @@ void wykonaj_serwer_gry(string zadanie)
             ustawienia.komputery.push_back(komputery_mapy[i]);
         ustawienia.nr_gracza = 0;
 
+        serwer->CzekajNaGotowosc();
+
         LOG(INFO) << "Wysylam informacje o starcie...";
 
         serwer->Start(ustawienia);
@@ -101,7 +103,7 @@ void wykonaj_serwer_gry(string zadanie)
         for (auto w : ustawienia.ile_kto_wygranych)
             liczba_gier += w;
 
-        printf("Rozegrano juz %d gier\n", liczba_gier);
+        LOG(INFO) << "Rozegrano juz " << liczba_gier << " gier\n";
         ustawienia.WypiszRanking();
 
         if (ustawienia.Zwyciezca() >= 0)
@@ -109,6 +111,13 @@ void wykonaj_serwer_gry(string zadanie)
             auto wygrany = ustawienia.Zwyciezca();
             printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", ustawienia.nazwy_graczow[wygrany].c_str());
 
+            delete serwer;
+            serwer = nullptr;
+        }
+        else if(!serwer->CzyJestZawodnik())
+        {
+            ustawienia.do_ilu_wygranych = 0;
+            LOG(INFO) << "Wszyscy gracze rozlaczeni, zamykam";
             delete serwer;
             serwer = nullptr;
         }

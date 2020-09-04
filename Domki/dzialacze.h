@@ -100,8 +100,7 @@ public:
 
     int ile_armii_idzie = 0;
     int armie_ktore_dotarly = 0;
-
-    bool wystartowal;
+    bool gotowy = true;
 protected:
     vector<Rozkaz*> kolejka_do_wykonania;
 private:

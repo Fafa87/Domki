@@ -40,6 +40,9 @@ void wykonaj_klient_gry(string zadanie)
         //if (zadanie.find("gotowy") == 0)
         std::pair<sf::Socket::Status, MisjaUstawienia> res;
         do {
+            if (!klient->WyslijGotowosc())
+                break;
+
             printf("oczekuje na start misji... ");
             auto status_misja_ustawienia = klient->OczekujNaStart();
             auto misja_ustawienia = status_misja_ustawienia.second;
@@ -56,12 +59,14 @@ void wykonaj_klient_gry(string zadanie)
             misja_ustawienia.komputery.clear();
             misja(misja_ustawienia, ruszacz);
 
-            printf("...misja skonczona\n");
+            LOG(INFO) << "...misja skonczona";
 
             misja_ustawienia.WypiszRanking();
 
             klient->wtyk->setBlocking(true);
         } while (!(misja_ustawienia.Zwyciezca() >= 0));
+
+        klient->Rozlacz();
 
         auto wygrany = misja_ustawienia.Zwyciezca();
         printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", misja_ustawienia.nazwy_graczow[wygrany].c_str());

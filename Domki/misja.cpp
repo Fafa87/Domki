@@ -215,24 +215,21 @@ bool odliczanie(int czas)
 {
     for (int a = czas; a >= 0; a--)
     {
-        if (a > 0)
-            Sleep(1500);
-        else
-            Sleep(800);
+        Sleep(1000);
     }
     return true;
 }
 
-bool odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::Window> gui_pasek, Ruszacz& ruszacz)
+bool odliczanie(int czas, Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::Window> gui_pasek, Ruszacz& ruszacz)
 {
-    auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
-    okno->SetRequisition(sf::Vector2f(500, 300));
-    GUI::aplikacja().center_window(okno);
+    auto okno_odliczania = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+    okno_odliczania->SetRequisition(sf::Vector2f(500, 300));
+    GUI::aplikacja().center_window(okno_odliczania);
 
     auto odliczanie_etykieta = sfg::Label::Create("");
     odliczanie_etykieta->SetId("Alarm"); // 677 MB -> 772 MB
-    okno->Add(odliczanie_etykieta);
-    GUI::aplikacja().pulpit.Add(okno);
+    okno_odliczania->Add(odliczanie_etykieta);
+    GUI::aplikacja().pulpit.Add(okno_odliczania);
 
     sf::SoundBuffer pikPikBuffer;
     pikPikBuffer.loadFromFile("Muzyka\\Boom.ogg");
@@ -248,41 +245,61 @@ bool odliczanie(Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::W
 
     GUI::aplikacja().show_bottom_gui(widok, gui_pasek); // 784 MB -> 1300 MB
 
-    for (int a = 3; a >= 0; a--)
-    {
-        GUI::aplikacja().okno.clear();
+    sf::RenderWindow& okno = GUI::aplikacja().okno;
+    double start_odliczania = clock();
+    double czas_pozostaly = czas;
+    double czas_oczekiwania = czas;
 
-        wyswietlacz.WyswietlTlo(GUI::aplikacja().okno);
-        if (a>0) odliczanie_etykieta->SetText(std::to_string(a));
-        else odliczanie_etykieta->SetText("RUSZAJ!");
-        wyswietlacz.Wyswietlaj(GUI::aplikacja().okno);
+    int ost_pik = czas;
+    while (true)
+    {
+        sf::Event event;
+        while (okno.pollEvent(event))
+        {
+            GUI::aplikacja().pulpit.HandleEvent(event);
+        }
+
+        okno.clear();
+
+        wyswietlacz.WyswietlTlo(okno);
+        int sekundy = (int)czas_pozostaly;
+        if (czas_pozostaly > 1.0) odliczanie_etykieta->SetText(std::to_string(sekundy));
+        else if (czas_pozostaly >= 0.0) odliczanie_etykieta->SetText("RUSZAJ!");
+        else if (czas_pozostaly < -3.0) odliczanie_etykieta->SetText("Oczekiwanie....");
+
+        if (sekundy >= 0)
+        {
+            if (sekundy < ost_pik)
+            {
+                if (sekundy > 0 && GUI::aplikacja().dzwieki_glosnosc)
+                    pikPik.play();
+                if (sekundy == 0 && GUI::aplikacja().dzwieki_glosnosc)
+                    puk.play();
+
+                ost_pik = sekundy;
+            }
+        }
+        else if (sekundy < -10.0) // jesli nie odpowiada to sie poddaj
+            break;
+        else  // czekaj na gotowosc ruszacza 
+        {
+            if (ruszacz.gotowy)
+                break;
+
+            ruszacz.Ruszaj(0);
+        }
+
+        wyswietlacz.Wyswietlaj(okno);
 
         GUI::aplikacja().show_bottom_gui(widok, gui_pasek);
         GUI::aplikacja().okno.display();
 
-        if (a > 0)
-        {
-            if (GUI::aplikacja().dzwieki_glosnosc)
-                pikPik.play();
-            Sleep(1500);
-        }
-        else
-        {
-            if (GUI::aplikacja().dzwieki_glosnosc)
-                puk.play();
-            Sleep(800);
-
-            for (int i = 0; i < 100 && !ruszacz.wystartowal; i++)
-            {
-                Sleep(100);
-                ruszacz.Ruszaj(0);
-            }
-
-        }
+        czas_pozostaly = czas_oczekiwania - (double)(clock() - start_odliczania) / CLOCKS_PER_SEC;
+        Sleep(16);
     }
 
-    GUI::aplikacja().pulpit.Remove(okno);
-    return ruszacz.wystartowal;
+    GUI::aplikacja().pulpit.Remove(okno_odliczania);
+    return ruszacz.gotowy;
 }
 
 void zakonczenie_gry(Gracz& gracz_wygrany, int grajacy)
@@ -442,7 +459,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
             window.setView(view);
             if (!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))
             {
-                gotowe_do_rozpoczecia = odliczanie(wyswietlacz, view, interfejs, ruszacz);
+                gotowe_do_rozpoczecia = odliczanie(4, wyswietlacz, view, interfejs, ruszacz);
                 if (!gotowe_do_rozpoczecia)
                     LOG(WARNING) << "Nie doczekal sie rozpoczecia na serwerze.";
             }
@@ -565,7 +582,6 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         //ZAKONCZENIE GRY
         if (rozgrywka.liczba_aktywnych_graczy == 1)
         {
-
             muzykant.Zamilcz();
 
             if (!to_serwer)

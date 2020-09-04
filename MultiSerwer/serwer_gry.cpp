@@ -101,7 +101,7 @@ void wykonaj_serwer_gry(string zadanie)
         for (auto w : ustawienia.ile_kto_wygranych)
             liczba_gier += w;
 
-        LOG(INFO) << "Rozegrano juz %d gier\n" << liczba_gier;
+        LOG(INFO) << "Rozegrano juz " << liczba_gier << " gier\n";
         ustawienia.WypiszRanking();
 
         if (ustawienia.Zwyciezca() >= 0)
@@ -114,6 +114,7 @@ void wykonaj_serwer_gry(string zadanie)
         }
         else if(!serwer->CzyJestZawodnik())
         {
+            ustawienia.do_ilu_wygranych = 0;
             LOG(INFO) << "Wszyscy gracze rozlaczeni, zamykam";
             delete serwer;
             serwer = nullptr;

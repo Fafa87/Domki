@@ -195,6 +195,9 @@ void start_klient(sf::Music& muzyka, string nazwa)
 
         res.second.komputery.clear();
         misja(res.second, ruszacz);
+
+        if (!ruszacz.gotowy) // nie doczekal sie
+            break;
         
         LOG(INFO) << "... misja skonczona";
 

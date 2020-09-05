@@ -33,6 +33,24 @@ void wykonaj_masterserwer(mastery::Serwer* serwer, string zadanie)
     }
 }
 
+
+void mastery::Serwer::PrzeanalizujZapytanie(multi::Zawodnik& ludek, string zapytanie)
+{
+    if (zapytanie.find("/KTO?") == 0)
+    {
+        // TODO wysylaj ile jest
+    }
+    else {
+        // jak napis to wyslij go do wszystkich ludkow
+        for (auto& ludek2 : this->podpieci) if (&ludek2 != &ludek)
+        {
+            LOG(INFO) << "Przesylam to do: " << ludek2.nazwa;
+            auto status = multi::Wyslij(*ludek2.wtyk, zapytanie);
+            ludek2.ostatnio = status;
+        }
+    }
+}
+
 void mastery::Serwer::Postaw(int port)
 {
     if (nasluchiwacz.listen(port) != sf::Socket::Done)
@@ -86,36 +104,35 @@ void mastery::Serwer::Postaw(int port)
                 {
                     LOG(INFO) << "Ludek sie odezwal: " << ludek.nazwa;
                     auto status_dane = multi::Pobierz(*ludek.wtyk);
+                    ludek.ostatnio = status_dane.first;
                     // TODO zareaguj gdyby sie okazalo ze jednak jest rozlaczone
                     if (status_dane.first == sf::Socket::Done)
                     {
-                        // TODO przeanalizuj co dostales
-
-                        // jak napis to wyslij go do wszystkich ludkow
-                        for (auto& ludek2 : this->podpieci) if (&ludek2 != &ludek)
-                        {
-                            LOG(INFO) << "Przesylam to do: " << ludek2.nazwa;
-                            // TODO tutaj sprawdz czy zyja?
-                            multi::Wyslij(*ludek2.wtyk, status_dane.second);
-                            // TODO  jak nie zyja to odlacz
-
-                        }
-
+                        PrzeanalizujZapytanie(ludek, status_dane.second[0]);
                     }
-
-
+                    else
+                    {
+                        LOG(INFO) << "Nie udalo sie odebrac - status: " << status_dane.first;
+                    }
                 }
-
             }
-            
-
-
         }
 
-        // sprawdz czy nikt nic nie pisze
+        // usun odlaczonych gosci
+        this->podpieci.erase(std::remove_if(this->podpieci.begin(), this->podpieci.end(),
+            [](multi::Zawodnik& z) {
+                if (z.ostatnio == sf::Socket::Disconnected)
+                {
+                    LOG(INFO) << "Opuscila nas osoba: " << z.nazwa;
+                    return true;
+                }
+                return false;
+            }
+        ), this->podpieci.end());
 
         Sleep(100);
     }
-    LOG(INFO) << "Serwer wylaczony.";
+    LOG(INFO) << "Serwer wylaczony.";  // TODO narazie tylko wstrzymany
     this->dziala = false;
+    nasluchiwacz.close();
 }

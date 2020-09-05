@@ -31,6 +31,7 @@ namespace mastery
 
         bool polaczony = false;
         void Podlacz(multi::Adres adres);
+        void Rozlacz();
     };
 
     class Pokoj
@@ -51,6 +52,8 @@ namespace mastery
         vector<multi::Zawodnik> podpieci;
         vector<Pokoj> pokoje;
         bool dziala = false;
+
+        void PrzeanalizujZapytanie(multi::Zawodnik& ludek, string zapytanie);
 
         void Postaw(int port);
     };

@@ -2,12 +2,17 @@
 #include "../Domki/ext_string.h"
 
 
+int komunikat_ostatni = -1;
 void komunikat_masterklient(mastery::Klient* klient)
 {
-    if (klient->polaczony)
-        printf("Jestes juz polaczony, mozesz napisac tekst lub zapytac serwer o to /KTO? jest w pokoju serwera.'\n");
-    else
-        printf("Nie jestes jeszcze polaczony do serwera. Napisz polacz <adres>:<port>, aby sprobowac sie polaczyc do msa.\n");
+    if ((int)klient->polaczony != komunikat_ostatni)
+    {
+        if (klient->polaczony)
+            printf("Jestes juz polaczony, mozesz napisac tekst lub rozlacz lub zapytac serwer o to /KTO? jest w pokoju serwera.'\n");
+        else
+            printf("Nie jestes jeszcze polaczony do serwera. Napisz polacz <adres>:<port>, aby sprobowac sie polaczyc do msa.\n");
+    }
+    komunikat_ostatni = (int)klient->polaczony;
 }
 
 void start_masterklient(string nazwa)
@@ -28,17 +33,22 @@ void wykonaj_masterklient(mastery::Klient* klient, string zadanie)
     }
     else if (zadanie == "rozlacz")
     {
-        // TODO odlacz sie od serwera
-
+        klient->Rozlacz();
     }
     else if (zadanie.size() > 0)
     {
         // mowi cos
         klient->komendy.add(zadanie);
     }
+}
 
-
-
+void mastery::Klient::Rozlacz()
+{
+    if (this->polaczony)
+    {
+        LOG(INFO) << "Odlaczam sie od " << this->adres;
+        this->polaczony = false;
+    }
 }
 
 void mastery::Klient::Podlacz(multi::Adres adres)
@@ -102,6 +112,8 @@ void mastery::Klient::Podlacz(multi::Adres adres)
 
                 Sleep(100);
             }
+
+            gracz.wtyk->disconnect();
         }
     }
 }

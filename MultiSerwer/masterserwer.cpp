@@ -38,9 +38,18 @@ void mastery::Serwer::PrzeanalizujZapytanie(multi::Zawodnik& ludek, string zapyt
 {
     if (zapytanie.find("/KTO?") == 0)
     {
-        // TODO wysylaj ile jest
+        string lista_ludzi = "Drogi " + ludek.nazwa + " w pokoju jest jeszcze " + to_string(this->podpieci.size() - 1) + "osob:\n";
+
+        for (auto& ludek2 : this->podpieci) if (&ludek2 != &ludek)
+        {
+            lista_ludzi += "- " + ludek2.nazwa + "\n";
+        }
+        LOG(INFO) << "Informacja o ludziach do: " << ludek.nazwa;
+        auto status = multi::Wyslij(*ludek.wtyk, lista_ludzi);
+        ludek.ostatnio = status;
     }
-    else {
+    else 
+    {
         // jak napis to wyslij go do wszystkich ludkow
         for (auto& ludek2 : this->podpieci) if (&ludek2 != &ludek)
         {

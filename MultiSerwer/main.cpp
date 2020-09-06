@@ -146,13 +146,24 @@ int main(int argc, const char * argv[]) {
     
     GUI::aplikacja().setup_theme();
     GUI::aplikacja().okno.close();
+
+    bool wybrane = false;
     if (argc > 1)
     {
-        cichociemny = true;
-        konfiguruj(int(argv[1][0] - '0'), argv);
+        if (argv[1][0] == 'm') // testy masterow
+        {
+            wybierz_i_wystartuj_tryb(argv[1], argv[2]);
+            wybrane = true;
+        }
+        else
+        {
+            cichociemny = true;
+            konfiguruj(int(argv[1][0] - '0'), argv);
+        }
     }
-
-    wybierz_i_wystartuj_tryb("", "");
+    
+    if (!wybrane)
+        wybierz_i_wystartuj_tryb("", "");
 
     auto serwer = KontekstGry::o().serwer;
     auto klient = KontekstGry::o().klient;

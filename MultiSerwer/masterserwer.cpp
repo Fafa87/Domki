@@ -45,7 +45,7 @@ void mastery::Serwer::PrzeanalizujZapytanie(multi::Zawodnik& ludek, string zapyt
         for (auto& ludek2 : this->podpieci) if (&ludek2 != &ludek)
         {
             LOG(INFO) << "Przesylam to do: " << ludek2.nazwa;
-            auto status = multi::Wyslij(*ludek2.wtyk, zapytanie);
+            auto status = multi::Wyslij(*ludek2.wtyk, ludek2.nazwa + ": " + zapytanie);
             ludek2.ostatnio = status;
         }
     }

@@ -9,6 +9,8 @@
 struct Rozkaz
 {
 	// to string to cereal serialization?
+    Gracz &kto_wydal_rozkaz;
+    Rozkaz(Gracz &kto_wydal_rozkaz) : kto_wydal_rozkaz(kto_wydal_rozkaz){}
 	virtual ~Rozkaz() {}
 };
 
@@ -22,8 +24,8 @@ struct Testpower : Rozkaz
 
 struct WymarszRozkaz : Rozkaz
 {
-	WymarszRozkaz(Domek* skad, Domek* dokad);
-
+    WymarszRozkaz(Domek* skad, Domek* dokad);
+    WymarszRozkaz(Domek* skad, Domek* dokad, Gracz& kto_wydal_rozkaz);
 	Domek * skad, * dokad;
 	int ser_skad, ser_dokad;
 	double ulamek = 1;
@@ -31,7 +33,8 @@ struct WymarszRozkaz : Rozkaz
 
 struct UlepszRozkaz : Rozkaz
 {
-	UlepszRozkaz(Domek* kogo);
+    UlepszRozkaz(Domek* kogo);
+	UlepszRozkaz(Domek* kogo, Gracz& kto_wydal_rozkaz);
 
 	Domek * kogo;
 	int ser_kogo;
@@ -39,7 +42,8 @@ struct UlepszRozkaz : Rozkaz
 
 struct PrzebudujRozkaz : Rozkaz
 {
-	PrzebudujRozkaz(Domek* kogo, TypDomku naco);
+    PrzebudujRozkaz(Domek* kogo, TypDomku naco);
+	PrzebudujRozkaz(Domek* kogo, TypDomku naco, Gracz& kto_wydal_rozkaz);
 
 	Domek * kogo;
 	TypDomku naco;
@@ -48,7 +52,8 @@ struct PrzebudujRozkaz : Rozkaz
 
 struct BurzRozkaz : Rozkaz
 {
-	BurzRozkaz(Domek* kogo);
+    BurzRozkaz(Domek* kogo);
+	BurzRozkaz(Domek* kogo, Gracz& kto_wydal_rozkaz);
 
 	Domek * kogo;
 	int ser_kogo;
@@ -72,8 +77,9 @@ public:
 
 	virtual vector<Rozkaz*> WykonajRuch();
 
+    bool kontrola = false;
     map<Domek*, Domek*> punkty_kontrolne;
-	Domek* wybrany = nullptr;
+	Domek* wybrany = nullptr, *kontrolowany = nullptr;
 	Twor* skupiony = nullptr;
 	char nacisniety = 0;
 	Gracz& gracz;

@@ -354,7 +354,14 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 
         okno.draw(kolo);
     }
-    
+    if (decydent.kontrola&&decydent.kontrolowany!=nullptr)
+    {
+        auto start_drogi = sf::Vector2f(decydent.kontrolowany->polozenie.x,decydent.kontrolowany->polozenie.y + 15);
+        auto koniec_drogi = okno.mapPixelToCoords(sf::Mouse::getPosition(okno));
+        auto kierunek = koniec_drogi - start_drogi;
+        rysuj_strzalke(okno,start_drogi,kierunek,decydent.gracz.kolor, 3);
+    }
+
     for (auto& pk : decydent.punkty_kontrolne)
     {
         auto wybrany = pk.first;
@@ -367,7 +374,7 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
             auto polowa_dlugosci = sf::Vector2f(0, 15);
             auto cykl = polowa_dlugosci * abs(cykl_czasowy() - 0.5f);
 
-            rysuj_strzalke(okno, centrum + ulepszanie + polowa_dlugosci - cykl, -polowa_dlugosci * 2.0f, wybrany->gracz->kolor, 4);
+            rysuj_strzalke(okno, centrum + ulepszanie + polowa_dlugosci - cykl, -polowa_dlugosci * 2.0f, decydent.gracz.kolor, 4);
         }
         else // wysylanie automatyczne
         {
@@ -376,7 +383,7 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
             auto kierunek = koniec_drogi - start_drogi;
             auto cykl = 0.25f * abs(cykl_czasowy() - 0.5f);
 
-            rysuj_strzalke(okno, start_drogi, kierunek * (0.60f + cykl), wybrany->gracz->kolor, 5);
+            rysuj_strzalke(okno, start_drogi, kierunek * (0.60f + cykl), decydent.gracz.kolor, 5);
         }
     }
 }

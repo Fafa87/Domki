@@ -76,7 +76,6 @@ void mastery::Klient::Podlacz(multi::Adres adres)
             this->polaczony = true;
 
             // obsluguj polaczenie
-
             while (this->polaczony)
             {
                 // jesli co jest do powiedzenia to to napisz
@@ -87,16 +86,13 @@ void mastery::Klient::Podlacz(multi::Adres adres)
                     {
                         LOG(INFO) << "Napisalem: " << tekst;
                         auto status_wyslania = multi::Wyslij(*gracz.wtyk, tekst);
-                        // TODO obluz status (osobna funkcja ktora w roznych momentach zareaguje logiem lub oficjalnym rozlaczeniem sie)
-                        //if (status_wyslania == sf::Socket::Disconnected)
-                        //{
-
-                        //}
+                        if (status_wyslania == sf::Socket::Disconnected)
+                        {
+                            LOG(INFO) << "Serwer mnie odrzucil...";
+                            Rozlacz();
+                        }
                     }
                 }
-
-                // Czy to siê wykonuje?????
-                // czy tylko raz na nacisniecie czegos?
 
                 // jesli cos przyszlo to to wypisz
                 {

@@ -1,4 +1,5 @@
 #include "../MultiSerwer/mastery.h"
+#include "../Domki/ext_vector.h"
 
 #include <thread>
 
@@ -33,29 +34,35 @@ void wykonaj_masterserwer(mastery::Serwer* serwer, string zadanie)
     }
 }
 
+mastery::Serwer::Serwer()
+{
+    hol = make_unique<Pokoj>("Hol");
+    pokoje.push_back(hol);
+}
 
-void mastery::Serwer::PrzeanalizujZapytanie(multi::Zawodnik& ludek, string zapytanie)
+
+void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, string zapytanie)
 {
     if (zapytanie.find("/KTO?") == 0)
     {
-        string lista_ludzi = "Drogi " + ludek.nazwa + " w pokoju jest jeszcze " + to_string(this->podpieci.size() - 1) + "osob:\n";
+        string lista_ludzi = "Drogi " + ludek->nazwa + " w pokoju jest jeszcze " + to_string(this->podpieci.size() - 1) + "osob:\n";
 
-        for (auto& ludek2 : this->podpieci) if (&ludek2 != &ludek)
+        for (auto& ludek2 : this->podpieci) if (ludek2 != ludek)
         {
-            lista_ludzi += "- " + ludek2.nazwa + "\n";
+            lista_ludzi += "- " + ludek2->nazwa + "\n";
         }
-        LOG(INFO) << "Informacja o ludziach do: " << ludek.nazwa;
-        auto status = multi::Wyslij(*ludek.wtyk, lista_ludzi);
-        ludek.ostatnio = status;
+        LOG(INFO) << "Informacja o ludziach do: " << ludek->nazwa;
+        auto status = multi::Wyslij(*ludek->wtyk, lista_ludzi);
+        ludek->ostatnio = status;
     }
     else 
     {
         // jak napis to wyslij go do wszystkich ludkow
-        for (auto& ludek2 : this->podpieci) if (&ludek2 != &ludek)
+        for (auto& ludek2 : this->podpieci) if (ludek2 != ludek)
         {
-            LOG(INFO) << "Przesylam to do: " << ludek2.nazwa;
-            auto status = multi::Wyslij(*ludek2.wtyk, ludek2.nazwa + ": " + zapytanie);
-            ludek2.ostatnio = status;
+            LOG(INFO) << "Przesylam to do: " << ludek2->nazwa;
+            auto status = multi::Wyslij(*ludek2->wtyk, ludek2->nazwa + ": " + zapytanie);
+            ludek2->ostatnio = status;
         }
     }
 }
@@ -87,16 +94,17 @@ void mastery::Serwer::Postaw(int port)
             if (status_imie.first == sf::Socket::Done && status_imie.second.size() == 1)
             {
                 // utworz go i dodaj do listy
-                multi::Zawodnik osoba;
-                osoba.nazwa = status_imie.second[0];
-                osoba.ostatnio = sf::Socket::Done;
-                osoba.wtyk = nowa_wtyczka;
-                osoba.adres = multi::Adres(nowa_wtyczka->getRemoteAddress().toString(), nowa_wtyczka->getRemotePort());
+                auto osoba = make_shared<multi::Zawodnik>();
+                osoba->nazwa = status_imie.second[0];
+                osoba->ostatnio = sf::Socket::Done;
+                osoba->wtyk = nowa_wtyczka;
+                osoba->adres = multi::Adres(nowa_wtyczka->getRemoteAddress().toString(), nowa_wtyczka->getRemotePort());
                 nowa_wtyczka = new sf::TcpSocket();
-                wtykowiec.add(*osoba.wtyk);
-                this->podpieci.emplace_back(osoba);
+                wtykowiec.add(*osoba->wtyk);
 
-                LOG(INFO) << "Dodaje osobe: " << osoba.nazwa;
+                this->podpieci.emplace_back(osoba);
+                DolaczDoPokoju(osoba, hol->nazwa);
+                LOG(INFO) << "Dodaje osobe: " << osoba->nazwa;
             }
             else 
             {
@@ -109,11 +117,11 @@ void mastery::Serwer::Postaw(int port)
         {
             for (auto& ludek : this->podpieci)
             {
-                if (wtykowiec.isReady(*ludek.wtyk))
+                if (wtykowiec.isReady(*ludek->wtyk))
                 {
-                    LOG(INFO) << "Ludek sie odezwal: " << ludek.nazwa;
-                    auto status_dane = multi::Pobierz(*ludek.wtyk);
-                    ludek.ostatnio = status_dane.first;
+                    LOG(INFO) << "Ludek sie odezwal: " << ludek->nazwa;
+                    auto status_dane = multi::Pobierz(*ludek->wtyk);
+                    ludek->ostatnio = status_dane.first;
                     // TODO zareaguj gdyby sie okazalo ze jednak jest rozlaczone
                     if (status_dane.first == sf::Socket::Done)
                     {
@@ -128,20 +136,73 @@ void mastery::Serwer::Postaw(int port)
         }
 
         // usun odlaczonych gosci
-        this->podpieci.erase(std::remove_if(this->podpieci.begin(), this->podpieci.end(),
-            [](multi::Zawodnik& z) {
-                if (z.ostatnio == sf::Socket::Disconnected)
-                {
-                    LOG(INFO) << "Opuscila nas osoba: " << z.nazwa;
-                    return true;
-                }
-                return false;
-            }
-        ), this->podpieci.end());
+        vector<shared_ptr<multi::Zawodnik>> odlaczeni;
+        for (auto& ludek : this->podpieci)
+        {
+            if (ludek->ostatnio == sf::Socket::Disconnected)
+                odlaczeni.push_back(ludek);
+        }
+        for (auto ludek_ptr : odlaczeni)
+            UsunZawodnika(ludek_ptr);
 
         Sleep(100);
     }
     LOG(INFO) << "Serwer wylaczony.";  // TODO narazie tylko wstrzymany
     this->dziala = false;
     nasluchiwacz.close();
+}
+
+void mastery::Serwer::PrzejdzDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju)
+{
+    OpuscPokoj(ludek);
+    DolaczDoPokoju(ludek, nazwa_pokoju);
+}
+
+void mastery::Serwer::DolaczDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju)
+{
+    if (gdzie_jest[ludek] == hol)
+    {
+        // jesli nie ma to stworz pokoj
+        shared_ptr<Pokoj> nowy_pokoj;
+        for (auto& pokoj : pokoje)
+            if (pokoj->nazwa == nazwa_pokoju)
+            {
+                nowy_pokoj = pokoj;
+                break;
+            }
+        if (!nowy_pokoj)
+        {
+            LOG(INFO) << ludek->nazwa << " tworzy pokoj " << nazwa_pokoju;
+            nowy_pokoj = make_shared<Pokoj>(nazwa_pokoju);
+            pokoje.push_back(nowy_pokoj);
+        }
+
+        // dolacz do tego pokoju
+        LOG(INFO) << ludek->nazwa << " wchodzi do pokoju " << nazwa_pokoju;
+        gdzie_jest[ludek] = nowy_pokoj;
+        nowy_pokoj->pokojnicy.push_back(ludek);
+    }
+}
+
+void mastery::Serwer::OpuscPokoj(shared_ptr<multi::Zawodnik> ludek)
+{
+    if (gdzie_jest[ludek] != hol)
+    {
+        // usun z o pokoju i mappera
+        LOG(INFO) << ludek->nazwa << " wychodzi z pokoju.";
+        remove_item(gdzie_jest[ludek]->pokojnicy, ludek);
+        gdzie_jest[ludek] = hol;
+        hol->pokojnicy.push_back(ludek);
+  
+    }
+}
+
+void mastery::Serwer::UsunZawodnika(shared_ptr<multi::Zawodnik> ludek)
+{
+    LOG(INFO) << "Opuscila nas osoba: " << ludek->nazwa;
+
+    OpuscPokoj(ludek);
+    wtykowiec.remove(*ludek->wtyk);
+    remove_item(this->podpieci, ludek);
+
 }

@@ -38,7 +38,7 @@ namespace mastery
     {
     public:
         string nazwa;
-        vector<multi::Zawodnik*> pokojnicy;
+        vector<shared_ptr<multi::Zawodnik>> pokojnicy;
 
         Pokoj(string nazwa) : nazwa(nazwa) {}
     };
@@ -49,13 +49,22 @@ namespace mastery
         sf::TcpListener nasluchiwacz;
         sf::SocketSelector wtykowiec;
     public:
-        vector<multi::Zawodnik> podpieci;
-        vector<Pokoj> pokoje;
+        Serwer();
+
+        vector<shared_ptr<multi::Zawodnik>> podpieci;
+        map<shared_ptr<multi::Zawodnik>, shared_ptr<Pokoj>> gdzie_jest;
+        shared_ptr<Pokoj> hol;
+        vector<shared_ptr<Pokoj>> pokoje;
+
         bool dziala = false;
-
-        void PrzeanalizujZapytanie(multi::Zawodnik& ludek, string zapytanie);
-
+        void PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, string zapytanie);
         void Postaw(int port);
+
+        void PrzejdzDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju);
+        void DolaczDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju);
+        void OpuscPokoj(shared_ptr<multi::Zawodnik> ludek);
+
+        void UsunZawodnika(shared_ptr<multi::Zawodnik> ludek);
     };
 }
 

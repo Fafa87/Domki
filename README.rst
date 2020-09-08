@@ -24,8 +24,8 @@ Dostępne na
 Zobacz
 ------------
 
-.. image:: https://user-images.githubusercontent.com/9865688/55758296-9bdab600-5a56-11e9-89f5-a49ab31d1b58.png
+.. image:: https://user-images.githubusercontent.com/26172388/92468361-55513400-f1d3-11ea-834c-92ea96173f33.png
 
-.. image:: https://user-images.githubusercontent.com/9865688/55758098-1525d900-5a56-11e9-8f2b-cc07b8c85e94.png
+.. image:: https://user-images.githubusercontent.com/26172388/92468729-e88a6980-f1d3-11ea-90ef-5e79eca2c3f2.png
 
-.. image:: https://user-images.githubusercontent.com/9865688/55758104-18b96000-5a56-11e9-9bf2-88af7af99c81.png
+.. image:: https://user-images.githubusercontent.com/26172388/92469751-a3ffcd80-f1d5-11ea-9a4d-c8cd1045572a.png

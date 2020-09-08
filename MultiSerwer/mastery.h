@@ -5,6 +5,8 @@
 #include "../Domki/multi.h"
 #include "../Domki/multi_dzialacze.h"
 
+#include "../MultiSerwer/serwery.h"
+
 #include "easylogging++.h" 
 #include "BlockingCollection.h"
 

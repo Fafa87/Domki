@@ -8,7 +8,7 @@ void komunikat_masterklient(mastery::Klient* klient)
     if ((int)klient->polaczony != komunikat_ostatni)
     {
         if (klient->polaczony)
-            printf("Jestes juz polaczony, mozesz napisac tekst lub rozlacz lub zapytac serwer o to /KTO? jest w pokoju serwera.'\n");
+            printf("Jestes juz polaczony, mozesz:\n- napisac tekst\n- rozlacz\n- /KTO? jest w pokoju serwera\n- /IDZ: do pokoju\n- /ODPAL: parametry serwera\n");
         else
             printf("Nie jestes jeszcze polaczony do serwera. Napisz polacz <adres>:<port>, aby sprobowac sie polaczyc do msa.\n");
     }

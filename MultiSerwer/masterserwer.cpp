@@ -64,6 +64,14 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
         PrzejdzDoPokoju(ludek, nazwa_pokoju);
         WyslijDoPokoju(gdzie_jest[ludek], ludek->nazwa + " wchodzi do pokoju.");
     }
+    else if (zapytanie.find("/ODPAL: ") == 0)
+    {
+        auto komenda_serwera = zapytanie.substr(8);
+        start_serwer_gry(komenda_serwera); // TODO umozliwij odpalanie wielu serwerow
+        WyslijDoPokoju(gdzie_jest[ludek], "GRAJCIE! '" + komenda_serwera + "' na porcie" + to_string(PORT_TCP));
+        wykonaj_serwer_gry("start");
+        WyslijDoPokoju(gdzie_jest[ludek], "Gra skonczona...";
+    }
     else 
     {
         // jak napis to wyslij go do wszystkich ludkow

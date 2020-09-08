@@ -57,8 +57,11 @@ namespace mastery
         vector<shared_ptr<Pokoj>> pokoje;
 
         bool dziala = false;
-        void PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, string zapytanie);
+        
         void Postaw(int port);
+
+        void PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, string zapytanie);
+        void WyslijDoPokoju(shared_ptr<Pokoj> pokoj, string tekst, shared_ptr<multi::Zawodnik> poza_osoba = nullptr);
 
         void PrzejdzDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju);
         void DolaczDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju);

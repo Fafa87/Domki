@@ -43,11 +43,12 @@ mastery::Serwer::Serwer()
 
 void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, string zapytanie)
 {
+    auto pokoj_ludka = gdzie_jest[ludek];
     if (zapytanie.find("/KTO?") == 0)
     {
-        string lista_ludzi = "Drogi " + ludek->nazwa + " w pokoju jest jeszcze " + to_string(this->podpieci.size() - 1) + "osob:\n";
+        string lista_ludzi = "Drogi " + ludek->nazwa + " w pokoju '" + pokoj_ludka->nazwa + "' jest jeszcze " + to_string(pokoj_ludka->pokojnicy.size() - 1) + " osob:\n";
 
-        for (auto& ludek2 : this->podpieci) if (ludek2 != ludek)
+        for (auto& ludek2 : pokoj_ludka->pokojnicy) if (ludek2 != ludek)
         {
             lista_ludzi += "- " + ludek2->nazwa + "\n";
         }
@@ -55,15 +56,27 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
         auto status = multi::Wyslij(*ludek->wtyk, lista_ludzi);
         ludek->ostatnio = status;
     }
+    else if (zapytanie.find("/IDZ: ") == 0)
+    {
+        auto nazwa_pokoju = zapytanie.substr(6);
+        // przepnij do nowego pokoju
+        WyslijDoPokoju(pokoj_ludka, ludek->nazwa + " opuszcza pokoj.", ludek);
+        PrzejdzDoPokoju(ludek, nazwa_pokoju);
+        WyslijDoPokoju(gdzie_jest[ludek], ludek->nazwa + " wchodzi do pokoju.");
+    }
     else 
     {
         // jak napis to wyslij go do wszystkich ludkow
-        for (auto& ludek2 : this->podpieci) if (ludek2 != ludek)
-        {
-            LOG(INFO) << "Przesylam to do: " << ludek2->nazwa;
-            auto status = multi::Wyslij(*ludek2->wtyk, ludek2->nazwa + ": " + zapytanie);
-            ludek2->ostatnio = status;
-        }
+        WyslijDoPokoju(pokoj_ludka, ludek->nazwa + ": " + zapytanie, ludek);
+    }
+}
+
+void mastery::Serwer::WyslijDoPokoju(shared_ptr<Pokoj> pokoj, string tekst, shared_ptr<multi::Zawodnik> poza_osoba)
+{
+    for (auto& ludek : pokoj->pokojnicy) if (ludek != poza_osoba)
+    {
+        auto status = multi::Wyslij(*ludek->wtyk, tekst);
+        ludek->ostatnio = status;
     }
 }
 
@@ -103,8 +116,10 @@ void mastery::Serwer::Postaw(int port)
                 wtykowiec.add(*osoba->wtyk);
 
                 this->podpieci.emplace_back(osoba);
-                DolaczDoPokoju(osoba, hol->nazwa);
+
                 LOG(INFO) << "Dodaje osobe: " << osoba->nazwa;
+                gdzie_jest[osoba] = hol;
+                hol->pokojnicy.push_back(osoba);
             }
             else 
             {
@@ -179,6 +194,7 @@ void mastery::Serwer::DolaczDoPokoju(shared_ptr<multi::Zawodnik> ludek, string n
 
         // dolacz do tego pokoju
         LOG(INFO) << ludek->nazwa << " wchodzi do pokoju " << nazwa_pokoju;
+        remove_item(gdzie_jest[ludek]->pokojnicy, ludek);
         gdzie_jest[ludek] = nowy_pokoj;
         nowy_pokoj->pokojnicy.push_back(ludek);
     }
@@ -204,5 +220,4 @@ void mastery::Serwer::UsunZawodnika(shared_ptr<multi::Zawodnik> ludek)
     OpuscPokoj(ludek);
     wtykowiec.remove(*ludek->wtyk);
     remove_item(this->podpieci, ludek);
-
 }

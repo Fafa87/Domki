@@ -166,6 +166,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClInclude Include="dane.h" />
     <ClInclude Include="dzialacze.h" />
     <ClInclude Include="ext_string.h" />
+    <ClInclude Include="ext_vector.h" />
     <ClInclude Include="gui.h" />
     <ClInclude Include="kampania.h" />
     <ClInclude Include="misja.h" />

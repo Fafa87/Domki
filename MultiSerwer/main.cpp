@@ -12,6 +12,7 @@
 #include "../Domki/multi_dzialacze.h"
 
 #include "../MultiSerwer/serwery.h"
+#include "../MultiSerwer/mastery.h"
 
 #include "easylogging++.h" 
 INITIALIZE_EASYLOGGINGPP
@@ -21,90 +22,118 @@ using namespace multi;
 bool cichociemny = false;
 
 void wykonaj(string zadanie);
-void konfiguruj(int l, const char * argv[])
+
+void wybierz_i_wystartuj_tryb(string tryb, string komenda)
 {
-    auto& misja_ustawienia = Kontekst::o().misja_ustawienia;
-    auto& serwer = Kontekst::o().serwer;
-    auto& klient = Kontekst::o().klient;
-
-    if (l == 0)
+    char tmp[1000];
+    if (!tryb.size())
     {
-        LOG(INFO) << "Konfiguruje serwer...";
-
-        wykonaj("serwer " + string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]));
-        while(misja_ustawienia.Zwyciezca() < 0)
-            wykonaj("start");
-        exit(0);
+        printf("Zdecyduj kim jestes:\n"
+            "- serwer - prowadzisz gre dla wielu graczy\n"
+            "- klient - chcesz dolaczyc do gry zalozonej przez serwer\n"
+            "- masterserwer - prowadzisz pokoje dla graczy z calego swiata i stawiasz serwery\n"
+            "- masterklient - poszukujesz graczy aby zagrac przez internet\n");
+        
+        gets_s(tmp);
+        tryb = tmp;
     }
-    else if (l==1)
-    { 
-        LOG(INFO) << "Konfiguruje klienta...";
 
-        wykonaj("klient " + std::to_string(l));
-        pobierz_serwery_gry();
+    if (tryb == "serwer" || tryb == "s")
+    {
+        if (!komenda.size())
+        {
+            printf("Jaka plansza (folder nazwa)? Opcjonalnie do ilu wygranych.\nA dokladnie mozna podac: string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi\n");
+            gets_s(tmp);
+            komenda = tmp;
+        }
+        start_serwer_gry(komenda);
+    }
+    else if (tryb == "klient" || tryb == "k")
+    {
+        if (!komenda.size())
+        {
+            printf("Jak sie nazywasz?\n");
+        }
+        start_klient_gry(komenda);
+    }
+    else if (tryb == "masterserwer" || tryb == "ms")
+    {
+        if (!komenda.size())
+        {
+            printf("Podaj port:\n");
+            gets_s(tmp);
+            komenda = tmp;
+        }
+        start_masterserwer(stoi(komenda));
+    }
+    else if (tryb == "masterklient" || tryb == "mk")
+    {
+        if (!komenda.size())
+        {
+            printf("Jak sie nazywasz?\n");
+            gets_s(tmp);
+            komenda = tmp;
+        }
+        start_masterklient(komenda);
     }
 }
 
 void komunikat()
 {
-    auto& serwer = Kontekst::o().serwer;
-    auto& klient = Kontekst::o().klient;
+    auto& serwer = KontekstGry::o().serwer;
+    auto& klient = KontekstGry::o().klient;
+    auto& masterserwer = KontekstSwiata::o().serwer;
+    auto& masterklient = KontekstSwiata::o().klient;
 
-    if (serwer == nullptr && klient == nullptr)
-    {
-        printf("Zdecyduj czy jestes serwerem czy graczem:\n- jesli serwer to wpisz: 'serwer <nazwa_planszy>.txt' lub 'serwer <nr_planszy>'\njesli chcesz zagrac wiele razy na jednej mapie to na koncu podaj do ilu wygranych grasz\n w szczegolnosci to: string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi\n - jesli graczem to wpisz: 'klient <nazwa>'\n");
-    }
-    else if (klient != nullptr)
+    if (klient != nullptr)
         komunikat_serwer_klient();
     else if (serwer != nullptr)
         komunikat_serwer_gry();
+    else if (masterserwer != nullptr)
+        komunikat_masterserwer(masterserwer);
+    else if (masterklient != nullptr)
+        komunikat_masterklient(masterklient);
 }
 
 void wykonaj(string zadanie)
 {
-    LOG(INFO) << "Wykonuje: '" << zadanie << "'";
+    if (zadanie.size() > 0)
+        LOG(INFO) << "Wykonuje: '" << zadanie << "'";
 
-    auto& serwer = Kontekst::o().serwer;
-    auto& klient = Kontekst::o().klient;
+    auto& serwer = KontekstGry::o().serwer;
+    auto& klient = KontekstGry::o().klient;
+    auto& masterserwer = KontekstSwiata::o().serwer;
+    auto& masterklient = KontekstSwiata::o().klient;
 
-    if (serwer == nullptr && klient == nullptr)
-    {
-        if (zadanie.find("serwer") == 0)
-            start_serwer_gry(zadanie);
-        if (zadanie.find("klient") == 0)
-            start_klient_gry(zadanie);
-    }
-    else if (klient != nullptr)
-    {
+    if (klient != nullptr)
         wykonaj_klient_gry(zadanie);
-    }
     else if (serwer != nullptr)
-    {
         wykonaj_serwer_gry(zadanie);
-    }
-    
-    if (zadanie.find("odbierz") == 0)
+    else if (masterserwer != nullptr)
+        wykonaj_masterserwer(masterserwer, zadanie);
+    else if (masterklient != nullptr)
+        wykonaj_masterklient(masterklient, zadanie);
+}
+
+void konfiguruj(int l, const char * argv[])
+{
+    auto& misja_ustawienia = KontekstGry::o().misja_ustawienia;
+    auto& serwer = KontekstGry::o().serwer;
+    auto& klient = KontekstGry::o().klient;
+
+    if (l == 0)
     {
-        vector<vector<string>> wiad;
-        /*if (serwer != NULL)
-        wiad = serwer->Odbierz();*/
-        if (klient != NULL)
-            wiad.push_back(Pobierz(*klient->wtyk).second);
-        printf("Odebralem:\n");
-        for (auto l : wiad)
-        {
-            for (auto s : l)
-                printf("'%s'\n", s.c_str());
-            printf("----\n");
-        }
+        LOG(INFO) << "Konfiguruje serwer...";
+        wybierz_i_wystartuj_tryb("serwer", string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]));
+        while (misja_ustawienia.Zwyciezca() < 0)
+            wykonaj("start");
+        exit(0);
     }
-    if (zadanie.find("napisz") == 0)
+    else if (l == 1)
     {
-        auto text = zadanie.substr(7);
-        /*if (serwer != NULL)
-            serwer->Rozeslij(text);
-        if (klient != NULL)
-            Wyslij(*klient->wtyk, text);*/
+        LOG(INFO) << "Konfiguruje klienta...";
+        wybierz_i_wystartuj_tryb("klient", std::to_string(l));
+        pobierz_serwery_gry();
     }
 }
 
@@ -117,14 +146,27 @@ int main(int argc, const char * argv[]) {
     
     GUI::aplikacja().setup_theme();
     GUI::aplikacja().okno.close();
+
+    bool wybrane = false;
     if (argc > 1)
     {
-        cichociemny = true;
-        konfiguruj(int(argv[1][0] - '0'), argv);
+        if (argv[1][0] == 'm') // testy masterow
+        {
+            wybierz_i_wystartuj_tryb(argv[1], argv[2]);
+            wybrane = true;
+        }
+        else
+        {
+            cichociemny = true;
+            konfiguruj(int(argv[1][0] - '0'), argv);
+        }
     }
+    
+    if (!wybrane)
+        wybierz_i_wystartuj_tryb("", "");
 
-    auto serwer = Kontekst::o().serwer;
-    auto klient = Kontekst::o().klient;
+    auto serwer = KontekstGry::o().serwer;
+    auto klient = KontekstGry::o().klient;
 
     try {
         do

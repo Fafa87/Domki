@@ -367,6 +367,21 @@ pair<sf::Socket::Status, vector<string>> multi::Pobierz(sf::TcpSocket& wtyk)
     return { status, res };
 }
 
+
+pair<sf::Socket::Status, vector<string>> multi::Pobierz(sf::TcpSocket& wtyk, sf::Time limit_czasu)
+{
+    vector<string> res;
+    sf::SocketSelector selector;
+    selector.add(wtyk);
+    if (selector.wait(limit_czasu))
+    {
+        return Pobierz(wtyk);
+    }
+    else
+        return { sf::Socket::NotReady, res };
+}
+
+
 void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
 {
     for (auto r : rozkazy)

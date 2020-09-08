@@ -8,16 +8,16 @@ void komunikat_serwer_klient()
 
 void start_klient_gry(string zadanie)
 {
-    Kontekst::o().klient = new Klient(zadanie.substr(7));
-    auto& klient = Kontekst::o().klient;
+    KontekstGry::o().klient = new Klient(zadanie);
+    auto& klient = KontekstGry::o().klient;
 
     printf("Klient: %s\n", klient->nazwa.c_str());
 }
 
 void wykonaj_klient_gry(string zadanie)
 {
-    auto& klient = Kontekst::o().klient;
-    auto& misja_ustawienia = Kontekst::o().misja_ustawienia;
+    auto& klient = KontekstGry::o().klient;
+    auto& misja_ustawienia = KontekstGry::o().misja_ustawienia;
 
     if (zadanie.find("polacz") == 0)
     {
@@ -75,7 +75,7 @@ void wykonaj_klient_gry(string zadanie)
 
 void pobierz_serwery_gry()
 {
-    auto& klient = Kontekst::o().klient;
+    auto& klient = KontekstGry::o().klient;
 
     klient->lista_serwerow.clear();
     klient->SpiszSerwery();

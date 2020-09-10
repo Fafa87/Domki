@@ -1,6 +1,7 @@
 #include "razem.h"
 
 #include "misja.h"
+#include "../MultiSerwer/mastery.h"
 
 std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, string nazwa)
 {
@@ -59,7 +60,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     wybor_lista->SelectItem(2);
     wybor_lista->GetSignal(sfg::ComboBox::OnSelect)();
 
-    auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
+    auto szybkosc_etykieta = sfg::Label::Create(L"Szybkoœæ: ");
     auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
     szybkosc_pasek->SetValue(1.5);
 
@@ -81,7 +82,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
         LOG(INFO) << "Zalozone gry: " << GUI::aplikacja().zalozone_gry.size();
     });
 
-    auto powrot = sfg::Button::Create("Powrot");
+    auto powrot = sfg::Button::Create(L"Powrót");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
         GUI::aplikacja().pop_active_window(okno);
@@ -115,6 +116,85 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     return okno;
 }
 
+
+
+std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, mastery::Klient* master_klient)
+{
+    auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+    auto size = GUI::aplikacja().okno.getSize();
+    auto size_planeta = sf::Vector2f(max(size.x / 2.0, 800.0), max(size.y / 2.0, 600.0));
+    okno->SetRequisition(size_planeta);
+
+    // GÓRNY PANEL
+    auto dane_master_serwera = sfg::Label::Create("Dane podpietego master serwera");
+    auto pokoj = sfg::Entry::Create("hol");
+    pokoj->SetRequisition(sf::Vector2f(200, 0));
+    auto prawe_skrzydlo = sfg::Alignment::Create();
+    prawe_skrzydlo->SetAlignment(sf::Vector2f(1, 0.5));
+    prawe_skrzydlo->Add(pokoj);
+
+    auto gorny_panel = sfg::Box::Create(sfg::Box::Orientation::HORIZONTAL);
+    gorny_panel->SetSpacing(30);
+    gorny_panel->Pack(dane_master_serwera, false, false);
+    gorny_panel->Pack(prawe_skrzydlo, false, false);
+
+    // CENTRUM
+    auto chat = sfg::Label::Create("Chat\nfewfwe\ngerger\nChat\nfewfwe\ngerger\nChat\nfewfwe\ngerger\nChat\nfewfwe\ngerger\nChat\nfewfwe\ngerger\nChat\nfewfwe\ngerger\n");
+    chat->SetAlignment(sf::Vector2f(0, 0));
+    auto chat_z_paskiem = sfg::ScrolledWindow::Create();
+    chat_z_paskiem->SetScrollbarPolicy(sfg::ScrolledWindow::VERTICAL_ALWAYS);
+    chat_z_paskiem->AddWithViewport(chat);
+    chat_z_paskiem->SetRequisition(sf::Vector2f(400.f, 300.f));
+    auto ramka_chatu = sfg::Frame::Create("");
+    ramka_chatu->Add(chat_z_paskiem);
+
+    auto ludki = sfg::Label::Create("Ludki");
+    ludki->SetRequisition(sf::Vector2f(200, 0));
+    ludki->SetAlignment(sf::Vector2f(0, 0));
+    auto ramka_pokoju = sfg::Frame::Create("Ludzie w pokoju");
+    ramka_pokoju->Add(ludki);
+
+    auto srodek_panel = sfg::Box::Create(sfg::Box::Orientation::HORIZONTAL);
+    srodek_panel->SetSpacing(10);
+    srodek_panel->Pack(ramka_chatu, true, true);
+    srodek_panel->Pack(ramka_pokoju, false, false);
+
+    auto pisak = sfg::Entry::Create("pisz tutaj wlasnie");
+
+    // KLIKANIE
+    auto odpal = sfg::Button::Create(L"Postaw serwer");
+    auto dolacz = sfg::Button::Create(L"Do³¹cz teraz");
+    auto powrot = sfg::Button::Create(L"Powrót");
+    powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [okno] {
+        GUI::aplikacja().pop_active_window(okno);
+    });
+
+    auto dol_panel = sfg::Box::Create(sfg::Box::Orientation::HORIZONTAL);
+    dol_panel->SetSpacing(50);
+    dol_panel->Pack(odpal, false, false);
+    dol_panel->Pack(dolacz, false, false);
+    dol_panel->Pack(powrot, false, false);
+
+    // CA£OŒÆ
+    auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+    box->SetSpacing(10);
+    box->Pack(gorny_panel, false, false);
+    box->Pack(srodek_panel, true, true);
+    box->Pack(pisak, false, false);
+    box->Pack(sfg::Separator::Create(), false, true);
+    box->Pack(dol_panel, true, false);
+    okno->Add(box);
+
+    GUI::aplikacja().center_window(okno);
+    GUI::aplikacja().set_active_window(okno);
+
+    // TODO odpalaj cala pêtlê przetwarzania
+    return okno;
+}
+
+
+
 std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka)
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
@@ -130,8 +210,9 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
     auto nazwa_etykieta = sfg::Label::Create("Nazwa gracza: ");
     auto nazwa_edit = sfg::Entry::Create();
     auto separator = sfg::Label::Create("");
+    separator->SetRequisition(sf::Vector2f(10, 20));
 
-    auto zaloz = sfg::Button::Create(L"Za³ó¿");
+    auto zaloz = sfg::Button::Create(L"Za³ó¿ tutaj");
     zaloz->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [&muzyka, nazwa_edit, glowne] {
         auto okno_zaloz = start_serwer_menu(glowne, muzyka, nazwa_edit->GetText());
@@ -139,7 +220,7 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
             GUI::aplikacja().set_active_window(okno_zaloz);
     });
 
-    auto dolacz = sfg::Button::Create(L"Do³¹cz");
+    auto dolacz = sfg::Button::Create(L"Do³¹cz tutaj");
     dolacz->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno, &muzyka, nazwa_edit] {
         muzyka.stop();
@@ -149,7 +230,21 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
         GUI::aplikacja().set_active_window(okno);
     });
 
-    auto powrot = sfg::Button::Create("Powrot");
+    auto planeta = sfg::Button::Create(L"Planeta");
+    planeta->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [okno, &muzyka, nazwa_edit, glowne] {
+        //muzyka.stop();
+        start_masterklient(nazwa_edit->GetText());
+        wykonaj_masterklient(KontekstSwiata::o().klient, "polacz localhost:60"); // TMP
+        auto okno_planeta = planeta_okno(glowne, muzyka,
+            KontekstSwiata::o().klient);
+        if (okno_planeta != nullptr)
+            GUI::aplikacja().set_active_window(okno_planeta);
+
+        // wyczysc masterklienta 
+    });
+
+    auto powrot = sfg::Button::Create(L"Powrót");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
         GUI::aplikacja().pop_active_window(okno);
@@ -159,10 +254,13 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
     box->Pack(tytul, false, false);
     box->Pack(nazwa_etykieta, false, false);
     box->Pack(nazwa_edit, false, false);
-    box->Pack(separator, true, true);
+    box->Pack(sfg::Separator::Create(), false, true);
 
     box->Pack(zaloz, false, false);
     box->Pack(dolacz, false, false);
+    box->Pack(planeta, false, false);
+
+    box->Pack(sfg::Separator::Create(), false, true);
     box->Pack(powrot, true, false);
     okno->Add(box);
 

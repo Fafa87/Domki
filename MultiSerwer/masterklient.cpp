@@ -103,6 +103,7 @@ void mastery::Klient::Podlacz(multi::Adres adres)
                     auto status_dane = multi::Pobierz(*gracz.wtyk, sf::seconds(0.1));
                     if (status_dane.first == sf::Socket::Done)
                     {
+                        odebrane.add(status_dane.second[0]); // TMP czy tutaj nie powinienem braæ wszystkich, a nie tylko pierwszy element
                         LOG(INFO) << "Odebralem: " << status_dane.second[0];
 
                     }

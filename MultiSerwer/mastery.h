@@ -24,6 +24,7 @@ namespace mastery
     public:
         multi::Zawodnik gracz;
         code_machina::BlockingCollection<string> komendy;
+        code_machina::BlockingCollection<string> odebrane;
 
         Klient(string nazwa) : gracz() {
             gracz.nazwa = nazwa;

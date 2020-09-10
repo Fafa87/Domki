@@ -146,6 +146,11 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\MultiSerwer\masterklient.cpp" />
+    <ClCompile Include="..\MultiSerwer\masterserwer.cpp" />
+    <ClCompile Include="..\MultiSerwer\serwery.cpp" />
+    <ClCompile Include="..\MultiSerwer\serwer_gry.cpp" />
+    <ClCompile Include="..\MultiSerwer\serwer_klient.cpp" />
     <ClCompile Include="dzialacze.cpp" />
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="kampania.cpp" />
@@ -165,6 +170,8 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClCompile Include="wyswietlacze.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\MultiSerwer\mastery.h" />
+    <ClInclude Include="..\MultiSerwer\serwery.h" />
     <ClInclude Include="dane.h" />
     <ClInclude Include="dzialacze.h" />
     <ClInclude Include="ext_string.h" />

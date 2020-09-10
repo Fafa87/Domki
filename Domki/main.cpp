@@ -89,9 +89,9 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa, doub
     auto tytul = sfg::Label::Create(kampania.nazwa);
     tytul->SetId("Naglowek");
 
-    auto gratulacje = sfg::Label::Create("Wygrales kampanie!\nGratulacje!");
+    auto gratulacje = sfg::Label::Create(L"Wygra³es kampaniê!\nGratulacje!");
 
-    auto powrot = sfg::Button::Create("Powrot");
+    auto powrot = sfg::Button::Create(L"Powrót");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
         GUI::aplikacja().pop_active_window(okno);
@@ -197,7 +197,7 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
         GUI::aplikacja().set_active_window(okno);
     });
     
-    auto powrot = sfg::Button::Create("Powrot");
+    auto powrot = sfg::Button::Create(L"Powrót");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
         GUI::aplikacja().pop_active_window(okno);
@@ -297,7 +297,7 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
         GUI::aplikacja().set_active_window(okno_kampania);
     });
 
-    auto powrot = sfg::Button::Create("Powrot");
+    auto powrot = sfg::Button::Create(L"Powrót");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
         GUI::aplikacja().pop_active_window(okno);

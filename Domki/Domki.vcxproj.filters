@@ -78,6 +78,21 @@
     <ClCompile Include="razem_gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\MultiSerwer\masterklient.cpp">
+      <Filter>Source Files\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MultiSerwer\masterserwer.cpp">
+      <Filter>Source Files\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MultiSerwer\serwer_gry.cpp">
+      <Filter>Source Files\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MultiSerwer\serwer_klient.cpp">
+      <Filter>Source Files\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MultiSerwer\serwery.cpp">
+      <Filter>Source Files\multi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">
@@ -133,6 +148,12 @@
     </ClInclude>
     <ClInclude Include="razem.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MultiSerwer\mastery.h">
+      <Filter>Header Files\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MultiSerwer\serwery.h">
+      <Filter>Header Files\multi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

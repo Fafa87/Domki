@@ -72,6 +72,12 @@
     <ClCompile Include="misja_gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="razem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="razem_gui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">
@@ -123,6 +129,9 @@
       <Filter>Header Files\multi</Filter>
     </ClInclude>
     <ClInclude Include="ext_vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="razem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

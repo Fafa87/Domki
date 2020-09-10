@@ -158,6 +158,8 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClCompile Include="Narzedzia\AnimatedSprite.cpp" />
     <ClCompile Include="Narzedzia\Animation.cpp" />
     <ClCompile Include="os.cpp" />
+    <ClCompile Include="razem.cpp" />
+    <ClCompile Include="razem_gui.cpp" />
     <ClCompile Include="rozgrywka.cpp" />
     <ClCompile Include="si.cpp" />
     <ClCompile Include="wyswietlacze.cpp" />
@@ -177,6 +179,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClInclude Include="Narzedzia\Animation.hpp" />
     <ClInclude Include="os.h" />
     <ClInclude Include="pakowanie.h" />
+    <ClInclude Include="razem.h" />
     <ClInclude Include="rozgrywka.h" />
     <ClInclude Include="si.h" />
     <ClInclude Include="wyswietlacze.h" />

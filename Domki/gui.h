@@ -13,6 +13,8 @@
 
 using namespace std;
 
+const string WERSJA = "DOMKI 0.9.3";
+
 class GUI
 {
 private:

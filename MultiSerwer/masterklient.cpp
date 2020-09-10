@@ -8,7 +8,7 @@ void komunikat_masterklient(mastery::Klient* klient)
     if ((int)klient->polaczony != komunikat_ostatni)
     {
         if (klient->polaczony)
-            printf("Jestes juz polaczony, mozesz:\n- napisac tekst\n- rozlacz\n- /KTO? jest w pokoju serwera\n- /IDZ: do pokoju\n- /ODPAL: parametry serwera\n");
+            printf("Jestes juz polaczony, mozesz:\n- napisac tekst\n- rozlacz\n- /KTO? jest w pokoju serwera\n- /IDZ: do pokoju\n- /START: parametry serwera\n");
         else
             printf("Nie jestes jeszcze polaczony do serwera. Napisz polacz <adres>:<port>, aby sprobowac sie polaczyc do msa.\n");
     }
@@ -27,6 +27,10 @@ void wykonaj_masterklient(mastery::Klient* klient, string zadanie)
     {
         auto adres_port = zadanie.substr(7);
         auto ip_port = split(adres_port, ':');
+        if (ip_port[0].size() == 0)
+        {
+            ip_port[0] = mastery::ADRES_MASTER;
+        }
         auto adres = multi::Adres(ip_port[0], stoi(ip_port[1]));
 
         std::thread([&klient, adres]() { klient->Podlacz(adres); }).detach();

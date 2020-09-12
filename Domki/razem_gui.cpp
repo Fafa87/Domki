@@ -270,7 +270,9 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
     planeta->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno, &muzyka, nazwa_edit, glowne] {
         start_masterklient(nazwa_edit->GetText());
-        wykonaj_masterklient(KontekstSwiata::o().klient, "polacz localhost:60"); // TMP
+
+        auto adres_planety = GUI::aplikacja().ini.Get("multi", "adres_planety", "localhost:60");
+        wykonaj_masterklient(KontekstSwiata::o().klient, "polacz " + adres_planety); // TMP
         Sleep(2000); // TMP tutaj powinno byæ jakieœ okienko, ¿e trwa ³¹czenie
         planeta_okno(glowne, muzyka, KontekstSwiata::o().klient);
         KontekstSwiata::o().klient->Rozlacz();

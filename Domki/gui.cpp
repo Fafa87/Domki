@@ -76,6 +76,30 @@ void GUI::wait_for_anything()
     }
 }
 
+void GUI::process_loop(std::function<bool(sf::Event)> event_processor, std::function<void()> tick_processor)
+{
+    sf::Event event;
+    bool loop = true;
+    while (loop)
+    {
+        sf::Event event;
+        while (okno.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed || event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
+                loop = false;
+
+            if (event_processor(event))
+                loop = false;
+            GUI::aplikacja().pulpit.HandleEvent(event);
+        }
+
+        tick_processor();
+
+        render();
+        Sleep(100);
+    }
+}
+
 void GUI::show_and_wait_for_anything(shared_ptr<sfg::Window> window)
 {
     set_active_window(window);

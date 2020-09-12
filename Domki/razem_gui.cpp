@@ -127,6 +127,8 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
 
     // GÓRNY PANEL
     auto dane_master_serwera = sfg::Label::Create("Dane podpietego master serwera");
+    dane_master_serwera->SetText(master_klient->adres_serwer.ToString());
+
     auto pokoj = sfg::Entry::Create("hol");
     pokoj->SetRequisition(sf::Vector2f(200, 0));
     auto prawe_skrzydlo = sfg::Alignment::Create();
@@ -139,8 +141,9 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     gorny_panel->Pack(prawe_skrzydlo, false, false);
 
     // CENTRUM
-    auto chat = sfg::Label::Create("Chat\nfewfwe\ngerger\nChat\nfewfwe\ngerger\nChat\nfewfwe\ngerger\nChat\nfewfwe\ngerger\nChat\nfewfwe\ngerger\nChat\nfewfwe\ngerger\n");
+    auto chat = sfg::Label::Create("");
     chat->SetAlignment(sf::Vector2f(0, 0));
+    chat->SetClass("Razem");
     auto chat_z_paskiem = sfg::ScrolledWindow::Create();
     chat_z_paskiem->SetScrollbarPolicy(sfg::ScrolledWindow::VERTICAL_ALWAYS);
     chat_z_paskiem->AddWithViewport(chat);
@@ -148,9 +151,10 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     auto ramka_chatu = sfg::Frame::Create("");
     ramka_chatu->Add(chat_z_paskiem);
 
-    auto ludki = sfg::Label::Create("Ludki");
+    auto ludki = sfg::Label::Create("Ludki"); // TMP merge extensions to SFGUI so that we can attach to proper event
     ludki->SetRequisition(sf::Vector2f(200, 0));
     ludki->SetAlignment(sf::Vector2f(0, 0));
+    ludki->SetClass("Razem");
     auto ramka_pokoju = sfg::Frame::Create("Ludzie w pokoju");
     ramka_pokoju->Add(ludki);
 
@@ -159,14 +163,15 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     srodek_panel->Pack(ramka_chatu, true, true);
     srodek_panel->Pack(ramka_pokoju, false, false);
 
-    auto pisak = sfg::Entry::Create("pisz tutaj wlasnie");
+    auto pisak = sfg::Entry::Create(""); // TMP merge extensions to SFGUI so that we can attach to proper event
 
     // KLIKANIE
     auto odpal = sfg::Button::Create(L"Postaw serwer");
     auto dolacz = sfg::Button::Create(L"Do³¹cz teraz");
     auto powrot = sfg::Button::Create(L"Powrót");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [okno] {
+        [okno, master_klient] {
+        master_klient->Rozlacz();
         GUI::aplikacja().pop_active_window(okno);
     });
 
@@ -189,7 +194,38 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     GUI::aplikacja().center_window(okno);
     GUI::aplikacja().set_active_window(okno);
 
-    // TODO odpalaj cala pêtlê przetwarzania
+    // ZAPYTAJ SERWER O STAN W POKOJU
+
+    // PÊTELKA
+    GUI::aplikacja().process_loop(
+    [master_klient, pisak, chat, pokoj](sf::Event ev) {
+        if (pisak->HasFocus() && ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Return)
+        {
+            master_klient->komendy.add(pisak->GetText());
+            if (chat->GetText().getSize())
+                chat->SetText(chat->GetText() + "\n" + pisak->GetText());
+            else
+                chat->SetText(pisak->GetText());
+            pisak->SetText("");
+        }
+        if (pokoj->HasFocus() && ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Return)
+        {
+            master_klient->IdzDo(pokoj->GetText());
+        }
+        return !master_klient->polaczony;
+    },
+    [odpal, dolacz, chat, ludki, pokoj, master_klient]() {
+        string tekst;
+        if (master_klient->odebrane.try_take(tekst) == code_machina::BlockingCollectionStatus::Ok)
+        {
+            if (chat->GetText().getSize())
+                chat->SetText(chat->GetText() + "\n" + tekst);
+            else
+                chat->SetText(tekst);
+        }
+        ludki->SetText(join(master_klient->KtoJestObok(), "\n"));
+    });
+
     return okno;
 }
 
@@ -233,14 +269,11 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
     auto planeta = sfg::Button::Create(L"Planeta");
     planeta->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno, &muzyka, nazwa_edit, glowne] {
-        //muzyka.stop();
         start_masterklient(nazwa_edit->GetText());
         wykonaj_masterklient(KontekstSwiata::o().klient, "polacz localhost:60"); // TMP
-        auto okno_planeta = planeta_okno(glowne, muzyka,
-            KontekstSwiata::o().klient);
-        if (okno_planeta != nullptr)
-            GUI::aplikacja().set_active_window(okno_planeta);
-
+        Sleep(2000); // TMP tutaj powinno byæ jakieœ okienko, ¿e trwa ³¹czenie
+        planeta_okno(glowne, muzyka, KontekstSwiata::o().klient);
+        KontekstSwiata::o().klient->Rozlacz();
         // wyczysc masterklienta 
     });
 

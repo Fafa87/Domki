@@ -21,6 +21,9 @@ namespace mastery
     {
     private:
         const string adres;
+
+        bool oczekuje_na_liste = false;
+        vector<string> ludzie_obok;
     public:
         multi::Zawodnik gracz;
         code_machina::BlockingCollection<string> komendy;
@@ -33,8 +36,15 @@ namespace mastery
         }
 
         bool polaczony = false;
+        Adres adres_serwer;
+
         void Podlacz(multi::Adres adres);
         void Rozlacz();
+        void KtoJest();
+        void IdzDo(string pokoj);
+
+        void PrzeanalizujOdebrane(string odebrane);
+        vector<string> KtoJestObok();
     };
 
     class Pokoj

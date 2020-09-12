@@ -46,9 +46,9 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
     auto pokoj_ludka = gdzie_jest[ludek];
     if (zapytanie.find("/KTO?") == 0)
     {
-        string lista_ludzi = "Drogi " + ludek->nazwa + " w pokoju '" + pokoj_ludka->nazwa + "' jest jeszcze " + to_string(pokoj_ludka->pokojnicy.size() - 1) + " osob:\n";
+        string lista_ludzi = "Drogi " + ludek->nazwa + " w pokoju '" + pokoj_ludka->nazwa + "' jest " + to_string(pokoj_ludka->pokojnicy.size()) + " osob:\n";
 
-        for (auto& ludek2 : pokoj_ludka->pokojnicy) if (ludek2 != ludek)
+        for (auto& ludek2 : pokoj_ludka->pokojnicy)
         {
             lista_ludzi += "- " + ludek2->nazwa + "\n";
         }
@@ -62,7 +62,9 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
         // przepnij do nowego pokoju
         WyslijDoPokoju(pokoj_ludka, ludek->nazwa + " opuszcza pokoj.", ludek);
         PrzejdzDoPokoju(ludek, nazwa_pokoju);
-        WyslijDoPokoju(gdzie_jest[ludek], ludek->nazwa + " wchodzi do pokoju.");
+        auto status = multi::Wyslij(*ludek->wtyk, "Wszedles do pokoju " + nazwa_pokoju);
+        ludek->ostatnio = status;
+        WyslijDoPokoju(gdzie_jest[ludek], ludek->nazwa + " wchodzi do pokoju.", ludek);
     }
     else if (zapytanie.find("/START: ") == 0)
     {
@@ -128,6 +130,8 @@ void mastery::Serwer::Postaw(int port)
                 LOG(INFO) << "Dodaje osobe: " << osoba->nazwa;
                 gdzie_jest[osoba] = hol;
                 hol->pokojnicy.push_back(osoba);
+
+                WyslijDoPokoju(hol, osoba->nazwa + " wchodzi.");
             }
             else 
             {
@@ -224,8 +228,11 @@ void mastery::Serwer::OpuscPokoj(shared_ptr<multi::Zawodnik> ludek)
 void mastery::Serwer::UsunZawodnika(shared_ptr<multi::Zawodnik> ludek)
 {
     LOG(INFO) << "Opuscila nas osoba: " << ludek->nazwa;
-
     OpuscPokoj(ludek);
+
+    WyslijDoPokoju(hol, ludek->nazwa + " uciekl.");
+    remove_item(hol->pokojnicy, ludek);
+    gdzie_jest.erase(ludek);
     wtykowiec.remove(*ludek->wtyk);
     remove_item(this->podpieci, ludek);
 }

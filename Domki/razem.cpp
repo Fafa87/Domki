@@ -20,27 +20,22 @@ PROCESS_INFORMATION start_nowej_gry_dla_wielu(string folder, string mapa, int do
     return processInfo;
 }
 
-void start_klient(sf::Music& muzyka, string nazwa)
+void start_klient(sf::Music& muzyka, string nazwa, multi::Adres adres)
 {
     auto klient = new multi::Klient(nazwa);
     LOG(INFO) << "Klient: " << klient->nazwa.c_str();
 
     Sleep(3);
-    LOG(TRACE) << "Spisuje serwery";
-    klient->SpiszSerwery();
+    if (adres.ip.size() == 0)
+    {
+        LOG(TRACE) << "Spisuje serwery";
+        klient->SpiszSerwery();
 
-    multi::Adres adres;
-    if (klient->lista_serwerow.size() == 0)
-    {
-        LOG(WARNING) << "Brak serwera";
-        // printf("Brak serwera!\n");
-        //auto cel = zadanie.substr(7);
-        //auto ip_port = split(cel, ':');
-        adres = multi::Adres("domki.westeurope.cloudapp.azure.com", 85);
-    }
-    else
-    {
-        adres = klient->lista_serwerow.back();
+        multi::Adres adres;
+        if (klient->lista_serwerow.size() == 0)
+            LOG(WARNING) << "Brak serwera";
+        else
+            adres = klient->lista_serwerow.back();
     }
 
     LOG(INFO) << "Znaleziony serwer: " << adres.ToString();

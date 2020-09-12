@@ -122,7 +122,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
     auto size = GUI::aplikacja().okno.getSize();
-    auto size_planeta = sf::Vector2f(max(size.x / 2.0, 800.0), max(size.y / 2.0, 600.0));
+    auto size_planeta = sf::Vector2f(max(8 * size.x / 9.0, 800.0), max(8 * size.y / 9.0, 600.0));
     okno->SetRequisition(size_planeta);
 
     // GÓRNY PANEL
@@ -167,7 +167,19 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
 
     // KLIKANIE
     auto odpal = sfg::Button::Create(L"Postaw serwer");
+    odpal->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [okno, master_klient] {
+        master_klient->komendy.add("/START: Mapy+Turniejowe Pojedynek.txt 2 1.500000 2" );
+    });
     auto dolacz = sfg::Button::Create(L"Do³¹cz teraz");
+    dolacz->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [okno, master_klient, &muzyka] {
+        muzyka.stop();
+        GUI::aplikacja().hide_all_windows();
+        start_klient(muzyka, master_klient->gracz.nazwa, master_klient->rozgrywka_pokoju);
+        muzyka.play();
+        GUI::aplikacja().set_active_window(okno);
+    });
     auto powrot = sfg::Button::Create(L"Powrót");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno, master_klient] {
@@ -275,8 +287,7 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
         wykonaj_masterklient(KontekstSwiata::o().klient, "polacz " + adres_planety); // TMP
         Sleep(2000); // TMP tutaj powinno byæ jakieœ okienko, ¿e trwa ³¹czenie
         planeta_okno(glowne, muzyka, KontekstSwiata::o().klient);
-        KontekstSwiata::o().klient->Rozlacz();
-        // wyczysc masterklienta 
+        KontekstSwiata::o().klient->Rozlacz(); // wyczysc masterklienta 
     });
 
     auto powrot = sfg::Button::Create(L"Powrót");

@@ -45,6 +45,7 @@ namespace mastery
 
         void PrzeanalizujOdebrane(string odebrane);
         vector<string> KtoJestObok();
+        Adres rozgrywka_pokoju;
     };
 
     class Pokoj

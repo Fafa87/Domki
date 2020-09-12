@@ -50,7 +50,7 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
 
         for (auto& ludek2 : pokoj_ludka->pokojnicy)
         {
-            lista_ludzi += "- " + ludek2->nazwa + "\n";
+            lista_ludzi += ludek2->nazwa + "\n";
         }
         LOG(INFO) << "Informacja o ludziach do: " << ludek->nazwa;
         auto status = multi::Wyslij(*ludek->wtyk, lista_ludzi);
@@ -69,7 +69,7 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
     else if (zapytanie.find("/START: ") == 0)
     {
         auto komenda_serwera = zapytanie.substr(8);
-        WyslijDoPokoju(gdzie_jest[ludek], "GRAJCIE! '" + komenda_serwera + "' na porcie" + to_string(PORT_TCP));
+        WyslijDoPokoju(gdzie_jest[ludek], "GRAJCIE! '" + komenda_serwera + "' na porcie " + to_string(PORT_TCP));
         start_serwer_gry(komenda_serwera); // TODO umozliwij odpalanie wielu serwerow - odpal jako osobny proces i pilnuj czy nie umarl
         wykonaj_serwer_gry("start");
         WyslijDoPokoju(gdzie_jest[ludek], "Gra skonczona...");

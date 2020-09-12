@@ -74,6 +74,7 @@ void mastery::Klient::Rozlacz()
         this->polaczony = false;
         this->adres_serwer = Adres();
         this->ludzie_obok.clear();
+        this->rozgrywka_pokoju = Adres();
     }
 }
 
@@ -86,6 +87,7 @@ void mastery::Klient::IdzDo(string pokoj)
 {
     komendy.add("/IDZ: " + pokoj);
     this->ludzie_obok.clear();
+    this->rozgrywka_pokoju = Adres();
 }
 
 void mastery::Klient::PrzeanalizujOdebrane(string tekst)
@@ -99,15 +101,21 @@ void mastery::Klient::PrzeanalizujOdebrane(string tekst)
         this->ludzie_obok = linie;
         oczekuje_na_liste = false;
     }
-    else if (tekst.find("wchodzi") != -1)
+    else if (tekst.find(" wchodzi") != -1)
     {
-        auto nazwa = tekst.substr(0, tekst.find("wchodzi"));
+        auto nazwa = tekst.substr(0, tekst.find(" wchodzi"));
         this->ludzie_obok.push_back(nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
     }
-    else if (tekst.find("opuszcza") == 0)
+    else if (tekst.find(" opuszcza") != -1)
     {
-        auto nazwa = tekst.substr(0, tekst.find("opuszcza"));
+        auto nazwa = tekst.substr(0, tekst.find(" opuszcza"));
         remove(this->ludzie_obok.begin(), this->ludzie_obok.end(), nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
+    }
+    else if (tekst.find("na porcie ") != -1)
+    {
+        auto port = stoi(tekst.substr(tekst.find(" na porcie ")+11));
+        this->rozgrywka_pokoju = Adres(this->adres_serwer.ip, port);
+        odebrane.add(tekst);
     }
     else
         odebrane.add(tekst);

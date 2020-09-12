@@ -13,11 +13,12 @@
 
 #include "gui.h"
 #include "os.h"
+#include "multi.h"
 
 // MECHANIZM
 
 PROCESS_INFORMATION start_nowej_gry_dla_wielu(string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi);
-void start_klient(sf::Music& muzyka, string nazwa);
+void start_klient(sf::Music& muzyka, string nazwa, multi::Adres adres=multi::Adres());
 
 // GUI
 

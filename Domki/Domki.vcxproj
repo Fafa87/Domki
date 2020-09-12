@@ -146,6 +146,11 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\MultiSerwer\masterklient.cpp" />
+    <ClCompile Include="..\MultiSerwer\masterserwer.cpp" />
+    <ClCompile Include="..\MultiSerwer\serwery.cpp" />
+    <ClCompile Include="..\MultiSerwer\serwer_gry.cpp" />
+    <ClCompile Include="..\MultiSerwer\serwer_klient.cpp" />
     <ClCompile Include="dzialacze.cpp" />
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="kampania.cpp" />
@@ -158,11 +163,15 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClCompile Include="Narzedzia\AnimatedSprite.cpp" />
     <ClCompile Include="Narzedzia\Animation.cpp" />
     <ClCompile Include="os.cpp" />
+    <ClCompile Include="razem.cpp" />
+    <ClCompile Include="razem_gui.cpp" />
     <ClCompile Include="rozgrywka.cpp" />
     <ClCompile Include="si.cpp" />
     <ClCompile Include="wyswietlacze.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\MultiSerwer\mastery.h" />
+    <ClInclude Include="..\MultiSerwer\serwery.h" />
     <ClInclude Include="dane.h" />
     <ClInclude Include="dzialacze.h" />
     <ClInclude Include="ext_string.h" />
@@ -177,6 +186,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClInclude Include="Narzedzia\Animation.hpp" />
     <ClInclude Include="os.h" />
     <ClInclude Include="pakowanie.h" />
+    <ClInclude Include="razem.h" />
     <ClInclude Include="rozgrywka.h" />
     <ClInclude Include="si.h" />
     <ClInclude Include="wyswietlacze.h" />

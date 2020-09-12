@@ -18,6 +18,10 @@ Label {
     FontName: Grafika/BuxtonSketch.ttf;
 }
 
+Label.Razem {
+    FontSize: 16;
+}
+
 Label.WybranyTekst {
     FontSize: 16;
     FontName: Grafika/BuxtonSketch.ttf;

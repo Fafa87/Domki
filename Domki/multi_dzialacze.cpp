@@ -74,7 +74,7 @@ void KlientowyRuszacz::Ruszaj(double czas)
             LOG(WARNING) << "Odlaczono od serwera.";
             rozgrywka->PrzerwijGre();
         }
-        else
+        else if (res.first != sf::Socket::NotReady) // NotReady bedzie zawsze bo ciagle go pytamy
         {
             LOG(WARNING) << "Nie udalo sie odebrac info z serwera: " << res.first;
         }

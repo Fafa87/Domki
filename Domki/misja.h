@@ -60,3 +60,9 @@ sf::View wysrodkowany_widok(list<Domek> &domki, int bottom_space = 0);
 shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany, Twor* skupiony);
 
 shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgrywka, int instance);
+
+bool odliczanie(int czas, Wyswietlacz& wyswietlacz, sf::View widok, std::shared_ptr<sfg::Window> gui_pasek, Ruszacz& ruszacz);
+
+void zakonczenie_gry(Gracz& gracz_wygrany, int grajacy);
+
+void zakonczenie_meczu(MisjaUstawienia &stan, Rozgrywka& rozgrywka);

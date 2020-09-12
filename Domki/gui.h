@@ -13,6 +13,8 @@
 
 using namespace std;
 
+const string WERSJA = "DOMKI 0.9.3";
+
 class GUI
 {
 private:
@@ -88,6 +90,8 @@ public:
 
     void show_and_wait_for_anything(shared_ptr<sfg::Window> window);
     void wait_for_anything();
+
+    void process_loop(std::function<bool(sf::Event)> event_processor = nullptr, std::function<void()> tick_processor = nullptr);
 
     void set_active_window(shared_ptr<sfg::Window> window);
     void remove_active_window(shared_ptr<sfg::Window> window);

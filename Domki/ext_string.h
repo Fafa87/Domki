@@ -62,4 +62,6 @@ void split(const std::string &s, char delim, Out result) {
     }
 }
 
+std::string join(const std::vector<std::string>& vec, const std::string& delim);
+
 std::vector<std::string> split(const std::string &s, char delim);

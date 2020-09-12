@@ -5,6 +5,8 @@
 #include "../Domki/multi.h"
 #include "../Domki/multi_dzialacze.h"
 
+#include "../MultiSerwer/serwery.h"
+
 #include "easylogging++.h" 
 #include "BlockingCollection.h"
 
@@ -19,9 +21,13 @@ namespace mastery
     {
     private:
         const string adres;
+
+        bool oczekuje_na_liste = false;
+        vector<string> ludzie_obok;
     public:
         multi::Zawodnik gracz;
         code_machina::BlockingCollection<string> komendy;
+        code_machina::BlockingCollection<string> odebrane;
 
         Klient(string nazwa) : gracz() {
             gracz.nazwa = nazwa;
@@ -30,8 +36,16 @@ namespace mastery
         }
 
         bool polaczony = false;
+        Adres adres_serwer;
+
         void Podlacz(multi::Adres adres);
         void Rozlacz();
+        void KtoJest();
+        void IdzDo(string pokoj);
+
+        void PrzeanalizujOdebrane(string odebrane);
+        vector<string> KtoJestObok();
+        Adres rozgrywka_pokoju;
     };
 
     class Pokoj

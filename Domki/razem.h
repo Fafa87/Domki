@@ -17,7 +17,8 @@
 
 // MECHANIZM
 
-PROCESS_INFORMATION start_nowej_gry_dla_wielu(string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi);
+string start_generuj_komende_startu(string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi, int port_serwera);
+PROCESS_INFORMATION start_nowej_gry_dla_wielu(string parametry);
 void start_klient(sf::Music& muzyka, string nazwa, multi::Adres adres=multi::Adres());
 
 // GUI

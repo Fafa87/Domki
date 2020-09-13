@@ -42,7 +42,7 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
     {
         if (!komenda.size())
         {
-            printf("Jaka plansza (folder nazwa)? Opcjonalnie do ilu wygranych.\nA dokladnie mozna podac: string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi\n");
+            printf("Jaka plansza (folder nazwa)? Opcjonalnie do ilu wygranych.\nA dokladnie mozna podac: string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi, int port_rozgrywki\n");
             gets_s(tmp);
             komenda = tmp;
         }
@@ -58,13 +58,29 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
     }
     else if (tryb == "masterserwer" || tryb == "ms")
     {
+        int port_master = 0;
+        int porty_od, porty_do;
         if (!komenda.size())
         {
-            printf("Podaj port:\n");
+            printf("Podaj port mastera:\n");
             gets_s(tmp);
-            komenda = tmp;
+            port_master = stoi(tmp);
+
+            printf("Podaj zakres portow dla serwerow gry:\n");
+            gets_s(tmp);
+            auto zakres = split(tmp, '-');
+            porty_od = stoi(zakres[0]);
+            porty_do = stoi(zakres[1]);
         }
-        start_masterserwer(stoi(komenda));
+        else
+        {
+            auto master_a_serwery = split(komenda, ' ');
+            port_master = stoi(master_a_serwery[0]);
+            auto zakres = split(master_a_serwery[1], '-');
+            porty_od = stoi(zakres[0]);
+            porty_do = stoi(zakres[1]);
+        }
+        start_masterserwer(port_master, porty_od, porty_do);
     }
     else if (tryb == "masterklient" || tryb == "mk")
     {

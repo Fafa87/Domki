@@ -34,6 +34,7 @@ void start_serwer_gry(string zadanie, int port_gry)
     auto misja_nazwa = czastki[1];
     if (misja_nazwa.size() == 1)
     {
+        LOG(INFO) << "Wybieram plansze numer: " << atoi(misja_nazwa.c_str());
         misja_nazwa = wczytaj_liste_plansz("Plansza\\" + misja_folder)[atoi(misja_nazwa.c_str())];
     }
     auto misja_sciezka = "Plansza\\" + misja_folder + "\\" + czastki[1];

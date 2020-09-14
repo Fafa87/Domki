@@ -74,7 +74,7 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
         }
         else
         {
-            auto master_a_serwery = split(komenda, ' ');
+            auto master_a_serwery = split(komenda, '_');
             port_master = stoi(master_a_serwery[0]);
             auto zakres = split(master_a_serwery[1], '-');
             porty_od = stoi(zakres[0]);

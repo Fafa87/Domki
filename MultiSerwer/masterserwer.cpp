@@ -2,6 +2,7 @@
 #include "../Domki/ext_vector.h"
 
 #include <thread>
+#include "../Domki/razem.h"
 
 KontekstSwiata* KontekstSwiata::obiekt;
 
@@ -13,9 +14,9 @@ void komunikat_masterserwer(mastery::Serwer* serwer)
         printf("Jestes spiacym multiserwerem. Napisz postaw <port> aby sie obudzic.'\n");
 }
 
-void start_masterserwer(int port)
+void start_masterserwer(int port, int porty_gry_od, int porty_gry_do)
 {
-    KontekstSwiata::o().serwer = new mastery::Serwer();
+    KontekstSwiata::o().serwer = new mastery::Serwer(porty_gry_od, porty_gry_do);
     auto& serwer = KontekstSwiata::o().serwer;
     std::thread([&serwer, port]() { serwer->Postaw(port); }).detach();
 }
@@ -36,10 +37,15 @@ void wykonaj_masterserwer(mastery::Serwer* serwer, string zadanie)
 
 mastery::Serwer::Serwer()
 {
+    this->porty_gier = make_pair(85, 100);
     hol = make_unique<Pokoj>("Hol");
     pokoje.push_back(hol);
 }
 
+mastery::Serwer::Serwer(int porty_gry_od, int porty_gry_do) : mastery::Serwer()
+{
+    this->porty_gier = make_pair(porty_gry_od, porty_gry_do);
+}
 
 void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, string zapytanie)
 {
@@ -68,11 +74,21 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
     }
     else if (zapytanie.find("/START: ") == 0)
     {
-        auto komenda_serwera = zapytanie.substr(8);
-        WyslijDoPokoju(gdzie_jest[ludek], "GRAJCIE! '" + komenda_serwera + "' na porcie " + to_string(PORT_TCP));
-        start_serwer_gry(komenda_serwera); // TODO umozliwij odpalanie wielu serwerow - odpal jako osobny proces i pilnuj czy nie umarl
-        wykonaj_serwer_gry("start");
-        WyslijDoPokoju(gdzie_jest[ludek], "Gra skonczona...");
+        auto wolny_port = ZnajdzWolnyPort();
+        if (wolny_port == -1)
+        {
+            WyslijDoPokoju(gdzie_jest[ludek], "Brak wolnych miejsc na serwerze. Trzeba czekac...");
+        }
+        else
+        {
+            auto komenda_serwera = zapytanie.substr(8);
+            WyslijDoPokoju(gdzie_jest[ludek], "GRAJCIE! '" + komenda_serwera + "' na porcie " + to_string(wolny_port));
+            
+            // wpisz process
+            auto proces_gry = start_nowej_gry_dla_wielu("0 " + komenda_serwera + " " + to_string(wolny_port));
+            gdzie_jest[ludek]->aktywny_port = wolny_port;
+            gdzie_jest[ludek]->aktywna_gra = proces_gry;
+        }
     }
     else 
     {
@@ -172,11 +188,47 @@ void mastery::Serwer::Postaw(int port)
         for (auto ludek_ptr : odlaczeni)
             UsunZawodnika(ludek_ptr);
 
+        // sprawdz czy rozgrywki sie nie skonczyly
+        for (auto pokoj : this->pokoje)
+        {
+            if (pokoj->aktywny_port != -1)
+            {
+                DWORD exit_code;
+                GetExitCodeProcess(pokoj->aktywna_gra.hProcess, &exit_code);
+                if (exit_code != STILL_ACTIVE)
+                {
+                    // usun rozgrywke
+                    pokoj->aktywna_gra = PROCESS_INFORMATION();
+                    pokoj->aktywny_port = -1;
+                    WyslijDoPokoju(pokoj, "Gra skonczona...");
+                }
+            }
+        }
+
         Sleep(100);
     }
     LOG(INFO) << "Serwer wylaczony.";  // TODO narazie tylko wstrzymany
     this->dziala = false;
     nasluchiwacz.close();
+}
+
+int mastery::Serwer::ZnajdzWolnyPort()
+{
+    set<int> wolne_porty;
+    for (int i = porty_gier.first; i <= porty_gier.second; i++)
+        wolne_porty.insert(i);
+
+    // nie umrzyj prosze
+    for (auto pokoj : pokoje)
+    {
+        if (pokoj->aktywny_port != 0)
+        {
+            wolne_porty.erase(pokoj->aktywny_port);
+        }
+    }
+    if (wolne_porty.size() == 0)
+        return -1;
+    return *wolne_porty.begin();
 }
 
 void mastery::Serwer::PrzejdzDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju)

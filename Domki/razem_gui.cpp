@@ -78,7 +78,8 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [&muzyka, nazwa, do_ilu_pasek, szybkosc_pasek, wybor_lista, wybor_lista_foldery, ile_ludzi_pasek] {
         GUI::aplikacja().zalozone_gry.push_back(
-            start_nowej_gry_dla_wielu(wybor_lista_foldery->GetSelectedText(), wybor_lista->GetSelectedText(), (int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue()));
+            start_nowej_gry_dla_wielu(
+                start_generuj_komende_startu(wybor_lista_foldery->GetSelectedText(), wybor_lista->GetSelectedText(), (int)do_ilu_pasek->GetValue(), szybkosc_pasek->GetValue(), ile_ludzi_pasek->GetValue(), PORT_TCP)));
         LOG(INFO) << "Zalozone gry: " << GUI::aplikacja().zalozone_gry.size();
     });
 
@@ -122,7 +123,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
     auto size = GUI::aplikacja().okno.getSize();
-    auto size_planeta = sf::Vector2f(max(8 * size.x / 9.0, 800.0), max(8 * size.y / 9.0, 600.0));
+    auto size_planeta = sf::Vector2f(max(19 * size.x / 20.0, 800.0), max(19 * size.y / 20.0, 600.0));
     okno->SetRequisition(size_planeta);
 
     // GÓRNY PANEL

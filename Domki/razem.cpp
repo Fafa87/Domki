@@ -4,18 +4,23 @@
 #include "multi_dzialacze.h"
 #include "os.h"
 
-PROCESS_INFORMATION start_nowej_gry_dla_wielu(string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi)
+
+string start_generuj_komende_startu(string folder, string mapa, int do_ilu, double szybkosc, int ile_ludzi, int port_serwera)
 {
     for (int a = 0, b = folder.size(); a < b; a++)if (folder[a] == ' ')folder[a] = '+';
     for (int a = 0, b = mapa.size(); a < b; a++)if (mapa[a] == ' ')mapa[a] = '+';
-    string parametry = "0 " + folder + " " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc) + " " + to_string(ile_ludzi);
+    string parametry = "0 " + folder + " " + mapa + " " + to_string(do_ilu) + " " + to_string(szybkosc) + " " + to_string(ile_ludzi) + " " + to_string(port_serwera);
+    return parametry;
+}
 
+PROCESS_INFORMATION start_nowej_gry_dla_wielu(string parametry)
+{
     LOG(INFO) << "Startujemy serwer " + parametry;
     string komenda = "MultiSerwer.exe " + parametry;
 
     STARTUPINFO info = { sizeof(info) };
     PROCESS_INFORMATION processInfo;
-    if (!CreateProcess("MultiSerwer.exe", _strdup(komenda.c_str()), NULL, NULL, TRUE, 0, NULL, NULL, &info, &processInfo))
+    if (!CreateProcess("MultiSerwer.exe", _strdup(komenda.c_str()), NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &info, &processInfo))
         throw exception("Nie udalo sie odpalic serwera.");
     return processInfo;
 }

@@ -115,7 +115,7 @@ void mastery::Klient::PrzeanalizujOdebrane(string tekst)
     {
         auto port = stoi(tekst.substr(tekst.find(" na porcie ")+11));
         this->rozgrywka_pokoju = Adres(this->adres_serwer.ip, port);
-        odebrane.add(tekst);
+        odebrane.add("Odpalono rozgrywke.");
     }
     else
         odebrane.add(tekst);

@@ -144,6 +144,7 @@ _WINDOWS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
   <ItemGroup>
     <ClInclude Include="..\Domki\multi.h" />
     <ClInclude Include="..\Domki\multi_dzialacze.h" />
+    <ClInclude Include="..\Domki\razem.h" />
     <ClInclude Include="mastery.h" />
     <ClInclude Include="serwery.h" />
   </ItemGroup>
@@ -157,6 +158,7 @@ _WINDOWS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
     <ClCompile Include="..\Domki\Narzedzia\AnimatedSprite.cpp" />
     <ClCompile Include="..\Domki\Narzedzia\Animation.cpp" />
     <ClCompile Include="..\Domki\os.cpp" />
+    <ClCompile Include="..\Domki\razem.cpp" />
     <ClCompile Include="..\Domki\rozgrywka.cpp" />
     <ClCompile Include="..\Domki\multi.cpp" />
     <ClCompile Include="..\Domki\si.cpp" />

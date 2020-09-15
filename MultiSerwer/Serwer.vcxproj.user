@@ -16,8 +16,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>
-    </LocalDebuggerCommandArguments>
-    <LocalDebuggerEnvironment>0 testowe mini.txt 2 4.2 1</LocalDebuggerEnvironment>
+    <LocalDebuggerCommandArguments>ms 60_70-75</LocalDebuggerCommandArguments>
+    <LocalDebuggerEnvironment>
+    </LocalDebuggerEnvironment>
   </PropertyGroup>
 </Project>

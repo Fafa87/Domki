@@ -5,11 +5,19 @@
 
 using namespace multi;
 
-Adres multi::Serwer::Postaw()
+Adres multi::Serwer::Postaw(int port_gry)
 {
-    if (nasluchiwacz.listen(PORT_TCP) != sf::Socket::Done)
+    int port_tcp = port_gry;
+    int port_broadcast = port_gry;
+    if (port_gry == -1)
+    {
+        port_tcp = PORT_TCP;
+        port_broadcast = PORT_BROADCAST;
+    }
+
+    if (nasluchiwacz.listen(port_tcp) != sf::Socket::Done)
         printf("listener buraka!");
-    if (rozsylacz.bind(PORT_BROADCAST) != sf::Socket::Done)
+    if (rozsylacz.bind(port_broadcast) != sf::Socket::Done)
         printf("rozsylacz buraka!");
     return Adres(sf::IpAddress::getLocalAddress().toString(), nasluchiwacz.getLocalPort());
 }
@@ -137,7 +145,7 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
                     {
                         cereal::BinaryInputArchive dearchive(ss);
                         
-                        Rozkaz * rozkaz;
+                        Rozkaz * rozkaz = nullptr;
                         if (d[0] == 'W')
                         {
                             rozkaz = new WymarszRozkaz(nullptr, nullptr);
@@ -159,7 +167,12 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
                             dearchive(*(BurzRozkaz*)rozkaz);
                         }
                         
-                        res.push_back(rozkaz);
+                        if (rozkaz != nullptr)
+                            res.push_back(rozkaz);
+                        else
+                        {
+                            LOG(WARNING) << "Czekam na rozkaz a dostalem: " << d;
+                        }
                     }
                 }
             }

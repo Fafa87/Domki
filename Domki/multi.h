@@ -53,7 +53,7 @@ namespace multi
     class Serwer
     {
     public:
-        Adres Postaw();
+        Adres Postaw(int port_gry);
 
         // oczekuje na pod��czenie si� gracza i podanie danych
         void OczekujNaGracza();

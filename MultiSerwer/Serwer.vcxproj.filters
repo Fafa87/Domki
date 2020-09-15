@@ -81,6 +81,9 @@
     <ClCompile Include="masterklient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Domki\razem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="serwery.h">
@@ -93,6 +96,9 @@
       <Filter>Header Files\Multi</Filter>
     </ClInclude>
     <ClInclude Include="mastery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domki\razem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

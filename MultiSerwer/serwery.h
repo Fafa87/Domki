@@ -29,7 +29,8 @@ public:
 void komunikat_serwer_gry(); 
 void komunikat_serwer_klient();
 
-void start_serwer_gry(string zadanie);
+void start_serwer_gry(string zadanie_z_portem);
+void start_serwer_gry(string zadanie, int port_gry);
 void wykonaj_serwer_gry(string zadanie);
 
 void start_klient_gry(string zadanie);

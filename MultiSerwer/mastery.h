@@ -54,6 +54,9 @@ namespace mastery
         string nazwa;
         vector<shared_ptr<multi::Zawodnik>> pokojnicy;
 
+        int aktywny_port;
+        PROCESS_INFORMATION aktywna_gra;
+
         Pokoj(string nazwa) : nazwa(nazwa) {}
     };
 
@@ -62,8 +65,11 @@ namespace mastery
     private:
         sf::TcpListener nasluchiwacz;
         sf::SocketSelector wtykowiec;
+        pair<int, int> porty_gier;
+
     public:
         Serwer();
+        Serwer(int porty_gry_od, int porty_gry_do);
 
         vector<shared_ptr<multi::Zawodnik>> podpieci;
         map<shared_ptr<multi::Zawodnik>, shared_ptr<Pokoj>> gdzie_jest;
@@ -73,6 +79,7 @@ namespace mastery
         bool dziala = false;
         
         void Postaw(int port);
+        int ZnajdzWolnyPort();
 
         void PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, string zapytanie);
         void WyslijDoPokoju(shared_ptr<Pokoj> pokoj, string tekst, shared_ptr<multi::Zawodnik> poza_osoba = nullptr);
@@ -103,7 +110,7 @@ public:
 void komunikat_masterserwer(mastery::Serwer* serwer);
 void komunikat_masterklient(mastery::Klient* klient);
 
-void start_masterserwer(int port);
+void start_masterserwer(int port, int porty_gry_od, int porty_gry_do);
 void wykonaj_masterserwer(mastery::Serwer* serwer, string zadanie);
 
 void start_masterklient(string zadanie);

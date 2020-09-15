@@ -7,13 +7,22 @@ void komunikat_serwer_gry()
     printf("Jestes serwerem, gracze sie podlaczyli, napisz 'start' aby zaczac gre:\n");
 }
 
-void start_serwer_gry(string zadanie)
+void start_serwer_gry(string zadanie_z_portem)
+{
+    auto tokeny = split(zadanie_z_portem, ' ');
+    auto port = stoi(tokeny[tokeny.size() - 1]);
+    tokeny.erase(tokeny.end() - 1);
+    
+    start_serwer_gry(join(tokeny, " "), port);
+}
+
+void start_serwer_gry(string zadanie, int port_gry)
 {
     KontekstGry::o().serwer = new Serwer();
     auto& serwer = KontekstGry::o().serwer;
     auto& misja_ustawienia = KontekstGry::o().misja_ustawienia;
 
-    auto adres = serwer->Postaw();
+    auto adres = serwer->Postaw(port_gry);
     printf("%s\n", adres.ToString().c_str());
 
     auto czastki = split(zadanie, ' ');
@@ -25,6 +34,7 @@ void start_serwer_gry(string zadanie)
     auto misja_nazwa = czastki[1];
     if (misja_nazwa.size() == 1)
     {
+        LOG(INFO) << "Wybieram plansze numer: " << atoi(misja_nazwa.c_str());
         misja_nazwa = wczytaj_liste_plansz("Plansza\\" + misja_folder)[atoi(misja_nazwa.c_str())];
     }
     auto misja_sciezka = "Plansza\\" + misja_folder + "\\" + czastki[1];

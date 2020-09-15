@@ -145,7 +145,7 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
                     {
                         cereal::BinaryInputArchive dearchive(ss);
                         
-                        Rozkaz * rozkaz;
+                        Rozkaz * rozkaz = nullptr;
                         if (d[0] == 'W')
                         {
                             rozkaz = new WymarszRozkaz(nullptr, nullptr);
@@ -167,7 +167,12 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
                             dearchive(*(BurzRozkaz*)rozkaz);
                         }
                         
-                        res.push_back(rozkaz);
+                        if (rozkaz != nullptr)
+                            res.push_back(rozkaz);
+                        else
+                        {
+                            LOG(WARNING) << "Czekam na rozkaz a dostalem: " << d;
+                        }
                     }
                 }
             }

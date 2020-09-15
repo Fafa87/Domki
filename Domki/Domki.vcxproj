@@ -153,6 +153,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClCompile Include="..\MultiSerwer\serwer_klient.cpp" />
     <ClCompile Include="dzialacze.cpp" />
     <ClCompile Include="gui.cpp" />
+    <ClCompile Include="gui_okna.cpp" />
     <ClCompile Include="kampania.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="misja.cpp" />
@@ -177,6 +178,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
     <ClInclude Include="ext_string.h" />
     <ClInclude Include="ext_vector.h" />
     <ClInclude Include="gui.h" />
+    <ClInclude Include="gui_okna.h" />
     <ClInclude Include="kampania.h" />
     <ClInclude Include="misja.h" />
     <ClInclude Include="multi.h" />

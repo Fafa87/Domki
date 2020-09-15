@@ -14,6 +14,7 @@ INITIALIZE_EASYLOGGINGPP
 #include "gui.h"
 #include "os.h"
 #include "kampania.h"
+#include "gui_okna.h"
 
 #include "multi.h"
 #include "multi_dzialacze.h"
@@ -111,81 +112,33 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 
-    //okno->SetRequisition(sf::Vector2f(480, 0));
     okno->SetRequisition(sf::Vector2f(glowne->GetAllocation().width, 0));
     okno->SetAllocation(glowne->GetAllocation());
 
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+    box->SetSpacing(10);
     auto tytul = sfg::Label::Create(WERSJA);
     tytul->SetId("Naglowek");
-    auto tabelka = sfg::Table::Create();
 
-    auto wybor_etykieta = sfg::Label::Create("Misja: ");
-    auto separator = sfg::Label::Create("");
+    box->Pack(tytul, false, false);
 
-    auto wybor_lista_foldery = sfg::ComboBox::Create();
-    for (auto l : wczytaj_liste_folderow("Plansza"))
-        wybor_lista_foldery->AppendItem(l);
-    wybor_lista_foldery->SelectItem(2);
-
-    auto wybor_lista = sfg::ComboBox::Create();
-    for (auto l : wczytaj_liste_plansz("Plansza\\"+wybor_lista_foldery->GetSelectedText()))
-        wybor_lista->AppendItem(l);
-    wybor_lista->SelectItem(2);
-
-    wybor_lista_foldery->GetSignal(sfg::ComboBox::OnSelect).Connect([wybor_lista,wybor_lista_foldery]
-    {
-        wybor_lista->Clear();
-        for (auto l : wczytaj_liste_plansz("Plansza\\" + wybor_lista_foldery->GetSelectedText()))
-            wybor_lista->AppendItem(l);
-        wybor_lista->SelectItem(0);
-    });
-
-    auto trudnosc_etykieta = sfg::Label::Create("Trudnosc: ");
-    auto trudnosc_wartosc = sfg::Label::Create("5");
-    auto trudnosc_pasek = sfg::Scale::Create(1, 10, 1);
-    trudnosc_pasek->SetValue(5);
-    trudnosc_pasek->SetIncrements(1, 3);
-    trudnosc_pasek->GetAdjustment()->GetSignal(sfg::Adjustment::OnChange).Connect(
-        [trudnosc_wartosc, trudnosc_pasek] {
-        trudnosc_wartosc->SetText(to_string((int)trudnosc_pasek->GetValue()));
-    });
-
-    auto szybkosc_etykieta = sfg::Label::Create("Szybkosc: ");
-    auto szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
-    szybkosc_pasek->SetValue(1.5);
-
-    auto do_ilu_etykieta = sfg::Label::Create("Do ilu: ");
-    auto do_ilu_wartosc = sfg::Label::Create("1");
-    auto do_ilu_pasek = sfg::Scale::Create(1, 6, 1);
-    do_ilu_pasek->SetValue(1);
-    do_ilu_pasek->SetIncrements(1, 2);
-    do_ilu_pasek->GetAdjustment()->GetSignal(sfg::Adjustment::OnChange).Connect(
-        [do_ilu_wartosc, do_ilu_pasek] {
-        do_ilu_wartosc->SetText(to_string((int)do_ilu_pasek->GetValue()));
-    });
-    
-    auto inne_etykieta = sfg::Label::Create("Inne: ");
-
-    auto oszustwa_ptaszek = sfg::CheckButton::Create("Oszustwa: ");
-    oszustwa_ptaszek->SetActive(false);
-    auto walka_w_polu_ptaszek = sfg::CheckButton::Create("Walka w polu: ");
-    walka_w_polu_ptaszek->SetActive(true);
-    auto punkty_kontrolne_ptaszek = sfg::CheckButton::Create("Punkty kontrolne: ");
-    punkty_kontrolne_ptaszek->SetActive(true);
+    auto kontrolki = make_shared<WyborMisjiKontrolki>(
+        false, // ile ludzi
+        true, true, true);
+    kontrolki->DodajZestaw(box);
 
     auto uruchom = sfg::Button::Create("Uruchom");
     uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [wybor_lista,wybor_lista_foldery, szybkosc_pasek, trudnosc_pasek, oszustwa_ptaszek, walka_w_polu_ptaszek, punkty_kontrolne_ptaszek, do_ilu_pasek, okno, &muzyka] {
+        [kontrolki, okno, &muzyka] {
         MisjaUstawienia ustawienia;
-        ustawienia.nazwa = wybor_lista->GetSelectedText();
-        ustawienia.grupa = "Plansza\\" + wybor_lista_foldery->GetSelectedText();
-        ustawienia.szybkosc = szybkosc_pasek->GetValue();
-        ustawienia.trudnosc = trudnosc_pasek->GetValue();
-        ustawienia.oszustwa = oszustwa_ptaszek->IsActive();
-        ustawienia.walka_w_polu = walka_w_polu_ptaszek->IsActive();
-        ustawienia.punkty_kontrolne = punkty_kontrolne_ptaszek->IsActive();
-        ustawienia.do_ilu_wygranych = do_ilu_pasek->GetValue();
+        ustawienia.nazwa = kontrolki->MisjaNazwa();
+        ustawienia.grupa = "Plansza\\" + kontrolki->MisjaGrupa();
+        ustawienia.szybkosc = kontrolki->Szybkosc();
+        ustawienia.trudnosc = kontrolki->PoziomTrudnosci();
+        ustawienia.oszustwa = kontrolki->Oszustwa();
+        ustawienia.walka_w_polu = kontrolki->WalkaWPolu(); 
+        ustawienia.punkty_kontrolne = kontrolki->PunktyKontrolne();
+        ustawienia.do_ilu_wygranych = kontrolki->DoIluWygranych();
 
         muzyka.stop();
         GUI::aplikacja().hide_all_windows();
@@ -203,40 +156,8 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
         GUI::aplikacja().pop_active_window(okno);
     });
 
-    tabelka->SetRowSpacings(10);
-
-    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 0, 4, 1));
-    tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, 1, 1, 1));
-    tabelka->Attach(wybor_lista_foldery, sf::Rect<sf::Uint32>(1, 1, 2, 1));
-    tabelka->Attach(wybor_lista, sf::Rect<sf::Uint32>(1, 2, 2, 1));
-
-
-    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 3, 4, 1));
-
-    tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, 4, 1, 1));
-    tabelka->Attach(trudnosc_pasek, sf::Rect<sf::Uint32>(1, 4, 1, 1));
-    tabelka->Attach(trudnosc_wartosc, sf::Rect<sf::Uint32>(2, 4, 1, 1));
-
-
-    tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, 5, 1, 1));
-    tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, 5, 2, 1));
-    tabelka->Attach(do_ilu_etykieta, sf::Rect<sf::Uint32>(0, 6, 1, 1));
-    tabelka->Attach(do_ilu_pasek, sf::Rect<sf::Uint32>(1, 6, 1, 1));
-    tabelka->Attach(do_ilu_wartosc, sf::Rect<sf::Uint32>(2, 6, 1, 1));
-    
-    tabelka->Attach(inne_etykieta, sf::Rect<sf::Uint32>(0, 7, 1, 1));
-    tabelka->Attach(oszustwa_ptaszek, sf::Rect<sf::Uint32>(1, 7, 2, 1));
-    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 8, 4, 1));
-    tabelka->Attach(walka_w_polu_ptaszek, sf::Rect<sf::Uint32>(1, 8, 2, 1));
-    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 9, 4, 1));
-    tabelka->Attach(punkty_kontrolne_ptaszek, sf::Rect<sf::Uint32>(1, 9, 2, 1));
-    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, 10, 4, 1));
-
-    tabelka->Attach(uruchom, sf::Rect<sf::Uint32>(1, 10, 2, 1));
-    tabelka->Attach(powrot, sf::Rect<sf::Uint32>(1, 11, 2, 1));
-
-    box->Pack(tytul, false, false);
-    box->Pack(tabelka, true, false);
+    box->Pack(uruchom, false, false);
+    box->Pack(powrot, false, false);
     okno->Add(box);
 
     GUI::aplikacja().stretch_up_down(okno);

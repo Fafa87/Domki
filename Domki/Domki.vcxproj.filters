@@ -93,6 +93,9 @@
     <ClCompile Include="..\MultiSerwer\serwery.cpp">
       <Filter>Source Files\multi</Filter>
     </ClCompile>
+    <ClCompile Include="gui_okna.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dane.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="..\MultiSerwer\serwery.h">
       <Filter>Header Files\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="gui_okna.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

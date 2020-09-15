@@ -140,7 +140,7 @@ void konfiguruj(int l, const char * argv[])
     if (l == 0)
     {
         LOG(INFO) << "Konfiguruje serwer...";
-        wybierz_i_wystartuj_tryb("serwer", string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]));
+        wybierz_i_wystartuj_tryb("serwer", string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]) + " " + string(argv[7]));
         while (misja_ustawienia.Zwyciezca() < 0)
             wykonaj("start");
         exit(0);

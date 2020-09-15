@@ -20,7 +20,7 @@ PROCESS_INFORMATION start_nowej_gry_dla_wielu(string parametry)
 
     STARTUPINFO info = { sizeof(info) };
     PROCESS_INFORMATION processInfo;
-    if (!CreateProcess("MultiSerwer.exe", _strdup(komenda.c_str()), NULL, NULL, TRUE, 0, NULL, NULL, &info, &processInfo))
+    if (!CreateProcess("MultiSerwer.exe", _strdup(komenda.c_str()), NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &info, &processInfo))
         throw exception("Nie udalo sie odpalic serwera.");
     return processInfo;
 }

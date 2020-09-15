@@ -85,7 +85,7 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
             WyslijDoPokoju(gdzie_jest[ludek], "GRAJCIE! '" + komenda_serwera + "' na porcie " + to_string(wolny_port));
             
             // wpisz process
-            auto proces_gry = start_nowej_gry_dla_wielu("0" + komenda_serwera + " " + to_string(wolny_port));
+            auto proces_gry = start_nowej_gry_dla_wielu("0 " + komenda_serwera + " " + to_string(wolny_port));
             gdzie_jest[ludek]->aktywny_port = wolny_port;
             gdzie_jest[ludek]->aktywna_gra = proces_gry;
         }

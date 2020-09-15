@@ -123,7 +123,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
     auto size = GUI::aplikacja().okno.getSize();
-    auto size_planeta = sf::Vector2f(max(8 * size.x / 9.0, 800.0), max(8 * size.y / 9.0, 600.0));
+    auto size_planeta = sf::Vector2f(max(19 * size.x / 20.0, 800.0), max(19 * size.y / 20.0, 600.0));
     okno->SetRequisition(size_planeta);
 
     // GÓRNY PANEL

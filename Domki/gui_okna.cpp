@@ -80,7 +80,7 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
         this->misja_nazwa->GetSignal(sfg::ComboBox::OnSelect)();
     }
 
-    if (opcja_kampania);
+    if (opcja_kampania)
     {
         wybor_etykieta->SetText("Kampanie: ");
         this->misja_nazwa = sfg::ComboBox::Create();

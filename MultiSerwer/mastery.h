@@ -84,7 +84,7 @@ namespace mastery
         void PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, string zapytanie);
         void WyslijDoPokoju(shared_ptr<Pokoj> pokoj, string tekst, shared_ptr<multi::Zawodnik> poza_osoba = nullptr);
 
-        void PrzejdzDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju);
+        bool PrzejdzDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju);
         void DolaczDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju);
         void OpuscPokoj(shared_ptr<multi::Zawodnik> ludek);
 

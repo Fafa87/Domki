@@ -66,11 +66,13 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
     {
         auto nazwa_pokoju = zapytanie.substr(6);
         // przepnij do nowego pokoju
-        WyslijDoPokoju(pokoj_ludka, ludek->nazwa + " opuszcza pokoj.", ludek);
-        PrzejdzDoPokoju(ludek, nazwa_pokoju);
-        auto status = multi::Wyslij(*ludek->wtyk, "Wszedles do pokoju " + nazwa_pokoju);
-        ludek->ostatnio = status;
-        WyslijDoPokoju(gdzie_jest[ludek], ludek->nazwa + " wchodzi do pokoju.", ludek);
+        if (PrzejdzDoPokoju(ludek, nazwa_pokoju))
+        {
+            WyslijDoPokoju(pokoj_ludka, ludek->nazwa + " opuszcza pokoj.", ludek);
+            auto status = multi::Wyslij(*ludek->wtyk, "Wszedles do pokoju " + nazwa_pokoju);
+            ludek->ostatnio = status;
+            WyslijDoPokoju(gdzie_jest[ludek], ludek->nazwa + " wchodzi do pokoju.", ludek);
+        }
     }
     else if (zapytanie.find("/START: ") == 0)
     {
@@ -144,10 +146,8 @@ void mastery::Serwer::Postaw(int port)
                 this->podpieci.emplace_back(osoba);
 
                 LOG(INFO) << "Dodaje osobe: " << osoba->nazwa;
-                gdzie_jest[osoba] = hol;
-                hol->pokojnicy.push_back(osoba);
-
-                WyslijDoPokoju(hol, osoba->nazwa + " wchodzi.");
+                DolaczDoPokoju(osoba, hol->nazwa);
+                WyslijDoPokoju(hol, osoba->nazwa + " wchodzi do pokoju.", osoba);
             }
             else 
             {
@@ -231,15 +231,20 @@ int mastery::Serwer::ZnajdzWolnyPort()
     return *wolne_porty.begin();
 }
 
-void mastery::Serwer::PrzejdzDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju)
+bool mastery::Serwer::PrzejdzDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju)
 {
-    OpuscPokoj(ludek);
-    DolaczDoPokoju(ludek, nazwa_pokoju);
+    if (gdzie_jest[ludek]->nazwa != nazwa_pokoju)
+    {
+        OpuscPokoj(ludek);
+        DolaczDoPokoju(ludek, nazwa_pokoju);
+        return true;
+    }
+    return false;
 }
 
 void mastery::Serwer::DolaczDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju)
 {
-    if (gdzie_jest[ludek] == hol)
+    if (gdzie_jest.count(ludek) == 0)
     {
         // jesli nie ma to stworz pokoj
         shared_ptr<Pokoj> nowy_pokoj;
@@ -258,22 +263,19 @@ void mastery::Serwer::DolaczDoPokoju(shared_ptr<multi::Zawodnik> ludek, string n
 
         // dolacz do tego pokoju
         LOG(INFO) << ludek->nazwa << " wchodzi do pokoju " << nazwa_pokoju;
-        remove_item(gdzie_jest[ludek]->pokojnicy, ludek);
+        nowy_pokoj->pokojnicy.push_back(ludek); 
         gdzie_jest[ludek] = nowy_pokoj;
-        nowy_pokoj->pokojnicy.push_back(ludek);
     }
 }
 
 void mastery::Serwer::OpuscPokoj(shared_ptr<multi::Zawodnik> ludek)
 {
-    if (gdzie_jest[ludek] != hol)
+    if (gdzie_jest.count(ludek) == 1)
     {
         // usun z o pokoju i mappera
         LOG(INFO) << ludek->nazwa << " wychodzi z pokoju.";
         remove_item(gdzie_jest[ludek]->pokojnicy, ludek);
-        gdzie_jest[ludek] = hol;
-        hol->pokojnicy.push_back(ludek);
-  
+        gdzie_jest.erase(ludek);
     }
 }
 
@@ -283,8 +285,7 @@ void mastery::Serwer::UsunZawodnika(shared_ptr<multi::Zawodnik> ludek)
     OpuscPokoj(ludek);
 
     WyslijDoPokoju(hol, ludek->nazwa + " uciekl.");
-    remove_item(hol->pokojnicy, ludek);
-    gdzie_jest.erase(ludek);
+
     wtykowiec.remove(*ludek->wtyk);
     remove_item(this->podpieci, ludek);
 }

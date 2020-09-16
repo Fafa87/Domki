@@ -14,6 +14,7 @@
 #include "gui.h"
 #include "os.h"
 #include "multi.h"
+#include "../MultiSerwer/mastery.h"
 
 // MECHANIZM
 
@@ -23,5 +24,8 @@ void start_klient(sf::Music& muzyka, string nazwa, multi::Adres adres=multi::Adr
 
 // GUI
 
-std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, string nazwa);
+std::shared_ptr<sfg::Window> serwer_menu_tutaj(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, string nazwa);
+std::shared_ptr<sfg::Window> serwer_menu_planeta(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, mastery::Klient* master_klient);
+
+std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, string nazwa, function<void(string)> zakladaj_fun);
 std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka);

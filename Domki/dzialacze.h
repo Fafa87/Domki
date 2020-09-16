@@ -73,14 +73,14 @@ public:
 
 	virtual void Przetworz() {}
 	void Przetworz(sf::Event zdarzenie);
-    void Potworz(sf::Event zdarzenie);
+    void Skupienie();
 
 	virtual vector<Rozkaz*> WykonajRuch();
 
     bool kontrola = false;
     map<Domek*, Domek*> punkty_kontrolne;
-	Domek* wybrany = nullptr, *kontrolowany = nullptr;
-	Twor* skupiony = nullptr;
+	Domek *wybrany = nullptr,*kontrolowany = nullptr;
+    Twor* skupiony = nullptr;
 	char nacisniety = 0;
 	Gracz& gracz;
 

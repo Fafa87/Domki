@@ -46,8 +46,8 @@ struct Twor
 struct Ludek : Twor
 {
 	Ludek() {}
-	Ludek(Twor& cel) : cel(&cel) {}
-	Twor* cel; // do kogo (domka) stara siê dotrzeæ
+	Ludek(Twor& cel, Twor& skad) : cel(&cel) , skad(&skad){}
+	Twor* cel, *skad; // do kogo (domka) stara siê dotrzeæ
 	int ser_cel;
 	int liczebnosc,tarcza=0; // powinna byæ zwi¹zana z jego rozmiarem
 	double szybkosc_ludka = 1.0,droga=-1.0,dystans=-1.0;
@@ -71,8 +71,11 @@ struct Domek : Twor
 	
 	TypDomku typdomku=TypDomku::kMiasto;
 	int poziom = 1;
-	bool przebudowa = true,
-		ulepszanie = true;
+    bool przebudowa = true,
+        ulepszanie = true,
+        szybki_wymarsz = false;
+
+    Twor* szybki_przemarsz = nullptr;
 
 	vector<Domek*> drogi;
 	vector<int> ser_drogi;

@@ -89,7 +89,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
 {
     Rozgrywka gra;
     //gracze
-    sf::Color kolory[] = { sf::Color(128,128,128) , sf::Color(255,0,0), sf::Color(0,0,255), sf::Color(0,255,0),      // 0 - szary, 1 - czerwony, 2 - niebieski, 3 - zielony
+    sf::Color kolory[] = { sf::Color(255,255,255) , sf::Color(255,0,0), sf::Color(0,0,255), sf::Color(0,255,0),      // 0 - bialy, 1 - czerwony, 2 - niebieski, 3 - zielony
     sf::Color(255,255,0) , sf::Color(255,128,0), sf::Color(0,255,255), sf::Color(127,0,255),                              // 4 - zolty, 5 - pomaranczowy, 6 - jasnoniebieski, 7- fioletowy
     sf::Color(255,0,255) , sf::Color(102,0,51), sf::Color(102,102,0), sf::Color(51,25,0),                        // 8 - rozowy, 9 - bordowy, 10 - ciemnozloty, 11 - brazowy
     sf::Color(255,255,255), };                                                                                                                             // 12 - bialy
@@ -514,7 +514,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         }
 
         ruszacz.Ruszaj(czas);
-        myszkaGracza.Potworz(event);
+        myszkaGracza.Skupienie();
         muzykant.GrajEfekty(ruszacz);
 
         // przyspiesz jesli zostaly same komputery

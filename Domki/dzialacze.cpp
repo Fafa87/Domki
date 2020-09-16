@@ -24,47 +24,71 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
             if (wybrany != (Domek*)klikniety&&zdarzenie.mouseButton.button == sf::Mouse::Left)
 				wybrany = (Domek*)klikniety;
 
-            if (kontrolowany != (Domek*)klikniety&&zdarzenie.mouseButton.button == sf::Mouse::Right)
+            if (kontrola == false && kontrolowany != (Domek*)klikniety&&zdarzenie.mouseButton.button == sf::Mouse::Right)
             {
                 kontrolowany = (Domek*)klikniety;
                 kontrola = true;
-                if (wybrany == kontrolowany)wybrany = nullptr;
-            }
-
-            if (wybrany != nullptr && wybrany != klikniety && zdarzenie.mouseButton.button == sf::Mouse::Right)
-            {
-                if (cel != klikniety || klikniecia.back().second != zdarzenie.mouseButton.button)
-                {
+                if (wybrany == nullptr) {
+                    wybrany = kontrolowany;
                     klikniecia.clear();
-                    cel = (Domek*)klikniety;
-                }
-            }
-            else if (wybrany != nullptr && wybrany == klikniety && zdarzenie.mouseButton.button == sf::Mouse::Left)
-            {
-                if (cel != klikniety || klikniecia.back().second != zdarzenie.mouseButton.button)
-                {
-                    klikniecia.clear();
-                    cel = (Domek*)klikniety;
                 }
             }
 
-
+            if (wybrany != nullptr && cel != klikniety)
+            {
+                  if(klikniecia.size()>0&&zdarzenie.mouseButton.button!=klikniecia.back().second)klikniecia.clear();
+                  cel = (Domek*)klikniety;
+            }
+            klikniecia.push_back(make_pair(clock(), zdarzenie.mouseButton.button));
+        }
+        else if (klikniety != nullptr && IsType<Ludek>(klikniety) && zdarzenie.mouseButton.button == sf::Mouse::Right) {
+                Ludek* ludzik = ((Ludek*)klikniety);
+                Twor* powrot = ludzik->cel;
+                ludzik->cel = ludzik->skad;
+                ludzik->skad = powrot;
         }
         else
         {
             klikniecia.clear();
             wybrany = nullptr;
             cel = nullptr;	
-        }
-        klikniecia.push_back(make_pair(clock(), zdarzenie.mouseButton.button));
+        }  
     }
-
-    if (kontrola && zdarzenie.type == sf::Event::MouseButtonReleased && zdarzenie.mouseButton.button == sf::Mouse::Right) {
+    else if (kontrola && zdarzenie.type == sf::Event::MouseButtonReleased && zdarzenie.mouseButton.button == sf::Mouse::Right) {
+        double x = okno.mapPixelToCoords(sf::Mouse::getPosition(okno)).x - kontrolowany->polozenie.x, y = okno.mapPixelToCoords(sf::Mouse::getPosition(okno)).y - kontrolowany->polozenie.y;
+        if (sqrt(x*x+y*y) > kontrolowany->rozmiar * 1.5 &&wybrany == kontrolowany)wybrany = nullptr;
         kontrola = false;
         kontrolowany = nullptr;
     }
-
-    if (zdarzenie.type == sf::Event::KeyPressed)
+    else if (zdarzenie.type == sf::Event::MouseMoved)
+    {
+        Skupienie();
+        if (kontrola && skupiony != nullptr && IsType<Domek>(skupiony) && kontrolowany != (Domek*)skupiony&& kontrolowany != nullptr) {
+            if (rozgrywka.punkty_kontrolne) {
+                for (auto domek : kontrolowany->drogi) {
+                    if (domek == skupiony) {
+                        if (punkty_kontrolne.find((Domek*)skupiony) != punkty_kontrolne.end() && punkty_kontrolne[(Domek*)skupiony] == kontrolowany) {
+                            ((Domek*)skupiony)->szybki_przemarsz = nullptr;
+                            punkty_kontrolne.erase((Domek*)skupiony);
+                        }
+                        kontrolowany->szybki_przemarsz = (Domek*)skupiony;
+                        punkty_kontrolne[kontrolowany] = (Domek*)skupiony;
+                        kontrolowany->szybki_wymarsz = true;
+                        kontrolowany = (Domek*)skupiony;
+                        wybrany = kontrolowany;
+                        cel = nullptr;
+                        break;
+                    }
+                }
+            }
+        }
+        else if (kontrola&&(Domek*)skupiony != kontrolowany) {
+            wybrany = kontrolowany;
+            cel = nullptr;
+            klikniecia.clear();
+        }
+    }
+    else if (zdarzenie.type == sf::Event::KeyPressed)
     {
         if (wybrany != nullptr )
         {
@@ -84,43 +108,29 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
                 nacisniety = 'T';
         }
     }
+    
 }
 
-void MyszDecydent::Potworz(sf::Event zdarzenie) {
-    if (zdarzenie.type == sf::Event::MouseMoved || skupiony != nullptr)
-    {
-        sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
-        auto polozenie_kursora = okno.mapPixelToCoords(pixelPos);
-        skupiony = rozgrywka.Zlokalizuj(polozenie_kursora.x, polozenie_kursora.y);
-        if (kontrola && skupiony != nullptr && IsType<Domek>(skupiony) && kontrolowany != (Domek*)skupiony) {
-            if (rozgrywka.punkty_kontrolne) {
-                for (auto domek : kontrolowany->drogi) {
-                    if (domek==skupiony) {
-                        punkty_kontrolne[kontrolowany] = (Domek*)skupiony;
-                        //if (punkty_kontrolne[(Domek*)skupiony] == kontrolowany)punkty_kontrolne.erase((Domek*)skupiony);
-                        kontrolowany = (Domek*)skupiony;
-                        if (kontrolowany == wybrany)wybrany = nullptr;
-                        break;
-                    }
-                }
-            }
-        }
-    }
+void MyszDecydent::Skupienie() {
+    sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
+    auto polozenie_kursora = okno.mapPixelToCoords(pixelPos);
+    skupiony = rozgrywka.Zlokalizuj(polozenie_kursora.x, polozenie_kursora.y);
 }
 
 vector<Rozkaz*> MyszDecydent::WykonajRuch()
 {
     vector<Rozkaz*> res;
-	if (rozgrywka.punkty_kontrolne && wybrany != nullptr && (cel == nullptr || cel == wybrany))
-		for (auto pk_iter = punkty_kontrolne.begin(); pk_iter != punkty_kontrolne.end();pk_iter++)
-			{
-			if (wybrany == (*pk_iter).first)
-				{
-				punkty_kontrolne.erase(pk_iter);
-				break;
-				}
-			}
 
+    if (rozgrywka.punkty_kontrolne&&wybrany != nullptr&&!kontrola) {
+        for (auto punkt = punkty_kontrolne.begin(); punkt != punkty_kontrolne.end();punkt++) {
+            if (wybrany == (*punkt).first) {
+                if ((*punkt).first != (*punkt).second)(*punkt).first->szybki_przemarsz = nullptr;
+                punkty_kontrolne.erase(punkt);
+                break;
+            }
+        }
+    }
+    ///ULEPSZANIE
     if (wybrany != nullptr && cel != nullptr && klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 2))
     {
         if (cel == wybrany)
@@ -131,19 +141,16 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 				cel = nullptr;
 				nacisniety = 0;
 			}
-			else if (klikniecia.size() == 2 && clock() - klikniecia.back().first < 0.05 * CLOCKS_PER_SEC)
-			{
-				auto r = new UlepszRozkaz(wybrany,gracz);
-                r->kto_wydal_rozkaz = gracz;
-				res.push_back(r);
-			}
-            else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC)
-            {
-                if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
-
-                klikniecia.clear();
+            else if (klikniecia.size() == 2 && cel != nullptr ) {
+                auto r = new UlepszRozkaz(wybrany, gracz);
+                res.push_back(r);
                 cel = nullptr;
                 nacisniety = 0;
+            }
+            else if (klikniecia.size() == 2 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC)
+            {
+                klikniecia.clear();
+                wybrany = nullptr;
             }
             else if (klikniecia.size() >= 3)
             {
@@ -156,12 +163,11 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
                 nacisniety = 0;
             }
         }
-        else if (cel != wybrany)
+        // WYMARSZE
+        else if (cel != wybrany&&!kontrola)
         {
-			if (klikniecia.size() == 1)
+			if (klikniecia.size() == 1 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC && clock() - klikniecia.back().first < 1.0 * CLOCKS_PER_SEC)
 			{
-				if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
-
 				auto r = new WymarszRozkaz(wybrany, cel,gracz);
 				r->ulamek = 0.5;
 				res.push_back(r);
@@ -170,21 +176,21 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
 				nacisniety = 0;
 				klikniecia.clear();
 			}
-            else if (klikniecia.size() == 2 && clock() - klikniecia.back().first < 0.05 * CLOCKS_PER_SEC)
+            else if (klikniecia.size() >= 2 && clock() - klikniecia.back().first < 1.0 * CLOCKS_PER_SEC)
             {
 				auto r = new WymarszRozkaz(wybrany, cel,gracz);
                 r->ulamek = 1.0;
                 res.push_back(r);
-            }
-			else if (klikniecia.size() >= 2 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC)
-			{
-				if (rozgrywka.punkty_kontrolne) punkty_kontrolne.erase(wybrany);
-
 				wybrany = nullptr;
 				cel = nullptr;
 				nacisniety = 0;
 				klikniecia.clear();
 			}
+            else {
+                cel = nullptr;
+                nacisniety = 0;
+                klikniecia.clear();
+            }
         }
     }
 
@@ -197,11 +203,12 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
                 auto x = new UlepszRozkaz(pk.first,gracz);
                 res.push_back(x);
             }
-            else if (pk.first->liczebnosc * 10 >= pk.first->max_liczebnosc||pk.first->liczebnosc >= 100.0)
+            else if (pk.first->liczebnosc * 10 >= pk.first->max_liczebnosc||pk.first->liczebnosc >= 100.0||pk.first->szybki_wymarsz)
             {
                 auto x = new WymarszRozkaz(pk.first, pk.second,gracz);
                 x->ulamek = 1;
                 res.push_back(x);
+                pk.first->szybki_wymarsz = false;
             }
             pk_iter++;
         
@@ -277,7 +284,7 @@ void Ruszacz::WykonajRuchy()
                 {
                     rozgrywka->ZmienLiczebnosc(*ruch.skad, ruch.skad->liczebnosc - liczba);
 
-                    rozgrywka->armie.push_back(Ludek(*ruch.dokad));
+                    rozgrywka->armie.push_back(Ludek(*ruch.dokad,*ruch.skad));
                     Ludek& nowaArmia = rozgrywka->armie.back();
                     nowaArmia.gracz = ruch.skad->gracz;
                     nowaArmia.polozenie = ruch.skad->polozenie;
@@ -395,11 +402,13 @@ void Ruszacz::WalczLudkami(double czas)
 			if (spotkanie->liczebnosc <= armia.liczebnosc)
 			{
 				rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc + spotkanie->liczebnosc);
+                armia.tarcza += spotkanie->tarcza;
 				do_usuniecia.push_back(spotkanie);
 			}
 			else
 			{
 				rozgrywka->ZmienLiczebnosc(*spotkanie, armia.liczebnosc + spotkanie->liczebnosc);
+                spotkanie->tarcza += armia.tarcza;
 				do_usuniecia.push_back(&(*it));
 			}
 		}
@@ -418,7 +427,7 @@ void Ruszacz::WalczLudkami(double czas)
                 do_usuniecia.push_back(spotkanie);
             }
         }
-        else if (odleglosc < min(armia.cel->rozmiar,armia.rozmiar))
+        else if (odleglosc < min(armia.cel->rozmiar,armia.rozmiar) && ((((Domek*)armia.cel)->szybki_przemarsz == nullptr) || armia.gracz != armia.cel->gracz))
         {
             if (IsType<Domek>(armia.cel))
             {
@@ -461,6 +470,24 @@ void Ruszacz::WalczLudkami(double czas)
                 rozgrywka->ZmienLiczebnosc(armia, std::abs(0));
                 do_usuniecia.push_back(&(*it));
             }
+        }
+        else if (odleglosc == 0.0 && ((Domek*)armia.cel)->szybki_przemarsz != nullptr) {
+            Domek* przegrupuj = (Domek*)armia.cel;
+
+            armia.polozenie = przegrupuj->polozenie;
+
+            rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc + przegrupuj->liczebnosc);
+            rozgrywka->ZmienLiczebnosc(*przegrupuj, 0.0);
+
+            armia.tarcza = rozgrywka->PoliczAtakDomku(*(Domek*)(armia.cel), armia.liczebnosc) - armia.liczebnosc;
+            armia.szybkosc_ludka = rozgrywka->PoliczSzybkoscDomku(*(Domek*)(armia.cel));
+
+            armia.droga = rozgrywka->Odleglosc(*armia.cel, *przegrupuj->szybki_przemarsz);
+            armia.dystans = 0.0;
+
+            armia.skad = armia.cel;
+
+            armia.cel = przegrupuj->szybki_przemarsz;
         }
         
     }

@@ -2,6 +2,10 @@
 #include "misja.h"
 
 
+WyborMisjiKontrolki::WyborMisjiKontrolki()
+{
+}
+
 shared_ptr<WyborMisjiKontrolki> WyborMisjiKontrolki::DlaMisji(bool opcja_ile_ludzi, bool opcja_oszustwa, bool opcja_walka_w_polu, bool opcja_punkty_kontrolne)
 {
     auto kontrolki = make_shared<WyborMisjiKontrolki>();

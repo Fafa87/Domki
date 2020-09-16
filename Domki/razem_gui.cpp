@@ -39,6 +39,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
         GUI::aplikacja().pop_active_window(okno);
     });
     
+    box->Pack(sfg::Separator::Create(), false, false);
     box->Pack(zakladaj, false, false);
     box->Pack(powrot, false, false);
     okno->Add(box);

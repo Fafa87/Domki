@@ -23,9 +23,9 @@ private:
     bool opcja_oszustwa;
     bool opcja_walka_w_polu;
     bool opcja_punkty_kontrolne;
-    WyborMisjiKontrolki();
 
 public:
+    WyborMisjiKontrolki();
     static shared_ptr<WyborMisjiKontrolki> DlaMisji(bool opcja_ile_ludzi = false, bool opcja_oszustwa = false, bool opcja_walka_w_polu = false, bool opcja_punkty_kontrolne = false);
     static shared_ptr<WyborMisjiKontrolki> DlaKampanii();
 

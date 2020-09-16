@@ -155,7 +155,7 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
         [okno] {
         GUI::aplikacja().pop_active_window(okno);
     });
-
+    box->Pack(sfg::Separator::Create(), false, false);
     box->Pack(uruchom, false, false);
     box->Pack(powrot, false, false);
     okno->Add(box);
@@ -196,6 +196,7 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
         GUI::aplikacja().pop_active_window(okno);
     });
 
+    box->Pack(sfg::Separator::Create(), false, false);
     box->Pack(uruchom, false, false);
     box->Pack(powrot, false, false);
     okno->Add(box);

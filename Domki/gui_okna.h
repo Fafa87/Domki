@@ -14,17 +14,24 @@ private:
     shared_ptr<sfg::Scale> trudnosc_pasek;
     bool opcja_ile_ludzi;
 
+    bool opcja_misja;
+    bool opcja_kampania;
+
     shared_ptr<sfg::CheckButton> oszustwa_ptaszek;
     shared_ptr<sfg::CheckButton> walka_w_polu_ptaszek;
     shared_ptr<sfg::CheckButton> punkty_kontrolne_ptaszek;
     bool opcja_oszustwa;
     bool opcja_walka_w_polu;
     bool opcja_punkty_kontrolne;
+    WyborMisjiKontrolki();
 
 public:
-    WyborMisjiKontrolki(bool opcja_ile_ludzi=false, bool opcja_oszustwa=false, bool opcja_walka_w_polu=false, bool opcja_punkty_kontrolne =false);
-    void DodajZestaw(shared_ptr<sfg::Box> box);
+    static shared_ptr<WyborMisjiKontrolki> DlaMisji(bool opcja_ile_ludzi = false, bool opcja_oszustwa = false, bool opcja_walka_w_polu = false, bool opcja_punkty_kontrolne = false);
+    static shared_ptr<WyborMisjiKontrolki> DlaKampanii();
 
+    void DodajZestaw(shared_ptr<sfg::Box> box);
+    
+    string KampaniaNazwa();
     string MisjaGrupa();
     string MisjaNazwa();
     int IleLudzi();

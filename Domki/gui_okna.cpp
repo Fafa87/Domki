@@ -1,17 +1,31 @@
 #include "gui_okna.h"
 #include "misja.h"
 
-WyborMisjiKontrolki::WyborMisjiKontrolki(bool opcja_ile_ludzi, bool opcja_oszustwa, bool opcja_walka_w_polu, bool opcja_punkty_kontrolne)
+
+shared_ptr<WyborMisjiKontrolki> WyborMisjiKontrolki::DlaMisji(bool opcja_ile_ludzi, bool opcja_oszustwa, bool opcja_walka_w_polu, bool opcja_punkty_kontrolne)
 {
-    this->opcja_oszustwa = opcja_oszustwa;
-    this->opcja_walka_w_polu = opcja_walka_w_polu;
-    this->opcja_punkty_kontrolne = opcja_punkty_kontrolne;
-    this->opcja_ile_ludzi = opcja_ile_ludzi;
+    auto kontrolki = make_shared<WyborMisjiKontrolki>();
+    kontrolki->opcja_misja = true;
+    kontrolki->opcja_oszustwa = opcja_oszustwa;
+    kontrolki->opcja_walka_w_polu = opcja_walka_w_polu;
+    kontrolki->opcja_punkty_kontrolne = opcja_punkty_kontrolne;
+    kontrolki->opcja_ile_ludzi = opcja_ile_ludzi;
+    return kontrolki;
+}
+
+shared_ptr<WyborMisjiKontrolki> WyborMisjiKontrolki::DlaKampanii()
+{
+    auto kontrolki = make_shared<WyborMisjiKontrolki>();
+    kontrolki->opcja_kampania = true;
+    kontrolki->opcja_oszustwa = false;
+    kontrolki->opcja_walka_w_polu = false;
+    kontrolki->opcja_punkty_kontrolne = false;
+    kontrolki->opcja_ile_ludzi = false;
+    return kontrolki;
 }
 
 void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
 {
-    // TODO kopia z razem zaloz - do sprawdzenia czy pasuje te¿ do pojedyñczej 
     auto ile_ludzi_etykieta = sfg::Label::Create("Ile ludzi: ");
     auto ile_ludzi_wartosc = sfg::Label::Create("1");
     this->ile_ludzi_pasek = sfg::Scale::Create(1, 6, 1);
@@ -22,41 +36,54 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
         ile_ludzi_wartosc->SetText(to_string((int)this->ile_ludzi_pasek->GetValue()));
     });
 
-    auto wybor_etykieta = sfg::Label::Create("Misja: ");
-    auto separator = sfg::Label::Create("");
-    this->misja_grupa = sfg::ComboBox::Create();
-    for (auto l : wczytaj_liste_folderow("Plansza"))
-        this->misja_grupa->AppendItem(l);
-    this->misja_grupa->SelectItem(2);
-
-    this->misja_nazwa = sfg::ComboBox::Create();
-    for (auto l : wczytaj_liste_plansz("Plansza\\" + this->misja_grupa->GetSelectedText()))
-        this->misja_nazwa->AppendItem(l);
-    this->misja_nazwa->SelectItem(2);
-
-    this->misja_grupa->GetSignal(sfg::ComboBox::OnSelect).Connect([this]
+    auto wybor_etykieta = sfg::Label::Create("");
+    auto separator = sfg::Separator::Create();
+    if (opcja_misja)
     {
-        this->misja_nazwa->Clear();
+        wybor_etykieta->SetText("Misja: ");
+        this->misja_grupa = sfg::ComboBox::Create();
+        for (auto l : wczytaj_liste_folderow("Plansza"))
+            this->misja_grupa->AppendItem(l);
+        this->misja_grupa->SelectItem(2);
+
+        this->misja_nazwa = sfg::ComboBox::Create();
         for (auto l : wczytaj_liste_plansz("Plansza\\" + this->misja_grupa->GetSelectedText()))
             this->misja_nazwa->AppendItem(l);
-        this->misja_nazwa->SelectItem(0);
-        auto misja_wybrana = "Plansza\\" + this->misja_grupa->GetSelectedText() + "\\" + this->misja_nazwa->GetSelectedText();
-        auto misja_ustawienia = wczytaj_meta(misja_wybrana);
-        auto max_ludzi = misja_ustawienia.komputery.size() + 1;
-        ile_ludzi_pasek->SetRange(0, max_ludzi);
-        ile_ludzi_pasek->SetValue(max_ludzi);
-    });
+        this->misja_nazwa->SelectItem(2);
 
-    this->misja_nazwa->GetSignal(sfg::ComboBox::OnSelect).Connect(
-        [this] {
-        auto misja_wybrana = "Plansza\\" + this->misja_grupa->GetSelectedText() + "\\" + this->misja_nazwa->GetSelectedText();
-        auto misja_ustawienia = wczytaj_meta(misja_wybrana);
-        auto max_ludzi = misja_ustawienia.komputery.size() + 1;
-        ile_ludzi_pasek->SetRange(0, max_ludzi);
-        ile_ludzi_pasek->SetValue(max_ludzi);
-    });
-    this->misja_nazwa->SelectItem(2);
-    this->misja_nazwa->GetSignal(sfg::ComboBox::OnSelect)();
+        this->misja_grupa->GetSignal(sfg::ComboBox::OnSelect).Connect([this]
+        {
+            this->misja_nazwa->Clear();
+            for (auto l : wczytaj_liste_plansz("Plansza\\" + this->misja_grupa->GetSelectedText()))
+                this->misja_nazwa->AppendItem(l);
+            this->misja_nazwa->SelectItem(0);
+            auto misja_wybrana = "Plansza\\" + this->misja_grupa->GetSelectedText() + "\\" + this->misja_nazwa->GetSelectedText();
+            auto misja_ustawienia = wczytaj_meta(misja_wybrana);
+            auto max_ludzi = misja_ustawienia.komputery.size() + 1;
+            ile_ludzi_pasek->SetRange(0, max_ludzi);
+            ile_ludzi_pasek->SetValue(max_ludzi);
+        });
+
+        this->misja_nazwa->GetSignal(sfg::ComboBox::OnSelect).Connect(
+            [this] {
+            auto misja_wybrana = "Plansza\\" + this->misja_grupa->GetSelectedText() + "\\" + this->misja_nazwa->GetSelectedText();
+            auto misja_ustawienia = wczytaj_meta(misja_wybrana);
+            auto max_ludzi = misja_ustawienia.komputery.size() + 1;
+            ile_ludzi_pasek->SetRange(0, max_ludzi);
+            ile_ludzi_pasek->SetValue(max_ludzi);
+        });
+        this->misja_nazwa->SelectItem(2);
+        this->misja_nazwa->GetSignal(sfg::ComboBox::OnSelect)();
+    }
+
+    if (opcja_kampania);
+    {
+        wybor_etykieta->SetText("Kampanie: ");
+        this->misja_nazwa = sfg::ComboBox::Create();
+        for (auto l : wczytaj_liste_folderow("Kampanie"))
+            this->misja_nazwa->AppendItem(l);
+        this->misja_nazwa->SelectItem(0);
+    }
 
     auto szybkosc_etykieta = sfg::Label::Create(L"Szybkoœæ: ");
     this->szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
@@ -96,8 +123,15 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
     int row_top = 0;
     tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, row_top++, 4, 1));
     tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, row_top, 1, 1));
-    tabelka->Attach(misja_grupa, sf::Rect<sf::Uint32>(1, row_top++, 2, 1));
-    tabelka->Attach(misja_nazwa, sf::Rect<sf::Uint32>(1, row_top++, 2, 1));
+    if (opcja_misja)
+    {
+        tabelka->Attach(misja_grupa, sf::Rect<sf::Uint32>(1, row_top++, 2, 1));
+        tabelka->Attach(misja_nazwa, sf::Rect<sf::Uint32>(1, row_top++, 2, 1));
+    }
+    if (opcja_kampania)
+    {
+        tabelka->Attach(misja_nazwa, sf::Rect<sf::Uint32>(1, row_top++, 2, 1));
+    }
     tabelka->Attach(szybkosc_etykieta, sf::Rect<sf::Uint32>(0, row_top, 1, 1));
     tabelka->Attach(szybkosc_pasek, sf::Rect<sf::Uint32>(1, row_top++, 2, 1));
     tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, row_top, 1, 1));
@@ -133,6 +167,11 @@ string WyborMisjiKontrolki::MisjaGrupa()
 }
 
 string WyborMisjiKontrolki::MisjaNazwa()
+{
+    return this->misja_nazwa->GetSelectedText();
+}
+
+string WyborMisjiKontrolki::KampaniaNazwa()
 {
     return this->misja_nazwa->GetSelectedText();
 }

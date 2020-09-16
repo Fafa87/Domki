@@ -18,7 +18,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     
     box->Pack(tytul, false, false);
 
-    auto kontrolki = make_shared<WyborMisjiKontrolki>(
+    auto kontrolki = WyborMisjiKontrolki::DlaMisji(
         true, // ile ludzi
         false, false, false);
     kontrolki->DodajZestaw(box);

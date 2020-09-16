@@ -4,7 +4,33 @@
 #include "gui_okna.h"
 #include "../MultiSerwer/mastery.h"
 
-std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, string nazwa)
+std::shared_ptr<sfg::Window> serwer_menu_tutaj(std::shared_ptr<sfg::Window> glowne, sf::Music & muzyka, string nazwa)
+{
+    return start_serwer_menu(glowne, muzyka, nazwa, 
+        [](string komenda_startu)
+    {
+        GUI::aplikacja().zalozone_gry.push_back(start_nowej_gry_dla_wielu(komenda_startu));
+        LOG(INFO) << "Zalozone gry: " << GUI::aplikacja().zalozone_gry.size();
+    });
+}
+
+std::shared_ptr<sfg::Window> serwer_menu_planeta(std::shared_ptr<sfg::Window> glowne, sf::Music & muzyka, mastery::Klient* master_klient)
+{
+    return start_serwer_menu(glowne, muzyka, master_klient->gracz.nazwa,
+        [master_klient](string komenda_startu)
+    {
+        // TMP to walnie na pewno :)
+        auto tokeny_start = split(komenda_startu, ' ');
+        tokeny_start.erase(tokeny_start.begin());
+        tokeny_start.erase(tokeny_start.end()-1);
+        auto serce_komendy = join(tokeny_start, " ");
+        master_klient->komendy.add("/START: " + serce_komendy);
+        LOG(INFO) << "Prosba o zalozenie gry: " << serce_komendy;
+    });
+}
+
+std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, string nazwa,
+    function<void(string)> zakladaj_fun)
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
 
@@ -25,12 +51,10 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     
     auto zakladaj = sfg::Button::Create(L"Zak³adaj!");
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [&muzyka, kontrolki] {
-        GUI::aplikacja().zalozone_gry.push_back(
-            start_nowej_gry_dla_wielu(
-                start_generuj_komende_startu(kontrolki->MisjaGrupa(), kontrolki->MisjaNazwa(),
-                    kontrolki->DoIluWygranych(), kontrolki->Szybkosc(), kontrolki->IleLudzi(), PORT_TCP))); // TODO uzyj informacji o trudnosci
-        LOG(INFO) << "Zalozone gry: " << GUI::aplikacja().zalozone_gry.size();
+        [&muzyka, okno, kontrolki, zakladaj_fun] {
+        zakladaj_fun(start_generuj_komende_startu(kontrolki->MisjaGrupa(), kontrolki->MisjaNazwa(),
+            kontrolki->DoIluWygranych(), kontrolki->Szybkosc(), kontrolki->IleLudzi(), PORT_TCP)); // TODO uzyj informacji o trudnosci);
+        GUI::aplikacja().pop_active_window(okno);
     });
 
     auto powrot = sfg::Button::Create(L"Powrót");
@@ -48,8 +72,6 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
 
     return okno;
 }
-
-
 
 std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, mastery::Klient* master_klient)
 {
@@ -101,8 +123,10 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     // KLIKANIE
     auto odpal = sfg::Button::Create(L"Postaw serwer");
     odpal->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [okno, master_klient] {
-        master_klient->komendy.add("/START: Mapy+Turniejowe Pojedynek.txt 2 1.500000 2" );
+        [glowne, &muzyka, master_klient] {
+        auto okno_zaloz = serwer_menu_planeta(glowne, muzyka, master_klient);
+        if (okno_zaloz != nullptr)
+            GUI::aplikacja().set_active_window(okno_zaloz);
     });
     auto dolacz = sfg::Button::Create(L"Do³¹cz teraz");
     dolacz->GetSignal(sfg::Widget::OnLeftClick).Connect(
@@ -196,7 +220,7 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
     auto zaloz = sfg::Button::Create(L"Za³ó¿ tutaj");
     zaloz->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [&muzyka, nazwa_edit, glowne] {
-        auto okno_zaloz = start_serwer_menu(glowne, muzyka, nazwa_edit->GetText());
+        auto okno_zaloz = serwer_menu_tutaj(glowne, muzyka, nazwa_edit->GetText());
         if (okno_zaloz != nullptr)
             GUI::aplikacja().set_active_window(okno_zaloz);
     });

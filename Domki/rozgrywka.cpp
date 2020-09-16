@@ -151,14 +151,14 @@ Twor * Rozgrywka::Zlokalizuj(int x, int y)
     {
         PD punkt(x, y);
         PD roz = punkt - dom.polozenie;
-        if (sqrt(roz.x * roz.x + roz.y * roz.y) < dom.rozmiar)
+        if (sqrt(roz.x * roz.x + roz.y * roz.y) < 1.5 * dom.rozmiar)
             return &dom;
     }
 	for (auto& armia : armie)
 	{
 		PD punkt(x, y);
 		PD roz = punkt - armia.polozenie;
-		if (sqrt(roz.x * roz.x + roz.y * roz.y) < armia.rozmiar)
+		if (sqrt(roz.x * roz.x + roz.y * roz.y) < 1.5 * armia.rozmiar)
 			return &armia;
 	}
     return nullptr;

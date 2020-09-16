@@ -326,7 +326,7 @@ OznaczaczWyborow::OznaczaczWyborow(MyszDecydent & decydent) : decydent(decydent)
 
 void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 {
-    if (decydent.skupiony != nullptr && decydent.skupiony->uid >= 0 && decydent.skupiony->uid <= decydent.skupiony->last_uid && decydent.skupiony != decydent.wybrany) // TMP TODO
+    if (decydent.skupiony != nullptr && decydent.skupiony->uid >= 0 && decydent.skupiony->uid <= decydent.skupiony->last_uid&& decydent.skupiony != decydent.wybrany) // TMP TODO
     {
         double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaæ wielkoœæ okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)
         double rozmiar = decydent.skupiony->rozmiar * wspolczynnik_czas_odznaczenia;
@@ -335,7 +335,7 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
         kolo.setRadius(rozmiar);
         kolo.setOrigin(rozmiar, rozmiar);
         sf::Color kolor = decydent.skupiony->gracz->kolor;
-        kolor.a = 96;
+        kolor.a = 150;
         kolo.setFillColor(kolor);
 
         okno.draw(kolo);
@@ -349,12 +349,27 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
         kolo.setRadius(rozmiar);
         kolo.setOrigin(rozmiar, rozmiar);
         sf::Color kolor = decydent.wybrany->gracz->kolor;
-        kolor.a = 128;
+        kolor.a = 200;
         kolo.setFillColor(kolor);
 
         okno.draw(kolo);
     }
-    
+    if (decydent.kontrola&&decydent.kontrolowany != nullptr)
+    {
+        auto start_drogi = sf::Vector2f(decydent.kontrolowany->polozenie.x, decydent.kontrolowany->polozenie.y);
+        auto koniec_drogi = okno.mapPixelToCoords(sf::Mouse::getPosition(okno));
+        auto kierunek = koniec_drogi - start_drogi;
+        double odleglosc = sqrt(kierunek.x * kierunek.x + kierunek.y * kierunek.y);
+        if (odleglosc > decydent.kontrolowany->rozmiar * 1.5){
+            double skala = 1.5 * decydent.kontrolowany->rozmiar / odleglosc;
+        start_drogi.x += skala * kierunek.x;
+        start_drogi.y += skala * kierunek.y;
+        kierunek.x -= skala * kierunek.x;
+        kierunek.y -= skala * kierunek.y;
+        rysuj_strzalke(okno, start_drogi, kierunek, decydent.gracz.kolor, 5);
+         }
+    }
+
     for (auto& pk : decydent.punkty_kontrolne)
     {
         auto wybrany = pk.first;
@@ -367,16 +382,16 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
             auto polowa_dlugosci = sf::Vector2f(0, 15);
             auto cykl = polowa_dlugosci * abs(cykl_czasowy() - 0.5f);
 
-            rysuj_strzalke(okno, centrum + ulepszanie + polowa_dlugosci - cykl, -polowa_dlugosci * 2.0f, wybrany->gracz->kolor, 4);
+            rysuj_strzalke(okno, centrum + ulepszanie + polowa_dlugosci - cykl, -polowa_dlugosci * 2.0f, decydent.gracz.kolor, 3);
         }
         else // wysylanie automatyczne
         {
-            auto start_drogi = sf::Vector2f(wybrany->polozenie.x, wybrany->polozenie.y + 15);
-            auto koniec_drogi = sf::Vector2f(docelowy->polozenie.x, docelowy->polozenie.y + 15);
+            auto start_drogi = sf::Vector2f(wybrany->polozenie.x, wybrany->polozenie.y+15 );
+            auto koniec_drogi = sf::Vector2f(docelowy->polozenie.x, docelowy->polozenie.y+15);
             auto kierunek = koniec_drogi - start_drogi;
             auto cykl = 0.25f * abs(cykl_czasowy() - 0.5f);
 
-            rysuj_strzalke(okno, start_drogi, kierunek * (0.60f + cykl), wybrany->gracz->kolor, 5);
+            rysuj_strzalke(okno, start_drogi, kierunek * (0.60f + cykl), decydent.gracz.kolor, 3);
         }
     }
 }

@@ -173,6 +173,7 @@ xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
   <ItemGroup>
     <ClInclude Include="..\MultiSerwer\mastery.h" />
     <ClInclude Include="..\MultiSerwer\serwery.h" />
+    <ClInclude Include="czasolicz.h" />
     <ClInclude Include="dane.h" />
     <ClInclude Include="dzialacze.h" />
     <ClInclude Include="ext_string.h" />

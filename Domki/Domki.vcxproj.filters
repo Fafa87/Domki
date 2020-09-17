@@ -161,6 +161,9 @@
     <ClInclude Include="gui_okna.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="czasolicz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="Domki.conf">

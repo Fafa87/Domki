@@ -86,7 +86,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
     domek7.drogi.push_back(&domek);
     domek7.drogi.push_back(&domek4);
 
-    gra.armie.push_back(Ludek(domek));
+    gra.armie.push_back(Ludek(domek, domek));
     Ludek & ludek = gra.armie.back();
     ludek.polozenie = { x + 100,y };
     ludek.gracz = &g;
@@ -94,7 +94,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
     ludek.tarcza = 0;
     gra.ZmienLiczebnosc(ludek, 240);
 
-    gra.armie.push_back(Ludek(domek));
+    gra.armie.push_back(Ludek(domek, domek));
     Ludek & ludek2 = gra.armie.back();
     ludek2.polozenie = { x - 100,y };
     ludek2.gracz = &g;
@@ -102,7 +102,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
     ludek2.wyglad = Wyglad::kWojownik;
     gra.ZmienLiczebnosc(ludek2, 240);
 
-    gra.armie.push_back(Ludek(domek));
+    gra.armie.push_back(Ludek(domek, domek));
     Ludek & ludek3 = gra.armie.back();
     ludek3.polozenie = { x + 100,y + 100 };
     ludek3.gracz = &g;
@@ -110,7 +110,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
     ludek3.wyglad = Wyglad::kWojownik;
     gra.ZmienLiczebnosc(ludek3, 240);
 
-    gra.armie.push_back(Ludek(domek));
+    gra.armie.push_back(Ludek(domek, domek));
     Ludek & ludek4 = gra.armie.back();
     ludek4.polozenie = { x - 100,y + 100 };
     ludek4.gracz = &g;
@@ -122,7 +122,7 @@ void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
 
 void dodaj_konie(Rozgrywka & gra, Gracz& g, double x, double y)
 {
-    gra.armie.push_back(Ludek(gra.domki.front()));
+    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
     Ludek & ludek = gra.armie.back();
     ludek.polozenie = { x - 100,y - 100 };
     ludek.gracz = &g;
@@ -130,7 +130,7 @@ void dodaj_konie(Rozgrywka & gra, Gracz& g, double x, double y)
     ludek.tarcza = 0;
     gra.ZmienLiczebnosc(ludek, 240);
 
-    gra.armie.push_back(Ludek(gra.domki.front()));
+    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
     Ludek & ludek2 = gra.armie.back();
     ludek2.polozenie = { x ,y - 100 };
     ludek2.gracz = &g;
@@ -138,7 +138,7 @@ void dodaj_konie(Rozgrywka & gra, Gracz& g, double x, double y)
     ludek2.wyglad = Wyglad::kWojownik;
     gra.ZmienLiczebnosc(ludek2, 240);
 
-    gra.armie.push_back(Ludek(gra.domki.front()));
+    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
     Ludek & ludek3 = gra.armie.back();
     ludek3.polozenie = { x + 100,y - 100 };
     ludek3.gracz = &g;
@@ -146,7 +146,7 @@ void dodaj_konie(Rozgrywka & gra, Gracz& g, double x, double y)
     ludek3.wyglad = Wyglad::kWojownik;
     gra.ZmienLiczebnosc(ludek3, 240);
 
-    gra.armie.push_back(Ludek(gra.domki.front()));
+    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
     Ludek & ludek4 = gra.armie.back();
     ludek4.polozenie = { x - 100,y };
     ludek4.gracz = &g;
@@ -155,7 +155,7 @@ void dodaj_konie(Rozgrywka & gra, Gracz& g, double x, double y)
     ludek4.wyglad = Wyglad::kWojownik;
     gra.ZmienLiczebnosc(ludek4, 240);
 
-    gra.armie.push_back(Ludek(gra.domki.front()));
+    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
     Ludek & ludek5 = gra.armie.back();
     ludek5.polozenie = { x,y };
     ludek5.gracz = &g;
@@ -164,7 +164,7 @@ void dodaj_konie(Rozgrywka & gra, Gracz& g, double x, double y)
     ludek5.wyglad = Wyglad::kWojownik;
     gra.ZmienLiczebnosc(ludek5, 240);
 
-    gra.armie.push_back(Ludek(gra.domki.front()));
+    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
     Ludek & ludek6 = gra.armie.back();
     ludek6.polozenie = { x + 100,y };
     ludek6.gracz = &g;

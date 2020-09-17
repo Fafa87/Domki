@@ -19,7 +19,7 @@ Ludek& tworca::DodajLudka(Rozgrywka& gra, Domek& dokad, int nr_gracza, int liczb
 {
     dodaj_gracza_gdy_brak(gra, nr_gracza);
     auto& g = gra.Graczu(nr_gracza);
-    gra.armie.push_back(Ludek(dokad));
+    gra.armie.push_back(Ludek(dokad, dokad));
     Ludek & ludek = gra.armie.back();
     ludek.polozenie = pos;
     ludek.gracz = &g;

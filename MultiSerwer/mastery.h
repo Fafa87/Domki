@@ -54,7 +54,7 @@ namespace mastery
         string nazwa;
         vector<shared_ptr<multi::Zawodnik>> pokojnicy;
 
-        int aktywny_port;
+        int aktywny_port=-1;
         PROCESS_INFORMATION aktywna_gra;
 
         Pokoj(string nazwa) : nazwa(nazwa) {}

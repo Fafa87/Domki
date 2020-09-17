@@ -194,6 +194,8 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
         }
         ludki->SetText(join(master_klient->KtoJestObok(), "\n"));
     });
+    master_klient->Rozlacz();
+    GUI::aplikacja().pop_active_window(okno);
 
     return okno;
 }

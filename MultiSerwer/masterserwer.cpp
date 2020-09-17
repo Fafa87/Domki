@@ -38,7 +38,7 @@ void wykonaj_masterserwer(mastery::Serwer* serwer, string zadanie)
 mastery::Serwer::Serwer()
 {
     this->porty_gier = make_pair(85, 100);
-    hol = make_unique<Pokoj>("Hol");
+    hol = make_shared<Pokoj>("hol");
     pokoje.push_back(hol);
 }
 
@@ -143,7 +143,7 @@ void mastery::Serwer::Postaw(int port)
                 nowa_wtyczka = new sf::TcpSocket();
                 wtykowiec.add(*osoba->wtyk);
 
-                this->podpieci.emplace_back(osoba);
+                this->podpieci.push_back(osoba);
 
                 LOG(INFO) << "Dodaje osobe: " << osoba->nazwa;
                 DolaczDoPokoju(osoba, hol->nazwa);
@@ -221,7 +221,7 @@ int mastery::Serwer::ZnajdzWolnyPort()
     // nie umrzyj prosze
     for (auto pokoj : pokoje)
     {
-        if (pokoj->aktywny_port != 0)
+        if (pokoj->aktywny_port != -1)
         {
             wolne_porty.erase(pokoj->aktywny_port);
         }
@@ -282,8 +282,9 @@ void mastery::Serwer::OpuscPokoj(shared_ptr<multi::Zawodnik> ludek)
 void mastery::Serwer::UsunZawodnika(shared_ptr<multi::Zawodnik> ludek)
 {
     LOG(INFO) << "Opuscila nas osoba: " << ludek->nazwa;
-    OpuscPokoj(ludek);
 
+    WyslijDoPokoju(gdzie_jest[ludek], ludek->nazwa + " opuszcza pokoj.", ludek);
+    OpuscPokoj(ludek);
     WyslijDoPokoju(hol, ludek->nazwa + " uciekl.");
 
     wtykowiec.remove(*ludek->wtyk);

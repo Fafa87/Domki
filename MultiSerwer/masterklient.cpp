@@ -1,5 +1,6 @@
 #include "../MultiSerwer/mastery.h"
 #include "../Domki/ext_string.h"
+#include "../Domki/ext_vector.h"
 
 
 int komunikat_ostatni = -1;
@@ -105,17 +106,19 @@ void mastery::Klient::PrzeanalizujOdebrane(string tekst)
     {
         auto nazwa = tekst.substr(0, tekst.find(" wchodzi"));
         this->ludzie_obok.push_back(nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
+        odebrane.add(nazwa + " wkroczyl do pokoju");
     }
     else if (tekst.find(" opuszcza") != -1)
     {
         auto nazwa = tekst.substr(0, tekst.find(" opuszcza"));
-        remove(this->ludzie_obok.begin(), this->ludzie_obok.end(), nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
+        remove_item(this->ludzie_obok, nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
+        odebrane.add(nazwa + " opuscil pokoj");
     }
     else if (tekst.find("na porcie ") != -1)
     {
         auto port = stoi(tekst.substr(tekst.find(" na porcie ")+11));
         this->rozgrywka_pokoju = Adres(this->adres_serwer.ip, port);
-        odebrane.add("Odpalono rozgrywke.");
+        odebrane.add("Odpalono rozgrywke!");
     }
     else
         odebrane.add(tekst);

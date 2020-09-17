@@ -1,5 +1,6 @@
 #include "gui.h"
 #include "windows.h"
+#include "ext_vector.h"
 
 GUI* GUI::apa;
 
@@ -85,7 +86,10 @@ void GUI::process_loop(std::function<bool(sf::Event)> event_processor, std::func
         sf::Event event;
         while (okno.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed || event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
+            if (event.type == sf::Event::Closed)
+                throw std::exception("okno zamkniete");
+
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
                 loop = false;
 
             if (event_processor(event))
@@ -134,7 +138,7 @@ void GUI::remove_active_window(shared_ptr<sfg::Window> window)
 {
     pulpit.Remove(window);
     window->Show(false);
-    windows.erase(std::remove(windows.begin(), windows.end(), window), windows.end());
+    remove_item(windows, window);
 }
 
 void GUI::show_all_windows()

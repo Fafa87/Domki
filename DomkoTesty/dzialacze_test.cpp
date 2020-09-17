@@ -119,6 +119,46 @@ namespace DomkoTesty
             Assert::AreEqual(100.0 - 16, domek_0.liczebnosc);
         }
 
+        TEST_METHOD(NaZero)
+        {
+            auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 100, PD());
+            domek_0.typdomku = TypDomku::kMiasto;
+            domek_0.poziom = 1;
+            auto& armia_atak = tworca::DodajLudka(rozgrywka, domek_0, 1, 100, PD());
+
+            Assert::AreEqual(100.0, domek_0.liczebnosc);
+            ruszacz.Ruszaj(10);
+            Assert::AreEqual(0.0, domek_0.liczebnosc);
+            Assert::AreEqual((int)TypDomku::kMiasto, (int)domek_0.typdomku);
+            //Assert::AreEqual((int)Wyglad::kMiasto, (int)domek_0.wyglad);
+            Assert::AreEqual(1, domek_0.poziom);
+        }
+
+        TEST_METHOD(NaJeden)
+        {
+            auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 110, PD());
+            domek_0.typdomku = TypDomku::kMiasto;
+            domek_0.poziom = 1;
+            auto& armia_atak = tworca::DodajLudka(rozgrywka, domek_0, 1, 100, PD());
+
+            Assert::AreEqual(110.0, domek_0.liczebnosc);
+            ruszacz.Ruszaj(10);
+            Assert::AreEqual(10.0, domek_0.liczebnosc);
+            Assert::AreEqual((int)TypDomku::kMiasto, (int)domek_0.typdomku);
+            //Assert::AreEqual((int)Wyglad::kMiasto, (int)domek_0.wyglad);
+            Assert::AreEqual(1, domek_0.poziom);
+
+            armia_atak = tworca::DodajLudka(rozgrywka, domek_0, 1, 15, PD());
+
+            Assert::AreEqual(10.0, domek_0.liczebnosc);
+            ruszacz.Ruszaj(10);
+            Assert::AreEqual(5.0, domek_0.liczebnosc);
+            Assert::AreEqual((int)TypDomku::kMiasto, (int)domek_0.typdomku);
+            //Assert::AreEqual((int)Wyglad::kMiasto, (int)domek_0.wyglad);
+            Assert::AreEqual(1, domek_0.poziom);
+            Assert::AreEqual(1, domek_0.gracz->numer);
+        }
+
         TEST_METHOD(AtakObronaSzybkoscDomku)
         {
             auto& domek_0 = tworca::DodajDomek(rozgrywka, 0, 10, PD());

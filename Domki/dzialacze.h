@@ -8,8 +8,10 @@
 
 struct Rozkaz
 {
-    // to string to cereal serialization?
-    virtual ~Rozkaz() {}
+	// to string to cereal serialization?
+    Gracz &kto_wydal_rozkaz;
+    Rozkaz(Gracz &kto_wydal_rozkaz) : kto_wydal_rozkaz(kto_wydal_rozkaz){}
+	virtual ~Rozkaz() {}
 };
 
 struct Testpower : Rozkaz
@@ -23,15 +25,16 @@ struct Testpower : Rozkaz
 struct WymarszRozkaz : Rozkaz
 {
     WymarszRozkaz(Domek* skad, Domek* dokad);
-
-    Domek * skad, * dokad;
-    int ser_skad, ser_dokad;
-    double ulamek = 1;
+    WymarszRozkaz(Domek* skad, Domek* dokad, Gracz& kto_wydal_rozkaz);
+	Domek * skad, * dokad;
+	int ser_skad, ser_dokad;
+	double ulamek = 1;
 };
 
 struct UlepszRozkaz : Rozkaz
 {
     UlepszRozkaz(Domek* kogo);
+	UlepszRozkaz(Domek* kogo, Gracz& kto_wydal_rozkaz);
 
     Domek * kogo;
     int ser_kogo;
@@ -40,6 +43,7 @@ struct UlepszRozkaz : Rozkaz
 struct PrzebudujRozkaz : Rozkaz
 {
     PrzebudujRozkaz(Domek* kogo, TypDomku naco);
+	PrzebudujRozkaz(Domek* kogo, TypDomku naco, Gracz& kto_wydal_rozkaz);
 
     Domek * kogo;
     TypDomku naco;
@@ -49,6 +53,7 @@ struct PrzebudujRozkaz : Rozkaz
 struct BurzRozkaz : Rozkaz
 {
     BurzRozkaz(Domek* kogo);
+	BurzRozkaz(Domek* kogo, Gracz& kto_wydal_rozkaz);
 
     Domek * kogo;
     int ser_kogo;
@@ -66,17 +71,18 @@ public:
     MyszDecydent(sf::RenderWindow& okno, Rozgrywka& rozgrywka, Gracz& gracz);
     void Klik(double x, double y);
 
-    virtual void Przetworz() {}
-    void Przetworz(sf::Event zdarzenie);
-    void Potworz(sf::Event zdarzenie);
+	virtual void Przetworz() {}
+	void Przetworz(sf::Event zdarzenie);
+    void Skupienie();
 
     virtual vector<Rozkaz*> WykonajRuch();
 
+    bool kontrola = false;
     map<Domek*, Domek*> punkty_kontrolne;
-    Domek* wybrany = nullptr;
+	Domek *wybrany = nullptr,*kontrolowany = nullptr;
     Twor* skupiony = nullptr;
-    char nacisniety = 0;
-    Gracz& gracz;
+	char nacisniety = 0;
+	Gracz& gracz;
 
 private:
     sf::RenderWindow & okno;

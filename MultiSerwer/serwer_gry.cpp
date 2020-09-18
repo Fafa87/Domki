@@ -1,22 +1,23 @@
 #include "../MultiSerwer/serwery.h"
 
 KontekstGry* KontekstGry::obiekt;
+const int LIMIT_CZEKANIA = 60 * 1;
 
 void komunikat_serwer_gry()
 {
     printf("Jestes serwerem, gracze sie podlaczyli, napisz 'start' aby zaczac gre:\n");
 }
 
-void start_serwer_gry(string zadanie_z_portem)
+bool start_serwer_gry(string zadanie_z_portem)
 {
     auto tokeny = split(zadanie_z_portem, ' ');
     auto port = stoi(tokeny[tokeny.size() - 1]);
     tokeny.erase(tokeny.end() - 1);
     
-    start_serwer_gry(join(tokeny, " "), port);
+    return start_serwer_gry(join(tokeny, " "), port);
 }
 
-void start_serwer_gry(string zadanie, int port_gry)
+bool start_serwer_gry(string zadanie, int port_gry)
 {
     KontekstGry::o().serwer = new Serwer();
     auto& serwer = KontekstGry::o().serwer;
@@ -73,11 +74,19 @@ void start_serwer_gry(string zadanie, int port_gry)
     for (int i = 0; i < liczba_ludzi; i++)
     {
         LOG(INFO) << "Laduje gracza nr: " << i+1;
-        serwer->OczekujNaGracza();
-        misja_ustawienia.nazwy_graczow.push_back(serwer->ludzie.back().nazwa);
+        if (serwer->OczekujNaGracza(LIMIT_CZEKANIA))
+        {
+            misja_ustawienia.nazwy_graczow.push_back(serwer->ludzie.back().nazwa);
 
-        LOG(INFO) << "Zaladowalem gracza: " << serwer->ludzie.back().nazwa;
+            LOG(INFO) << "Zaladowalem gracza: " << serwer->ludzie.back().nazwa;
+        }
+        else 
+        {
+            LOG(INFO) << "Nikt sie nie zglosic, wylaczam sie";
+            return false;
+        }
     }
+    return true;
 }
 
 void wykonaj_serwer_gry(string zadanie)

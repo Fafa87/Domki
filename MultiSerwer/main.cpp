@@ -23,7 +23,7 @@ bool cichociemny = false;
 
 void wykonaj(string zadanie);
 
-void wybierz_i_wystartuj_tryb(string tryb, string komenda)
+bool wybierz_i_wystartuj_tryb(string tryb, string komenda)
 {
     char tmp[1000];
     if (!tryb.size())
@@ -46,7 +46,7 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
             gets_s(tmp);
             komenda = tmp;
         }
-        start_serwer_gry(komenda);
+        return start_serwer_gry(komenda);
     }
     else if (tryb == "klient" || tryb == "k")
     {
@@ -92,6 +92,7 @@ void wybierz_i_wystartuj_tryb(string tryb, string komenda)
         }
         start_masterklient(komenda);
     }
+    return true;
 }
 
 void komunikat()
@@ -140,9 +141,12 @@ void konfiguruj(int l, const char * argv[])
     if (l == 0)
     {
         LOG(INFO) << "Konfiguruje serwer...";
-        wybierz_i_wystartuj_tryb("serwer", string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]) + " " + string(argv[7]));
-        while (misja_ustawienia.Zwyciezca() < 0)
-            wykonaj("start");
+        auto parametry = string(argv[2]) + " " + string(argv[3]) + " " + string(argv[4]) + " " + string(argv[5]) + " " + string(argv[6]) + " " + string(argv[7]);
+        if (wybierz_i_wystartuj_tryb("serwer", parametry))
+        {
+            while (misja_ustawienia.Zwyciezca() < 0)
+                wykonaj("start");
+        }
         exit(0);
     }
     else if (l == 1)

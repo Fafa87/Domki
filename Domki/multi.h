@@ -56,7 +56,7 @@ namespace multi
         Adres Postaw(int port_gry);
 
         // oczekuje na pod��czenie si� gracza i podanie danych
-        void OczekujNaGracza();
+        bool OczekujNaGracza(double limit_czasu);
         void CzekajNaGotowosc();
 
         // wy�lij info o starcie do graczy

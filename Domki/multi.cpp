@@ -22,7 +22,7 @@ Adres multi::Serwer::Postaw(int port_gry)
     return Adres(sf::IpAddress::getLocalAddress().toString(), nasluchiwacz.getLocalPort());
 }
 
-void multi::Serwer::OczekujNaGracza()
+bool multi::Serwer::OczekujNaGracza(double limit_czasu)
 {
     Zawodnik gracz;
     gracz.wtyk = new sf::TcpSocket();
@@ -40,7 +40,13 @@ void multi::Serwer::OczekujNaGracza()
                 printf("rozsylacz buraka!");
         }
         Sleep(100);
+        limit_czasu -= 100.0 / 1000;
         wysylaj++;
+        if (limit_czasu <= 0)
+        {
+            nasluchiwacz.setBlocking(true);
+            return false;
+        }
     }
     if (status != sf::Socket::Done)
     {

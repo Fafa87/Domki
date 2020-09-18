@@ -72,6 +72,8 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
             auto status = multi::Wyslij(*ludek->wtyk, "Wszedles do pokoju " + nazwa_pokoju);
             ludek->ostatnio = status;
             WyslijDoPokoju(gdzie_jest[ludek], ludek->nazwa + " wchodzi do pokoju.", ludek);
+            if (gdzie_jest[ludek]->aktywne_info.size())
+                multi::Wyslij(*ludek->wtyk, gdzie_jest[ludek]->aktywne_info); // wyœlij informacje o serwerze
         }
     }
     else if (zapytanie.find("/START: ") == 0)
@@ -84,12 +86,14 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
         else
         {
             auto komenda_serwera = zapytanie.substr(8);
-            WyslijDoPokoju(gdzie_jest[ludek], "GRAJCIE! '" + komenda_serwera + "' na porcie " + to_string(wolny_port));
+            auto info_dla_graczy = "GRAJCIE! '" + komenda_serwera + "' na porcie " + to_string(wolny_port);
+            WyslijDoPokoju(gdzie_jest[ludek], info_dla_graczy);
             
             // wpisz process
             auto proces_gry = start_nowej_gry_dla_wielu("0 " + komenda_serwera + " " + to_string(wolny_port));
             gdzie_jest[ludek]->aktywny_port = wolny_port;
             gdzie_jest[ludek]->aktywna_gra = proces_gry;
+            gdzie_jest[ludek]->aktywne_info = info_dla_graczy;
         }
     }
     else 
@@ -148,6 +152,8 @@ void mastery::Serwer::Postaw(int port)
                 LOG(INFO) << "Dodaje osobe: " << osoba->nazwa;
                 DolaczDoPokoju(osoba, hol->nazwa);
                 WyslijDoPokoju(hol, osoba->nazwa + " wchodzi do pokoju.", osoba);
+                if (gdzie_jest[osoba]->aktywne_info.size())
+                    multi::Wyslij(*osoba->wtyk, gdzie_jest[osoba]->aktywne_info); // wyœlij informacje o serwerze
             }
             else 
             {
@@ -200,6 +206,7 @@ void mastery::Serwer::Postaw(int port)
                     // usun rozgrywke
                     pokoj->aktywna_gra = PROCESS_INFORMATION();
                     pokoj->aktywny_port = -1;
+                    pokoj->aktywne_info = "";
                     WyslijDoPokoju(pokoj, "Gra skonczona...");
                 }
             }

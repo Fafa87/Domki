@@ -45,6 +45,7 @@ namespace mastery
 
         void PrzeanalizujOdebrane(string odebrane);
         vector<string> KtoJestObok();
+        bool RozgrywkaTrwa();
         Adres rozgrywka_pokoju;
     };
 
@@ -56,6 +57,7 @@ namespace mastery
 
         int aktywny_port=-1;
         PROCESS_INFORMATION aktywna_gra;
+        string aktywne_info;
 
         Pokoj(string nazwa) : nazwa(nazwa) {}
     };

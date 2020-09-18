@@ -45,6 +45,13 @@ ComboBox {
     BorderColorShift: 10;
 }
 
+Button.Nieaktywny {
+    BackgroundColor: #848484ff;
+    Color: #b4b4b4ff;
+	FontSize: 18;
+    FontName: Grafika/BuxtonSketch.ttf;
+}
+
 Button {
     BackgroundColor: #4f2d04ff;
     BorderColorShift: 10;

@@ -124,18 +124,24 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     auto odpal = sfg::Button::Create(L"Postaw serwer");
     odpal->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [glowne, &muzyka, master_klient] {
-        auto okno_zaloz = serwer_menu_planeta(glowne, muzyka, master_klient);
-        if (okno_zaloz != nullptr)
-            GUI::aplikacja().set_active_window(okno_zaloz);
+        if (!master_klient->RozgrywkaTrwa())
+        {
+            auto okno_zaloz = serwer_menu_planeta(glowne, muzyka, master_klient);
+            if (okno_zaloz != nullptr)
+                GUI::aplikacja().set_active_window(okno_zaloz);
+        }
     });
     auto dolacz = sfg::Button::Create(L"Do³¹cz teraz");
     dolacz->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno, master_klient, &muzyka] {
-        muzyka.stop();
-        GUI::aplikacja().hide_all_windows();
-        start_klient(muzyka, master_klient->gracz.nazwa, master_klient->rozgrywka_pokoju);
-        muzyka.play();
-        GUI::aplikacja().set_active_window(okno);
+        if (master_klient->RozgrywkaTrwa())
+        {
+            muzyka.stop();
+            GUI::aplikacja().hide_all_windows();
+            start_klient(muzyka, master_klient->gracz.nazwa, master_klient->rozgrywka_pokoju);
+            muzyka.play();
+            GUI::aplikacja().set_active_window(okno);
+        }
     });
     auto powrot = sfg::Button::Create(L"Powrót");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
@@ -193,6 +199,20 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
                 chat->SetText(tekst);
         }
         ludki->SetText(join(master_klient->KtoJestObok(), "\n"));
+        if (master_klient->rozgrywka_pokoju.ip.size())
+        {
+            if (odpal->GetClass() != "Nieaktywny")
+                odpal->SetClass("Nieaktywny");
+            if (dolacz->GetClass() != "Aktywny")
+                dolacz->SetClass("Aktywny");
+        }
+        else
+        {
+            if (dolacz->GetClass() != "Nieaktywny")
+                dolacz->SetClass("Nieaktywny");
+            if (odpal->GetClass() != "Aktywny")
+                odpal->SetClass("Aktywny");
+        }
     });
     master_klient->Rozlacz();
     GUI::aplikacja().pop_active_window(okno);

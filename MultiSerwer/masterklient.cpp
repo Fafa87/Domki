@@ -67,6 +67,11 @@ vector<string> mastery::Klient::KtoJestObok()
     return this->ludzie_obok;
 }
 
+bool mastery::Klient::RozgrywkaTrwa()
+{
+    return this->rozgrywka_pokoju.ip.size();
+}
+
 void mastery::Klient::Rozlacz()
 {
     if (this->polaczony)
@@ -119,6 +124,11 @@ void mastery::Klient::PrzeanalizujOdebrane(string tekst)
         auto port = stoi(tekst.substr(tekst.find(" na porcie ")+11));
         this->rozgrywka_pokoju = Adres(this->adres_serwer.ip, port);
         odebrane.add("Odpalono rozgrywke!");
+    }
+    else if (tekst.find("Gra skonczona...") != -1)
+    {
+        this->rozgrywka_pokoju = Adres();
+        odebrane.add(tekst);
     }
     else
         odebrane.add(tekst);

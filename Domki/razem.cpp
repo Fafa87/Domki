@@ -36,9 +36,11 @@ void start_klient(sf::Music& muzyka, string nazwa, multi::Adres adres)
         LOG(TRACE) << "Spisuje serwery";
         klient->SpiszSerwery();
 
-        multi::Adres adres;
         if (klient->lista_serwerow.size() == 0)
+        {
             LOG(WARNING) << "Brak serwera";
+            return;
+        }
         else
             adres = klient->lista_serwerow.back();
     }

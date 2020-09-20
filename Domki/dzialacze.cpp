@@ -22,7 +22,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
         if (klikniety != nullptr && IsType<Domek>(klikniety))
         {
             if (wybrany != (Domek*)klikniety&&zdarzenie.mouseButton.button == sf::Mouse::Left)
-				wybrany = (Domek*)klikniety;
+                wybrany = (Domek*)klikniety;
 
             if (kontrola == false && kontrolowany != (Domek*)klikniety&&zdarzenie.mouseButton.button == sf::Mouse::Right)
             {
@@ -135,12 +135,12 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
     {
         if (cel == wybrany)
         {
-			if (klikniecia.size() == 1)
-			{
-				klikniecia.clear();
-				cel = nullptr;
-				nacisniety = 0;
-			}
+            if (klikniecia.size() == 1)
+            {
+                klikniecia.clear();
+                cel = nullptr;
+                nacisniety = 0;
+            }
             else if (klikniecia.size() == 2 && cel != nullptr ) {
                 auto r = new UlepszRozkaz(wybrany, gracz);
                 res.push_back(r);
@@ -166,26 +166,26 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         // WYMARSZE
         else if (cel != wybrany&&!kontrola)
         {
-			if (klikniecia.size() == 1 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC && clock() - klikniecia.back().first < 1.0 * CLOCKS_PER_SEC)
-			{
-				auto r = new WymarszRozkaz(wybrany, cel,gracz);
-				r->ulamek = 0.5;
-				res.push_back(r);
+            if (klikniecia.size() == 1 && clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC && clock() - klikniecia.back().first < 1.0 * CLOCKS_PER_SEC)
+            {
+                auto r = new WymarszRozkaz(wybrany, cel,gracz);
+                r->ulamek = 0.5;
+                res.push_back(r);
 
-				cel = nullptr;
-				nacisniety = 0;
-				klikniecia.clear();
-			}
+                cel = nullptr;
+                nacisniety = 0;
+                klikniecia.clear();
+            }
             else if (klikniecia.size() >= 2 && clock() - klikniecia.back().first < 1.0 * CLOCKS_PER_SEC)
             {
-				auto r = new WymarszRozkaz(wybrany, cel,gracz);
+                auto r = new WymarszRozkaz(wybrany, cel,gracz);
                 r->ulamek = 1.0;
                 res.push_back(r);
-				wybrany = nullptr;
-				cel = nullptr;
-				nacisniety = 0;
-				klikniecia.clear();
-			}
+                wybrany = nullptr;
+                cel = nullptr;
+                nacisniety = 0;
+                klikniecia.clear();
+            }
             else {
                 cel = nullptr;
                 nacisniety = 0;
@@ -275,7 +275,7 @@ void Ruszacz::WykonajRuchy()
         {
             auto& ruch = *(WymarszRozkaz*)r;
 
-            if (!rozgrywka->oszustwa && ruch.skad->gracz->numer != ruch.kto_wydal_rozkaz.numer)continue;
+            if (!rozgrywka->oszustwa && ruch.skad->gracz->numer != ruch.kto_wydal_rozkaz->numer)continue;
 
             auto liczba = int(ruch.skad->liczebnosc * ruch.ulamek);
             if (liczba > 0 && &ruch.skad != &ruch.dokad)
@@ -306,7 +306,7 @@ void Ruszacz::WykonajRuchy()
         {
             auto ulepsz = (UlepszRozkaz*)r;
 
-            if (!rozgrywka->oszustwa && ulepsz->kogo->gracz->numer != ulepsz->kto_wydal_rozkaz.numer)continue;
+            if (!rozgrywka->oszustwa && ulepsz->kogo->gracz->numer != ulepsz->kto_wydal_rozkaz->numer)continue;
 
             auto koszt = ulepsz->kogo->max_liczebnosc / 2.0;
             if (ulepsz->kogo->ulepszanie == true&&ulepsz->kogo->poziom>0&&ulepsz->kogo->liczebnosc - koszt > 0&&ulepsz->kogo->poziom<=4&&ulepsz->kogo->poziom>0)
@@ -319,7 +319,7 @@ void Ruszacz::WykonajRuchy()
         {
             auto burz = (BurzRozkaz*)r;
 
-            if (!rozgrywka->oszustwa && burz->kogo->gracz->numer != burz->kto_wydal_rozkaz.numer)continue;
+            if (!rozgrywka->oszustwa && burz->kogo->gracz->numer != burz->kto_wydal_rozkaz->numer)continue;
 
             if (burz->kogo->ulepszanie == true && burz->kogo->poziom>0&&burz->kogo->liczebnosc > 25.0)
             {
@@ -331,7 +331,7 @@ void Ruszacz::WykonajRuchy()
         {
             auto przebuduj = (PrzebudujRozkaz*)r;
 
-            if (!rozgrywka->oszustwa && przebuduj->kogo->gracz->numer != przebuduj->kto_wydal_rozkaz.numer)continue;
+            if (!rozgrywka->oszustwa && przebuduj->kogo->gracz->numer != przebuduj->kto_wydal_rozkaz->numer)continue;
 
             if (przebuduj->kogo->przebudowa==true&&przebuduj->kogo->typdomku!=przebuduj->naco&&przebuduj->kogo->liczebnosc * 2.0 >= przebuduj->kogo->max_liczebnosc&&przebuduj->kogo->poziom>0)
             {
@@ -397,21 +397,21 @@ void Ruszacz::WalczLudkami(double czas)
         Ludek& armia = *it;
         double odleglosc = rozgrywka->Odleglosc(armia, *armia.cel);
         auto spotkanie = rozgrywka->Spotkanie(armia);
-		if (spotkanie != NULL && spotkanie->gracz == armia.gracz)
-		{
-			if (spotkanie->liczebnosc <= armia.liczebnosc)
-			{
-				rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc + spotkanie->liczebnosc);
+        if (spotkanie != NULL && spotkanie->gracz == armia.gracz)
+        {
+            if (spotkanie->liczebnosc <= armia.liczebnosc)
+            {
+                rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc + spotkanie->liczebnosc);
                 armia.tarcza += spotkanie->tarcza;
-				do_usuniecia.push_back(spotkanie);
-			}
-			else
-			{
-				rozgrywka->ZmienLiczebnosc(*spotkanie, armia.liczebnosc + spotkanie->liczebnosc);
+                do_usuniecia.push_back(spotkanie);
+            }
+            else
+            {
+                rozgrywka->ZmienLiczebnosc(*spotkanie, armia.liczebnosc + spotkanie->liczebnosc);
                 spotkanie->tarcza += armia.tarcza;
-				do_usuniecia.push_back(&(*it));
-			}
-		}
+                do_usuniecia.push_back(&(*it));
+            }
+        }
         else if (spotkanie != NULL)
         {
             rozgrywka->TracLudki(armia, std::max(5.0+ czas * szybkosc,0.3 * (*spotkanie).liczebnosc*czas * szybkosc));
@@ -527,39 +527,55 @@ void Ruszacz::Strzelaj()
     }
 }
 
-WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : Rozkaz(*skad->gracz), skad(skad), dokad(dokad)
+WymarszRozkaz::WymarszRozkaz()
 {
 }
 
-WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad, Gracz& kto_wydal_rozkaz) : Rozkaz(kto_wydal_rozkaz), skad(skad), dokad(dokad)
+WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad) : Rozkaz(skad->gracz), skad(skad), dokad(dokad)
 {
 }
 
-UlepszRozkaz::UlepszRozkaz(Domek * kogo) : Rozkaz(*kogo->gracz), kogo(kogo)
+WymarszRozkaz::WymarszRozkaz(Domek * skad, Domek * dokad, Gracz& kto_wydal_rozkaz) : Rozkaz(&kto_wydal_rozkaz), skad(skad), dokad(dokad)
 {
 }
 
-UlepszRozkaz::UlepszRozkaz(Domek * kogo, Gracz& kto_wydal_rozkaz) : Rozkaz(kto_wydal_rozkaz), kogo(kogo)
+UlepszRozkaz::UlepszRozkaz()
 {
 }
 
-BurzRozkaz::BurzRozkaz(Domek * kogo) : Rozkaz(*kogo->gracz), kogo(kogo)
+UlepszRozkaz::UlepszRozkaz(Domek * kogo) : Rozkaz(kogo->gracz), kogo(kogo)
 {
 }
 
-BurzRozkaz::BurzRozkaz(Domek * kogo, Gracz& kto_wydal_rozkaz) : Rozkaz(kto_wydal_rozkaz), kogo(kogo)
+UlepszRozkaz::UlepszRozkaz(Domek * kogo, Gracz& kto_wydal_rozkaz) : Rozkaz(&kto_wydal_rozkaz), kogo(kogo)
 {
 }
 
-PrzebudujRozkaz::PrzebudujRozkaz(Domek * kogo, TypDomku naco) : Rozkaz(*kogo->gracz), kogo(kogo)
+BurzRozkaz::BurzRozkaz()
 {
 }
 
-PrzebudujRozkaz::PrzebudujRozkaz(Domek * kogo, TypDomku naco, Gracz& kto_wydal_rozkaz) : Rozkaz(kto_wydal_rozkaz), kogo(kogo), naco(naco)
+BurzRozkaz::BurzRozkaz(Domek * kogo) : Rozkaz(kogo->gracz), kogo(kogo)
 {
 }
 
-Testpower::Testpower(Domek * kogo) : Rozkaz(*kogo->gracz), kogo(kogo)
+BurzRozkaz::BurzRozkaz(Domek * kogo, Gracz& kto_wydal_rozkaz) : Rozkaz(&kto_wydal_rozkaz), kogo(kogo)
+{
+}
+
+PrzebudujRozkaz::PrzebudujRozkaz()
+{
+}
+
+PrzebudujRozkaz::PrzebudujRozkaz(Domek * kogo, TypDomku naco) : Rozkaz(kogo->gracz), kogo(kogo), naco(naco)
+{
+}
+
+PrzebudujRozkaz::PrzebudujRozkaz(Domek * kogo, TypDomku naco, Gracz& kto_wydal_rozkaz) : Rozkaz(&kto_wydal_rozkaz), kogo(kogo), naco(naco)
+{
+}
+
+Testpower::Testpower(Domek * kogo) : Rozkaz(kogo->gracz), kogo(kogo)
 {
 }
 

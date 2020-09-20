@@ -97,6 +97,7 @@ void multi::Serwer::Start(MisjaUstawienia ustawienia)
     for (int i = 0; i < ludzie.size(); i++) if (ludzie[i].aktywny)
     {
         ustawienia.nr_gracza = i + 1;
+        ludzie[i].gracz_w_rozgrywce = i + 1;
         std::stringstream ss;
         {
             cereal::BinaryOutputArchive archive(ss);
@@ -154,12 +155,12 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
                         Rozkaz * rozkaz = nullptr;
                         if (d[0] == 'W')
                         {
-                            rozkaz = new WymarszRozkaz(nullptr, nullptr);
+                            rozkaz = new WymarszRozkaz();
                             dearchive(*(WymarszRozkaz*)rozkaz);
                         }
                         else if (d[0] == 'U')
                         {
-                            rozkaz = new UlepszRozkaz(nullptr);
+                            rozkaz = new UlepszRozkaz();
                             dearchive(*(UlepszRozkaz*)rozkaz);
                         }
                         else if (d[0] == 'P')
@@ -174,7 +175,10 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
                         }
                         
                         if (rozkaz != nullptr)
+                        {
+                            rozkaz->kto_nr = ludzie[i].gracz_w_rozgrywce;
                             res.push_back(rozkaz);
+                        }
                         else
                         {
                             LOG(WARNING) << "Czekam na rozkaz a dostalem: " << d;
@@ -427,6 +431,8 @@ void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
             BurzRozkaz * rozkaz = (BurzRozkaz*)r;
             rozkaz->kogo = rozgrywka.WskaznikDomek(rozkaz->ser_kogo);
         }
+
+        r->kto_wydal_rozkaz = &rozgrywka.Graczu(r->kto_nr);
     }
 }
 

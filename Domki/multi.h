@@ -38,6 +38,7 @@ namespace multi
         Adres adres;
         string nazwa;
 
+        int gracz_w_rozgrywce;
         bool aktywny=true;
         sf::TcpSocket* wtyk;
         sf::Socket::Status ostatnio = sf::Socket::Status::NotReady;

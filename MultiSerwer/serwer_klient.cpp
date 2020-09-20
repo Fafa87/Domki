@@ -69,7 +69,12 @@ void wykonaj_klient_gry(string zadanie)
         klient->Rozlacz();
 
         auto wygrany = misja_ustawienia.Zwyciezca();
-        printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", misja_ustawienia.nazwy_graczow[wygrany].c_str());
+        string wygrany_nazwa;
+        if (wygrany < misja_ustawienia.nazwy_graczow.size())
+            wygrany_nazwa = misja_ustawienia.nazwy_graczow[wygrany];
+        else
+            wygrany_nazwa = "komputer";
+        printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", wygrany_nazwa.c_str());
     }
 }
 

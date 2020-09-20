@@ -128,7 +128,12 @@ void wykonaj_serwer_gry(string zadanie)
         if (ustawienia.Zwyciezca() >= 0)
         {
             auto wygrany = ustawienia.Zwyciezca();
-            printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", ustawienia.nazwy_graczow[wygrany].c_str());
+            string wygrany_nazwa;
+            if (wygrany < ustawienia.nazwy_graczow.size())
+                wygrany_nazwa = ustawienia.nazwy_graczow[wygrany];
+            else
+                wygrany_nazwa = "komputer";
+            printf("\n=========================\nCaly mecz wygral: %s\n=========================\n", wygrany_nazwa.c_str());
 
             delete serwer;
             serwer = nullptr;

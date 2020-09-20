@@ -21,6 +21,9 @@ Dostępne na
 `ZIP
 <https://ci.appveyor.com/api/projects/fafa87/domki/artifacts/Domki.zip?branch=master&job=Image%3A%20Visual%20Studio%202017>`_
  
+`Wypakuj skrypt
+<https://raw.githubusercontent.com/Fafa87/Domki/master/Uaktualnij.ps1>`_
+ 
 Zobacz
 ------------
 

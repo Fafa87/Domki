@@ -265,8 +265,15 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
         auto adres_planety = GUI::aplikacja().ini.Get("multi", "adres_planety", "localhost:60");
         wykonaj_masterklient(KontekstSwiata::o().klient, "polacz " + adres_planety); // TMP
         Sleep(2000); // TMP tutaj powinno byæ jakieœ okienko, ¿e trwa ³¹czenie
-        planeta_okno(glowne, muzyka, KontekstSwiata::o().klient);
-        KontekstSwiata::o().klient->Rozlacz(); // wyczysc masterklienta 
+        if (KontekstSwiata::o().klient->polaczony)
+        {
+            planeta_okno(glowne, muzyka, KontekstSwiata::o().klient);
+            KontekstSwiata::o().klient->Rozlacz(); // wyczysc masterklienta 
+        }
+        else
+        {
+            okno_info(L"Brak kontaktu z planet¹");
+        }
     });
 
     auto powrot = sfg::Button::Create(L"Powrót");

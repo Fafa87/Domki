@@ -44,3 +44,4 @@ public:
     bool PunktyKontrolne();
 };
 
+void okno_info(wstring tekst);

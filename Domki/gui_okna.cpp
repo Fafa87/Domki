@@ -222,3 +222,19 @@ bool WyborMisjiKontrolki::PunktyKontrolne()
         return true;
     return this->punkty_kontrolne_ptaszek->IsActive();
 }
+
+
+void okno_info(wstring tekst)
+{
+    auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+    okno->SetRequisition(sf::Vector2f(800, 300));
+
+    auto komunikat_koncowy = sfg::Label::Create("");
+    komunikat_koncowy->SetId("Naglowek");
+    komunikat_koncowy->SetAlignment(sf::Vector2f(0.5, 0.5));
+    komunikat_koncowy->SetText(tekst);
+
+    okno->Add(komunikat_koncowy);
+
+    GUI::aplikacja().show_and_wait_for_anything(okno);
+}

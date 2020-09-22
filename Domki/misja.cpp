@@ -477,7 +477,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
             }
 
             auto zwyciezca_meczu = misja_ustawienia.Zwyciezca();
-            if (zwyciezca_meczu >= 0 && !to_serwer)
+            if (zwyciezca_meczu >= 0 && !to_serwer && GUI::aplikacja().pokaz_ranking)
             {
                 zakonczenie_meczu(misja_ustawienia, rozgrywka);
             }

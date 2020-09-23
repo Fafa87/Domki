@@ -112,6 +112,17 @@ void mastery::Serwer::WyslijDoPokoju(shared_ptr<Pokoj> pokoj, string tekst, shar
     }
 }
 
+string mastery::Serwer::WyznaczStatystyki()
+{
+    std::ostringstream statystyki;
+    statystyki << "Witamy Ciebie na planecie Domkow!" << std::endl;
+    statystyki << "W sumie jest tutaj " << podpieci.size() << " osob." << std::endl;
+    statystyki << "Istnieje " << pokoje.size() << " pokoi ";
+    statystyki << "i trwa wlasnie " << std::count_if(pokoje.begin(), pokoje.end(), [](auto pokoj) {return pokoj->aktywny_port != -1; }) << " rozgrywek." << std::endl;
+    statystyki << "Maksymalna liczba rozgrywek naraz to: " << porty_gier.second - porty_gier.first << ".";
+    return statystyki.str();
+}
+
 void mastery::Serwer::Postaw(int port)
 {
     if (nasluchiwacz.listen(port) != sf::Socket::Done)
@@ -148,6 +159,8 @@ void mastery::Serwer::Postaw(int port)
                 wtykowiec.add(*osoba->wtyk);
 
                 this->podpieci.push_back(osoba);
+
+                multi::Wyslij(*osoba->wtyk, this->WyznaczStatystyki());
 
                 LOG(INFO) << "Dodaje osobe: " << osoba->nazwa;
                 DolaczDoPokoju(osoba, hol->nazwa);

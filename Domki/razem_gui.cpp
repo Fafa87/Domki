@@ -178,7 +178,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
         {
             master_klient->komendy.add(pisak->GetText());
             if (chat->GetText().getSize())
-                chat->SetText(chat->GetText() + "\n" + pisak->GetText());
+                chat->SetText(pisak->GetText() + "\n" + chat->GetText());
             else
                 chat->SetText(pisak->GetText());
             pisak->SetText("");
@@ -189,12 +189,12 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
         }
         return !master_klient->polaczony;
     },
-    [odpal, dolacz, chat, ludki, pokoj, master_klient]() {
+    [odpal, dolacz, chat_z_paskiem, chat, ludki, pokoj, master_klient]() {
         string tekst;
         if (master_klient->odebrane.try_take(tekst) == code_machina::BlockingCollectionStatus::Ok)
         {
             if (chat->GetText().getSize())
-                chat->SetText(chat->GetText() + "\n" + tekst);
+                chat->SetText(tekst + "\n" + chat->GetText());
             else
                 chat->SetText(tekst);
         }

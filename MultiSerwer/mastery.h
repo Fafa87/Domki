@@ -79,6 +79,7 @@ namespace mastery
         vector<shared_ptr<Pokoj>> pokoje;
 
         bool dziala = false;
+        string WyznaczStatystyki();
         
         void Postaw(int port);
         int ZnajdzWolnyPort();

@@ -68,10 +68,8 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
                 for (auto domek : kontrolowany->drogi) {
                     if (domek == skupiony) {
                         if (punkty_kontrolne.find((Domek*)skupiony) != punkty_kontrolne.end() && punkty_kontrolne[(Domek*)skupiony] == kontrolowany) {
-                            ((Domek*)skupiony)->szybki_przemarsz = nullptr;
                             punkty_kontrolne.erase((Domek*)skupiony);
                         }
-                        kontrolowany->szybki_przemarsz = (Domek*)skupiony;
                         punkty_kontrolne[kontrolowany] = (Domek*)skupiony;
                         kontrolowany->szybki_wymarsz = true;
                         kontrolowany = (Domek*)skupiony;
@@ -124,7 +122,6 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
     if (rozgrywka.punkty_kontrolne&&wybrany != nullptr&&!kontrola) {
         for (auto punkt = punkty_kontrolne.begin(); punkt != punkty_kontrolne.end();punkt++) {
             if (wybrany == (*punkt).first) {
-                if ((*punkt).first != (*punkt).second)(*punkt).first->szybki_przemarsz = nullptr;
                 punkty_kontrolne.erase(punkt);
                 break;
             }
@@ -363,6 +360,17 @@ void Ruszacz::PrzesuwajLudkow(double czas)
     ile_armii_idzie = rozgrywka->armie.size();
     for (Ludek& armia : rozgrywka->armie)
     {
+        for (Ludek& mijana : rozgrywka->armie) {
+            if (mijana.cel == armia.skad&& mijana.skad == armia.cel) {
+                PD wektor_pomiedzy = armia.polozenie - mijana.polozenie;
+                double odleglosc = sqrt(wektor_pomiedzy.x * wektor_pomiedzy.x + wektor_pomiedzy.y * wektor_pomiedzy.y);
+                if (odleglosc <= przesuniecie * czas*(armia.szybkosc_ludka + mijana.szybkosc_ludka)) {
+                    PD miejsce_spotkania = mijana.szybkosc_ludka/ (armia.szybkosc_ludka+mijana.szybkosc_ludka) * wektor_pomiedzy + mijana.polozenie;
+                    armia.polozenie = miejsce_spotkania;
+                    mijana.polozenie = miejsce_spotkania;
+                    }
+                }
+            }
         if (rozgrywka->Spotkanie(armia) == NULL)
         {
             PD polozenie_cel = armia.cel->polozenie;
@@ -427,7 +435,7 @@ void Ruszacz::WalczLudkami(double czas)
                 do_usuniecia.push_back(spotkanie);
             }
         }
-        else if (odleglosc < min(armia.cel->rozmiar,armia.rozmiar) && ((((Domek*)armia.cel)->szybki_przemarsz == nullptr) || armia.gracz != armia.cel->gracz))
+        else if (odleglosc < min(armia.cel->rozmiar,armia.rozmiar))
         {
             if (IsType<Domek>(armia.cel))
             {
@@ -470,24 +478,6 @@ void Ruszacz::WalczLudkami(double czas)
                 rozgrywka->ZmienLiczebnosc(armia, std::abs(0));
                 do_usuniecia.push_back(&(*it));
             }
-        }
-        else if (odleglosc == 0.0 && ((Domek*)armia.cel)->szybki_przemarsz != nullptr) {
-            Domek* przegrupuj = (Domek*)armia.cel;
-
-            armia.polozenie = przegrupuj->polozenie;
-
-            rozgrywka->ZmienLiczebnosc(armia, armia.liczebnosc + przegrupuj->liczebnosc);
-            rozgrywka->ZmienLiczebnosc(*przegrupuj, 0.0);
-
-            armia.tarcza = rozgrywka->PoliczAtakDomku(*(Domek*)(armia.cel), armia.liczebnosc) - armia.liczebnosc;
-            armia.szybkosc_ludka = rozgrywka->PoliczSzybkoscDomku(*(Domek*)(armia.cel));
-
-            armia.droga = rozgrywka->Odleglosc(*armia.cel, *przegrupuj->szybki_przemarsz);
-            armia.dystans = 0.0;
-
-            armia.skad = armia.cel;
-
-            armia.cel = przegrupuj->szybki_przemarsz;
         }
         
     }

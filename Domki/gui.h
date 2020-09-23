@@ -102,6 +102,7 @@ public:
     void render();
     void reset_view();
 
+    bool pokaz_ranking = true;
 
     std::ostringstream new_theme_string;
 

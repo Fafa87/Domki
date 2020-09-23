@@ -24,6 +24,7 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa, doub
 {
     Kampania kampania("Kampanie\\"+grupa);
     //kampania.akt_misja = 7; do testow
+    bool pomin_przemowy = GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_przemowy", true);
     while (kampania.akt_misja <= kampania.lista_misji.size())
     {
         auto misja_dane = kampania.PobierzMisje(kampania.akt_misja);
@@ -31,36 +32,39 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa, doub
         string przemowa_sciezka = kampania.PobierzOdprawe(kampania.akt_misja);
         sf::Music przemowa;
 
-           misja_dane.trudnosc = poziom;
+        misja_dane.trudnosc = poziom;
         misja_dane.szybkosc = szybkosc;
-        misja_dane.walka_w_polu=walka_w_polu;
+        misja_dane.walka_w_polu = walka_w_polu;
 
 
         // pokaz opis
-        auto okno_opisu = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
-        okno_opisu->SetRequisition(sf::Vector2f(900, 600));
+        if(!pomin_przemowy)
+        {
+            auto okno_opisu = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+            okno_opisu->SetRequisition(sf::Vector2f(900, 600));
 
-        auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
+            auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 50.0f);
 
-        auto tytul = sfg::Label::Create(opis.powitanie);
-        tytul->SetId("Naglowek");
-        box->Pack(tytul);
+            auto tytul = sfg::Label::Create(opis.powitanie);
+            tytul->SetId("Naglowek");
+            box->Pack(tytul);
 
-        auto opis_fabuly = sfg::Label::Create(opis.fabula);
-        box->Pack(opis_fabuly);
+            auto opis_fabuly = sfg::Label::Create(opis.fabula);
+            box->Pack(opis_fabuly);
 
-        auto opis_nauka = sfg::Label::Create(opis.nauka);
-        box->Pack(opis_nauka);
+            auto opis_nauka = sfg::Label::Create(opis.nauka);
+            box->Pack(opis_nauka);
 
-        okno_opisu->Add(box);
-        muzyka.stop();
-        if (przemowa.openFromFile(przemowa_sciezka))
-            przemowa.play();
+            okno_opisu->Add(box);
+            muzyka.stop();
+            if (przemowa.openFromFile(przemowa_sciezka))
+                przemowa.play();
 
-        GUI::aplikacja().show_and_wait_for_anything(okno_opisu);
+            GUI::aplikacja().show_and_wait_for_anything(okno_opisu);
 
-        przemowa.stop();
-
+            przemowa.stop();
+         }
+        else muzyka.stop();
         // odpal misje
         GUI::aplikacja().hide_all_windows();
 
@@ -288,6 +292,9 @@ int main() {
         muzyka.setVolume(GUI::aplikacja().dzwieki_glosnosc / 3);
         muzyka.play();
     }
+
+    if (!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pokaz_ranking", true))
+        GUI::aplikacja().pokaz_ranking = false;
 
     try {
         while (okno_menu.isOpen()) {

@@ -360,6 +360,17 @@ void Ruszacz::PrzesuwajLudkow(double czas)
     ile_armii_idzie = rozgrywka->armie.size();
     for (Ludek& armia : rozgrywka->armie)
     {
+        for (Ludek& mijana : rozgrywka->armie) {
+            if (mijana.cel == armia.skad&& mijana.skad == armia.cel) {
+                PD wektor_pomiedzy = armia.polozenie - mijana.polozenie;
+                double odleglosc = sqrt(wektor_pomiedzy.x * wektor_pomiedzy.x + wektor_pomiedzy.y * wektor_pomiedzy.y);
+                if (odleglosc <= przesuniecie * czas*(armia.szybkosc_ludka + mijana.szybkosc_ludka)) {
+                    PD miejsce_spotkania = mijana.szybkosc_ludka/ (armia.szybkosc_ludka+mijana.szybkosc_ludka) * wektor_pomiedzy + mijana.polozenie;
+                    armia.polozenie = miejsce_spotkania;
+                    mijana.polozenie = miejsce_spotkania;
+                    }
+                }
+            }
         if (rozgrywka->Spotkanie(armia) == NULL)
         {
             PD polozenie_cel = armia.cel->polozenie;

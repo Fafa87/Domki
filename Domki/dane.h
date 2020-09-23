@@ -75,8 +75,6 @@ struct Domek : Twor
         ulepszanie = true,
         szybki_wymarsz = false;
 
-    Twor* szybki_przemarsz = nullptr;
-
     vector<Domek*> drogi;
     vector<int> ser_drogi;
 };

@@ -64,6 +64,7 @@ std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa, doub
 
             przemowa.stop();
          }
+        else muzyka.stop();
         // odpal misje
         GUI::aplikacja().hide_all_windows();
 

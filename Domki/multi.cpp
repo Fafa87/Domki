@@ -451,6 +451,7 @@ void multi::Podepnij(Rozgrywka& rozgrywka)
     {
         r.gracz = &rozgrywka.Graczu(r.ser_gracz);
         r.cel = rozgrywka.WskaznikDomek(r.ser_cel);
+        r.skad = rozgrywka.WskaznikDomek(r.ser_skad);
     }
 }
 

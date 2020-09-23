@@ -48,7 +48,7 @@ struct Ludek : Twor
     Ludek() {}
     Ludek(Twor& cel, Twor& skad) : cel(&cel) , skad(&skad){}
     Twor* cel, *skad; // do kogo (domka) stara siê dotrzeæ
-    int ser_cel;
+    int ser_cel, ser_skad;
     int liczebnosc,tarcza=0; // powinna byæ zwi¹zana z jego rozmiarem
     double szybkosc_ludka = 1.0,droga=-1.0,dystans=-1.0;
 };

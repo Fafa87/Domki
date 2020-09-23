@@ -139,12 +139,12 @@ template<class Archive>
 void save(Archive & archive,
 	Ludek const & m)
 {
-	archive(m.tarcza, m.szybkosc_ludka, m.cel->uid, m.gracz->numer, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
+	archive(m.tarcza, m.szybkosc_ludka, m.skad->uid, m.cel->uid, m.gracz->numer, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
 }
 
 template<class Archive>
 void load(Archive & archive,
 	Ludek & m)
 {
-	archive(m.tarcza, m.szybkosc_ludka, m.ser_cel, m.ser_gracz, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
+	archive(m.tarcza, m.szybkosc_ludka, m.ser_skad, m.ser_cel, m.ser_gracz, m.liczebnosc, m.polozenie, m.rozmiar, m.uid, m.wyglad);
 }

@@ -15,6 +15,13 @@ struct Rozkaz
     virtual ~Rozkaz() {}
 };
 
+struct AktualizujPredkosc : Rozkaz
+{
+    AktualizujPredkosc(char wteczywewte, Gracz& kto_taki_cwany);
+
+    char wteczywewte;
+};
+
 struct Testpower : Rozkaz
 {
     Testpower(Domek* kogo);

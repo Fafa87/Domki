@@ -25,6 +25,7 @@ shared_ptr<WyborMisjiKontrolki> WyborMisjiKontrolki::DlaKampanii()
     kontrolki->opcja_walka_w_polu = false;
     kontrolki->opcja_punkty_kontrolne = false;
     kontrolki->opcja_ile_ludzi = false;
+    kontrolki->opcja_do_ilu = false;
     return kontrolki;
 }
 
@@ -141,9 +142,11 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
     tabelka->Attach(trudnosc_etykieta, sf::Rect<sf::Uint32>(0, row_top, 1, 1));
     tabelka->Attach(trudnosc_pasek, sf::Rect<sf::Uint32>(1, row_top, 1, 1));
     tabelka->Attach(trudnosc_wartosc, sf::Rect<sf::Uint32>(2, row_top++, 1, 1));
-    tabelka->Attach(do_ilu_etykieta, sf::Rect<sf::Uint32>(0, row_top, 1, 1));
-    tabelka->Attach(do_ilu_pasek, sf::Rect<sf::Uint32>(1, row_top, 1, 1));
-    tabelka->Attach(do_ilu_wartosc, sf::Rect<sf::Uint32>(2, row_top++, 1, 1));
+    if (opcja_do_ilu) {
+        tabelka->Attach(do_ilu_etykieta, sf::Rect<sf::Uint32>(0, row_top, 1, 1));
+        tabelka->Attach(do_ilu_pasek, sf::Rect<sf::Uint32>(1, row_top, 1, 1));
+        tabelka->Attach(do_ilu_wartosc, sf::Rect<sf::Uint32>(2, row_top++, 1, 1));
+    }
     if (opcja_ile_ludzi)
     {
         tabelka->Attach(ile_ludzi_etykieta, sf::Rect<sf::Uint32>(0, row_top, 1, 1));

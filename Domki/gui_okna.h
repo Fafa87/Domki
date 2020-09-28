@@ -23,6 +23,7 @@ private:
     bool opcja_oszustwa = false;
     bool opcja_walka_w_polu = false;
     bool opcja_punkty_kontrolne = false;
+    bool opcja_do_ilu = true;
 
 public:
     WyborMisjiKontrolki();

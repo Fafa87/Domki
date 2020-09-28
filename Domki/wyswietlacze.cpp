@@ -356,16 +356,11 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
     }
     if (decydent.kontrola&&decydent.kontrolowany != nullptr)
     {
-        auto start_drogi = sf::Vector2f(decydent.kontrolowany->polozenie.x, decydent.kontrolowany->polozenie.y);
+        auto start_drogi = sf::Vector2f(decydent.kontrolowany->polozenie.x, decydent.kontrolowany->polozenie.y+15);
         auto koniec_drogi = okno.mapPixelToCoords(sf::Mouse::getPosition(okno));
         auto kierunek = koniec_drogi - start_drogi;
         double odleglosc = sqrt(kierunek.x * kierunek.x + kierunek.y * kierunek.y);
         if (odleglosc > decydent.kontrolowany->rozmiar * 1.5){
-            double skala = 1.5 * decydent.kontrolowany->rozmiar / odleglosc;
-        start_drogi.x += skala * kierunek.x;
-        start_drogi.y += skala * kierunek.y;
-        kierunek.x -= skala * kierunek.x;
-        kierunek.y -= skala * kierunek.y;
         rysuj_strzalke(okno, start_drogi, kierunek, decydent.gracz.kolor, 5);
          }
     }

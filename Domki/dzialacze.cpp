@@ -229,6 +229,9 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
                 if (punkty_kontrolne.find(somsiad) == punkty_kontrolne.end())punkty_kontrolne[somsiad] = cel;
                 somsiad->szybki_wymarsz = true;
             }
+            klikniecia.clear();
+            cel = nullptr;
+            nacisniety = 0;
         }
         else if (klikniecia.size() >= 3)
         {
@@ -237,7 +240,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
                 punkty_kontrolne.erase(cel);
             }
             for (auto somsiad : cel->drogi) {
-                if (punkty_kontrolne.find(somsiad) != punkty_kontrolne.end() && punkty_kontrolne[somsiad] == cel) {
+                if (punkty_kontrolne.find(somsiad) != punkty_kontrolne.end() && punkty_kontrolne[somsiad] != cel) {
                     punkty_kontrolne.erase(somsiad);
                 }
                 if (punkty_kontrolne.find(somsiad) == punkty_kontrolne.end())punkty_kontrolne[somsiad] = cel;

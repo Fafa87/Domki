@@ -88,7 +88,8 @@ _CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);_DEBUG;</PreprocessorD
 xcopy /I /e /y "$(SolutionDir)\plansza" "$(OutDir)\Plansza"
 xcopy /I /e /y "$(SolutionDir)\kampanie" "$(OutDir)\Kampanie"
 xcopy /I /e /y "$(SolutionDir)\muzyka" "$(OutDir)\Muzyka"
-xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
+xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"
+xcopy  "$(SolutionDir)\Paczka\*.*" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -115,7 +116,8 @@ _CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);NDEBUG;</PreprocessorD
 xcopy /I /e /y "$(SolutionDir)\plansza" "$(OutDir)\Plansza"
 xcopy /I /e /y "$(SolutionDir)\kampanie" "$(OutDir)\Kampanie"
 xcopy /I /e /y "$(SolutionDir)\muzyka" "$(OutDir)\Muzyka"
-xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
+xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"
+xcopy  "$(SolutionDir)\Paczka\*.*" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWindow|x64'">
@@ -142,7 +144,8 @@ _CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions);_WINDOW;NDEBUG;</Prepr
 xcopy /I /e /y "$(SolutionDir)\plansza" "$(OutDir)\Plansza"
 xcopy /I /e /y "$(SolutionDir)\kampanie" "$(OutDir)\Kampanie"
 xcopy /I /e /y "$(SolutionDir)\muzyka" "$(OutDir)\Muzyka"
-xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"</Command>
+xcopy /I /e /y "$(SolutionDir)\Grafika" "$(OutDir)\Grafika"
+xcopy  "$(SolutionDir)\Paczka\*.*" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

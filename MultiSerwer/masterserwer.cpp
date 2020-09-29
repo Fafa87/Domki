@@ -146,7 +146,7 @@ void mastery::Serwer::Postaw(int port)
 
             // wczytaj jego imie
             nowa_wtyczka->setBlocking(true);
-            auto status_imie = multi::Pobierz(*nowa_wtyczka);
+            auto status_imie = multi::Pobierz(*nowa_wtyczka, sf::seconds(10));
             if (status_imie.first == sf::Socket::Done && status_imie.second.size() == 1)
             {
                 // utworz go i dodaj do listy

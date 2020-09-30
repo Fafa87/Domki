@@ -422,7 +422,7 @@ void Ruszacz::WykonajRuchy()
             rozgrywka->ZmienLiczebnosc(*testpoweruj->kogo, 1600.0);
         }
         //DYNAMICZNA PREDKOSC GRY
-        else if (IsType<AktualizujPredkosc>(r))//TUTAJ TRZEBA SPRAWDZAC CZY NIE JEST MULTIPLAYER BO WTEDY ZMIANA PREDKOSCI BEDZIE ZMIENIAC TYLKO LOKALNIE
+        else if (rozgrywka->oszustwa&&IsType<AktualizujPredkosc>(r))//TUTAJ TRZEBA SPRAWDZAC CZY NIE JEST MULTIPLAYER BO WTEDY ZMIANA PREDKOSCI BEDZIE ZMIENIAC TYLKO LOKALNIE
         {
             //aktualizuj->kto_wydal_rozkaz mowi ktory gracz to zrobil
             auto aktualizuj = (AktualizujPredkosc*)r;

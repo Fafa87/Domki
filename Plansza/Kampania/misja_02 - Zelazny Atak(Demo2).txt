@@ -20,19 +20,19 @@ liczebnosc 10
 typ kuznia
 4 5
 koordynaty 1000 300
-drogi 2 3 6
+drogi 1 3
 gracz 2
 poziom 1
 liczebnosc 10
 5 5
 koordynaty 1000 700
-drogi 2 3 6
+drogi 1 3
 gracz 2
 poziom 1
 liczebnosc 10
 6 5
 koordynaty 1100 500
-drogi 3 3 4 5
+drogi 1 3
 gracz 2
 poziom 1
 liczebnosc 10

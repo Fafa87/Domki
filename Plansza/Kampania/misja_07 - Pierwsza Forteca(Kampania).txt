@@ -88,7 +88,7 @@ koordynaty 950 500
 drogi 4 9 12 14 17
 gracz 2
 typ kuznia
-liczebnosc 111
+liczebnosc 0
 poziom 3
 14 6
 koordynaty 1050 500

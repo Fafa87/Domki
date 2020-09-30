@@ -79,7 +79,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
                         punkty_kontrolne[kontrolowany] = (Domek*)skupiony;
                         kontrolowany->szybki_wymarsz = true;
                         kontrolowany = (Domek*)skupiony;
-                        cel = kontrolowany;
+                        cel = nullptr;
                         wybrany = nullptr;
                         break;
                     }
@@ -226,7 +226,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
                     punkty_kontrolne.erase(somsiad);
                     punkty_kontrolne[somsiad] = cel;
                 }
-                if (punkty_kontrolne.find(somsiad) == punkty_kontrolne.end())punkty_kontrolne[somsiad] = cel;
+                if (punkty_kontrolne.find(somsiad) == punkty_kontrolne.end()&&(punkty_kontrolne.find(cel)==punkty_kontrolne.end()||punkty_kontrolne[cel]!=somsiad))punkty_kontrolne[somsiad] = cel;
                 somsiad->szybki_wymarsz = true;
             }
             klikniecia.clear();

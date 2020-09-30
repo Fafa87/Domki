@@ -312,6 +312,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
             bool lustro = ((Ludek*)twor)->cel->polozenie.x < ((Ludek*)twor)->polozenie.x;
             if (lustro)
                 wyglad.setScale(-1, 1);
+            else wyglad.setScale(1, 1);
         }
 
         okno.draw(wyglad);

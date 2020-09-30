@@ -15,6 +15,13 @@ struct Rozkaz
     virtual ~Rozkaz() {}
 };
 
+struct CofajLudka : Rozkaz
+{
+    CofajLudka(Ludek* cofany, Gracz& cofajacy);
+
+    Ludek* cofany;
+};
+
 struct AktualizujPredkosc : Rozkaz
 {
     AktualizujPredkosc(char wteczywewte, Gracz& kto_taki_cwany);
@@ -93,6 +100,7 @@ public:
     map<Domek*, Domek*> punkty_kontrolne;
     Domek *wybrany = nullptr,*kontrolowany = nullptr;
     Twor* skupiony = nullptr;
+    Ludek* cofany = nullptr;
     char nacisniety = 0;
     Gracz& gracz;
 

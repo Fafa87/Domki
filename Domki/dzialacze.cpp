@@ -44,10 +44,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
             klikniecia.push_back(make_pair(clock(), zdarzenie.mouseButton.button));
         }
         else if (klikniety != nullptr && IsType<Ludek>(klikniety) && zdarzenie.mouseButton.button == sf::Mouse::Right) {
-                Ludek* ludzik = ((Ludek*)klikniety);
-                Twor* powrot = ludzik->cel;
-                ludzik->cel = ludzik->skad;
-                ludzik->skad = powrot;
+            cofany = (Ludek*)klikniety;
         }
         else
         {
@@ -135,8 +132,14 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
             }
         }
     }
+    //COFANIE LUDKA
+    if (cofany != nullptr) {
+        auto r = new CofajLudka(cofany, gracz);
+        res.push_back(r);
+        cofany = nullptr;
+    }
     ///ULEPSZANIE
-    if (wybrany != nullptr && cel != nullptr && klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 2))
+    else if (wybrany != nullptr && cel != nullptr && klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC || klikniecia.size() >= 2))
     {
         if (cel == wybrany)
         {
@@ -430,6 +433,14 @@ void Ruszacz::WykonajRuchy()
             else if(szybkosc>1.0)szybkosc -= 1.0;
 
         }
+        else if (IsType<CofajLudka>(r))//rozkaz cofania
+        {
+            auto cofanie = (CofajLudka*)r;
+            Ludek* ludzik = cofanie->cofany;
+            Twor* powrot = ludzik->cel;
+            ludzik->cel = ludzik->skad;
+            ludzik->skad = powrot;
+        }
     }
     kolejka_do_wykonania.clear();
 }
@@ -650,6 +661,10 @@ Testpower::Testpower(Domek * kogo) : Rozkaz(kogo->gracz), kogo(kogo)
 }
 
 AktualizujPredkosc::AktualizujPredkosc(char wteczywewte, Gracz& kto_taki_cwany) : Rozkaz(&kto_taki_cwany), wteczywewte(wteczywewte)
+{
+}
+
+CofajLudka::CofajLudka(Ludek* cofany, Gracz& cofajacy) : Rozkaz(&cofajacy), cofany(cofany)
 {
 }
 

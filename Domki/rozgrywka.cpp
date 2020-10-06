@@ -202,3 +202,15 @@ Domek* Rozgrywka::WskaznikDomek(int uid)
     }
     return nullptr;
 }
+
+Ludek* Rozgrywka::WskaznikLudek(int uid)
+{
+    for (auto &ludek : armie)
+    {
+        if (ludek.uid == uid)
+        {
+            return &ludek;
+        }
+    }
+    return nullptr;
+}

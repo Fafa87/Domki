@@ -664,6 +664,10 @@ AktualizujPredkosc::AktualizujPredkosc(char wteczywewte, Gracz& kto_taki_cwany) 
 {
 }
 
+CofajLudka::CofajLudka() 
+{
+}
+
 CofajLudka::CofajLudka(Ludek* cofany, Gracz& cofajacy) : Rozkaz(&cofajacy), cofany(cofany)
 {
 }

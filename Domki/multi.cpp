@@ -173,6 +173,10 @@ vector<Rozkaz*> multi::Serwer::Odbierz()
                             rozkaz = new BurzRozkaz();
                             dearchive(*(BurzRozkaz*)rozkaz);
                         }
+                        else if (d[0] == 'C') {
+                            rozkaz = new CofajLudka();
+                            dearchive(*(CofajLudka*)rozkaz);
+                        }
                         
                         if (rozkaz != nullptr)
                         {
@@ -330,6 +334,12 @@ sf::Socket::Status multi::Klient::Wyslij(vector<Rozkaz*> rozkazy)
                 BurzRozkaz* rozkaz = (BurzRozkaz*)r;
                 archive(*rozkaz);
             }
+            else if (IsType<CofajLudka>(r))
+            {
+                ss << "C";
+                CofajLudka* rozkaz = (CofajLudka*)r;
+                archive(*rozkaz);
+            }
         }
         printf("%s\n", ss.str().c_str());
         dane.push_back(ss.str());
@@ -430,6 +440,11 @@ void multi::Podepnij(Rozgrywka& rozgrywka, vector<Rozkaz*> rozkazy)
         {
             BurzRozkaz * rozkaz = (BurzRozkaz*)r;
             rozkaz->kogo = rozgrywka.WskaznikDomek(rozkaz->ser_kogo);
+        }
+        else if (IsType<CofajLudka>(r))
+        {
+            CofajLudka * rozkaz = (CofajLudka*)r;
+            rozkaz->cofany = rozgrywka.WskaznikLudek(rozkaz->ser_kogo);
         }
 
         r->kto_wydal_rozkaz = &rozgrywka.Graczu(r->kto_nr);

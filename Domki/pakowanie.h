@@ -86,6 +86,20 @@ void load(Archive & archive,
 }
 
 template<class Archive>
+void save(Archive & archive,
+    CofajLudka const & m)
+{
+    archive(m.cofany->uid);
+}
+
+template<class Archive>
+void load(Archive & archive,
+    CofajLudka & m)
+{
+    archive(m.ser_kogo);
+}
+
+template<class Archive>
 void serialize(Archive & archive,
 	Rozgrywka & m)
 {

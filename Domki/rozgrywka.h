@@ -50,4 +50,5 @@ struct Rozgrywka
     std::tuple<int,int,int,int> SilaGracza(int nr_gracza);
     
     Domek* WskaznikDomek(int uid);
+    Ludek* WskaznikLudek(int uid);
 };

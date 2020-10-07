@@ -66,7 +66,32 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
     else if (zdarzenie.type == sf::Event::MouseMoved)
     {
         Skupienie();
-        if (kontrola && skupiony != nullptr && IsType<Domek>(skupiony) && kontrolowany != (Domek*)skupiony&& kontrolowany != nullptr) {
+        if (kontrola && (skupiony == nullptr || !IsType<Domek>(skupiony))) {
+            if (wybrany != nullptr || cel != nullptr) {
+                wybrany = nullptr;
+                cel = nullptr;
+                klikniecia.clear();
+            }
+            double x = okno.mapPixelToCoords(sf::Mouse::getPosition(okno)).x - kontrolowany->polozenie.x, y = okno.mapPixelToCoords(sf::Mouse::getPosition(okno)).y - kontrolowany->polozenie.y;
+            for (auto somsiad : kontrolowany->drogi) {
+                double xx = somsiad->polozenie.x - kontrolowany->polozenie.x, yy = somsiad->polozenie.y - kontrolowany->polozenie.y;
+                if (sqrt(x*x + y * y) > sqrt(xx*xx + yy * yy)) {
+                    double skala = sqrt(xx*xx + yy * yy) / sqrt(x*x + y * y);
+                    x *= skala;
+                    y *= skala;
+                }
+                if (somsiad->rozmiar >= sqrt((x-xx)*(x-xx)+(y-yy)*(y-yy))) {
+                    if (punkty_kontrolne.find(somsiad) != punkty_kontrolne.end() && punkty_kontrolne[somsiad] == kontrolowany) {
+                        punkty_kontrolne.erase(somsiad);
+                    }
+                    punkty_kontrolne[kontrolowany] = somsiad;
+                    kontrolowany->szybki_wymarsz = true;
+                    kontrolowany = somsiad;
+                    break;
+                }
+            }
+        }
+        else if (kontrola && skupiony != nullptr && IsType<Domek>(skupiony) && kontrolowany != (Domek*)skupiony&& kontrolowany != nullptr) {
             if (rozgrywka.punkty_kontrolne) {
                 for (auto domek : kontrolowany->drogi) {
                     if (domek == skupiony) {
@@ -83,10 +108,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
                 }
             }
         }
-        else if (kontrola && (skupiony == nullptr || !IsType<Domek>(skupiony))) {
-            wybrany = nullptr;
-                klikniecia.clear();
-        }
+        
     }
     else if (zdarzenie.type == sf::Event::KeyPressed)
     {

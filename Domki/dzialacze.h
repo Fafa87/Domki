@@ -17,9 +17,11 @@ struct Rozkaz
 
 struct CofajLudka : Rozkaz
 {
+    CofajLudka();
     CofajLudka(Ludek* cofany, Gracz& cofajacy);
 
     Ludek* cofany;
+    int ser_kogo;
 };
 
 struct AktualizujPredkosc : Rozkaz

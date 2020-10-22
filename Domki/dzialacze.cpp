@@ -66,21 +66,22 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
     else if (zdarzenie.type == sf::Event::MouseMoved)
     {
         Skupienie();
-        if (kontrola && (skupiony == nullptr || !IsType<Domek>(skupiony))) {
-            if (wybrany != nullptr || cel != nullptr) {
+        if (kontrola) {
+            if (kontrolowany != (Domek*)skupiony&&(wybrany != nullptr || cel != nullptr)) {
                 wybrany = nullptr;
                 cel = nullptr;
                 klikniecia.clear();
             }
-            double x = okno.mapPixelToCoords(sf::Mouse::getPosition(okno)).x - kontrolowany->polozenie.x, y = okno.mapPixelToCoords(sf::Mouse::getPosition(okno)).y - kontrolowany->polozenie.y;
             for (auto somsiad : kontrolowany->drogi) {
-                double xx = somsiad->polozenie.x - kontrolowany->polozenie.x, yy = somsiad->polozenie.y - kontrolowany->polozenie.y;
+                double x = okno.mapPixelToCoords(sf::Mouse::getPosition(okno)).x - kontrolowany->polozenie.x, y = okno.mapPixelToCoords(sf::Mouse::getPosition(okno)).y - kontrolowany->polozenie.y ,
+                    xx = somsiad->polozenie.x - kontrolowany->polozenie.x, yy = somsiad->polozenie.y - kontrolowany->polozenie.y;
                 if (sqrt(x*x + y * y) > sqrt(xx*xx + yy * yy)) {
                     double skala = sqrt(xx*xx + yy * yy) / sqrt(x*x + y * y);
                     x *= skala;
                     y *= skala;
                 }
-                if (somsiad->rozmiar >= sqrt((x-xx)*(x-xx)+(y-yy)*(y-yy))) {
+                double odleglosc_wektora = sqrt((x - xx)*(x - xx) + (y - yy)*(y - yy));
+                if (somsiad->rozmiar >= odleglosc_wektora) {
                     if (punkty_kontrolne.find(somsiad) != punkty_kontrolne.end() && punkty_kontrolne[somsiad] == kontrolowany) {
                         punkty_kontrolne.erase(somsiad);
                     }

@@ -84,11 +84,17 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     auto dane_master_serwera = sfg::Label::Create("Dane podpietego master serwera");
     dane_master_serwera->SetText(master_klient->adres_serwer.ToString());
 
+
+    auto gracz_etykieta = sfg::Label::Create("Gracz: " + master_klient->gracz.nazwa);
+    auto pokoj_etykieta = sfg::Label::Create(L"Aktualny pokój:");
     auto pokoj = sfg::Entry::Create("hol");
     pokoj->SetRequisition(sf::Vector2f(200, 0));
-    auto prawe_skrzydlo = sfg::Alignment::Create();
-    prawe_skrzydlo->SetAlignment(sf::Vector2f(1, 0.5));
-    prawe_skrzydlo->Add(pokoj);
+
+    auto prawe_skrzydlo = sfg::Box::Create(sfg::Box::Orientation::HORIZONTAL);
+    prawe_skrzydlo->Pack(gracz_etykieta);
+    prawe_skrzydlo->SetSpacing(70);
+    prawe_skrzydlo->Pack(pokoj_etykieta);
+    prawe_skrzydlo->Pack(pokoj);
 
     auto gorny_panel = sfg::Box::Create(sfg::Box::Orientation::HORIZONTAL);
     gorny_panel->SetSpacing(30);

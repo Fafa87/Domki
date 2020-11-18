@@ -86,7 +86,10 @@ void multi::Serwer::CzekajNaGotowosc()
         else
         {
             if (status_nazwa.second[0] != "GOGO")
-                LOG(WARNING) << "Serwer::CzekajNaGotowosc wiadomosc" << status_nazwa.second[0];
+            {
+                LOG(WARNING) << "Serwer::CzekajNaGotowosc wiadomosc " << status_nazwa.second[0];
+                i--; continue; // try again
+            }
             LOG(INFO) << "Odhaczylem " << ludzie[i].nazwa;
         }
     }

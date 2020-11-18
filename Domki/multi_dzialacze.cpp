@@ -52,7 +52,7 @@ void KlientowyRuszacz::Ruszaj(double czas)
     auto wyslane = klient.Wyslij(kolejka_do_wykonania);
     if (wyslane != sf::Socket::Done)
     {
-        LOG(WARNING) << "Wyslij rozkazy: wyslane=false, cicho sza!";
+        LOG(WARNING) << "Wyslij rozkazy: wyslane=false, cicho sza! Status: " << wyslane;
     }
 
     kolejka_do_wykonania.clear();

@@ -459,6 +459,9 @@ void Ruszacz::WykonajRuchy()
         else if (IsType<CofajLudka>(r))//rozkaz cofania
         {
             auto cofanie = (CofajLudka*)r;
+
+            if (!rozgrywka->oszustwa && cofanie->cofany->gracz->numer != cofanie->kto_wydal_rozkaz->numer)continue;
+            
             Ludek* ludzik = cofanie->cofany;
             Twor* powrot = ludzik->cel;
             ludzik->cel = ludzik->skad;

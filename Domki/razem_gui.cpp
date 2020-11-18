@@ -177,10 +177,10 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
         if (pisak->HasFocus() && ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Return)
         {
             master_klient->komendy.add(pisak->GetText());
-            if (chat->GetText().getSize())
-                chat->SetText(pisak->GetText() + "\n" + chat->GetText());
-            else
-                chat->SetText(pisak->GetText());
+            //if (chat->GetText().getSize())
+            //    chat->SetText(pisak->GetText() + "\n" + chat->GetText());
+            //else
+            //    chat->SetText(pisak->GetText());
             pisak->SetText("");
         }
         if (pokoj->HasFocus() && ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Return)

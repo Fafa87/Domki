@@ -73,7 +73,7 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
             ludek->ostatnio = status;
             WyslijDoPokoju(gdzie_jest[ludek], ludek->nazwa + " wchodzi do pokoju.", ludek);
             if (gdzie_jest[ludek]->aktywne_info.size())
-                multi::Wyslij(*ludek->wtyk, gdzie_jest[ludek]->aktywne_info); // wyœlij informacje o serwerze
+                multi::Wyslij(*ludek->wtyk, gdzie_jest[ludek]->aktywne_info); // wyï¿½lij informacje o serwerze
         }
     }
     else if (zapytanie.find("/START: ") == 0)
@@ -99,7 +99,7 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
     else 
     {
         // jak napis to wyslij go do wszystkich ludkow
-        WyslijDoPokoju(pokoj_ludka, ludek->nazwa + ": " + zapytanie, ludek);
+        WyslijDoPokoju(pokoj_ludka, ludek->nazwa + ": " + zapytanie);
     }
 }
 
@@ -166,7 +166,7 @@ void mastery::Serwer::Postaw(int port)
                 DolaczDoPokoju(osoba, hol->nazwa);
                 WyslijDoPokoju(hol, osoba->nazwa + " wchodzi do pokoju.", osoba);
                 if (gdzie_jest[osoba]->aktywne_info.size())
-                    multi::Wyslij(*osoba->wtyk, gdzie_jest[osoba]->aktywne_info); // wyœlij informacje o serwerze
+                    multi::Wyslij(*osoba->wtyk, gdzie_jest[osoba]->aktywne_info); // wyï¿½lij informacje o serwerze
             }
             else 
             {

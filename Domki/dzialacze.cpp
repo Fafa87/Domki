@@ -369,7 +369,7 @@ void Ruszacz::WykonajRuchy()
         {
             auto& ruch = *(WymarszRozkaz*)r;
 
-            if (!rozgrywka->oszustwa && ruch.skad->gracz->numer != ruch.kto_wydal_rozkaz->numer)continue;
+            if ((!rozgrywka->oszustwa && ruch.skad->gracz->numer != ruch.kto_wydal_rozkaz->numer) || ruch.skad->gracz->numer == 0)continue;
 
             auto liczba = int(ruch.skad->liczebnosc * ruch.ulamek);
             if (liczba > 0 && &ruch.skad != &ruch.dokad)

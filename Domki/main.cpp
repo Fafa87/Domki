@@ -245,10 +245,18 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
         GUI::aplikacja().set_active_window(okno_razem);
     });
 
+    auto instrukcja = sfg::Button::Create("Instrukcja");
+    instrukcja->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [&muzyka, okno]
+    {
+        system("instrukcja.html");
+    });
+
     tabelka->SetRowSpacings(10);
     tabelka->Attach(kampania, sf::Rect<sf::Uint32>(1, 2, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(pojedynczy, sf::Rect<sf::Uint32>(1, 6, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(razem, sf::Rect<sf::Uint32>(1, 8, 12, 1), 3, sfg::Table::FILL);
+    tabelka->Attach(instrukcja, sf::Rect<sf::Uint32>(1, 12, 12, 1), 3, sfg::Table::FILL);
 
     box->Pack(tytul, false, false);
     box->Pack(tabelka, true, true);

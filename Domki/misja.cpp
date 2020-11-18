@@ -138,7 +138,8 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
                 for (int c = 0; c < ile; c++)
                     {
                     plikmapa >> numer;
-                    numery_domkow.push_back(make_pair(numer_domku, numer));
+                    if(numer_domku != numer)
+                        numery_domkow.push_back(make_pair(numer_domku, numer));
                     }
                 }
             else if (parametr == "gracz")

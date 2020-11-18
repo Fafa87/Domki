@@ -369,7 +369,7 @@ void Ruszacz::WykonajRuchy()
         {
             auto& ruch = *(WymarszRozkaz*)r;
 
-            if (!rozgrywka->oszustwa && ruch.skad->gracz->numer != ruch.kto_wydal_rozkaz->numer)continue;
+            if ((!rozgrywka->oszustwa && ruch.skad->gracz->numer != ruch.kto_wydal_rozkaz->numer) || ruch.skad->gracz->numer == 0)continue;
 
             auto liczba = int(ruch.skad->liczebnosc * ruch.ulamek);
             if (liczba > 0 && &ruch.skad != &ruch.dokad)
@@ -459,6 +459,9 @@ void Ruszacz::WykonajRuchy()
         else if (IsType<CofajLudka>(r))//rozkaz cofania
         {
             auto cofanie = (CofajLudka*)r;
+
+            if (!rozgrywka->oszustwa && cofanie->cofany->gracz->numer != cofanie->kto_wydal_rozkaz->numer)continue;
+            
             Ludek* ludzik = cofanie->cofany;
             Twor* powrot = ludzik->cel;
             ludzik->cel = ludzik->skad;

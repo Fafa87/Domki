@@ -22,6 +22,13 @@ void Rozgrywka::PoddajGracza(Gracz & gracz)
     liczba_aktywnych_graczy--;
 }
 
+Domek & Rozgrywka::Domku(int numer)
+{
+    auto it = domki.begin();
+    std::advance(it, numer);
+    return *it;
+}
+
 Gracz & Rozgrywka::Graczu(int numer)
 {
     auto it = gracze.begin();
@@ -213,4 +220,26 @@ Ludek* Rozgrywka::WskaznikLudek(int uid)
         }
     }
     return nullptr;
+}
+
+int Rozgrywka::nr_zwyciezcy() {
+    if (liczba_aktywnych_graczy == 1) {
+        for (auto &gracz : gracze)
+            if (gracz.aktywny) return gracz.numer;
+    }
+    else if (cel_gry.nazwa_celu == "Zbieranie") {
+        int nr = -1;
+        for (auto &gracz : gracze) {
+            if (gracz.aktywny) {
+                int ludki = std::get<0>(SilaGracza(gracz.numer));
+                if (ludki >= cel_gry.wymagany_zbior && (nr == -1 || ludki > std::get<0>(SilaGracza(nr)))) 
+                    nr = gracz.numer;
+            }
+        }
+        return nr;
+    }
+    else if (cel_gry.nazwa_celu == "KOTH" && Domku(cel_gry.do_zdobycia - 1).gracz->numer != 0) {
+        return Domku(cel_gry.do_zdobycia - 1).gracz->numer;
+    }
+    return -1;
 }

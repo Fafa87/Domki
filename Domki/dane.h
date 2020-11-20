@@ -7,6 +7,13 @@ using namespace std; // pozwala pisaæ vector<int> zamiast std::vector<int>
 
 typedef sf::Vector2<double> PD; // skrót dla typu oznaczaj¹cego parê liczb
 
+struct CelMisji
+{
+    string nazwa_celu = "Walka";
+
+    int nr_defensora = 1, sila_plagi = 1, wymagany_zbior = 10000, do_zdobycia = 1, nr_impostera = 1, szybkosc_impostera = 10;
+};
+
 struct Gracz
 {
     int numer,liczba_tworow=0;

@@ -609,9 +609,20 @@ void Ruszacz::Produkuj(double czas)
 {
     for (Domek& domek : rozgrywka->domki)
     {
-        if (domek.gracz->aktywny&&domek.liczebnosc == domek.max_liczebnosc);
-        else if(domek.gracz->aktywny&&domek.liczebnosc<domek.max_liczebnosc&&domek.typdomku == TypDomku::kMiasto)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc*czas*domek.produkcja*domek.poziom);
-        else if(domek.liczebnosc>domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek,max(domek.liczebnosc - szybkosc*czas*(domek.liczebnosc-domek.max_liczebnosc)/10.0,(double)domek.max_liczebnosc));
+        if(rozgrywka->cel_gry.nazwa_celu == "Inwazja" && rozgrywka->cel_gry.nr_impostera == domek.gracz->numer && domek.gracz->aktywny && domek.liczebnosc < domek.max_liczebnosc)
+            rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + (double)rozgrywka->cel_gry.szybkosc_impostera * szybkosc * czas*domek.produkcja*domek.poziom);
+        else if (domek.liczebnosc > domek.max_liczebnosc)rozgrywka->ZmienLiczebnosc(domek, max(domek.liczebnosc - szybkosc * czas*(domek.liczebnosc - domek.max_liczebnosc) / 10.0, (double)domek.max_liczebnosc));
+        else if (rozgrywka->cel_gry.nazwa_celu == "Przetrwanie" && rozgrywka->Graczu(rozgrywka->cel_gry.nr_defensora).aktywny && domek.gracz->aktywny && rozgrywka->cel_gry.nr_defensora != domek.gracz->numer && domek.liczebnosc > 0.0) {
+            if (domek.liczebnosc - szybkosc * czas*(double)rozgrywka->cel_gry.sila_plagi <= 0.0) {
+                domek.poziom = 0;
+                domek.typdomku = TypDomku::kPole;
+                domek.max_liczebnosc = 0;
+                rozgrywka->ZmienLiczebnosc(domek, 0.0);
+            }
+            else rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc - szybkosc * czas*(double)rozgrywka->cel_gry.sila_plagi);
+        }
+        else if (domek.gracz->aktywny&&domek.liczebnosc == domek.max_liczebnosc);
+        else if (domek.gracz->aktywny&&domek.liczebnosc < domek.max_liczebnosc&&domek.typdomku == TypDomku::kMiasto)rozgrywka->ZmienLiczebnosc(domek, domek.liczebnosc + szybkosc * czas*domek.produkcja*domek.poziom);
     }
 }
 

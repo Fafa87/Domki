@@ -74,7 +74,6 @@ MisjaUstawienia wczytaj_meta(string sciezka)
             res.komputery.push_back(num);
         }
     }
-
     sort(res.komputery.begin(), res.komputery.end());
     res.komputery.erase(unique(res.komputery.begin(), res.komputery.end()), res.komputery.end());
     res.komputery.erase(res.komputery.begin()); // usun pierwszego
@@ -181,6 +180,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
                     gra.ZmienPoziom(domek, lev);
                 }
             }
+
         domek.produkcja = 2;
         if(domek.max_liczebnosc==-1)domek.max_liczebnosc = 100;
         domek.wyglad = Wyglad::kMiasto;
@@ -191,6 +191,30 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
         }
         else if(domek.liczebnosc==-1)gra.ZmienLiczebnosc(domek, 50);
         }
+    if (plikmapa.good()) {
+        plikmapa >> parametr;
+        if (parametr == "Tryb")
+        {
+            string nazwa_celu;
+            plikmapa >> nazwa_celu;
+            if (nazwa_celu == "Zbieranie") {
+                plikmapa >> gra.cel_gry.wymagany_zbior;
+            }
+            else if (nazwa_celu == "Inwazja") {
+                plikmapa >> gra.cel_gry.nr_impostera >> gra.cel_gry.szybkosc_impostera;
+            }
+            else if (nazwa_celu == "Przetrwanie") {
+                plikmapa >> gra.cel_gry.nr_defensora >> gra.cel_gry.sila_plagi;
+            }
+            else if (nazwa_celu == "KOTH") {
+                plikmapa >> gra.cel_gry.do_zdobycia;
+            }
+            else {
+                nazwa_celu = "Walka";
+            }
+            gra.cel_gry.nazwa_celu = nazwa_celu;
+        }
+    }
     for (auto para : numery_domkow)
     {
         Domek   *wksslask1,*wksslask2;
@@ -207,7 +231,6 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
         if (!gracz.aktywny)
             gra.liczba_aktywnych_graczy--;
     }
-    
     plikmapa.close();
     return gra;
 }
@@ -281,6 +304,10 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     rozgrywka.oszustwa = misja_ustawienia.oszustwa;
     rozgrywka.walka_w_polu = misja_ustawienia.walka_w_polu;
     rozgrywka.punkty_kontrolne = misja_ustawienia.punkty_kontrolne;
+
+    //ustawiamy tryb gry
+    //rozgrywka.cel_gry = misja_ustawienia.cel_misji;///////////////////////////////////////////////////////////////////////
+
     // przygotowujemy dzialaczy
     Wyswietlacz wyswietlacz(rozgrywka);
     if (!to_serwer)
@@ -455,7 +482,8 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         }
 
         //ZAKONCZENIE GRY
-        if (rozgrywka.liczba_aktywnych_graczy == 1)
+        int winner = rozgrywka.nr_zwyciezcy();
+        if (winner > -1)
         {
             muzykant.Zamilcz();
 
@@ -465,17 +493,10 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
                 if (interfejs != nullptr)
                     GUI::aplikacja().remove_active_window(interfejs);
             }
-
-            for (auto& g : rozgrywka.gracze)
-            {
-                if (g.aktywny)
-                {
-                    misja_ustawienia.ile_kto_wygranych[g.numer]++;
-                    if (misja_ustawienia.Zwyciezca() < 0 && !to_serwer)
-                        zakonczenie_gry(g, nr_gracza);
-                    break;
-                }
-            }
+            auto& gwinner = rozgrywka.Graczu(winner);
+            misja_ustawienia.ile_kto_wygranych[winner]++;
+            if (misja_ustawienia.Zwyciezca() < 0 && !to_serwer)
+                zakonczenie_gry(gwinner, nr_gracza);
 
             auto zwyciezca_meczu = misja_ustawienia.Zwyciezca();
             if (zwyciezca_meczu >= 0 && !to_serwer && GUI::aplikacja().pokaz_ranking)

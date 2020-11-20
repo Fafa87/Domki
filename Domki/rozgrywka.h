@@ -22,6 +22,9 @@ struct Rozgrywka
         walka_w_polu = true,
         punkty_kontrolne = true;
 
+    CelMisji cel_gry;
+    int nr_zwyciezcy();
+
     list<Gracz> gracze;
     list<Domek> domki;
     list<Ludek> armie;
@@ -33,6 +36,8 @@ struct Rozgrywka
     void PoddajGracza(Gracz& gracz);
     void PrzerwijGre();
 
+
+    Domek& Domku(int numer);
     Gracz& Graczu(int numer);
     Gracz& Graczu(string nazwa);
 

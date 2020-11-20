@@ -30,6 +30,8 @@ struct MisjaUstawienia
         walka_w_polu = true,
         punkty_kontrolne = true;
 
+    CelMisji cel_misji;
+
     int nr_gracza = 1;
     vector<string> nazwy_graczow;
     vector<int> komputery = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
@@ -37,7 +39,6 @@ struct MisjaUstawienia
     string nazwy[3][10] = { {"Cienias","Ludek","Kapuniak","Placek","Amator","Maniak","Rycerz","Mistrz","Mocarz","Cezar"},
                                        {"Leszcz","Klocek","Lamer","Strudel","Miedziak","Pasjonat","Wojownik","Zawodowiec","Masakrator","Dipblu"} ,
                                         {"Wsiok","Klapek","Bober","Klopsik","Cwaniak","Znawca","Walczak","Ekspert","Magnat","Mutant"} };
-
     int do_ilu_wygranych = 0;
     vector<int> ile_kto_wygranych;
 };

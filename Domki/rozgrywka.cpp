@@ -58,6 +58,17 @@ std::tuple<int,int,int,int> Rozgrywka::SilaGracza(int nr_gracza)
     return make_tuple(ludki, produkcja, modernizacja,szybkosc);
 }
 
+int Rozgrywka::OcenaGracza(int nr_gracza) {
+    int suma = 0;
+    Gracz &gracz = Graczu(nr_gracza);
+     for (auto &domek : domki)
+           if (domek.gracz == &gracz) {
+               suma += domek.liczebnosc;
+               for (int wspolczynnik = 25, poziom = 1; poziom <= domek.poziom; suma += wspolczynnik, wspolczynnik *= 2, poziom++);
+           }
+    return suma;
+}
+
 void Rozgrywka::ZniszczLudka(Ludek* ludek)
 {
     auto it = armie.begin();
@@ -222,8 +233,20 @@ Ludek* Rozgrywka::WskaznikLudek(int uid)
     return nullptr;
 }
 
-int Rozgrywka::nr_zwyciezcy() {
-    if (liczba_aktywnych_graczy == 1) {
+int Rozgrywka::nr_zwyciezcy(bool same_komputery) {
+    if (same_komputery) { // SPRAWDZAM CZY SA SAME KOMPUTERY I JESLI TAK, TO WYBIERAM ZWYCIEZCE NA PODSTAWIE LICZBY LUDKOW
+        int zwyciezca = -1, max_suma = 0;
+        for (auto &gracz : gracze) 
+            if(gracz.aktywny){
+                int suma = OcenaGracza(gracz.numer);
+                if (suma > max_suma) {
+                    max_suma = suma;
+                    zwyciezca = gracz.numer;
+                }
+        }
+        return zwyciezca;
+    }
+    else if (liczba_aktywnych_graczy == 1) {
         for (auto &gracz : gracze)
             if (gracz.aktywny) return gracz.numer;
     }

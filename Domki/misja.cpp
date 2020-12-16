@@ -329,13 +329,15 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     //KOMPUTEROWIE
     vector<Komputer*> kompiutery;
     srand(time(NULL));
-    int numba=1;
+    int numba = 1, licznik_nazw[3] = {};
     for (int nr = 0; nr < misja_ustawienia.komputery.size(); nr++)numba *= 3;
     numba = rand() % numba;
     for (auto nr : misja_ustawienia.komputery)
     {
         //LOSOWANIE NAZW
+        while (nr > 0 &&( !(licznik_nazw[numba % 3] <= licznik_nazw[(numba + 1) % 3] && licznik_nazw[numba % 3] <= licznik_nazw[(numba - 1) % 3]))) numba = rand() % (numba + 2);
         rozgrywka.Graczu(nr).nazwa = misja_ustawienia.nazwy[numba%3][(int)trudnosc-1];
+        licznik_nazw[numba % 3]++;
         numba /= 3;
         kompiutery.emplace_back(new Komputer(rozgrywka,rozgrywka.Graczu(nr),trudnosc));
          }
@@ -454,16 +456,6 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         myszkaGracza.Skupienie();
         muzykant.GrajEfekty(ruszacz);
 
-        // przyspiesz jesli zostaly same komputery
-        if (!przyspieszenie_bez_gracza && misja_ustawienia.JedenGracz() && !rozgrywka.Graczu(nr_gracza).aktywny)
-        {
-            int mnoznik_czasu = 5;
-            for (auto komp : kompiutery)
-                komp->szybkosc_komputera *= mnoznik_czasu;
-            ruszacz.szybkosc *= mnoznik_czasu;
-            przyspieszenie_bez_gracza = true;
-        }
-
         window.clear();
 
         if (!to_serwer)
@@ -482,7 +474,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         }
 
         //ZAKONCZENIE GRY
-        int winner = rozgrywka.nr_zwyciezcy();
+        int winner = rozgrywka.nr_zwyciezcy(misja_ustawienia.JedenGracz() && !rozgrywka.Graczu(nr_gracza).aktywny);
         if (winner > -1)
         {
             muzykant.Zamilcz();
@@ -495,6 +487,8 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
             }
             auto& gwinner = rozgrywka.Graczu(winner);
             misja_ustawienia.ile_kto_wygranych[winner]++;
+            printf("Zwyciezca jest: %s\n", gwinner.nazwa);
+            LOG(INFO) << "Zwyciezca jest: " << gwinner.nazwa;
             if (misja_ustawienia.Zwyciezca() < 0 && !to_serwer)
                 zakonczenie_gry(gwinner, nr_gracza);
 

@@ -23,7 +23,7 @@ struct Rozgrywka
         punkty_kontrolne = true;
 
     CelMisji cel_gry;
-    int nr_zwyciezcy();
+    int nr_zwyciezcy(bool same_komputery);
 
     list<Gracz> gracze;
     list<Domek> domki;
@@ -53,6 +53,7 @@ struct Rozgrywka
     double PoliczObroneDomku(const Domek& domek);
     double PoliczSzybkoscDomku(const Domek& domek);
     std::tuple<int,int,int,int> SilaGracza(int nr_gracza);
+    int OcenaGracza(int nr_gracza);
     
     Domek* WskaznikDomek(int uid);
     Ludek* WskaznikLudek(int uid);

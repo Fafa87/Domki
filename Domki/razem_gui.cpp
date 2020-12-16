@@ -116,7 +116,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     ludki->SetRequisition(sf::Vector2f(200, 0));
     ludki->SetAlignment(sf::Vector2f(0, 0));
     ludki->SetClass("Razem");
-    auto ramka_pokoju = sfg::Frame::Create("Ludzie w pokoju");
+    auto ramka_pokoju = sfg::Frame::Create("Lista pokoi:");
     ramka_pokoju->Add(ludki);
 
     auto srodek_panel = sfg::Box::Create(sfg::Box::Orientation::HORIZONTAL);
@@ -204,7 +204,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
             else
                 chat->SetText(tekst);
         }
-        ludki->SetText(join(master_klient->KtoJestObok(), "\n"));
+        ludki->SetText(join(master_klient->KtoJestNaPlanecie(), "\n"));
         if (master_klient->rozgrywka_pokoju.ip.size())
         {
             if (odpal->GetClass() != "Nieaktywny")

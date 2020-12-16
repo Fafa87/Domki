@@ -9,7 +9,7 @@ void komunikat_masterklient(mastery::Klient* klient)
     if ((int)klient->polaczony != komunikat_ostatni)
     {
         if (klient->polaczony)
-            printf("Jestes juz polaczony, mozesz:\n- napisac tekst\n- rozlacz\n- /KTO? jest w pokoju serwera\n- /IDZ: do pokoju\n- /START: parametry serwera\n");
+            printf("Jestes juz polaczony, mozesz:\n- napisac tekst\n- rozlacz\n- /SWIAT? jaki jestn - /KTO? jest w pokoju serwera\n- /IDZ: do pokoju\n- /START: parametry serwera\n");
         else
             printf("Nie jestes jeszcze polaczony do serwera. Napisz polacz <adres>:<port>, aby sprobowac sie polaczyc do msa.\n");
     }
@@ -44,6 +44,10 @@ void wykonaj_masterklient(mastery::Klient* klient, string zadanie)
     {
         klient->KtoJest();
     }
+    else if (zadanie.find("/SWIAT?") == 0)
+    {
+        klient->KtoNaSwiecie();
+    }
     else if (zadanie.find("/IDZ: ") == 0)
     {
         auto pokoj = zadanie.substr(6);
@@ -63,6 +67,17 @@ vector<string> mastery::Klient::KtoJestObok()
         // zapytaj serwer
         oczekuje_na_liste = true;
         KtoJest();
+    }
+    return this->ludzie_obok;
+}
+
+vector<string> mastery::Klient::KtoJestNaPlanecie()
+{
+    if (this->ludzie_obok.size() == 0 && oczekuje_na_liste == false)
+    {
+        // zapytaj serwer
+        oczekuje_na_liste = true;
+        KtoNaSwiecie();
     }
     return this->ludzie_obok;
 }
@@ -89,12 +104,20 @@ void mastery::Klient::KtoJest()
     komendy.add("/KTO?");
 }
 
+void mastery::Klient::KtoNaSwiecie()
+{
+    komendy.add("/SWIAT?");
+}
+
 void mastery::Klient::IdzDo(string pokoj)
 {
     komendy.add("/IDZ: " + pokoj);
     this->ludzie_obok.clear();
     this->rozgrywka_pokoju = Adres();
 }
+
+
+
 
 void mastery::Klient::PrzeanalizujOdebrane(string tekst)
 {
@@ -105,6 +128,25 @@ void mastery::Klient::PrzeanalizujOdebrane(string tekst)
         auto linie = split(tekst, '\n');
         linie.erase(linie.begin());
         this->ludzie_obok = linie;
+        oczekuje_na_liste = false;
+    }
+    else if (tekst.find("SWIAT") == 0 && oczekuje_na_liste) // lista calego swiata 
+    {
+        this->ludzie_obok.clear();
+        auto linie = split(tekst, '\n');
+        for (int i = 1; i < linie.size(); i++)
+        {
+            auto tokeny = split(linie[i], ':');
+            this->ludzie_obok.push_back(tokeny[0] + ":");
+            if (tokeny.size() > 1)  // jesli w pokoju jest gracz
+            {
+                tokeny = split(tokeny[1], ',');
+                for (auto& gracz_nazwa : tokeny) if (gracz_nazwa.size())
+                {
+                    this->ludzie_obok.push_back("\t- " + gracz_nazwa);
+                }
+            }
+        }
         oczekuje_na_liste = false;
     }
     else if (tekst.find(" wchodzi") != -1)

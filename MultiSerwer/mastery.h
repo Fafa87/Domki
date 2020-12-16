@@ -41,10 +41,12 @@ namespace mastery
         void Podlacz(multi::Adres adres);
         void Rozlacz();
         void KtoJest();
+        void KtoNaSwiecie();
         void IdzDo(string pokoj);
 
         void PrzeanalizujOdebrane(string odebrane);
         vector<string> KtoJestObok();
+        vector<string> KtoJestNaPlanecie();
         bool RozgrywkaTrwa();
         Adres rozgrywka_pokoju;
     };

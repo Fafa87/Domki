@@ -62,6 +62,22 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
         auto status = multi::Wyslij(*ludek->wtyk, lista_ludzi);
         ludek->ostatnio = status;
     }
+    else if (zapytanie.find("/SWIAT?") == 0)
+    {
+        string caly_swiat = "SWIAT:\n";
+        for (auto& pokoj : this->pokoje)
+        {
+            string ten_pokoj = pokoj->nazwa + ":";
+            for (auto& ludek : pokoj->pokojnicy)
+            {
+                ten_pokoj += ludek->nazwa + ",";
+            }
+            caly_swiat += ten_pokoj + "\n";
+        }
+        LOG(INFO) << "Informacja o swiecie do: " << ludek->nazwa;
+        auto status = multi::Wyslij(*ludek->wtyk, caly_swiat);
+        ludek->ostatnio = status;
+    }
     else if (zapytanie.find("/IDZ: ") == 0)
     {
         auto nazwa_pokoju = zapytanie.substr(6);
@@ -292,10 +308,18 @@ void mastery::Serwer::OpuscPokoj(shared_ptr<multi::Zawodnik> ludek)
 {
     if (gdzie_jest.count(ludek) == 1)
     {
+        auto pokoj = gdzie_jest[ludek];
         // usun z o pokoju i mappera
         LOG(INFO) << ludek->nazwa << " wychodzi z pokoju.";
         remove_item(gdzie_jest[ludek]->pokojnicy, ludek);
         gdzie_jest.erase(ludek);
+
+        // usun pusty pokoj jesli nie jest holem
+        if (pokoj->pokojnicy.size() == 0 && this->hol != pokoj)
+        {
+            LOG(INFO) << "Usuwam pokoj " << pokoj->nazwa;
+            remove_item(pokoje, pokoj);
+        }
     }
 }
 

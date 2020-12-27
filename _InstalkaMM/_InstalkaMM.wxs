@@ -5,7 +5,6 @@
   <?define SourceDir="..\BIN"?>
   <Module Id="Domcraft" Language="1033" Version="1.0.0.0">
     <Package Id="5523e5c4-6272-4c4b-906f-4657a97bbfbd" Manufacturer="Mrozix" InstallerVersion="200" Platform="x64" InstallScope="perMachine" Description="Domcraft incomming" />
-
     <Icon Id="Icon.ico" SourceFile="..\_Instalka\Resources\Domcraft.ico" />
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="DesktopFolder" />
@@ -15,14 +14,15 @@
         </Component>
         <Component Id="owcD7BDD017223A7DF14B2729C5E506F697" Guid="a3ee4bcf-268f-5abf-6eb7-0eddf384965e">
           <File Id="owfD7BDD017223A7DF14B2729C5E506F697" Source="$(var.SourceDir)\Domki.exe" KeyPath="yes">
-            <Shortcut Id="scDA96B247B5028EEECEB8C8773C1CF67C" Advertise="yes" Name="Domcraft" Directory="DesktopFolder" WorkingDirectory="MergeRedirectFolder" Icon ="Icon.ico" />
+            <Shortcut Id="scDA96B247B5028EEECEB8C8773C1CF67C" Advertise="yes" Name="Domcraft" Directory="DesktopFolder" WorkingDirectory="MergeRedirectFolder" Icon="Icon.ico" />
+            <Shortcut Id="sc157CE8C591DAB34F9EB7C32E085D6BCF" Name="Domcraft" Directory="scd127C63A9A464827794F01EB745AA53FE" WorkingDirectory="MergeRedirectFolder"  Icon="Icon.ico" />
           </File>
         </Component>
         <Component Id="RegistryEntries" Guid="B0A06192-89B4-4D23-B983-EDB18BCEE2C9">
-            <RegistryKey Root="HKLM" Key="Software\Mrozix\Domcraft">
-                <!-- <RegistryValue Type="string" Name="Version" Value="[ProductVersion]" KeyPath="yes"/> -->
-                <RegistryValue Id="MrozixDomcraftRegistry" Type="string" Name="InstallDir" Value="[MergeRedirectFolder]"/>
-            </RegistryKey>
+          <RegistryKey Root="HKLM" Key="Software\Mrozix\Domcraft">
+            <!-- <RegistryValue Type="string" Name="Version" Value="[ProductVersion]" KeyPath="yes"/> -->
+            <RegistryValue Id="MrozixDomcraftRegistry" Type="string" Name="InstallDir" Value="[MergeRedirectFolder]" />
+          </RegistryKey>
         </Component>
         <Component Id="owcEAC81601926B5E32BCA55DADCD6D970E" Guid="724737ee-a450-f353-be06-0e340accbeae">
           <File Id="owfEAC81601926B5E32BCA55DADCD6D970E" Source="$(var.SourceDir)\Domki_log.conf" KeyPath="yes" />
@@ -651,6 +651,14 @@
             </Component>
           </Directory>
         </Directory>
+        <Component Id="owc708069EB9CAFD33D8B5A4FCF91FDCA52" Guid="b040b4dc-900c-c4aa-cc60-533be2f0c0aa" Win64="yes">
+          <File Id="owf708069EB9CAFD33D8B5A4FCF91FDCA52" Source="$(var.SourceDir)\Uaktualnij.ps1" KeyPath="yes">
+            <Shortcut Id="sc510E0F3D58D54F6D4402FB8D42906C58" Name="Uaktualnij" Directory="scd127C63A9A464827794F01EB745AA53FE" WorkingDirectory="MergeRedirectFolder" />
+          </File>
+        </Component>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="scd127C63A9A464827794F01EB745AA53FE" Name="Domcraft" />
       </Directory>
     </Directory>
     <ComponentGroupRef Id="Custom" />

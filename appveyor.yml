@@ -19,5 +19,5 @@ test_script:
 artifacts:
 - path: BIN
   name: Domki
-- path: _Instalka\bin\Release\Domcraft.msi
+- path: _Instalka\bin\x64\Deploy\Domcraft.msi
   name: Domcraft

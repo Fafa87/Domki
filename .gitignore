@@ -18,3 +18,11 @@ DomkoTesty/x64/**
 Domki\.VC\.VC\.opendb
 
 Domki/Domki.vcxproj.user
+
+_Instalka/obj/
+
+_Instalka/bin/
+
+_InstalkaMM/bin/
+
+_InstalkaMM/obj/

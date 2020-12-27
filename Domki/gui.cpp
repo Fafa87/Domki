@@ -1,6 +1,60 @@
 #include "gui.h"
 #include "windows.h"
 #include "ext_vector.h"
+#include "ext_string.h"
+
+
+bool GetProductAndVersion(string & strProductName, string & strProductVersion)
+{
+    // Taken from: https://stackoverflow.com/questions/316626/how-do-i-read-from-a-version-resource-in-visual-c
+    // get the filename of the executable containing the version resource
+    TCHAR szFilename[MAX_PATH + 1] = { 0 };
+    if (GetModuleFileName(NULL, szFilename, MAX_PATH) == 0)
+    {
+        return false;
+    }
+
+    // allocate a block of memory for the version info
+    DWORD dummy;
+    DWORD dwSize = GetFileVersionInfoSize(szFilename, &dummy);
+    if (dwSize == 0)
+    {
+        return false;
+    }
+    std::vector<BYTE> data(dwSize);
+
+    // load the version info
+    if (!GetFileVersionInfo(szFilename, NULL, dwSize, &data[0]))
+    {
+        return false;
+    }
+
+    // get the name and version strings
+    LPVOID pvProductName = NULL;
+    unsigned int iProductNameLen = 0;
+    LPVOID pvProductVersion = NULL;
+    unsigned int iProductVersionLen = 0;
+
+    // replace "040904e4" with the language ID of your resources
+    if (!VerQueryValue(&data[0], ("\\StringFileInfo\\041504b0\\ProductName"), &pvProductName, &iProductNameLen) ||
+        !VerQueryValue(&data[0], ("\\StringFileInfo\\041504b0\\ProductVersion"), &pvProductVersion, &iProductVersionLen))
+    {
+        return false;
+    }
+
+    strProductName = string((LPCSTR)pvProductName, iProductNameLen-1);
+    strProductVersion = string((LPCSTR)pvProductVersion, iProductVersionLen-1);
+
+    return true;
+}
+
+
+string opis_wersji() {
+    string nazwa, wersja;
+    auto res = GetProductAndVersion(nazwa, wersja);
+    return nazwa + "  " + wersja;
+}
+
 
 GUI* GUI::apa;
 

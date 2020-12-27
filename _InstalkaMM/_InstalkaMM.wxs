@@ -1,0 +1,658 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define ComponentRules="OneToOne"?>
+  <!-- SourceDir instructs IsWiX the location of the directory that contains files for this merge module -->
+  <?define SourceDir="..\BIN"?>
+  <Module Id="Domcraft" Language="1033" Version="1.0.0.0">
+    <Package Id="5523e5c4-6272-4c4b-906f-4657a97bbfbd" Manufacturer="Mrozix" InstallerVersion="200" Platform="x64" InstallScope="perMachine" Description="Domcraft incomming" />
+
+    <Icon Id="Icon.ico" SourceFile="..\_Instalka\Resources\Domcraft.ico" />
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="DesktopFolder" />
+      <Directory Id="MergeRedirectFolder">
+        <Component Id="owcB27D165BE455D34CE09AB65F8BC7199E3" Guid="0dc622d7-28d0-0376-99f0-3265cb316541">
+          <File Id="owfB27D165BE455D34CE09AB658BC7199E3" Source="$(var.SourceDir)\Domki.conf" KeyPath="yes" />
+        </Component>
+        <Component Id="owcD7BDD017223A7DF14B2729C5E506F697" Guid="a3ee4bcf-268f-5abf-6eb7-0eddf384965e">
+          <File Id="owfD7BDD017223A7DF14B2729C5E506F697" Source="$(var.SourceDir)\Domki.exe" KeyPath="yes">
+            <Shortcut Id="scDA96B247B5028EEECEB8C8773C1CF67C" Advertise="yes" Name="Domcraft" Directory="DesktopFolder" WorkingDirectory="MergeRedirectFolder" Icon ="Icon.ico" />
+          </File>
+        </Component>
+        <Component Id="RegistryEntries" Guid="B0A06192-89B4-4D23-B983-EDB18BCEE2C9">
+            <RegistryKey Root="HKLM" Key="Software\Mrozix\Domcraft">
+                <!-- <RegistryValue Type="string" Name="Version" Value="[ProductVersion]" KeyPath="yes"/> -->
+                <RegistryValue Id="MrozixDomcraftRegistry" Type="string" Name="InstallDir" Value="[MergeRedirectFolder]"/>
+            </RegistryKey>
+        </Component>
+        <Component Id="owcEAC81601926B5E32BCA55DADCD6D970E" Guid="724737ee-a450-f353-be06-0e340accbeae">
+          <File Id="owfEAC81601926B5E32BCA55DADCD6D970E" Source="$(var.SourceDir)\Domki_log.conf" KeyPath="yes" />
+        </Component>
+        <Component Id="owc0DA5178F850689A1C536C322CFEC112E" Guid="d046ebef-9355-dca5-eb29-f9ee347d096c">
+          <File Id="owf0DA5178F850689A1C536C322CFEC112E" Source="$(var.SourceDir)\Instrukcja.html" KeyPath="yes" />
+        </Component>
+        <Component Id="owcCF9FFA730B5D6B97D9C43F77207FCCE8" Guid="9bc64210-80b6-ee72-61ce-5f656b0caa93">
+          <File Id="owfCF9FFA730B5D6B97D9C43F77207FCCE8" Source="$(var.SourceDir)\MultiSerwer.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc9EEA2AE12A611C6D676E803AA743C08A" Guid="43c35200-bcab-9b5c-e872-accb4f07dd60">
+          <File Id="owf9EEA2AE12A611C6D676E803AA743C08A" Source="$(var.SourceDir)\MultiSerwer_log.conf" KeyPath="yes" />
+        </Component>
+        <Component Id="owc06FFE2FF0186C1C2618B418A049297AF" Guid="7674ebac-6f90-9e6d-bcf5-33bd03782dd4">
+          <File Id="owf06FFE2FF0186C1C2618B418A049297AF" Source="$(var.SourceDir)\openal32.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc6222421C47FF0907068E7B47FFF453C0" Guid="9f05ee0a-337e-3012-f6c7-a3c67bc6b029">
+          <File Id="owf6222421C47FF0907068E7B47FFF453C0" Source="$(var.SourceDir)\sfgui.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc03C684136A196E2F516BF18ECF6DC9E3" Guid="e9177703-1b5b-265c-3e65-2a4bfa89b875">
+          <File Id="owf03C684136A196E2F516BF18ECF6DC9E3" Source="$(var.SourceDir)\sfgui-d.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcD5C8B4CDA669A52F0D9785D1172035E5" Guid="d6e749ff-f487-e505-ed21-ee1ec81dd192">
+          <File Id="owfD5C8B4CDA669A52F0D9785D1172035E5" Source="$(var.SourceDir)\sfml-audio-2.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc40249CA00CEF11BC08B9FA1C2C678FEA" Guid="b7d0fbe4-dada-3424-9795-bccd8933a1c6">
+          <File Id="owf40249CA00CEF11BC08B9FA1C2C678FEA" Source="$(var.SourceDir)\sfml-audio-d-2.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc7CFAFA243BE0C884482432B6896D87EA" Guid="53344772-5b28-1e41-f90b-fcf340b8213f">
+          <File Id="owf7CFAFA243BE0C884482432B6896D87EA" Source="$(var.SourceDir)\sfml-graphics-2.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC207CBF24B896F2A451E9E29C57858E8" Guid="b63ac1e7-3911-4ff0-f3f7-a7adf9cd2dcb">
+          <File Id="owfC207CBF24B896F2A451E9E29C57858E8" Source="$(var.SourceDir)\sfml-graphics-d-2.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcED1383E475EA910158D74705CA512E95" Guid="b75bdf66-3d21-0b1c-1cbb-82c7a58a2d31">
+          <File Id="owfED1383E475EA910158D74705CA512E95" Source="$(var.SourceDir)\sfml-network-2.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc95D66A4A096C1856A5D57158A756171E" Guid="3a1437aa-18ab-11a6-c064-111596a8cd90">
+          <File Id="owf95D66A4A096C1856A5D57158A756171E" Source="$(var.SourceDir)\sfml-network-d-2.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc403EE88DE2BD5A9449DD3B5785FBC198" Guid="18b3a6d3-fe36-cf07-656a-2d45fabd033d">
+          <File Id="owf403EE88DE2BD5A9449DD3B5785FBC198" Source="$(var.SourceDir)\sfml-system-2.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC71330C604E6ACF16A44E11E5BA0AC90" Guid="75879e45-ee2d-e3d6-7656-a3d2d9a42595">
+          <File Id="owfC71330C604E6ACF16A44E11E5BA0AC90" Source="$(var.SourceDir)\sfml-system-d-2.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc7CE9BF2A47C22F77754AB3418313D6CD" Guid="68d1b8df-2259-d663-0397-662d8a33397c">
+          <File Id="owf7CE9BF2A47C22F77754AB3418313D6CD" Source="$(var.SourceDir)\sfml-window-2.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3F7F02F46D96EF8FBD36448580014869" Guid="e5885548-6acf-6e83-9a6f-0afd40764013">
+          <File Id="owf3F7F02F46D96EF8FBD36448580014869" Source="$(var.SourceDir)\sfml-window-d-2.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC4DF0E7CDD9590AC829BB0C506C628E6" Guid="e736c55c-6f03-3209-b327-32e6482fb7f5">
+          <File Id="owfC4DF0E7CDD9590AC829BB0C506C628E6" Source="$(var.SourceDir)\thor.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF73CA7ED73437258A1E22C5BF0872084" Guid="fd66ea49-a5c8-09d2-94c9-4c933b750586">
+          <File Id="owfF73CA7ED73437258A1E22C5BF0872084" Source="$(var.SourceDir)\thor-d.dll" KeyPath="yes" />
+        </Component>
+        <Directory Id="owd766C73A53A5E8233F66669C498AB2AEC" Name="Grafika">
+          <Component Id="owc4CE538A5629A21118B0D27BA5A1D2825" Guid="f7c93d8d-5552-a3da-e520-6580466d301b">
+            <File Id="owf4CE538A5629A21118B0D27BA5A1D2825" Source="$(var.SourceDir)\Grafika\bazowy.theme" KeyPath="yes" />
+          </Component>
+          <Component Id="owc60EB36F4A9B212A063FEDC0A63A85385" Guid="265cd5b1-5e09-9cf3-9752-408563136027">
+            <File Id="owf60EB36F4A9B212A063FEDC0A63A85385" Source="$(var.SourceDir)\Grafika\BuxtonSketch.ttf" KeyPath="yes" />
+          </Component>
+          <Component Id="owcDCA763E72124425480E01C594C081F4F" Guid="a61479c8-a662-cf4a-526c-67d4f9f2f1d6">
+            <File Id="owfDCA763E72124425480E01C594C081F4F" Source="$(var.SourceDir)\Grafika\houseofhouses.png" KeyPath="yes" />
+          </Component>
+          <Component Id="owc8880364ED12E960635580149450A5EF2" Guid="2ba4ca23-9a14-2699-bcc6-05516fa90890">
+            <File Id="owf8880364ED12E960635580149450A5EF2" Source="$(var.SourceDir)\Grafika\houseofhouses2.png" KeyPath="yes" />
+          </Component>
+          <Component Id="owc91D0F24FE52F2DADC79D918411F03110" Guid="475a7136-a39e-5f96-99a2-da048ec2edc8">
+            <File Id="owf91D0F24FE52F2DADC79D918411F03110" Source="$(var.SourceDir)\Grafika\paper_small.png" KeyPath="yes" />
+          </Component>
+          <Component Id="owcF6EFC74FA10F056E7001F203C2FAB92B" Guid="9c11ff67-982e-5fd9-9f42-344d6f6ab26f">
+            <File Id="owfF6EFC74FA10F056E7001F203C2FAB92B" Source="$(var.SourceDir)\Grafika\waltographUI.ttf" KeyPath="yes" />
+          </Component>
+          <Directory Id="owd54E243AD9E5816E06CF964FFD7942BD2" Name="ludek">
+            <Component Id="owc66B9C38B6581990BA20B32A6E67BD71A" Guid="95cb20b3-1e13-e6c1-b8c8-5a5d40e79e55">
+              <File Id="owf66B9C38B6581990BA20B32A6E67BD71A" Source="$(var.SourceDir)\Grafika\ludek\bruk.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc1FD4C3387F87A271C545CA8FD62B1DA9" Guid="e3b9c70a-78f7-4a01-5d42-30385021988c">
+              <File Id="owf1FD4C3387F87A271C545CA8FD62B1DA9" Source="$(var.SourceDir)\Grafika\ludek\miasto.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc45622348467C1F67C30EEC4C8A45CBAE" Guid="696aa6f3-5c5f-2711-338b-73a0f6e280a0">
+              <File Id="owf45622348467C1F67C30EEC4C8A45CBAE" Source="$(var.SourceDir)\Grafika\ludek\wojownik.png" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owdFA107E6921DDD93A7F2C9AE1ECCAA957" Name="rycerze">
+            <Component Id="owc483EC80BEDD81D2307527F90A03B5BD0" Guid="1b779bf8-ab9b-4065-a8fb-ff60b81cbc34">
+              <File Id="owf483EC80BEDD81D2307527F90A03B5BD0" Source="$(var.SourceDir)\Grafika\rycerze\bruk.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc599F7CFE8075BDD6BB53429031ACD1AE" Guid="ec671458-3505-808d-a601-afdbcc1f761c">
+              <File Id="owf599F7CFE8075BDD6BB53429031ACD1AE" Source="$(var.SourceDir)\Grafika\rycerze\fort.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcC02D4E722CA73F003D797E8C1E59C759" Guid="e4587887-4321-e65f-87e8-6f14c469ef63">
+              <File Id="owfC02D4E722CA73F003D797E8C1E59C759" Source="$(var.SourceDir)\Grafika\rycerze\miasto.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc82B778C791F2F3607834C7A2ACCD6DC1" Guid="556bac78-4984-9f62-97ae-a3ae5ab159c7">
+              <File Id="owf82B778C791F2F3607834C7A2ACCD6DC1" Source="$(var.SourceDir)\Grafika\rycerze\pole.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc11AA46B865FFB035D488A70AA652D726" Guid="daab50c2-3e0c-f8ad-2fb4-dbb6685e6af4">
+              <File Id="owf11AA46B865FFB035D488A70AA652D726" Source="$(var.SourceDir)\Grafika\rycerze\wojownik.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc01B63101DD74F3A86F451B0710A9158E" Guid="a53838c8-2483-bb9f-941e-40a572dc7138">
+              <File Id="owf01B63101DD74F3A86F451B0710A9158E" Source="$(var.SourceDir)\Grafika\rycerze\zbrojownia.png" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owd360BD7383A9871452699CB0A58B838C5" Name="rycerze_hd">
+            <Component Id="owcE2F02F8B7DDFFBCF8EBF243D955438DA" Guid="b21776c8-5d60-2310-0f7a-e46fa053d6b9">
+              <File Id="owfE2F02F8B7DDFFBCF8EBF243D955438DA" Source="$(var.SourceDir)\Grafika\rycerze_hd\bruk.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc9300786A28D04B5466AC5E1B56590D78" Guid="925b793b-2dd3-00c4-36bc-17276f3f13eb">
+              <File Id="owf9300786A28D04B5466AC5E1B56590D78" Source="$(var.SourceDir)\Grafika\rycerze_hd\fort_1.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc428BF8ED8C8849884FF5BF155D5551A0" Guid="264d4807-9efa-155f-e749-e7229cfbecf9">
+              <File Id="owf428BF8ED8C8849884FF5BF155D5551A0" Source="$(var.SourceDir)\Grafika\rycerze_hd\fort_2.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc1C22B98FF40552A740909F8AA4607FA7" Guid="2e303997-afe3-ee9f-853c-ed236be69a75">
+              <File Id="owf1C22B98FF40552A740909F8AA4607FA7" Source="$(var.SourceDir)\Grafika\rycerze_hd\fort_3.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcA53C86597BDCACCAB570BCAC4B1BC24B" Guid="45ea8907-74e3-d8e5-aac6-70294aeb3ede">
+              <File Id="owfA53C86597BDCACCAB570BCAC4B1BC24B" Source="$(var.SourceDir)\Grafika\rycerze_hd\fort_4.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc13C0BF9367CC5AFD9F2C925A639B42B6" Guid="29fd6e19-a37b-9ec4-bbc7-5340def3bc40">
+              <File Id="owf13C0BF9367CC5AFD9F2C925A639B42B6" Source="$(var.SourceDir)\Grafika\rycerze_hd\fort_5.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc93D5323DDCD1B4533311CB8C68C5C5C5" Guid="fa418171-0f61-6ef8-11fe-d435e12a22f3">
+              <File Id="owf93D5323DDCD1B4533311CB8C68C5C5C5" Source="$(var.SourceDir)\Grafika\rycerze_hd\info.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc21267CF0712A676238931FC57FEF533C" Guid="c5c45a95-c98d-6c8f-b4b8-26ccb328992a">
+              <File Id="owf21267CF0712A676238931FC57FEF533C" Source="$(var.SourceDir)\Grafika\rycerze_hd\miasto_1.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcB5A2FFC31C379ED4B2EFD9EAE3C6EDB1" Guid="44fef819-17a5-adb6-f060-f22f6b7cc2c3">
+              <File Id="owfB5A2FFC31C379ED4B2EFD9EAE3C6EDB1" Source="$(var.SourceDir)\Grafika\rycerze_hd\miasto_2.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc25AEE853A5A6EBEC73CE66E2B5280A81" Guid="25f2e2ed-98f6-1d14-519f-60204221f0ac">
+              <File Id="owf25AEE853A5A6EBEC73CE66E2B5280A81" Source="$(var.SourceDir)\Grafika\rycerze_hd\miasto_3.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcE02BA7157535EEF6AB36C9767B3D5B58" Guid="a4395ed9-8d90-6d0a-997f-0aeaaa0ba041">
+              <File Id="owfE02BA7157535EEF6AB36C9767B3D5B58" Source="$(var.SourceDir)\Grafika\rycerze_hd\miasto_4.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc3AD48B07195028F40B9E9BD60734FB14" Guid="61b97336-76c0-1dfc-4e3d-03f39de8f27d">
+              <File Id="owf3AD48B07195028F40B9E9BD60734FB14" Source="$(var.SourceDir)\Grafika\rycerze_hd\miasto_5.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc5E2C7DB160A1B4DCD84D90EC5FBD77B5" Guid="48c1f7ab-feda-6498-49f8-197810e80469">
+              <File Id="owf5E2C7DB160A1B4DCD84D90EC5FBD77B5" Source="$(var.SourceDir)\Grafika\rycerze_hd\pole.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcD87F4852C53D1964E155765B2C99E1F9" Guid="2f308404-9f0a-8c74-d422-f24f45da5191">
+              <File Id="owfD87F4852C53D1964E155765B2C99E1F9" Source="$(var.SourceDir)\Grafika\rycerze_hd\stajnia_1.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc9127D7AFE5AA77A4BC24C7AD92A4D697" Guid="3efea7f7-41cb-78e8-7038-3c88a0c0f8bf">
+              <File Id="owf9127D7AFE5AA77A4BC24C7AD92A4D697" Source="$(var.SourceDir)\Grafika\rycerze_hd\stajnia_2.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcAD2FBC23FEF06E7EBEDCA5AB1281EAA0" Guid="fd3e9f98-59e9-1256-436b-7b18a687bc45">
+              <File Id="owfAD2FBC23FEF06E7EBEDCA5AB1281EAA0" Source="$(var.SourceDir)\Grafika\rycerze_hd\stajnia_3.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc256DA42C073697D35C67053CCD26137B" Guid="3a6d690e-c563-4fd4-d186-54200e5f5b36">
+              <File Id="owf256DA42C073697D35C67053CCD26137B" Source="$(var.SourceDir)\Grafika\rycerze_hd\stajnia_4.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc2CD8AEA2218489B9400B0499C2237B38" Guid="45b15ae7-23a2-0374-0bbb-e9619f770799">
+              <File Id="owf2CD8AEA2218489B9400B0499C2237B38" Source="$(var.SourceDir)\Grafika\rycerze_hd\stajnia_5.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcE76AF6F645482BAD3D8835239FCF648A" Guid="b7e2e21d-569e-d3d3-b7dc-c8a027fb3c20">
+              <File Id="owfE76AF6F645482BAD3D8835239FCF648A" Source="$(var.SourceDir)\Grafika\rycerze_hd\wieza_1.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc4DEE659940322683D9F52073D4BA9A02" Guid="37f691ed-ea4c-3b3b-ac05-51fb07ac8aa8">
+              <File Id="owf4DEE659940322683D9F52073D4BA9A02" Source="$(var.SourceDir)\Grafika\rycerze_hd\wieza_2.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcA710FD09F69A8DD05C7845860BCB2A95" Guid="424b3a47-31b4-dab3-33fa-19fc6939116e">
+              <File Id="owfA710FD09F69A8DD05C7845860BCB2A95" Source="$(var.SourceDir)\Grafika\rycerze_hd\wieza_3.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc6E357050A285C1B3B056325D5DC5A035" Guid="01651417-708a-a3f4-d4ee-3fd4154d5110">
+              <File Id="owf6E357050A285C1B3B056325D5DC5A035" Source="$(var.SourceDir)\Grafika\rycerze_hd\wieza_4.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc108029AE4C38BBDD3C19E01967412B06" Guid="cd3c0313-e3fc-3dee-a87a-25455d0709d6">
+              <File Id="owf108029AE4C38BBDD3C19E01967412B06" Source="$(var.SourceDir)\Grafika\rycerze_hd\wieza_5.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcB9ADAFAA97B3CD4E485DE90D725BC8BA" Guid="7434e31e-ab31-171a-44bd-53ca08f4bd08">
+              <File Id="owfB9ADAFAA97B3CD4E485DE90D725BC8BA" Source="$(var.SourceDir)\Grafika\rycerze_hd\wojownik_1.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcC3D6CA8F936ABABC3EB856C15ED6DE8E" Guid="cc162e8f-72b8-521c-760e-ddbf700f6320">
+              <File Id="owfC3D6CA8F936ABABC3EB856C15ED6DE8E" Source="$(var.SourceDir)\Grafika\rycerze_hd\wojownik_2.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcC279330993E2D7F63CAAE0F5C7877CCF" Guid="e5745d7e-5303-401d-611c-40359dc1eaf6">
+              <File Id="owfC279330993E2D7F63CAAE0F5C7877CCF" Source="$(var.SourceDir)\Grafika\rycerze_hd\wojownik_3.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc65C4E0729C692C5FD278E5C2403C2BC0" Guid="1de81db6-1509-1c91-afad-6ecb753e4166">
+              <File Id="owf65C4E0729C692C5FD278E5C2403C2BC0" Source="$(var.SourceDir)\Grafika\rycerze_hd\wojownik_4.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcF4D1DA84DF1B238218405122F7BDA65E" Guid="bc58a637-307d-63b7-868e-4b2e554202e5">
+              <File Id="owfF4D1DA84DF1B238218405122F7BDA65E" Source="$(var.SourceDir)\Grafika\rycerze_hd\wojownik_5.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc1408462896253214555650E22DA5B409" Guid="8302a04d-e95d-ec8b-f797-e2fc21ad92ea">
+              <File Id="owf1408462896253214555650E22DA5B409" Source="$(var.SourceDir)\Grafika\rycerze_hd\wojownik_6.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc6185DF5CA9EED25BFAF5B811A2044FAC" Guid="7ee22b33-dcb3-39ed-d1e4-64606be0e0ee">
+              <File Id="owf6185DF5CA9EED25BFAF5B811A2044FAC" Source="$(var.SourceDir)\Grafika\rycerze_hd\zbrojownia_1.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc641F137441D69F0B70123CA79DEEDE39" Guid="1624f619-f7c3-c7a6-64b4-cf37931219f0">
+              <File Id="owf641F137441D69F0B70123CA79DEEDE39" Source="$(var.SourceDir)\Grafika\rycerze_hd\zbrojownia_2.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcA5A882ABE48B23CABE7E14F538B9EC3B" Guid="04920525-6bbd-c3c4-c285-abd93ea71f6e">
+              <File Id="owfA5A882ABE48B23CABE7E14F538B9EC3B" Source="$(var.SourceDir)\Grafika\rycerze_hd\zbrojownia_3.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc6D769FB99218D5DC56A1730316925C5D" Guid="1c360b54-59ed-e76d-fc5f-48fff8eade0f">
+              <File Id="owf6D769FB99218D5DC56A1730316925C5D" Source="$(var.SourceDir)\Grafika\rycerze_hd\zbrojownia_4.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owcBABED4483D5A28492D9362C2BCC2AB43" Guid="f087753a-13fc-3506-bada-32fd7d8e5047">
+              <File Id="owfBABED4483D5A28492D9362C2BCC2AB43" Source="$(var.SourceDir)\Grafika\rycerze_hd\zbrojownia_5.png" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owd374941D3D8CC3C3845950C44A2804AFE" Name="wroclaw">
+            <Component Id="owcB2FC271455C8C259A992826A67FDCA5E" Guid="f4a71ee8-e64d-8b0b-fdc8-34ca337fd6cc">
+              <File Id="owfB2FC271455C8C259A992826A67FDCA5E" Source="$(var.SourceDir)\Grafika\wroclaw\bruk.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc6CE22B989CBE803A3DB95EE295148242" Guid="b45e1536-3ad9-185e-ed1d-63a2e3808391">
+              <File Id="owf6CE22B989CBE803A3DB95EE295148242" Source="$(var.SourceDir)\Grafika\wroclaw\miasto.png" KeyPath="yes" />
+            </Component>
+            <Component Id="owc93ACDD1CA5CBC0FBCA3E9157642BE459" Guid="8074f641-dc40-fca5-00aa-981c62a665f7">
+              <File Id="owf93ACDD1CA5CBC0FBCA3E9157642BE459" Source="$(var.SourceDir)\Grafika\wroclaw\wojownik.png" KeyPath="yes" />
+            </Component>
+          </Directory>
+        </Directory>
+        <Directory Id="owd664AA12570CC16F8A7A877793AD07948" Name="Kampanie">
+          <Directory Id="owd6692819DCB366A7B965C873FCB6BCB9F" Name="Pierwsza Kampania">
+            <Component Id="owc3429295E508B5BFA7B28195898DFCAE6" Guid="876e8573-be8f-2ee4-dce3-bd105dcc326a">
+              <File Id="owf3429295E508B5BFA7B28195898DFCAE6" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_01 - Pierwsza Walka(Demo1).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owc840881C73C8DAEFDE3B1C98DD2E4B33D" Guid="e683f2e3-13eb-ac41-1e76-87a98d78ef96">
+              <File Id="owf840881C73C8DAEFDE3B1C98DD2E4B33D" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_01 - Pierwsza Walka(Demo1).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owcE650B0D6EC64EB929FC3FCFF6351BAD7" Guid="1d9a399f-dbc0-9278-6742-ab8b633f8338">
+              <File Id="owfE650B0D6EC64EB929FC3FCFF6351BAD7" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_01 - Pierwsza Walka(Demo1).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcB083611DC3AA8694A6A26870F45CD585" Guid="69cb6e60-df3a-bc86-876f-5fc9ea5f2322">
+              <File Id="owfB083611DC3AA8694A6A26870F45CD585" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_02 - Zelazny Atak(Demo2).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owc82BC6853900F13B0EFEAC4BB644196C3" Guid="4998f59f-8e83-0009-8eaa-b6fff6eddcc4">
+              <File Id="owf82BC6853900F13B0EFEAC4BB644196C3" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_02 - Zelazny Atak(Demo2).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owcDD724DA413E8326295AC4F2D92BDB716" Guid="0481a16e-bd23-c2b3-f9d7-38b0dc7940ff">
+              <File Id="owfDD724DA413E8326295AC4F2D92BDB716" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_02 - Zelazny Atak(Demo2).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc90EA0359E6AD9035C030E4F0091FAD06" Guid="158375d2-2b31-7439-143e-fa4b27384449">
+              <File Id="owf90EA0359E6AD9035C030E4F0091FAD06" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_03 - Bigos Bigoes(Demo3).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owc699FCB0CBE42E4BFDE6C25445347844A" Guid="a6b6383d-666c-c4b4-5b18-256056445d7f">
+              <File Id="owf699FCB0CBE42E4BFDE6C25445347844A" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_03 - Bigos Bigoes(Demo3).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc0BBF010C482D133BF091093998F78B68" Guid="08f59f0e-d41f-f47f-bb95-d063b5b05819">
+              <File Id="owf0BBF010C482D133BF091093998F78B68" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_03 - Bigos Bigoes(Demo3).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcAD7F30A29DE032B65BADAD05E138899D" Guid="1330a500-2e5f-2e41-1f35-82458ba8a890">
+              <File Id="owfAD7F30A29DE032B65BADAD05E138899D" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_04 - Stabilizacja(Demo4).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owc8D3D939A0E74EC52C8638D2C89CAFE17" Guid="24d1469a-4453-ec61-b70e-5ba255dc9bb6">
+              <File Id="owf8D3D939A0E74EC52C8638D2C89CAFE17" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_04 - Stabilizacja(Demo4).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc0BCE75E4A1A2D220322E4BE7CA28C8D0" Guid="cc2991f1-f953-5109-05f2-6de743dd9ca3">
+              <File Id="owf0BCE75E4A1A2D220322E4BE7CA28C8D0" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_04 - Stabilizacja(Demo4).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc0B46AF73A57CF90698A198E3D788A846" Guid="40077c30-0c00-2cdb-0d45-8f5d388ff7b9">
+              <File Id="owf0B46AF73A57CF90698A198E3D788A846" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_05 - Pierwsza Bitwa(Kampania).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owcDE8ACB1E3C371C9C41B4DE65621FA19A" Guid="1b6d9c18-3753-753d-a5f6-64cf2ce7c599">
+              <File Id="owfDE8ACB1E3C371C9C41B4DE65621FA19A" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_05 - Pierwsza Bitwa(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc840CA34B2311EC070D3318A64C097185" Guid="72b70740-7e4f-c2e4-58a2-ad4c26eefcb5">
+              <File Id="owf840CA34B2311EC070D3318A64C097185" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_05 - Pierwsza Bitwa(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc4BAD0BD80064F84040A83EE178F04EDC" Guid="33aef9ff-7e93-d1d1-f3d0-06bb4dc5f8e2">
+              <File Id="owf4BAD0BD80064F84040A83EE178F04EDC" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_06 - Krok Naprzod(Kampania).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owc0D09AA3AD042A05440C0C467E3A1BCF8" Guid="cd9e9171-5226-3919-c63c-fccc57e13033">
+              <File Id="owf0D09AA3AD042A05440C0C467E3A1BCF8" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_06 - Krok Naprzod(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc26CB9078BF04F5F37A1708ED478F7112" Guid="3e147428-4430-6426-666d-22e683846ba7">
+              <File Id="owf26CB9078BF04F5F37A1708ED478F7112" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_06 - Krok Naprzod(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcA1C5C71AAFA0CE202AE9ECEFF68031AC" Guid="b27a0cb0-a0b1-0c83-8e5d-cec336e8d71f">
+              <File Id="owfA1C5C71AAFA0CE202AE9ECEFF68031AC" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_07 - Pierwsza Forteca(Kampania).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owc369157026130CA15003F00FE352711B1" Guid="442aa90b-6813-9a26-3480-530e3b119b99">
+              <File Id="owf369157026130CA15003F00FE352711B1" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_07 - Pierwsza Forteca(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc7FED9E1533001588F5773B7CB6C4E40D" Guid="4c49c49b-e5e0-2199-64af-d0989243be88">
+              <File Id="owf7FED9E1533001588F5773B7CB6C4E40D" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_07 - Pierwsza Forteca(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc2654EC95C0E9DD9D8CDDC7E35059FB00" Guid="eafb2416-2627-06eb-9bc0-1fd97ffe360e">
+              <File Id="owf2654EC95C0E9DD9D8CDDC7E35059FB00" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_08 - Dwie Wieze(Kampania).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owcB21921E0105ABC4F83D397F72AFE41DF" Guid="9885b6d7-a8c6-2b86-50c8-41afd596ee26">
+              <File Id="owfB21921E0105ABC4F83D397F72AFE41DF" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_08 - Dwie Wieze(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc6415543B3AFFCC26032D45A9ED728DD3" Guid="b0bbea1d-396b-e40c-dc82-7f3652568d13">
+              <File Id="owf6415543B3AFFCC26032D45A9ED728DD3" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_08 - Dwie Wieze(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcB507CA5953B31A7B644B50D19823F73A" Guid="ebdf3630-4f8b-0b8f-e99b-5777fae5e39b">
+              <File Id="owfB507CA5953B31A7B644B50D19823F73A" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_09 - Grube Mury(Kampania).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owc9517557F7F424AD29CBC8C7A947BC5EB" Guid="97091024-2ccc-f6c3-c696-b5539adf9c7d">
+              <File Id="owf9517557F7F424AD29CBC8C7A947BC5EB" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_09 - Grube Mury(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc67CC66443CF8986651275E37A27308C4" Guid="8bef0ae5-5e18-d2e8-5f5f-1c00f302d691">
+              <File Id="owf67CC66443CF8986651275E37A27308C4" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_09 - Gruby Mur(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc9E41C9D2B02057EB490C96F76BA59DDC" Guid="037b3a04-ccbd-2b63-1564-6964530950de">
+              <File Id="owf9E41C9D2B02057EB490C96F76BA59DDC" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_10 1przez2 - Oblezenie(Kampania).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owcE1E078007F937A7F14BA34E2777FF575" Guid="07298734-cc7a-2811-7733-bd69bb164000">
+              <File Id="owfE1E078007F937A7F14BA34E2777FF575" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_10 1przez2 - Oblezenie(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc0E553148086C1495498A9919DED24D88" Guid="e4eccda4-e738-8580-2b48-9dbc0e37fa4d">
+              <File Id="owf0E553148086C1495498A9919DED24D88" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_10 1przez2 - Oblezenie(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc47567CB345C206FBBFB92C5BD9C11D4A" Guid="a27fa322-8b78-9a59-5130-a3680e2c1c21">
+              <File Id="owf47567CB345C206FBBFB92C5BD9C11D4A" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_10 2przez2 - Wrog Nadszedl(Kampania).ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owcD14FB26063D31D901628286985A94B0A" Guid="13ea9dd5-cc14-4b24-daf4-cc1b7c553989">
+              <File Id="owfD14FB26063D31D901628286985A94B0A" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_10 2przez2 - Wrog Nadszedl(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owcDBB74FCD5759C51A3D4F7F0F94567244" Guid="244325f5-b1cf-7360-945a-01716d0d8cab">
+              <File Id="owfDBB74FCD5759C51A3D4F7F0F94567244" Source="$(var.SourceDir)\Kampanie\Pierwsza Kampania\misja_10 2przez2 - Wrog Nadszedl(Kampania).txt" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owd62FD4B71671A3E41B52547546BA51FB1" Name="Sterowanie Z Tomaczosem">
+            <Component Id="owc1FFC4770EA9640B0A665A1442841FD09" Guid="3e777d8c-d0ab-f22a-2765-a758f82d45e6">
+              <File Id="owf1FFC4770EA9640B0A665A1442841FD09" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_01 - Pierwsza Walka(Demo1).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owcB6734C740A6D6018CE4BDEE230C86C9C" Guid="4694b48e-9140-1630-1f2e-eaaeefe1c59d">
+              <File Id="owfB6734C740A6D6018CE4BDEE230C86C9C" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_01 - Pierwsza Walka(Demo1).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc0894460A1355C15509220B08EF0B9DD1" Guid="f91ef2d5-ed75-8830-02de-c6b3e87680b5">
+              <File Id="owf0894460A1355C15509220B08EF0B9DD1" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_02 - Zelazny Atak(Demo2).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc6376C73E735135C0A840A51069AA0768" Guid="7f041b2a-2d2f-4aa3-7b5d-4f331c8b3b0a">
+              <File Id="owf6376C73E735135C0A840A51069AA0768" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_02 - Zelazny Atak(Demo2).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc44EFE3B5BC80B75FC773A13624BCDDA0" Guid="182aabf4-0d36-0d28-b548-c8e6fe13e4c9">
+              <File Id="owf44EFE3B5BC80B75FC773A13624BCDDA0" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_03 - Bigos Bigoes(Demo3).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc3576F92E4AFF2EF65A99F528D5562DE9" Guid="3ba4df9a-e802-be70-7806-53892dcb2027">
+              <File Id="owf3576F92E4AFF2EF65A99F528D5562DE9" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_03 - Bigos Bigoes(Demo3).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc0AB1A3C9C239560F5F90CBF11E3B1A10" Guid="28902fa1-f752-96dd-5328-08faef0544a8">
+              <File Id="owf0AB1A3C9C239560F5F90CBF11E3B1A10" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_04 - Stabilizacja(Demo4).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc05FA3593D8D9C010AFD09EB087482A52" Guid="e78b8a27-0a7c-2059-f93d-587a4f593d7a">
+              <File Id="owf05FA3593D8D9C010AFD09EB087482A52" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_04 - Stabilizacja(Demo4).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcA07D8F1202F1DB84B4ADC5B805F87327" Guid="c3d6aae3-4352-f0a6-ab72-74db011936c5">
+              <File Id="owfA07D8F1202F1DB84B4ADC5B805F87327" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_05 - Pierwsza Bitwa(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc671914F8106F6D5CE594CDF03097AB6D" Guid="d03fa697-0075-7b67-68f6-6d72cb736942">
+              <File Id="owf671914F8106F6D5CE594CDF03097AB6D" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_05 - Pierwsza Bitwa(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcA29172A9C974D91643CF2A8A394B380D" Guid="01c307a5-6f66-1f3f-7193-4a850a717ee7">
+              <File Id="owfA29172A9C974D91643CF2A8A394B380D" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_06 - Krok Naprzod(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owcCEBFF85F90C3BBFAB056AADC378BB190" Guid="679e76ac-1d89-083f-2410-be64f887e671">
+              <File Id="owfCEBFF85F90C3BBFAB056AADC378BB190" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_06 - Krok Naprzod(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc7ADF349D35C4395537247D4DCD184392" Guid="f9f71f49-f0ca-4054-ca9a-c70c01e75947">
+              <File Id="owf7ADF349D35C4395537247D4DCD184392" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_07 - Pierwsza Forteca(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc96D141F771D7CC20F1B55FE4A200E413" Guid="43826b1b-8b37-0c5d-a1b0-b8c6ea2b4bb3">
+              <File Id="owf96D141F771D7CC20F1B55FE4A200E413" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_07 - Pierwsza Forteca(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc0FC51F1EE0CC03489D4A61E2472994BE" Guid="b5cd4eff-6307-35d3-99c4-2033f721830b">
+              <File Id="owf0FC51F1EE0CC03489D4A61E2472994BE" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_08 - Dwie Wieze(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc0FDD178C8A46CA1FA2BEAF9DB92AD1B5" Guid="0e6bbab4-0ee4-948a-23ac-e21f0baff8f1">
+              <File Id="owf0FDD178C8A46CA1FA2BEAF9DB92AD1B5" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_08 - Dwie Wieze(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcFFC4CBCA2BB2923BF1EA08C661F6F9E0" Guid="f044a60c-3852-8911-8252-4741f5c55055">
+              <File Id="owfFFC4CBCA2BB2923BF1EA08C661F6F9E0" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_09 - Grube Mury(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc81164EFD2BCDEAD44760BA1A83A34C7D" Guid="cc62825d-e632-48e6-7fba-05172170e644">
+              <File Id="owf81164EFD2BCDEAD44760BA1A83A34C7D" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_09 - Gruby Mur(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc2AA8B20E86BD05583DA3AF1A4E2EC504" Guid="bcd59c30-7469-5da3-47c4-10b2cc0fa04d">
+              <File Id="owf2AA8B20E86BD05583DA3AF1A4E2EC504" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_10 1przez2 - Oblezenie(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc22D67FAE424BCF56C80BBE0FF6CEF342" Guid="a5ebad99-b505-079a-18bb-0ffa5130c6fc">
+              <File Id="owf22D67FAE424BCF56C80BBE0FF6CEF342" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_10 1przez2 - Oblezenie(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcF29859E13DC73DC62B1F6F26D03A82AD" Guid="f05b014e-2d1d-fc31-8f66-ef9a2c177ec3">
+              <File Id="owfF29859E13DC73DC62B1F6F26D03A82AD" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_10 2przez2 - Wrog Nadszedl(Kampania).ops" KeyPath="yes" />
+            </Component>
+            <Component Id="owc61B207F7941154C088A9B4BCD46723C0" Guid="fc9cc3b5-c321-791f-47ef-8be2e14626c8">
+              <File Id="owf61B207F7941154C088A9B4BCD46723C0" Source="$(var.SourceDir)\Kampanie\Sterowanie Z Tomaczosem\misja_10 2przez2 - Wrog Nadszedl(Kampania).txt" KeyPath="yes" />
+            </Component>
+          </Directory>
+        </Directory>
+        <Directory Id="owd184FBA0EBB79F5F54F9EB7FB04455FFB" Name="Muzyka">
+          <Component Id="owc12C32E518202CB1867FDD80C4436F7F2" Guid="494a2e60-7cca-2738-fb0c-51fee7f8b777">
+            <File Id="owf12C32E518202CB1867FDD80C4436F7F2" Source="$(var.SourceDir)\Muzyka\Bam.ogg" KeyPath="yes" />
+          </Component>
+          <Component Id="owc16185B32BD6AAD3D8529F69280129DEC" Guid="e30811c4-6906-492c-fc98-d5df56418930">
+            <File Id="owf16185B32BD6AAD3D8529F69280129DEC" Source="$(var.SourceDir)\Muzyka\Boom.ogg" KeyPath="yes" />
+          </Component>
+          <Component Id="owcBBDDD86039591E7956FCB7708FE34CFD" Guid="e18fac35-6790-c02a-cb75-0471872d051e">
+            <File Id="owfBBDDD86039591E7956FCB7708FE34CFD" Source="$(var.SourceDir)\Muzyka\Oklaski.ogg" KeyPath="yes" />
+          </Component>
+          <Component Id="owcE681DF7BD1B5EF8A7A8CE2BA5412BEC7" Guid="01665f17-c967-10ef-2904-63b8686d990a">
+            <File Id="owfE681DF7BD1B5EF8A7A8CE2BA5412BEC7" Source="$(var.SourceDir)\Muzyka\PikPik.ogg" KeyPath="yes" />
+          </Component>
+          <Component Id="owc86EDECAADE11689537F82138AC2B5FDA" Guid="27c6c099-4751-fdac-1919-5995f7a9b554">
+            <File Id="owf86EDECAADE11689537F82138AC2B5FDA" Source="$(var.SourceDir)\Muzyka\Puk.ogg" KeyPath="yes" />
+          </Component>
+          <Component Id="owc2D7F534659B45E5B43D995D8433114D4" Guid="41de99c9-b8d9-7d4f-fa46-2cf137e5027a">
+            <File Id="owf2D7F534659B45E5B43D995D8433114D4" Source="$(var.SourceDir)\Muzyka\Tytulowa.ogg" KeyPath="yes" />
+          </Component>
+          <Directory Id="owdAD39243390C2A875383A59B686FC3FB7" Name="komentarz">
+            <Component Id="owc4689A120C2EB3E2ADB997B20344BA3DD" Guid="5d73a7c5-4158-46cf-864d-8ef5f03ecdbc">
+              <File Id="owf4689A120C2EB3E2ADB997B20344BA3DD" Source="$(var.SourceDir)\Muzyka\komentarz\Atak 1.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owcBB850E2B35C86CAC53940637EDB1AB91" Guid="86140eb1-54e5-aced-fcee-337d754a3780">
+              <File Id="owfBB850E2B35C86CAC53940637EDB1AB91" Source="$(var.SourceDir)\Muzyka\komentarz\Atak 2.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owc00DE1991FAD7B7F3ED16F72274CAD001" Guid="07b88f2d-9e7b-20fb-58e1-45c10649421d">
+              <File Id="owf00DE1991FAD7B7F3ED16F72274CAD001" Source="$(var.SourceDir)\Muzyka\komentarz\Atak 3.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owc85BF088B72FCF59B0D6573C1E8875D35" Guid="7cffe21c-5ee0-3adb-d0bc-16ded130f738">
+              <File Id="owf85BF088B72FCF59B0D6573C1E8875D35" Source="$(var.SourceDir)\Muzyka\komentarz\Atak 4.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owc65560FE06D24874D40100E1F0227B43B" Guid="8e8631b3-f9ca-609b-23b6-3134d572054b">
+              <File Id="owf65560FE06D24874D40100E1F0227B43B" Source="$(var.SourceDir)\Muzyka\komentarz\Atak 5.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owc09BA70B58D166C6C5146FFFD530CFB6D" Guid="1b4db6da-559c-b19b-0433-aec0a2457760">
+              <File Id="owf09BA70B58D166C6C5146FFFD530CFB6D" Source="$(var.SourceDir)\Muzyka\komentarz\Atak 6.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owc271F8F9297D6268E29AD819ECCFA0281" Guid="f8b5c16b-6eb9-510d-2332-bee7c406f406">
+              <File Id="owf271F8F9297D6268E29AD819ECCFA0281" Source="$(var.SourceDir)\Muzyka\komentarz\Atak 7.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owc2104CEC85A8B35BBF5BC6EBBD91D023C" Guid="913f6a33-9222-94a7-eebd-875c3dbebc2e">
+              <File Id="owf2104CEC85A8B35BBF5BC6EBBD91D023C" Source="$(var.SourceDir)\Muzyka\komentarz\Przegrana 1.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owc28E6D81289607E8B6EC75C51A26EE7F8" Guid="d70f5c4e-bad7-7c9b-a941-617ddcc673e2">
+              <File Id="owf28E6D81289607E8B6EC75C51A26EE7F8" Source="$(var.SourceDir)\Muzyka\komentarz\Utrata 1.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owcD8BD12DCB483E7F7C40EDC275C3FDC0C" Guid="ac74b267-847d-9c10-47db-878c84c83314">
+              <File Id="owfD8BD12DCB483E7F7C40EDC275C3FDC0C" Source="$(var.SourceDir)\Muzyka\komentarz\Utrata 2.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owcFA4A3327A00945671041448FE451D8C8" Guid="82164890-280d-3d84-05ab-e2d297c4b6f9">
+              <File Id="owfFA4A3327A00945671041448FE451D8C8" Source="$(var.SourceDir)\Muzyka\komentarz\Utrata 3.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owcCF0C5FA46F7CAD923B09E60D084B8CAB" Guid="a50185dc-d08b-ba0f-dac6-3b64521f2a8f">
+              <File Id="owfCF0C5FA46F7CAD923B09E60D084B8CAB" Source="$(var.SourceDir)\Muzyka\komentarz\Zwyciestwo 1.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owc8931EC230D1B3AB55E0B92EA187C24D0" Guid="e6f2263a-7b0f-110e-a151-62fd37c91ed8">
+              <File Id="owf8931EC230D1B3AB55E0B92EA187C24D0" Source="$(var.SourceDir)\Muzyka\komentarz\Zysk 1.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owcD46ADCEA750F93F7B933F6BE700E32EB" Guid="eb6c891a-2a00-e47c-067a-72795c7efb17">
+              <File Id="owfD46ADCEA750F93F7B933F6BE700E32EB" Source="$(var.SourceDir)\Muzyka\komentarz\Zysk 2.wav" KeyPath="yes" />
+            </Component>
+            <Component Id="owcB5AFAEA57CF100553BDAE1B0B054BD24" Guid="7afb2a57-ba5a-b866-6b6e-6426b6605d47">
+              <File Id="owfB5AFAEA57CF100553BDAE1B0B054BD24" Source="$(var.SourceDir)\Muzyka\komentarz\Zysk 3.wav" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owdBF6E5A001868E8DB58BEAAAE6A8B342B" Name="rycerze">
+            <Component Id="owc27C216B6771B763CAE045C738AE5E533" Guid="69723384-f1ad-e1a8-dd3b-7d729b953771">
+              <File Id="owf27C216B6771B763CAE045C738AE5E533" Source="$(var.SourceDir)\Muzyka\rycerze\Dawnosc.ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owcC4E28039F0E947BFE2D9053BCC8E3B6B" Guid="47343209-3668-baa7-a5a1-e3a074580f7c">
+              <File Id="owfC4E28039F0E947BFE2D9053BCC8E3B6B" Source="$(var.SourceDir)\Muzyka\rycerze\Marsz.ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owcF8DE19FCA980CC773554F4D094E38D4E" Guid="dc005651-9556-aa76-c518-d5f4d33aadca">
+              <File Id="owfF8DE19FCA980CC773554F4D094E38D4E" Source="$(var.SourceDir)\Muzyka\rycerze\Tupniecie.ogg" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owd851E87BA1C87934B997B0862A430CE23" Name="rycerze_hd">
+            <Component Id="owc2739D2CED7DA83A0115C4D3FE2DF327B" Guid="62a385da-a6d6-03d1-295a-02260a3c069d">
+              <File Id="owf2739D2CED7DA83A0115C4D3FE2DF327B" Source="$(var.SourceDir)\Muzyka\rycerze_hd\Dawnosc.ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owcE5FBAE955441FD0DD3FF804A270BC6B4" Guid="eae6ebf1-0913-7299-5565-802273be250c">
+              <File Id="owfE5FBAE955441FD0DD3FF804A270BC6B4" Source="$(var.SourceDir)\Muzyka\rycerze_hd\Marsz.ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owcD53C2EDBCAA662A86C00D536CBBAF784" Guid="d8c26f2d-b90d-742c-73ee-f4b5c734089b">
+              <File Id="owfD53C2EDBCAA662A86C00D536CBBAF784" Source="$(var.SourceDir)\Muzyka\rycerze_hd\Okrzykowo.ogg" KeyPath="yes" />
+            </Component>
+            <Component Id="owcC0B852823317645B66670A3B7C077FA8" Guid="c18b72ec-f907-87e3-f12e-dce504cdc499">
+              <File Id="owfC0B852823317645B66670A3B7C077FA8" Source="$(var.SourceDir)\Muzyka\rycerze_hd\Tupniecie.ogg" KeyPath="yes" />
+            </Component>
+          </Directory>
+        </Directory>
+        <Directory Id="owd7396C650A36183C71CE2C2479B42F32E" Name="Plansza">
+          <Directory Id="owd9D06B875131C64C60D5F5ADF39876773" Name="Inne Mapy">
+            <Component Id="owc4E990E42EF378268B285BDE34ADAE1E4" Guid="f7aaa87e-b666-4a7b-f44d-1a92b7d4396f">
+              <File Id="owf4E990E42EF378268B285BDE34ADAE1E4" Source="$(var.SourceDir)\Plansza\Inne Mapy\Aiowgold.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcFD8D9437661F337F2163F0973E44541D" Guid="9de21f70-50d3-2dcb-986f-c55f6cad92ad">
+              <File Id="owfFD8D9437661F337F2163F0973E44541D" Source="$(var.SourceDir)\Plansza\Inne Mapy\Harypoter.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc5B629A238B2C5220FD1FFFA6CEC6896D" Guid="7120a1b1-f1c1-7be1-bb5e-0ed330646b77">
+              <File Id="owf5B629A238B2C5220FD1FFFA6CEC6896D" Source="$(var.SourceDir)\Plansza\Inne Mapy\Heksa.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc1F921D5E25EB30CD6D420CBAD7DBFE64" Guid="d84c3b5a-e08d-6929-673a-fe5fac081b8f">
+              <File Id="owf1F921D5E25EB30CD6D420CBAD7DBFE64" Source="$(var.SourceDir)\Plansza\Inne Mapy\Iksling.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc0758A5833B0D56FA4E8C3D5445F6E4E8" Guid="5339a372-a9a4-a622-344c-4ad29c62996c">
+              <File Id="owf0758A5833B0D56FA4E8C3D5445F6E4E8" Source="$(var.SourceDir)\Plansza\Inne Mapy\Oko.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc8E0C5C85B158D345D1B657BD25BCB7FB" Guid="24f29a83-a060-c5ab-b4c1-88f424f60075">
+              <File Id="owf8E0C5C85B158D345D1B657BD25BCB7FB" Source="$(var.SourceDir)\Plansza\Inne Mapy\pojedynek.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc9FF0B70F0269665B732D34D8FA3DD6E8" Guid="5f8f0de2-5ee7-6cef-bd7d-3604fc364d5c">
+              <File Id="owf9FF0B70F0269665B732D34D8FA3DD6E8" Source="$(var.SourceDir)\Plansza\Inne Mapy\Polapol.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc7DB5F089DC364A8A3FC7E215E8BDF7A2" Guid="1d7751d1-8f50-143a-31c8-20e588e6a8e5">
+              <File Id="owf7DB5F089DC364A8A3FC7E215E8BDF7A2" Source="$(var.SourceDir)\Plansza\Inne Mapy\Robak.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc5F839DAA57F0524B422CFCE93E1CDAB5" Guid="c97a4323-a986-0838-edf4-15e8101c4eb8">
+              <File Id="owf5F839DAA57F0524B422CFCE93E1CDAB5" Source="$(var.SourceDir)\Plansza\Inne Mapy\Trojkat.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcE48A2A30F4E10F9879C75E795A251FAC" Guid="34535379-5ee4-e699-352f-68690365502d">
+              <File Id="owfE48A2A30F4E10F9879C75E795A251FAC" Source="$(var.SourceDir)\Plansza\Inne Mapy\Trojkont.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc487FB65B7B60DE33B2C3D9B7CEF02298" Guid="10bc0dd5-174a-6b95-4670-5ff5dd5c3ca7">
+              <File Id="owf487FB65B7B60DE33B2C3D9B7CEF02298" Source="$(var.SourceDir)\Plansza\Inne Mapy\Vader.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc6CAE3F3700C21E5EDB555021DDB103B4" Guid="b9944fbe-8ff5-f86c-1e85-145f6a296a24">
+              <File Id="owf6CAE3F3700C21E5EDB555021DDB103B4" Source="$(var.SourceDir)\Plansza\Inne Mapy\Voldemort.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc59DFCAE7CF0FA6453DBD06AF9F4C092D" Guid="0727eb72-52c6-92fa-b642-b81c5113c30a">
+              <File Id="owf59DFCAE7CF0FA6453DBD06AF9F4C092D" Source="$(var.SourceDir)\Plansza\Inne Mapy\Worms.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc27FF64DA47DF51FB6ECA52A73D7070CF" Guid="26d917c1-ca14-0c36-1f89-637921aada3d">
+              <File Id="owf27FF64DA47DF51FB6ECA52A73D7070CF" Source="$(var.SourceDir)\Plansza\Inne Mapy\zemsta_za_atak_Janusza.txt" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owd09AA3436C6F608ABBAAAE716D16716DC" Name="Kampania">
+            <Component Id="owcEEEE35BF75066E189266F12FA86DC211" Guid="ae8eebe9-951d-1973-1243-f08ab495689f">
+              <File Id="owfEEEE35BF75066E189266F12FA86DC211" Source="$(var.SourceDir)\Plansza\Kampania\misja_01 - Pierwsza Walka(Demo1).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc3C3FEE089F209F09384172252886ADD5" Guid="01fec190-2abc-654d-9418-e93793e1e380">
+              <File Id="owf3C3FEE089F209F09384172252886ADD5" Source="$(var.SourceDir)\Plansza\Kampania\misja_02 - Zelazny Atak(Demo2).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc17BB7AD800DD9D649B28E598C2EDC218" Guid="7d0a5db0-f2be-79aa-145c-d6784ada552a">
+              <File Id="owf17BB7AD800DD9D649B28E598C2EDC218" Source="$(var.SourceDir)\Plansza\Kampania\misja_03 - Bigos Bigoes(Demo3).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc28FBF4BE587ABE5D06A123EDB3D5253E" Guid="ca9abf2b-3c6f-ec64-df9d-c7001e7f1d34">
+              <File Id="owf28FBF4BE587ABE5D06A123EDB3D5253E" Source="$(var.SourceDir)\Plansza\Kampania\misja_04 - Stabilizacja(Demo4).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc21B74096E6C6B7C42E8C910D6802302A" Guid="21fadf24-91af-bbe6-044d-79a41df03028">
+              <File Id="owf21B74096E6C6B7C42E8C910D6802302A" Source="$(var.SourceDir)\Plansza\Kampania\misja_05 - Pierwsza Bitwa(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc7E13315A6604AAF87A1DA3F2C2B8F388" Guid="9658a306-3850-8e87-f8fe-e0934353ebe0">
+              <File Id="owf7E13315A6604AAF87A1DA3F2C2B8F388" Source="$(var.SourceDir)\Plansza\Kampania\misja_06 - Krok Naprzod(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc177574374B9FFA2BBF433DF6FA75A452" Guid="6afb1fd9-5069-2a25-e49d-e9b61672c920">
+              <File Id="owf177574374B9FFA2BBF433DF6FA75A452" Source="$(var.SourceDir)\Plansza\Kampania\misja_07 - Pierwsza Forteca(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcD91BF3D3BE14F20FA876F16BFDA32E42" Guid="94ce4379-6b7f-bc98-031b-f5d0ba671826">
+              <File Id="owfD91BF3D3BE14F20FA876F16BFDA32E42" Source="$(var.SourceDir)\Plansza\Kampania\misja_08 - Dwie Wieze(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcC0C95E46DE51C82E885FF065AC43AAAA" Guid="25b6c1ff-1a82-fe67-250e-d2e00737d16f">
+              <File Id="owfC0C95E46DE51C82E885FF065AC43AAAA" Source="$(var.SourceDir)\Plansza\Kampania\misja_09 - Gruby Mur(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcC63D0DA5C97518F9B151B6FEFDF4308D" Guid="33eca7f3-f6e9-1468-af45-a61d37de72c5">
+              <File Id="owfC63D0DA5C97518F9B151B6FEFDF4308D" Source="$(var.SourceDir)\Plansza\Kampania\misja_10 1przez2 - Oblezenie(Kampania).txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc7EDEE2ABC40039C9AE9BDCD1FE5F8D00" Guid="be197409-bb01-5cd1-6312-7fd33d3f0f51">
+              <File Id="owf7EDEE2ABC40039C9AE9BDCD1FE5F8D00" Source="$(var.SourceDir)\Plansza\Kampania\misja_10 2przez2 - Wrog Nadszedl(Kampania).txt" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owdEEB961EBE95A2427DA7713A006454518" Name="Mapy Turniejowe">
+            <Component Id="owc0D2ABF2AC4552F01546E419843F29A5F" Guid="dc646db4-7615-5abe-98c4-d273f0b1d1f7">
+              <File Id="owf0D2ABF2AC4552F01546E419843F29A5F" Source="$(var.SourceDir)\Plansza\Mapy Turniejowe\Kwadrant.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc601498D4ED3488A350CAAF2523B73525" Guid="6fe4edc4-c882-0fb1-4c6d-032d95f67404">
+              <File Id="owf601498D4ED3488A350CAAF2523B73525" Source="$(var.SourceDir)\Plansza\Mapy Turniejowe\KwadrantPlus.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcA44BC0CEBB7619559D91669A50DF8DD1" Guid="7bd0ad7a-86e9-ec6f-022e-1ba917876f07">
+              <File Id="owfA44BC0CEBB7619559D91669A50DF8DD1" Source="$(var.SourceDir)\Plansza\Mapy Turniejowe\Pojedynek.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc07E78CB6311A4038B76DA254DCCD45E4" Guid="8df49276-cfa2-1a52-a4d4-fd0ae21088ca">
+              <File Id="owf07E78CB6311A4038B76DA254DCCD45E4" Source="$(var.SourceDir)\Plansza\Mapy Turniejowe\PojedynekPlus.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc02DC4F004C12A129BFDAF21DE4CB1AEC" Guid="c9bd453b-de4a-e9a3-cc0a-cd5a0b674928">
+              <File Id="owf02DC4F004C12A129BFDAF21DE4CB1AEC" Source="$(var.SourceDir)\Plansza\Mapy Turniejowe\Trzypier.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc90EDD06613F40B4C17855CB29EC57FF8" Guid="48dbcf14-b36b-24f9-62c5-0176ad731843">
+              <File Id="owf90EDD06613F40B4C17855CB29EC57FF8" Source="$(var.SourceDir)\Plansza\Mapy Turniejowe\TrzypierPlus.txt" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owd206533329424C458BE452C248DA21117" Name="Testowe">
+            <Component Id="owcDD64294019ECB9E4DD07E8330F8BA8A8" Guid="38ead641-754e-9334-2edd-94b598ceae4a">
+              <File Id="owfDD64294019ECB9E4DD07E8330F8BA8A8" Source="$(var.SourceDir)\Plansza\Testowe\interfejs12.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc3D1B163F071600EAE8431E1FE77699FC" Guid="61be6fa9-e706-7e26-7866-0a5b0f66a4de">
+              <File Id="owf3D1B163F071600EAE8431E1FE77699FC" Source="$(var.SourceDir)\Plansza\Testowe\interfejs8.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcC9D67B4D7861572C501B879F77CABB01" Guid="a06a6a03-fa49-1b60-6a0d-026d06aab4c4">
+              <File Id="owfC9D67B4D7861572C501B879F77CABB01" Source="$(var.SourceDir)\Plansza\Testowe\test.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcAE0FA06B5E306251A863C0E0C0F1386C" Guid="2c6e8b9c-76ca-0ab4-b605-cc1654497faf">
+              <File Id="owfAE0FA06B5E306251A863C0E0C0F1386C" Source="$(var.SourceDir)\Plansza\Testowe\test_mini.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcDA8E53F00236EB3296A69FB10C07A483" Guid="6bbca595-98b3-1961-4c94-3340e6b0b624">
+              <File Id="owfDA8E53F00236EB3296A69FB10C07A483" Source="$(var.SourceDir)\Plansza\Testowe\test_sily_wiez.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc175E5D37CD1C8A0AE627CDC07B39E50D" Guid="6f2b7499-9faf-875b-876e-5e0bb893e4e2">
+              <File Id="owf175E5D37CD1C8A0AE627CDC07B39E50D" Source="$(var.SourceDir)\Plansza\Testowe\test_wielkosci_budynkow_i_domkow.txt" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owd863A6606C0B90D60B3C616A1B4BA759F" Name="Tryby">
+            <Component Id="owcBE958495802F3F091312BD98AC4CFBAD" Guid="a0f7fb59-5d1a-e98a-f8c1-1cfde06aceee">
+              <File Id="owfBE958495802F3F091312BD98AC4CFBAD" Source="$(var.SourceDir)\Plansza\Tryby\Inwazja.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcA30A93B93114EC1187482941E15944E5" Guid="92e0d0e3-a882-aadd-e8d9-82e5aac7148f">
+              <File Id="owfA30A93B93114EC1187482941E15944E5" Source="$(var.SourceDir)\Plansza\Tryby\InwazjaPlus.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc2E29C7DEF3971D733673CE496DEBDBF5" Guid="980ef9a5-bb17-bf5a-aab3-b0b700bb619e">
+              <File Id="owf2E29C7DEF3971D733673CE496DEBDBF5" Source="$(var.SourceDir)\Plansza\Tryby\KOTH.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owc180490C4CFC72DB68BEFC4BC5B9FED71" Guid="799858cb-8460-4e39-542e-2b3c61814bbc">
+              <File Id="owf180490C4CFC72DB68BEFC4BC5B9FED71" Source="$(var.SourceDir)\Plansza\Tryby\KOTHPlus.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcBBA6A0ABFE2ACFE507796E7125BAA6D9" Guid="7ebb55f4-dad2-6dd7-0e46-b6b310d2e704">
+              <File Id="owfBBA6A0ABFE2ACFE507796E7125BAA6D9" Source="$(var.SourceDir)\Plansza\Tryby\Przetrwanie.txt" KeyPath="yes" />
+            </Component>
+            <Component Id="owcFC5BFD8A2609552012076FF915B8EFB8" Guid="c6d27abd-cfba-a30b-36cf-c6c1191e79a1">
+              <File Id="owfFC5BFD8A2609552012076FF915B8EFB8" Source="$(var.SourceDir)\Plansza\Tryby\PrzetrwaniePlus.txt" KeyPath="yes" />
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+    <ComponentGroupRef Id="Custom" />
+  </Module>
+</Wix>

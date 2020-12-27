@@ -121,7 +121,7 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
 
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
     box->SetSpacing(10);
-    auto tytul = sfg::Label::Create(WERSJA);
+    auto tytul = sfg::Label::Create(opis_wersji());
     tytul->SetId("Naglowek");
 
     box->Pack(tytul, false, false);
@@ -178,7 +178,7 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
 
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
     box->SetSpacing(10);
-    auto tytul = sfg::Label::Create(WERSJA);
+    auto tytul = sfg::Label::Create(opis_wersji());
     tytul->SetId("Naglowek");
 
     box->Pack(tytul, false, false);
@@ -217,7 +217,7 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
 
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 100.0f);
 
-    auto tytul = sfg::Label::Create(WERSJA);
+    auto tytul = sfg::Label::Create(opis_wersji());
     tytul->SetId("Naglowek");
     auto tabelka = sfg::Table::Create();
 

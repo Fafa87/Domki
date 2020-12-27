@@ -39,7 +39,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
 
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
     box->SetSpacing(10);
-    auto tytul = sfg::Label::Create(WERSJA);
+    auto tytul = sfg::Label::Create(opis_wersji());
     tytul->SetId("Naglowek");
     
     box->Pack(tytul, false, false);
@@ -237,7 +237,7 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
     okno->SetAllocation(glowne->GetAllocation());
 
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
-    auto tytul = sfg::Label::Create(WERSJA);
+    auto tytul = sfg::Label::Create(opis_wersji());
     tytul->SetId("Naglowek");
 
     auto nazwa_etykieta = sfg::Label::Create("Nazwa gracza: ");

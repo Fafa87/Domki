@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <Property Id="INSTALLLOCATION">
+          <RegistrySearch Id='MrozixDomcraftRegistry' Type='raw' Root='HKLM' Key='Software\Mrozix\Domcraft' Name='InstallDir' />
+     </Property>
+    
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="CompanyFolder" Name="Mrozix">
+          <Directory Id="INSTALLLOCATION" Name="Domcraft">
+            <Merge Id="_InstalkaMM" SourceFile="$(var._InstalkaMM.TargetPath)" DiskId="1" Language="1033" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+    <Feature Id="Domcraft" Title="Domcraft" Description="Instaluje Domcraft na maszynie!" Level="1" AllowAdvertise="no" ConfigurableDirectory="INSTALLLOCATION" Absent="disallow" Display="hidden">
+      <MergeRef Id="_InstalkaMM" />
+    </Feature>
+  </Fragment>
+</Wix>

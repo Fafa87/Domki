@@ -1,9 +1,10 @@
-version: 0.9.{build}
+version: 0.9.13.{build} # pamietaj aby wersja pasowala do wersji w Domki.rc
 environment:
   PYTHON: C:\Python35
+  MSIProductVersion: "%APPVEYOR_BUILD_VERSION%"
 image:
 - Visual Studio 2017
-configuration: ReleaseWindow
+configuration: Deploy
 before_build:
 - cmd: ''
 install: 
@@ -18,3 +19,5 @@ test_script:
 artifacts:
 - path: BIN
   name: Domki
+- path: _Instalka\bin\Release\Domcraft.msi
+  name: Domcraft

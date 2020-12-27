@@ -2,6 +2,7 @@
 
 #include <thread>
 #include <windows.h>
+#include <cstdlib>
 
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Widgets.hpp>
@@ -13,7 +14,8 @@
 
 using namespace std;
 
-const string WERSJA = "DOMKI 0.9.5";
+
+string opis_wersji();
 
 class GUI
 {

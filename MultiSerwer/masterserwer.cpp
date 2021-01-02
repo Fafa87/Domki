@@ -128,6 +128,14 @@ void mastery::Serwer::WyslijDoPokoju(shared_ptr<Pokoj> pokoj, string tekst, shar
     }
 }
 
+void mastery::Serwer::WyslijNaSwiat(string tekst)
+{
+    for (auto& pokoj : pokoje)
+    {
+        WyslijDoPokoju(pokoj, tekst);
+    }
+}
+
 string mastery::Serwer::WyznaczStatystyki()
 {
     std::ostringstream statystyki;

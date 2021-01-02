@@ -111,6 +111,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     chat->SetClass("Razem");
     auto chat_z_paskiem = sfg::ScrolledWindow::Create();
     chat_z_paskiem->SetScrollbarPolicy(sfg::ScrolledWindow::VERTICAL_ALWAYS);
+    chat_z_paskiem->SetStick(sfg::ScrolledWindow::ScrollbarSticking::YES);
     chat_z_paskiem->AddWithViewport(chat);
     chat_z_paskiem->SetRequisition(sf::Vector2f(400.f, 300.f));
 
@@ -195,7 +196,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
         if (master_klient->odebrane.try_take(tekst) == code_machina::BlockingCollectionStatus::Ok)
         {
             if (chat->GetText().getSize())
-                chat->SetText(tekst + "\n" + chat->GetText());
+                chat->SetText(chat->GetText() + "\n" + tekst);
             else
                 chat->SetText(tekst);
         }

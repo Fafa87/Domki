@@ -39,6 +39,14 @@ class SFGUI_API ScrolledWindow : public Container {
 			DEFAULT = HORIZONTAL_ALWAYS | VERTICAL_ALWAYS
 		};
 
+        /** Scrollbar sticking.
+         */
+        enum class ScrollbarSticking : char {
+            NO = 0, //!< Do not move scrollbar.
+            YES, //!< Keep scrollbar sticked to the bottom.
+            DEFAULT = NO
+        };
+
 		/** Create scrolled window.
 		 * @return ScrolledWindow.
 		 */
@@ -87,6 +95,11 @@ class SFGUI_API ScrolledWindow : public Container {
 		 * @param placement new ScrollbarPolicyPair.
 		 */
 		void SetPlacement( Placement placement );
+
+        /** Set the scrollbar behaviour when the bottom child is expanding.
+         * @param stick new ScrollbarSticking.
+         */
+        void SetStick(ScrollbarSticking stick);
 
 		/** Get the allocation of the content area of this Scrolled Window
 		 * @return Allocation of the content area of this Scrolled Window
@@ -146,7 +159,8 @@ class SFGUI_API ScrolledWindow : public Container {
 		std::shared_ptr<Viewport> m_viewport;
 
 		char m_policy;
-		Placement m_placement;
+        Placement m_placement;
+        ScrollbarSticking m_stick;
 };
 
 }

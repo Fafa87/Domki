@@ -64,19 +64,8 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
     }
     else if (zapytanie.find("/SWIAT?") == 0)
     {
-        string caly_swiat = "SWIAT:\n";
-        for (auto& pokoj : this->pokoje)
-        {
-            string ten_pokoj = pokoj->nazwa + ":";
-            for (auto& ludek : pokoj->pokojnicy)
-            {
-                ten_pokoj += ludek->nazwa + ",";
-            }
-            caly_swiat += ten_pokoj + "\n";
-        }
-        LOG(INFO) << "Informacja o swiecie do: " << ludek->nazwa;
-        auto status = multi::Wyslij(*ludek->wtyk, caly_swiat);
-        ludek->ostatnio = status;
+        SpisLudnosci();
+        LOG(INFO) << "Informacja o swiecie do wszystkich po zapytaniu  " << ludek->nazwa;
     }
     else if (zapytanie.find("/IDZ: ") == 0)
     {
@@ -117,6 +106,20 @@ void mastery::Serwer::PrzeanalizujZapytanie(shared_ptr<multi::Zawodnik> ludek, s
         // jak napis to wyslij go do wszystkich ludkow
         WyslijDoPokoju(pokoj_ludka, ludek->nazwa + ": " + zapytanie);
     }
+}
+
+void mastery::Serwer::SpisLudnosci() {
+    string caly_swiat = "SWIAT:\n";
+    for (auto& pokoj : this->pokoje)
+    {
+        string ten_pokoj = pokoj->nazwa + ":";
+        for (auto& ludek : pokoj->pokojnicy)
+        {
+            ten_pokoj += ludek->nazwa + ",";
+        }
+        caly_swiat += ten_pokoj + "\n";
+    }
+    WyslijNaSwiat(caly_swiat);
 }
 
 void mastery::Serwer::WyslijDoPokoju(shared_ptr<Pokoj> pokoj, string tekst, shared_ptr<multi::Zawodnik> poza_osoba)

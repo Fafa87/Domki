@@ -130,7 +130,7 @@ void mastery::Klient::PrzeanalizujOdebrane(string tekst)
         this->ludzie_obok = linie;
         oczekuje_na_liste = false;
     }
-    else if (tekst.find("SWIAT") == 0 && oczekuje_na_liste) // lista calego swiata 
+    else if (tekst.find("SWIAT") == 0) // lista calego swiata 
     {
         this->ludzie_obok.clear();
         auto linie = split(tekst, '\n');
@@ -152,13 +152,13 @@ void mastery::Klient::PrzeanalizujOdebrane(string tekst)
     else if (tekst.find(" wchodzi") != -1)
     {
         auto nazwa = tekst.substr(0, tekst.find(" wchodzi"));
-        this->ludzie_obok.push_back(nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
+        //this->ludzie_obok.push_back(nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
         odebrane.add(nazwa + " wkroczyl do pokoju");
     }
     else if (tekst.find(" opuszcza") != -1)
     {
         auto nazwa = tekst.substr(0, tekst.find(" opuszcza"));
-        remove_item(this->ludzie_obok, nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
+        //remove_item(this->ludzie_obok, nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
         odebrane.add(nazwa + " opuscil pokoj");
     }
     else if (tekst.find("na porcie ") != -1)

@@ -90,6 +90,7 @@ namespace mastery
         void WyslijDoPokoju(shared_ptr<Pokoj> pokoj, string tekst, shared_ptr<multi::Zawodnik> poza_osoba = nullptr);
 
         void WyslijNaSwiat(string tekst);
+        void SpisLudnosci();
 
         bool PrzejdzDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju);
         void DolaczDoPokoju(shared_ptr<multi::Zawodnik> ludek, string nazwa_pokoju);

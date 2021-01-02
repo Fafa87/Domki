@@ -89,6 +89,10 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     auto pokoj_etykieta = sfg::Label::Create(L"Aktualny pokój:");
     auto pokoj = sfg::Entry::Create("hol");
     pokoj->SetRequisition(sf::Vector2f(200, 0));
+    pokoj->GetSignal(sfg::Entry::OnReturnPressed).Connect(
+        [master_klient, pokoj] {    
+        master_klient->IdzDo(pokoj->GetText());
+    });
 
     auto prawe_skrzydlo = sfg::Box::Create(sfg::Box::Orientation::HORIZONTAL);
     prawe_skrzydlo->Pack(gracz_etykieta);
@@ -109,10 +113,11 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     chat_z_paskiem->SetScrollbarPolicy(sfg::ScrolledWindow::VERTICAL_ALWAYS);
     chat_z_paskiem->AddWithViewport(chat);
     chat_z_paskiem->SetRequisition(sf::Vector2f(400.f, 300.f));
+
     auto ramka_chatu = sfg::Frame::Create("");
     ramka_chatu->Add(chat_z_paskiem);
 
-    auto ludki = sfg::Label::Create("Ludki"); // TMP merge extensions to SFGUI so that we can attach to proper event
+    auto ludki = sfg::Label::Create("Ludki");
     ludki->SetRequisition(sf::Vector2f(200, 0));
     ludki->SetAlignment(sf::Vector2f(0, 0));
     ludki->SetClass("Razem");
@@ -124,7 +129,12 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     srodek_panel->Pack(ramka_chatu, true, true);
     srodek_panel->Pack(ramka_pokoju, false, false);
 
-    auto pisak = sfg::Entry::Create(""); // TMP merge extensions to SFGUI so that we can attach to proper event
+    auto pisak = sfg::Entry::Create("");
+    pisak->GetSignal(sfg::Entry::OnReturnPressed).Connect(
+        [master_klient, pisak] {
+        master_klient->komendy.add(pisak->GetText());
+        pisak->SetText("");
+    });
 
     // KLIKANIE
     auto odpal = sfg::Button::Create(L"Postaw serwer");
@@ -175,24 +185,9 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     GUI::aplikacja().center_window(okno);
     GUI::aplikacja().set_active_window(okno);
 
-    // ZAPYTAJ SERWER O STAN W POKOJU
-
     // PÊTELKA
     GUI::aplikacja().process_loop(
-    [master_klient, pisak, chat, pokoj](sf::Event ev) {
-        if (pisak->HasFocus() && ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Return)
-        {
-            master_klient->komendy.add(pisak->GetText());
-            //if (chat->GetText().getSize())
-            //    chat->SetText(pisak->GetText() + "\n" + chat->GetText());
-            //else
-            //    chat->SetText(pisak->GetText());
-            pisak->SetText("");
-        }
-        if (pokoj->HasFocus() && ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Return)
-        {
-            master_klient->IdzDo(pokoj->GetText());
-        }
+    [master_klient](sf::Event ev) {
         return !master_klient->polaczony;
     },
     [odpal, dolacz, chat_z_paskiem, chat, ludki, pokoj, master_klient]() {

@@ -104,7 +104,7 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
         do_ilu_wartosc->SetText(to_string((int)this->do_ilu_pasek->GetValue()));
     });
 
-    auto trudnosc_etykieta = sfg::Label::Create("Trudność: ");
+    auto trudnosc_etykieta = sfg::Label::Create(L"Trudność: ");
     auto trudnosc_wartosc = sfg::Label::Create("5");
     this->trudnosc_pasek = sfg::Scale::Create(1, 10, 1);
     this->trudnosc_pasek->SetValue(5);

@@ -1,4 +1,4 @@
-#include "gui_okna.h"
+﻿#include "gui_okna.h"
 #include "misja.h"
 
 
@@ -90,7 +90,7 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
         this->misja_nazwa->SelectItem(0);
     }
 
-    auto szybkosc_etykieta = sfg::Label::Create(L"Szybko��: ");
+    auto szybkosc_etykieta = sfg::Label::Create(L"Szybkość: ");
     this->szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
     this->szybkosc_pasek->SetValue(1.5);
 
@@ -104,7 +104,7 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
         do_ilu_wartosc->SetText(to_string((int)this->do_ilu_pasek->GetValue()));
     });
 
-    auto trudnosc_etykieta = sfg::Label::Create("Trudnosc: ");
+    auto trudnosc_etykieta = sfg::Label::Create("Trudność: ");
     auto trudnosc_wartosc = sfg::Label::Create("5");
     this->trudnosc_pasek = sfg::Scale::Create(1, 10, 1);
     this->trudnosc_pasek->SetValue(5);

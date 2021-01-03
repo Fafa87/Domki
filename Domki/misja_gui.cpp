@@ -1,4 +1,4 @@
-#include "misja.h"
+ï»¿#include "misja.h"
 #include "gui.h"
 
 #include "ext_string.h"
@@ -38,7 +38,7 @@ void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgr
             auto pokaz_domek = (Domek*)do_pokazania;
             info_poziom_etykieta->SetText(L"Poziom:");
             info_poziom->SetText(string_format("%d", pokaz_domek->poziom));
-            info_zapelnienie_etykieta->SetText(L"Zape³nienie:");
+            info_zapelnienie_etykieta->SetText(L"ZapeÅ‚nienie:");
             if (pokaz_domek->typdomku != TypDomku::kPole)info_zapelnienie->SetText(to_wstring(100 * (int)pokaz_domek->liczebnosc / (int)pokaz_domek->max_liczebnosc) + L"%");
             else info_zapelnienie->SetText("---");
             info_ulepsz_etykieta->SetText(L"Koszt ulepszenia:");
@@ -54,7 +54,7 @@ void interfejs_wybrany_ustaw(shared_ptr<sfg::Window> interfejs, Rozgrywka& rozgr
         else
         {
             auto pokaz_ludek = (Ludek*)do_pokazania;
-            info_poziom_etykieta->SetText(L"Szybkoœæ:");
+            info_poziom_etykieta->SetText(L"SzybkoÅ›Ä‡:");
             info_poziom->SetText(string_format("%d", pokaz_ludek->szybkosc_ludka));
             info_zapelnienie_etykieta->SetText(L"Tarcza:");
             info_zapelnienie->SetText(string_format("%d", pokaz_ludek->tarcza));
@@ -159,7 +159,7 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
 
     int i = 0;
 
-    // dorzuc nag³owek ma³y
+    // dorzuc nagÂ³owek maÂ³y
     auto wartosc = sfg::Label::Create(stan.do_ilu_wygranych <= 1 ? "" : "gra do " + to_string(stan.do_ilu_wygranych));
     wartosc->SetClass("GridOpis");
     auto nazwa = sfg::Label::Create("nazwa");
@@ -199,7 +199,7 @@ shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgr
             GUI::aplikacja().add_property_to_batch("Label#" + graczProdukcjaId, "Color", gracz.kolor);
             GUI::aplikacja().add_property_to_batch("Label#" + graczModernizacjaId, "Color", sf::Color::Yellow);
             GUI::aplikacja().add_property_to_batch("Label#" + graczSzybkoscId, "Color", sf::Color::Black);
-            GUI::aplikacja().add_property_to_batch("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");  // nie rozumiem czemu theme tego nie ³apie
+            GUI::aplikacja().add_property_to_batch("Label#" + graczLudkiId, "FontName", "Grafika/waltographUI.ttf");  // nie rozumiem czemu theme tego nie Å‚apie
             if (stan.Zwyciezca() == nr)
             {
                 GUI::aplikacja().add_property_to_batch("Button#" + graczId, "FontSize", 80.f);

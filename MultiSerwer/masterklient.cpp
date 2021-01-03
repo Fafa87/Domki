@@ -1,4 +1,4 @@
-#include "../MultiSerwer/mastery.h"
+﻿#include "../MultiSerwer/mastery.h"
 #include "../Domki/ext_string.h"
 #include "../Domki/ext_vector.h"
 
@@ -225,7 +225,7 @@ void mastery::Klient::Podlacz(multi::Adres adres)
                     auto status_dane = multi::Pobierz(*gracz.wtyk, sf::seconds(0.1));
                     if (status_dane.first == sf::Socket::Done)
                     {
-                        PrzeanalizujOdebrane(status_dane.second[0]); // TMP czy tutaj nie powinienem bra� wszystkich, a nie tylko pierwszy element
+                        PrzeanalizujOdebrane(status_dane.second[0]); // TMP czy tutaj nie powinienem brać wszystkich, a nie tylko pierwszy element
                     }
                 }
 

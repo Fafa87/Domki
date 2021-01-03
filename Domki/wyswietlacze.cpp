@@ -1,4 +1,4 @@
-#include "Narzedzia\AnimatedSprite.hpp"
+Ôªø#include "Narzedzia\AnimatedSprite.hpp"
 #include "wyswietlacze.h"
 
 #include "Thor/Shapes/Arrow.hpp"
@@ -161,7 +161,7 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
     // namaluj drogi
     for (auto dom : rozgrywka.domki)
     {
-        for (auto dokad : dom.drogi) if(dokad->uid < dom.uid) // maluj tylko w jednπ stronÍ
+        for (auto dokad : dom.drogi) if(dokad->uid < dom.uid) // maluj tylko w jednƒÖ stronƒô
         {
             sf::Vertex linia[] =
             {
@@ -190,7 +190,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
     for (auto& lud : rozgrywka.armie)
         wszystkie_obiekty.insert(&lud);
 
-    // usuÔøΩ wyglÔøΩdy ktÔøΩrych juÔøΩ nie ma
+    // usu≈Ñ wyglƒÖdy kt√≥rych ju≈º nie ma
     vector<Twor*> do_usuniecia;
     for (auto& wyg_map : wyglad_tworow)
         if (!wszystkie_obiekty.count(wyg_map.first))
@@ -199,7 +199,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
     for (auto twor : do_usuniecia)
         wyglad_tworow.erase(twor);
 
-    // uaktualnij wyglÔøΩdy domkÔøΩw
+    // uaktualnij wyglƒÖdy domk√≥w
     for (auto& dom : rozgrywka.domki)
     {
         dom.wyglad_rodzaj = dom.poziom;
@@ -219,7 +219,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
         else dom.wyglad = Wyglad::kNieznany;
     }
 
-    // uaktualnij wyglÔøΩdy ludkÛw
+    // uaktualnij wyglƒÖdu ludk√≥w
     for (auto& ludek : rozgrywka.armie)
     {
         double procent_tarczy = ludek.tarcza / (double)ludek.liczebnosc;
@@ -227,7 +227,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
         ludek.wyglad_rodzaj += ludek.szybkosc_ludka > 2 ? 3 : 0;
     }
 
-    // wyglÔøΩd tworÔøΩw zawiera dokÔøΩadnie to co chcemy wyÔøΩwietliÔøΩ, uaktualnijmy ich stan
+    // uaktualnijmy ich stan
     for (auto& twor : wszystkie_obiekty)
     {
         auto& wyglad = wyglad_tworow[twor];
@@ -245,12 +245,12 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
             wysokosc_jednego = rozmiar.height;
         }
 
-        // tymczasowo trochÍ wiÍksze nowego wieúniaka
+        // tymczasowo trochƒô wiƒôksze nowego wie≈õniaka
         double rozmiar = twor->rozmiar;
         if (IsType<Ludek>(twor))
             rozmiar *= 1.2;
 
-        int wysokosc = rozmiar * wysokosc_jednego / dlugosc_jednego;  // trzeba to gdzieÔøΩ potem wyciÔøΩgnaÔøΩ
+        int wysokosc = rozmiar * wysokosc_jednego / dlugosc_jednego;  // trzeba to gdzie≈õ potem wyciƒÖgnƒÖƒá
         wyglad.setSize(sf::Vector2f(rozmiar * 2, wysokosc * 2));
         wyglad.setOrigin(rozmiar, wysokosc);
         //sf::Color polprzezroczysty = twor->gracz->kolor;
@@ -282,7 +282,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
 
         okno.draw(podpis);
 
-        // nie potrzebne juø! rysuj poziom domku
+        // nie potrzebne ju≈º! rysuj poziom domku
         /*if (IsType<Domek>(twor))
         {
             int poziom = ((Domek*)twor)->poziom;
@@ -329,7 +329,7 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
 {
     if (decydent.skupiony != nullptr && decydent.skupiony->uid >= 0 && decydent.skupiony->uid <= decydent.skupiony->last_uid&& decydent.skupiony != decydent.wybrany) // TMP TODO
     {
-        double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaÊ wielkoúÊ okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)
+        double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczyƒá wielko≈õƒá okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)
         double rozmiar = decydent.skupiony->rozmiar * wspolczynnik_czas_odznaczenia;
         sf::CircleShape kolo(rozmiar);
         kolo.setPosition(decydent.skupiony->polozenie.x, decydent.skupiony->polozenie.y);
@@ -343,7 +343,7 @@ void OznaczaczWyborow::Wyswietlaj(sf::RenderWindow & okno)
     }
     if (decydent.wybrany != nullptr)
     {
-        double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaÊ wielkoúÊ okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)
+        double wspolczynnik_czas_odznaczenia = 1.6; // moznaby tutaj wyliczaƒá wielko≈õƒá okregu w zaleznosc od czasu od ostatniego klikniecia(klikniecia sa private w klasie decydenta)
         double rozmiar = decydent.wybrany->rozmiar * wspolczynnik_czas_odznaczenia;
         sf::CircleShape kolo(rozmiar);
         kolo.setPosition(decydent.wybrany->polozenie.x, decydent.wybrany->polozenie.y);
@@ -412,10 +412,3 @@ void OznaczaczWyborow::rysuj_strzalke(sf::RenderWindow & okno, sf::Vector2f star
     thor::Arrow strzala(start, kierunek, color, grubosc);
     okno.draw(strzala);
 }
-
-/*
-9ov'p-pou09pou9ioobohookkyi76kkfkkl;l7luj;lp9[p[pi;l;p0/jj;,kuklhg.''\''
-ckcm,cm,c.,v
-kkrrrrrrrrrrrrrrrrrrrrrrrrroooooooooooooooooooooooooooolllllllllllllllllllll                              leeeeeeeeeewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-'rrrrrrrrrrrrooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooozaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaC x'f/cf. c   c     fgfvvc\|dlfl,gk,kfkgkkhk6ogkfmmg
-*/

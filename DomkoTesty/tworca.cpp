@@ -1,4 +1,4 @@
-#include "tworca.h"
+﻿#include "tworca.h"
 
 Gracz & tworca::DodajGracza(Rozgrywka & gra, int nr_gracza)
 {

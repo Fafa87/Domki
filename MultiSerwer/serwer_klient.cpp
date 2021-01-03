@@ -1,4 +1,4 @@
-#include "../MultiSerwer/serwery.h"
+﻿#include "../MultiSerwer/serwery.h"
 
 
 void komunikat_serwer_klient()

@@ -1,4 +1,4 @@
-#include "kampania.h"
+﻿#include "kampania.h"
 
 #include <locale>
 #include <codecvt>

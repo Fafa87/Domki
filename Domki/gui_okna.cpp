@@ -1,4 +1,4 @@
-#include "gui_okna.h"
+ï»¿#include "gui_okna.h"
 #include "misja.h"
 
 
@@ -90,7 +90,7 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
         this->misja_nazwa->SelectItem(0);
     }
 
-    auto szybkosc_etykieta = sfg::Label::Create(L"Szybkoœæ: ");
+    auto szybkosc_etykieta = sfg::Label::Create(L"SzybkoÅ›Ä‡: ");
     this->szybkosc_pasek = sfg::Scale::Create(0.3, 4, 0.1);
     this->szybkosc_pasek->SetValue(1.5);
 

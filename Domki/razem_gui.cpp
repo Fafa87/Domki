@@ -1,4 +1,4 @@
-#include "razem.h"
+ï»¿#include "razem.h"
 
 #include "misja.h"
 #include "gui_okna.h"
@@ -49,7 +49,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
         false, false, false);
     kontrolki->DodajZestaw(box);
     
-    auto zakladaj = sfg::Button::Create(L"Zak³adaj!");
+    auto zakladaj = sfg::Button::Create(L"ZakÅ‚adaj!");
     zakladaj->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [&muzyka, okno, kontrolki, zakladaj_fun] {
         zakladaj_fun(start_generuj_komende_startu(kontrolki->MisjaGrupa(), kontrolki->MisjaNazwa(),
@@ -57,7 +57,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
         GUI::aplikacja().pop_active_window(okno);
     });
 
-    auto powrot = sfg::Button::Create(L"Powrót");
+    auto powrot = sfg::Button::Create(L"PowrÃ³t");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
         GUI::aplikacja().pop_active_window(okno);
@@ -80,13 +80,13 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     auto size_planeta = sf::Vector2f(max(19 * size.x / 20.0, 800.0), max(19 * size.y / 20.0, 600.0));
     okno->SetRequisition(size_planeta);
 
-    // GÓRNY PANEL
+    // GÃ“RNY PANEL
     auto dane_master_serwera = sfg::Label::Create("Dane podpietego master serwera");
     dane_master_serwera->SetText(master_klient->adres_serwer.ToString());
 
 
     auto gracz_etykieta = sfg::Label::Create("Gracz: " + master_klient->gracz.nazwa);
-    auto pokoj_etykieta = sfg::Label::Create(L"Aktualny pokój:");
+    auto pokoj_etykieta = sfg::Label::Create(L"Aktualny pokÃ³j:");
     auto pokoj = sfg::Entry::Create("hol");
     pokoj->SetRequisition(sf::Vector2f(200, 0));
 
@@ -137,7 +137,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
                 GUI::aplikacja().set_active_window(okno_zaloz);
         }
     });
-    auto dolacz = sfg::Button::Create(L"Do³¹cz teraz");
+    auto dolacz = sfg::Button::Create(L"DoÅ‚Ä…cz teraz");
     dolacz->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno, master_klient, &muzyka] {
         if (master_klient->RozgrywkaTrwa())
@@ -149,7 +149,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
             GUI::aplikacja().set_active_window(okno);
         }
     });
-    auto powrot = sfg::Button::Create(L"Powrót");
+    auto powrot = sfg::Button::Create(L"PowrÃ³t");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno, master_klient] {
         master_klient->Rozlacz();
@@ -162,7 +162,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     dol_panel->Pack(dolacz, false, false);
     dol_panel->Pack(powrot, false, false);
 
-    // CA£OŒÆ
+    // CAÂ£OÅ’Ã†
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
     box->SetSpacing(10);
     box->Pack(gorny_panel, false, false);
@@ -177,7 +177,7 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
 
     // ZAPYTAJ SERWER O STAN W POKOJU
 
-    // PÊTELKA
+    // PÃŠTELKA
     GUI::aplikacja().process_loop(
     [master_klient, pisak, chat, pokoj](sf::Event ev) {
         if (pisak->HasFocus() && ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Return)
@@ -245,7 +245,7 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
     auto separator = sfg::Label::Create("");
     separator->SetRequisition(sf::Vector2f(10, 20));
 
-    auto zaloz = sfg::Button::Create(L"Za³ó¿ tutaj");
+    auto zaloz = sfg::Button::Create(L"ZaÅ‚Ã³Å¼ tutaj");
     zaloz->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [&muzyka, nazwa_edit, glowne] {
         auto okno_zaloz = serwer_menu_tutaj(glowne, muzyka, nazwa_edit->GetText());
@@ -253,7 +253,7 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
             GUI::aplikacja().set_active_window(okno_zaloz);
     });
 
-    auto dolacz = sfg::Button::Create(L"Do³¹cz tutaj");
+    auto dolacz = sfg::Button::Create(L"DoÅ‚Ä…cz tutaj");
     dolacz->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno, &muzyka, nazwa_edit] {
         muzyka.stop();
@@ -270,7 +270,7 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
 
         auto adres_planety = GUI::aplikacja().ini.Get("multi", "adres_planety", "localhost:60");
         wykonaj_masterklient(KontekstSwiata::o().klient, "polacz " + adres_planety); // TMP
-        Sleep(5000); // TMP tutaj powinno byæ jakieœ okienko, ¿e trwa ³¹czenie
+        Sleep(5000); // TMP tutaj powinno byÃ¦ jakieÅ“ okienko, Â¿e trwa Â³Â¹czenie
         if (KontekstSwiata::o().klient->polaczony)
         {
             planeta_okno(glowne, muzyka, KontekstSwiata::o().klient);
@@ -278,12 +278,12 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
         }
         else
         {
-            okno_info(L"Brak kontaktu z planet¹");
+            okno_info(L"Brak kontaktu z planetÄ…");
             KontekstSwiata::o().klient->Rozlacz();
         }
     });
 
-    auto powrot = sfg::Button::Create(L"Powrót");
+    auto powrot = sfg::Button::Create(L"PowrÃ³t");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [okno] {
         GUI::aplikacja().pop_active_window(okno);

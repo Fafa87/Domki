@@ -255,6 +255,9 @@
           <Component Id="owc439AE1EED8BFC439F2C2671746716157" Guid="82e31ff3-debd-be06-13f0-8bf245b580ba" Win64="yes">
             <File Id="owf439AE1EED8BFC439F2C2671746716157" Source="$(var.SourceDir)\Grafika\sword2.png" KeyPath="yes" />
           </Component>
+          <Component Id="owcABDE9D6B863CDA5EB8EAFBCA6049C86C" Guid="c2242419-b8fb-aac5-9750-e0cc1ac7d800" Win64="yes">
+            <File Id="owfABDE9D6B863CDA5EB8EAFBCA6049C86C" Source="$(var.SourceDir)\Grafika\domcraft_resized.png" KeyPath="yes" />
+          </Component>
         </Directory>
         <Directory Id="owd664AA12570CC16F8A7A877793AD07948" Name="Kampanie">
           <Directory Id="owd6692819DCB366A7B965C873FCB6BCB9F" Name="Pierwsza Kampania">

@@ -249,11 +249,11 @@
           <Component Id="owc36227C48EBAD7CEFDDDD3E9A7433D11B" Guid="7b8ed8b7-6a1d-3c56-d0ac-167f7507e964" Win64="yes">
             <File Id="owf36227C48EBAD7CEFDDDD3E9A7433D11B" Source="$(var.SourceDir)\Grafika\domcraft_small.png" KeyPath="yes" />
           </Component>
-          <Component Id="owc4ED01BD5E9B330C996CDAE90D2072C7C" Guid="d52081fe-cbc8-ad1e-ec77-ff17dbfca075" Win64="yes">
-            <File Id="owf4ED01BD5E9B330C996CDAE90D2072C7C" Source="$(var.SourceDir)\Grafika\sword1.cur" KeyPath="yes" />
+          <Component Id="owcE473058736245F06FE25975E4DDD56BD" Guid="d387baf8-dd42-fa86-aa5c-9c9098172808" Win64="yes">
+            <File Id="owfE473058736245F06FE25975E4DDD56BD" Source="$(var.SourceDir)\Grafika\sword1.png" KeyPath="yes" />
           </Component>
-          <Component Id="owcFEFF460E18FC4C5DBC7A470C81181127" Guid="4110bd81-3645-041c-9794-4e9d479dfdde" Win64="yes">
-            <File Id="owfFEFF460E18FC4C5DBC7A470C81181127" Source="$(var.SourceDir)\Grafika\sword2.cur" KeyPath="yes" />
+          <Component Id="owc439AE1EED8BFC439F2C2671746716157" Guid="82e31ff3-debd-be06-13f0-8bf245b580ba" Win64="yes">
+            <File Id="owf439AE1EED8BFC439F2C2671746716157" Source="$(var.SourceDir)\Grafika\sword2.png" KeyPath="yes" />
           </Component>
         </Directory>
         <Directory Id="owd664AA12570CC16F8A7A877793AD07948" Name="Kampanie">

@@ -292,6 +292,14 @@ int main() {
     sf::Event event;
     sf::Clock clock;
 
+    // ustaw kursor
+    sf::Image kursor;
+    kursor.loadFromFile("Grafika\\sword2.png");
+
+    sf::Cursor cursor;
+    if (cursor.loadFromPixels(kursor.getPixelsPtr(), sf::Vector2u(32,32), sf::Vector2u(0, 0)))
+        okno_menu.setMouseCursor(cursor);
+
     sf::Image ikonka;
     ikonka.loadFromFile("Grafika\\domcraft_small.png");
     okno_menu.setIcon(64, 64, ikonka.getPixelsPtr());

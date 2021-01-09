@@ -1,12 +1,15 @@
 #pragma once
 
 #define SFGUI_MAJOR_VERSION 0
-#define SFGUI_MINOR_VERSION 3
-#define SFGUI_REVISION_VERSION 1
+#define SFGUI_MINOR_VERSION 4
+#define SFGUI_REVISION_VERSION 0
 
 #if defined( _WIN32 ) || defined( __WIN32__ )
 	#define SFGUI_SYSTEM_WINDOWS
-	#define WIN32_LEAN_AND_MEAN
+
+	#if !defined( WIN32_LEAN_AND_MEAN )
+		#define WIN32_LEAN_AND_MEAN
+	#endif
 
 	#if !defined( NOMINMAX )
 		#define NOMINMAX
@@ -32,3 +35,5 @@
 	#define SFGUI_DEBUG
 	#include <iostream> // XXX Only for debugging purposes.
 #endif
+
+/* #undef SFGUI_BOOST_FILESYSTEM_SUPPORT */

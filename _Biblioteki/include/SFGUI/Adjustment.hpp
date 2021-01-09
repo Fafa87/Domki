@@ -25,9 +25,10 @@ class SFGUI_API Adjustment : public Object, public std::enable_shared_from_this<
 		 * @param minor_step Minor change value (such as clicking on arrow button).
 		 * @param major_step Major change value (such as clicking on the scroll area).
 		 * @param page_size Page size (how many entries are visible / slider size).
+         * @param stick True if the adjustment should stick to the maximum value.
 		 * @return Adjustment.
 		 */
-		static Ptr Create( float value = .0f, float lower = .0f, float upper = .0f, float minor_step = 1.f, float major_step = 5.f, float page_size = .0f );
+		static Ptr Create( float value = .0f, float lower = .0f, float upper = .0f, float minor_step = 1.f, float major_step = 5.f, float page_size = .0f, bool stick = false );
 
 		/** Assignment operator
 		 * @param adjustment Adjustment whose values are to be assigned to this one.
@@ -64,6 +65,21 @@ class SFGUI_API Adjustment : public Object, public std::enable_shared_from_this<
 		 * @param new_upper new maximum value
 		 */
 		void SetUpper( float new_upper );
+
+        /** Get Adjustment stick setting
+         * @return Adjustment stick setting
+         */
+        bool GetStick() const;
+
+        /** Set Adjustment stick setting
+         * @param new_stick new stick setting
+         */
+        void SetStick(bool new_stick);
+
+        /** Check if value is set to maximum
+         * @return True is Value at Upper
+         */
+        bool IsAtUpper() const;
 
 		/** Get Adjustment minor step
 		 * @return Adjustment minor step
@@ -102,8 +118,9 @@ class SFGUI_API Adjustment : public Object, public std::enable_shared_from_this<
 		 * @param new_minor_step Minor change value (such as clicking on arrow button).
 		 * @param new_major_step Major change value (such as clicking on the scroll area).
 		 * @param new_page_size Page size (how many entries are visible / slider size).
+         * @param stick True if the adjustment should stick to the maximum value.
 		 */
-		void Configure( float new_value, float new_lower, float new_upper, float new_minor_step, float new_major_step, float new_page_size );
+		void Configure( float new_value, float new_lower, float new_upper, float new_minor_step, float new_major_step, float new_page_size, bool new_stick);
 
 		/** Increment current value
 		 */
@@ -132,15 +149,17 @@ class SFGUI_API Adjustment : public Object, public std::enable_shared_from_this<
 		 * @param minor_step Minor change value (such as clicking on arrow button).
 		 * @param major_step Major change value (such as clicking on the scroll area).
 		 * @param page_size Page size (how many entries are visible / slider size).
+         * @param stick True if the adjustment should stick to the maximum value.
 		 */
-		Adjustment( float value, float lower, float upper, float minor_step, float major_step, float page_size );
+		Adjustment( float value, float lower, float upper, float minor_step, float major_step, float page_size, bool new_stick);
 
 		float m_value;
 		float m_lower;
 		float m_upper;
 		float m_minor_step;
 		float m_major_step;
-		float m_page_size;
+        float m_page_size;
+        float m_stick;
 };
 
 }

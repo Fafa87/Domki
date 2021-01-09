@@ -14,7 +14,8 @@
 
 using namespace std;
 
-
+sfg::Image::Ptr utworz_tytulowy_obraz();
+sfg::Label::Ptr utworz_napis_wersji();
 string opis_wersji();
 
 class GUI

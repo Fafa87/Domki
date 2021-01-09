@@ -43,16 +43,30 @@ bool GetProductAndVersion(string & strProductName, string & strProductVersion)
     }
 
     strProductName = string((LPCSTR)pvProductName, iProductNameLen-1);
-    strProductVersion = string((LPCSTR)pvProductVersion, iProductVersionLen-1);
+    strProductVersion = string((LPCSTR)pvProductVersion, iProductVersionLen-1-2); // without last element
 
     return true;
 }
 
+sfg::Image::Ptr utworz_tytulowy_obraz() {
+    sf::Image tytul_plik;
+    tytul_plik.loadFromFile("Grafika\\domcraft_resized.png");
+
+    auto tytul_obraz = sfg::Image::Create(tytul_plik);
+    //tytul_obraz->Resize(500, 112); 
+    return tytul_obraz;
+}
+
+sfg::Label::Ptr utworz_napis_wersji() {
+    auto wersja = sfg::Label::Create(opis_wersji());
+    wersja->SetClass("GridOpis");
+    return wersja;
+}
 
 string opis_wersji() {
     string nazwa, wersja;
     auto res = GetProductAndVersion(nazwa, wersja);
-    return nazwa + "  " + wersja;
+    return wersja;
 }
 
 

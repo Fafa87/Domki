@@ -126,7 +126,7 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
     tabelka->SetRowSpacings(10);
 
     int row_top = 0;
-    tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, row_top++, 4, 1));
+    //tabelka->Attach(separator, sf::Rect<sf::Uint32>(0, row_top++, 4, 1));
     tabelka->Attach(wybor_etykieta, sf::Rect<sf::Uint32>(0, row_top, 1, 1));
     if (opcja_misja)
     {

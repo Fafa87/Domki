@@ -121,10 +121,7 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
 
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
     box->SetSpacing(10);
-    auto tytul = sfg::Label::Create(opis_wersji());
-    tytul->SetId("Naglowek");
-
-    box->Pack(tytul, false, false);
+    box->Pack(utworz_tytulowy_obraz(), false, false);
 
     auto kontrolki = WyborMisjiKontrolki::DlaMisji(
         false, // ile ludzi
@@ -178,10 +175,7 @@ std::shared_ptr<sfg::Window> kampania_grand_menu(std::shared_ptr<sfg::Window> gl
 
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
     box->SetSpacing(10);
-    auto tytul = sfg::Label::Create(opis_wersji());
-    tytul->SetId("Naglowek");
-
-    box->Pack(tytul, false, false);
+    box->Pack(utworz_tytulowy_obraz(), false, false);
 
     auto kontrolki = WyborMisjiKontrolki::DlaKampanii();
     kontrolki->DodajZestaw(box);
@@ -215,10 +209,7 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
     okno->SetRequisition(sf::Vector2f(480, 0));
 
-    auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 100.0f);
-
-    auto tytul = sfg::Label::Create(opis_wersji());
-    tytul->SetId("Naglowek");
+    auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 10.0f);
     auto tabelka = sfg::Table::Create();
 
     auto kampania = sfg::Button::Create("Kampania");
@@ -258,7 +249,8 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
     tabelka->Attach(razem, sf::Rect<sf::Uint32>(1, 8, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(instrukcja, sf::Rect<sf::Uint32>(1, 12, 12, 1), 3, sfg::Table::FILL);
 
-    box->Pack(tytul, false, false);
+    box->Pack(utworz_tytulowy_obraz(), false, false);
+    box->Pack(utworz_napis_wersji(), false, false);
     box->Pack(tabelka, true, true);
     okno->Add(box);
 

@@ -39,10 +39,8 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
 
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
     box->SetSpacing(10);
-    auto tytul = sfg::Label::Create(opis_wersji());
-    tytul->SetId("Naglowek");
-    
-    box->Pack(tytul, false, false);
+
+    box->Pack(utworz_tytulowy_obraz(), false, false);
 
     auto kontrolki = WyborMisjiKontrolki::DlaMisji(
         true, // ile ludzi
@@ -62,8 +60,7 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
         [okno] {
         GUI::aplikacja().pop_active_window(okno);
     });
-    
-    box->Pack(sfg::Separator::Create(), false, false);
+
     box->Pack(zakladaj, false, false);
     box->Pack(powrot, false, false);
     okno->Add(box);
@@ -169,9 +166,9 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
 
     auto dol_panel = sfg::Box::Create(sfg::Box::Orientation::HORIZONTAL);
     dol_panel->SetSpacing(50);
-    dol_panel->Pack(odpal, false, false);
-    dol_panel->Pack(dolacz, false, false);
-    dol_panel->Pack(powrot, false, false);
+    dol_panel->Pack(odpal, true, true);
+    dol_panel->Pack(dolacz, true, true);
+    dol_panel->Pack(powrot, true, true);
 
     // CA£OŒÆ
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
@@ -235,8 +232,6 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
     okno->SetAllocation(glowne->GetAllocation());
 
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
-    auto tytul = sfg::Label::Create(opis_wersji());
-    tytul->SetId("Naglowek");
 
     auto nazwa_etykieta = sfg::Label::Create("Nazwa gracza: ");
     auto nazwa_edit = sfg::Entry::Create();
@@ -288,7 +283,7 @@ std::shared_ptr<sfg::Window> wielu_graczy_menu(std::shared_ptr<sfg::Window> glow
     });
 
     box->SetSpacing(10);
-    box->Pack(tytul, false, false);
+    box->Pack(utworz_tytulowy_obraz(), false, false);
     box->Pack(nazwa_etykieta, false, false);
     box->Pack(nazwa_edit, false, false);
     box->Pack(sfg::Separator::Create(), false, true);

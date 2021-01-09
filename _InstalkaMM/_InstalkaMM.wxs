@@ -15,7 +15,7 @@
         <Component Id="owcD7BDD017223A7DF14B2729C5E506F697" Guid="a3ee4bcf-268f-5abf-6eb7-0eddf384965e">
           <File Id="owfD7BDD017223A7DF14B2729C5E506F697" Source="$(var.SourceDir)\Domki.exe" KeyPath="yes">
             <Shortcut Id="scDA96B247B5028EEECEB8C8773C1CF67C" Advertise="yes" Name="Domcraft" Directory="DesktopFolder" WorkingDirectory="MergeRedirectFolder" Icon="Icon.ico" />
-            <Shortcut Id="sc157CE8C591DAB34F9EB7C32E085D6BCF" Name="Domcraft" Directory="scd127C63A9A464827794F01EB745AA53FE" WorkingDirectory="MergeRedirectFolder"  Icon="Icon.ico" />
+            <Shortcut Id="sc157CE8C591DAB34F9EB7C32E085D6BCF" Name="Domcraft" Directory="scd127C63A9A464827794F01EB745AA53FE" WorkingDirectory="MergeRedirectFolder" Icon="Icon.ico" />
           </File>
         </Component>
         <Component Id="RegistryEntries" Guid="B0A06192-89B4-4D23-B983-EDB18BCEE2C9">
@@ -246,6 +246,15 @@
               <File Id="owf93ACDD1CA5CBC0FBCA3E9157642BE459" Source="$(var.SourceDir)\Grafika\wroclaw\wojownik.png" KeyPath="yes" />
             </Component>
           </Directory>
+          <Component Id="owc36227C48EBAD7CEFDDDD3E9A7433D11B" Guid="7b8ed8b7-6a1d-3c56-d0ac-167f7507e964" Win64="yes">
+            <File Id="owf36227C48EBAD7CEFDDDD3E9A7433D11B" Source="$(var.SourceDir)\Grafika\domcraft_small.png" KeyPath="yes" />
+          </Component>
+          <Component Id="owc4ED01BD5E9B330C996CDAE90D2072C7C" Guid="d52081fe-cbc8-ad1e-ec77-ff17dbfca075" Win64="yes">
+            <File Id="owf4ED01BD5E9B330C996CDAE90D2072C7C" Source="$(var.SourceDir)\Grafika\sword1.cur" KeyPath="yes" />
+          </Component>
+          <Component Id="owcFEFF460E18FC4C5DBC7A470C81181127" Guid="4110bd81-3645-041c-9794-4e9d479dfdde" Win64="yes">
+            <File Id="owfFEFF460E18FC4C5DBC7A470C81181127" Source="$(var.SourceDir)\Grafika\sword2.cur" KeyPath="yes" />
+          </Component>
         </Directory>
         <Directory Id="owd664AA12570CC16F8A7A877793AD07948" Name="Kampanie">
           <Directory Id="owd6692819DCB366A7B965C873FCB6BCB9F" Name="Pierwsza Kampania">

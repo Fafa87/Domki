@@ -1,6 +1,6 @@
 
-
-Domcraft aka Domki
+.. image:: https://github.com/Fafa87/Domki/blob/master/Grafika/domcraft.png
+aka Domki
 =====
 
 Walka domków o życie!

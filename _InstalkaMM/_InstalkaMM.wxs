@@ -89,7 +89,7 @@
             <File Id="owf60EB36F4A9B212A063FEDC0A63A85385" Source="$(var.SourceDir)\Grafika\BuxtonSketch.ttf" KeyPath="yes" />
           </Component>
           <Component Id="owcDCA763E72124425480E01C594C081F4F" Guid="a61479c8-a662-cf4a-526c-67d4f9f2f1d6">
-            <File Id="owfDCA763E72124425480E01C594C081F4F" Source="$(var.SourceDir)\Grafika\houseofhouses.png" KeyPath="yes" />
+            <File Id="owfDCA763E72124425480E01C594C081F4F" Source="$(var.SourceDir)\Grafika\domcraft.png" KeyPath="yes" />
           </Component>
           <Component Id="owc8880364ED12E960635580149450A5EF2" Guid="2ba4ca23-9a14-2699-bcc6-05516fa90890">
             <File Id="owf8880364ED12E960635580149450A5EF2" Source="$(var.SourceDir)\Grafika\houseofhouses2.png" KeyPath="yes" />

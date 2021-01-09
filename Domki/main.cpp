@@ -292,6 +292,10 @@ int main() {
     sf::Event event;
     sf::Clock clock;
 
+    sf::Image ikonka;
+    ikonka.loadFromFile("Grafika\\domcraft_small.png");
+    okno_menu.setIcon(64, 64, ikonka.getPixelsPtr());
+
     if (!GUI::aplikacja().ini.GetBoolean("przelaczniki", "muzyka", true))
         GUI::aplikacja().dzwieki_glosnosc = 0;
 

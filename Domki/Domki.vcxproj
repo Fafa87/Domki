@@ -236,7 +236,11 @@ xcopy  /d /y  "$(SolutionDir)\Paczka\*.*" "$(OutDir)"</Command>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\_Instalka\Resources\Domcraft.ico" />
+    <Image Include="..\_Instalka\Resources\Domcraft.ico">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='ReleaseWindow|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+    </Image>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

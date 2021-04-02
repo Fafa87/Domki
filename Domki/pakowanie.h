@@ -139,14 +139,14 @@ void save(Archive & archive,
 	vector<int> ser_drogi;
 	for (auto d : m.drogi)
 		ser_drogi.push_back(d->uid);
-	archive(m.typdomku, m.poziom, m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.gracz->numer, m.uid, m.wyglad, ser_drogi);
+	archive(m.typdomku, m.poziom, m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.gracz->numer, m.uid, m.wyglad, ser_drogi, m.kontrola, m.przebudowa, m.ulepszanie);
 }
 
 template<class Archive>
 void load(Archive & archive,
 	Domek & m)
 {
-	archive(m.typdomku, m.poziom, m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.ser_gracz, m.uid, m.wyglad, m.ser_drogi);
+	archive(m.typdomku, m.poziom, m.liczebnosc, m.max_liczebnosc, m.polozenie, m.produkcja, m.rozmiar, m.ser_gracz, m.uid, m.wyglad, m.ser_drogi, m.kontrola, m.przebudowa, m.ulepszanie);
 }
 
 template<class Archive>

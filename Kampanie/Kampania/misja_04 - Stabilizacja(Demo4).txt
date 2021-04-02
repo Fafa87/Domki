@@ -68,6 +68,3 @@ drogi 1 9
 gracz 4
 poziom 3
 liczebnosc 50
-
-Tryb
-bez_kontroli

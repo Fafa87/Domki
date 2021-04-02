@@ -141,4 +141,6 @@ poziom 3
 liczebnosc 100
 
 Tryb
+bez_ulepszania
 bez_kontroli
+bez_przebudowy

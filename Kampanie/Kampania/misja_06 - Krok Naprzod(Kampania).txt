@@ -139,6 +139,3 @@ gracz 2
 typ kuznia
 poziom 3
 liczebnosc 100
-
-Tryb
-bez_kontroli

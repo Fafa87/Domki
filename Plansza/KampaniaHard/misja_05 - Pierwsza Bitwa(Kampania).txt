@@ -134,4 +134,6 @@ poziom 5
 liczebnosc 150
 
 Tryb
+bez_ulepszania
 bez_kontroli
+bez_przebudowy

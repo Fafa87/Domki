@@ -53,6 +53,3 @@ gracz 2
 poziom 5
 liczebnosc 15
 typ zamek
-
-Tryb
-bez_kontroli

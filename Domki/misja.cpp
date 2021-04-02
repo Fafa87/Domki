@@ -166,6 +166,10 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
                 {
                     domek.ulepszanie = false;
                 }
+            else if (parametr == "bez_kontroli")
+            {
+                domek.kontrola = false;
+            }
             else if (parametr == "liczebnosc")
                 {
                     int ile_ludkow;
@@ -195,24 +199,35 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
         plikmapa >> parametr;
         if (parametr == "Tryb")
         {
-            string nazwa_celu;
-            plikmapa >> nazwa_celu;
-            if (nazwa_celu == "Zbieranie") {
-                plikmapa >> gra.cel_gry.wymagany_zbior;
-            }
-            else if (nazwa_celu == "Inwazja") {
-                plikmapa >> gra.cel_gry.nr_impostera >> gra.cel_gry.szybkosc_impostera;
-            }
-            else if (nazwa_celu == "Przetrwanie") {
-                plikmapa >> gra.cel_gry.nr_defensora >> gra.cel_gry.sila_plagi;
-            }
-            else if (nazwa_celu == "KOTH") {
-                plikmapa >> gra.cel_gry.do_zdobycia;
-            }
-            else {
-                nazwa_celu = "Walka";
-            }
-            gra.cel_gry.nazwa_celu = nazwa_celu;
+            do {
+                    string nazwa_celu;
+                    plikmapa >> nazwa_celu;
+                    if (nazwa_celu == "bez_ulepszania") {
+                        for (Domek& domek : gra.domki) domek.ulepszanie = false;
+                    }
+                    else  if (nazwa_celu == "bez_przebudowy") {
+                        for (Domek& domek : gra.domki) domek.przebudowa = false;
+                    }
+                    else  if (nazwa_celu == "bez_kontroli") {
+                        for (Domek& domek : gra.domki) domek.kontrola = false;
+                    }
+                    else if (nazwa_celu == "Zbieranie") {
+                        plikmapa >> gra.cel_gry.wymagany_zbior;
+                    }
+                    else if (nazwa_celu == "Inwazja") {
+                        plikmapa >> gra.cel_gry.nr_impostera >> gra.cel_gry.szybkosc_impostera;
+                    }
+                    else if (nazwa_celu == "Przetrwanie") {
+                        plikmapa >> gra.cel_gry.nr_defensora >> gra.cel_gry.sila_plagi;
+                    }
+                    else if (nazwa_celu == "KOTH") {
+                        plikmapa >> gra.cel_gry.do_zdobycia;
+                    }
+                    else {
+                        nazwa_celu = "Walka";
+                    }
+                gra.cel_gry.nazwa_celu = nazwa_celu;
+            } while (plikmapa.good());
         }
     }
     for (auto para : numery_domkow)
@@ -326,9 +341,9 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         }
     }
 
+    srand(time(NULL));
     //KOMPUTEROWIE
     vector<Komputer*> kompiutery;
-    srand(time(NULL));
     int numba = 1, licznik_nazw[3] = {};
     for (int nr = 0; nr < misja_ustawienia.komputery.size(); nr++)numba *= 3;
     numba = rand() % numba;

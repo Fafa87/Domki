@@ -202,6 +202,3 @@ gracz 2
 poziom 5
 liczebnosc 0
 typ kuznia
-
-Tryb
-bez_kontroli

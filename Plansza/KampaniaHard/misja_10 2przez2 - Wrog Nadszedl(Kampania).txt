@@ -204,4 +204,6 @@ liczebnosc 0
 typ kuznia
 
 Tryb
+bez_ulepszania
 bez_kontroli
+bez_przebudowy

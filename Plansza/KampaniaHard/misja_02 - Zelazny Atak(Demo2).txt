@@ -38,4 +38,6 @@ poziom 1
 liczebnosc 10
 
 Tryb
+bez_ulepszania
 bez_kontroli
+bez_przebudowy

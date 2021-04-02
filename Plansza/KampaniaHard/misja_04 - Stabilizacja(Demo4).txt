@@ -70,4 +70,6 @@ poziom 3
 liczebnosc 50
 
 Tryb
+bez_ulepszania
 bez_kontroli
+bez_przebudowy

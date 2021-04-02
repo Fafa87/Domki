@@ -36,6 +36,3 @@ drogi 1 3
 gracz 2
 poziom 1
 liczebnosc 10
-
-Tryb
-bez_kontroli

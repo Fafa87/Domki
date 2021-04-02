@@ -104,6 +104,3 @@ gracz 1
 typ osada
 poziom 3
 liczebnosc 50
-
-Tryb
-bez_kontroli

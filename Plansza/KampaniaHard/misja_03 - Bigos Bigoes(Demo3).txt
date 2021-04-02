@@ -55,4 +55,6 @@ liczebnosc 15
 typ zamek
 
 Tryb
+bez_ulepszania
 bez_kontroli
+bez_przebudowy

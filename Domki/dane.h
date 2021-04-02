@@ -80,7 +80,8 @@ struct Domek : Twor
     int poziom = 1;
     bool przebudowa = true,
         ulepszanie = true,
-        szybki_wymarsz = false;
+        szybki_wymarsz = false,
+        kontrola = true;
 
     vector<Domek*> drogi;
     vector<int> ser_drogi;

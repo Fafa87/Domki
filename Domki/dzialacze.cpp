@@ -31,7 +31,7 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
             }
             else if (zdarzenie.mouseButton.button == sf::Mouse::Right) {
                 if (wybrany == (Domek*)klikniety)wybrany = nullptr;
-                if (kontrola == false && kontrolowany != (Domek*)klikniety) {
+                if (kontrola == false && kontrolowany != (Domek*)klikniety && ((Domek*)klikniety) -> kontrola ) {
                     kontrolowany = (Domek*)klikniety;
                     kontrola = true;
                 }
@@ -228,7 +228,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         }
     }
     
-    else if (!kontrola&&wybrany == nullptr && cel != nullptr && klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC||klikniecia.size()>=3)) {
+    else if (!kontrola&&wybrany == nullptr && cel != nullptr && cel -> kontrola && klikniecia.size() > 0 && (clock() - klikniecia.back().first > 0.33 * CLOCKS_PER_SEC||klikniecia.size()>=3)) {
         if (!rozgrywka.punkty_kontrolne) {
             klikniecia.clear();
             cel = nullptr;

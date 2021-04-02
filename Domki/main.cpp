@@ -243,11 +243,20 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
         system("instrukcja.html");
     });
 
+    auto uaktualnij = sfg::Button::Create("Uaktualnij");
+    uaktualnij->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [&muzyka, okno]
+    {
+        system("start powershell -ExecutionPolicy Bypass -F Uaktualnij.ps1");
+        exit(0);
+    });
+
     tabelka->SetRowSpacings(10);
     tabelka->Attach(kampania, sf::Rect<sf::Uint32>(1, 2, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(pojedynczy, sf::Rect<sf::Uint32>(1, 6, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(razem, sf::Rect<sf::Uint32>(1, 8, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(instrukcja, sf::Rect<sf::Uint32>(1, 12, 12, 1), 3, sfg::Table::FILL);
+    tabelka->Attach(uaktualnij, sf::Rect<sf::Uint32>(1, 13, 12, 1), 3, sfg::Table::FILL);
 
     box->Pack(utworz_tytulowy_obraz(), false, false);
     box->Pack(utworz_napis_wersji(), false, false);

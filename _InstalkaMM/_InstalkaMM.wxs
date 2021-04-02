@@ -669,6 +669,9 @@
             <Shortcut Id="sc510E0F3D58D54F6D4402FB8D42906C58" Name="Uaktualnij" Directory="scd127C63A9A464827794F01EB745AA53FE" WorkingDirectory="MergeRedirectFolder" Icon="Icon_up.ico" />
           </File>
         </Component>
+        <Component Id="owc708069EB9CAFD33D8B5A4FCF91FDCA52" Guid="b040b4dc-900c-c4aa-cc60-533be2f0c0aa" Win64="yes">
+          <File Id="owf708069EB9CAFD33D8B5A4FCF91FDCA52" Source="$(var.SourceDir)\Uaktualnij.ps1" KeyPath="yes" />
+        </Component>
       </Directory>
       <Directory Id="ProgramMenuFolder">
         <Directory Id="scd127C63A9A464827794F01EB745AA53FE" Name="Domcraft" />

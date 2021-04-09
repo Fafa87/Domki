@@ -131,6 +131,7 @@ public:
     bool gotowy = true;
 protected:
     vector<Rozkaz*> kolejka_do_wykonania;
+    void WyczyscKolejkeRuchow();
 private:
     void WykonajRuchy();
     void PrzesuwajLudkow(double czas);

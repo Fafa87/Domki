@@ -468,7 +468,7 @@ void Ruszacz::WykonajRuchy()
             ludzik->skad = powrot;
         }
     }
-    kolejka_do_wykonania.clear();
+    WyczyscKolejkeRuchow();
 }
 
 void Ruszacz::PrzesuwajLudkow(double czas)
@@ -643,6 +643,13 @@ void Ruszacz::Strzelaj()
     {
         rozgrywka->ZniszczLudka(usunieta);
     }
+}
+
+void Ruszacz::WyczyscKolejkeRuchow()
+{
+    for (auto ruch : kolejka_do_wykonania)
+        delete ruch;
+    kolejka_do_wykonania.clear();
 }
 
 WymarszRozkaz::WymarszRozkaz()

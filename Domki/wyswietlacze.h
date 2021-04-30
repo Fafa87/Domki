@@ -23,12 +23,16 @@ public:
     sf::IntRect Rozmiar();
 };
 
+
+
 class Wyswietlacz
 {
 public:
     Wyswietlacz(Rozgrywka& rozgrywka);
     void Wyswietlaj(sf::RenderWindow& okno);
     void WyswietlTlo(sf::RenderWindow& okno);
+
+    void UaktualnijWyglad(Twor*);
 
     void Zaladuj(string wybrana_skora);
     void ZaladujInne();

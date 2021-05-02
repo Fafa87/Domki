@@ -14,6 +14,24 @@ using namespace std;
 
 namespace mastery
 {
+    enum SygnalTyp
+    {
+        INTRO = 0,
+        SERWER = 1,
+        ZAWODNIK = 2,
+    };
+
+    struct Sygnal
+    {
+        string nadawca;
+        string tekst;
+        SygnalTyp typ;
+
+        Sygnal() {}
+        Sygnal(SygnalTyp typ, string tekst) : nadawca(""), tekst(tekst), typ(typ) {}
+        Sygnal(string nadawca, string tekst) : nadawca(nadawca), tekst(tekst), typ(SygnalTyp::ZAWODNIK) {}
+    };
+
     const int PORT_MASTER = 90;
     const string ADRES_MASTER = "domki.westeurope.cloudapp.azure.com";
 
@@ -27,7 +45,7 @@ namespace mastery
     public:
         multi::Zawodnik gracz;
         code_machina::BlockingCollection<string> komendy;
-        code_machina::BlockingCollection<string> odebrane;
+        code_machina::BlockingCollection<mastery::Sygnal> odebrane;
 
         Klient(string nazwa) : gracz() {
             gracz.nazwa = nazwa;

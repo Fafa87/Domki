@@ -69,6 +69,22 @@ int Rozgrywka::OcenaGracza(int nr_gracza) {
     return suma;
 }
 
+void Rozgrywka::ZniszczDomek(Domek* domek) 
+{
+    auto it = domki.begin();
+    for (; it != domki.end(); it++)
+    {
+        if (&(*it) == domek)
+            break;
+    }
+    if (it != domki.end())
+    {
+        //ZabierzTwor(domek);      NARAZIE NIE ZABIERAMY TWOROW W EDYTORZE BO MOZE WPLYNAC NA AKTYWNOSC GRACZA
+        domki.erase(it);
+    }
+
+}
+
 void Rozgrywka::ZniszczLudka(Ludek* ludek)
 {
     auto it = armie.begin();

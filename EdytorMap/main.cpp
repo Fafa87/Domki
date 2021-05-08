@@ -45,12 +45,19 @@ DecydentEdytor::DecydentEdytor(sf::RenderWindow& okno, Rozgrywka& rozgrywka) : o
     ladowanie_ludkow = 0;
 }
 
+sf::Vector2f ustaw_pozycje(sf::Vector2f polozenie_kliku, float szerokosc_podzialu, float wysokosc_podzialu) {
+    sf::Vector2f koryguj;
+    koryguj.x = (float)((int)polozenie_kliku.x / (int)szerokosc_podzialu) * szerokosc_podzialu + szerokosc_podzialu / 2.0;
+    koryguj.y = (float)((int)polozenie_kliku.y / (int)wysokosc_podzialu) * wysokosc_podzialu + wysokosc_podzialu / 2.0;
+    return koryguj;
+}
+
 void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
     if (zdarzenie.type == sf::Event::MouseButtonPressed) {
 
         sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
-        auto polozenie_kliku = okno.mapPixelToCoords(pixelPos);
-        Twor* klikniety = rozgrywka.Zlokalizuj(polozenie_kliku.x, polozenie_kliku.y);
+        miejsce_tworzenia = ustaw_pozycje(okno.mapPixelToCoords(pixelPos), 80.0, 90.0);
+        Twor* klikniety = rozgrywka.Zlokalizuj(miejsce_tworzenia.x, miejsce_tworzenia.y);
 
         if (zdarzenie.mouseButton.button == sf::Mouse::Left) {
             wybrany = klikniety;
@@ -58,13 +65,19 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
 
         else if (tworzony.liczebnosc != -1 && klikniety == NULL && zdarzenie.mouseButton.button == sf::Mouse::Right) {
             tworz = true;
-            miejsce_tworzenia = polozenie_kliku;
         }
     }
 
     else if (zdarzenie.type == sf::Event::KeyPressed) {
         
         switch (zdarzenie.key.code) {
+        case sf::Keyboard::Backspace: {
+            if (wybrany != NULL) {
+                if(IsType<Domek>(wybrany))rozgrywka.ZniszczDomek((Domek*)wybrany);
+                wybrany = NULL;
+            }
+            break;
+        }
             case sf::Keyboard::Num0: {
 
                 tworzony.liczebnosc = -1;
@@ -280,12 +293,13 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
     }
 
     else if (zdarzenie.type == sf::Event::KeyReleased && zdarzenie.key.code == sf::Keyboard::Tab) {
-        ladowanie_ludkow = 0;
+
         if (tworzony.liczebnosc == -1) {
             tworzony = rozgrywka.stworz_domyslny_domek();
             rozgrywka.pozostale.push_back(&tworzony);
         }
-        if (tworzony.typdomku == TypDomku::kPole) tworzony.liczebnosc = 0;
+        if (ladowanie_ludkow) ladowanie_ludkow = 0;
+        else if (tworzony.typdomku == TypDomku::kPole) tworzony.liczebnosc = 0;
         else {
             if (tworzony.liczebnosc < tworzony.max_liczebnosc / 2.0) tworzony.liczebnosc = tworzony.max_liczebnosc / 2.0;
             else if (tworzony.liczebnosc < tworzony.max_liczebnosc) tworzony.liczebnosc = tworzony.max_liczebnosc;
@@ -304,13 +318,13 @@ void DecydentEdytor::Wykonaj() {
 
         tworz = false;
     }
-    else if (tworzony.liczebnosc != -1 && ladowanie_ludkow && (double)(clock() - ladowanie_ludkow) / CLOCKS_PER_SEC > 1.0) tworzony.liczebnosc += ((double)(clock() - ladowanie_ludkow) / CLOCKS_PER_SEC - 1.0) * tworzony.max_liczebnosc;
+    else if (tworzony.liczebnosc != -1 && ladowanie_ludkow && (double)(clock() - ladowanie_ludkow) / CLOCKS_PER_SEC > 0.5) tworzony.liczebnosc += ((double)(clock() - ladowanie_ludkow) / CLOCKS_PER_SEC - 0.5) * tworzony.max_liczebnosc;
 }
 
 void dodaj_domek(Rozgrywka &gra, Gracz &g, double x, double y, TypDomku typ, int poziom, int liczebnosc = 0) {
     gra.domki.push_back(Domek());
     Domek& domek = gra.domki.back();
-    domek.polozenie = { x,y }; 
+    domek.polozenie = { x,y };
     domek.typdomku = typ;
     domek.gracz = &g;
     domek.poziom = poziom;
@@ -318,203 +332,26 @@ void dodaj_domek(Rozgrywka &gra, Gracz &g, double x, double y, TypDomku typ, int
     gra.ZmienLiczebnosc(domek, liczebnosc);
 }
 
-void dodaj_gracza(Rozgrywka & gra, Gracz& g, double x, double y)
-{
-    gra.domki.push_back(Domek());
-    Domek& domek = gra.domki.back();
-    domek.polozenie = { x,y };
-    domek.produkcja = 2;
-    domek.max_liczebnosc = 100;
-    domek.wyglad = Wyglad::kMiasto;
-    domek.gracz = &g;
-    domek.poziom = 1;
-    gra.ZmienLiczebnosc(domek, 50);
-
-    gra.domki.push_back(Domek());
-    Domek& domek2 = gra.domki.back();
-    domek2.polozenie = { x,y + 150 };
-    domek2.produkcja = 2;
-    domek2.max_liczebnosc = 100;
-    domek2.wyglad = Wyglad::kMiasto;
-    domek2.gracz = &g;
-    domek2.poziom = 10;
-    gra.ZmienLiczebnosc(domek2, 250);
-    domek2.drogi.push_back(&domek);
-
-    gra.domki.push_back(Domek());
-    Domek& domek3 = gra.domki.back();
-    domek3.polozenie = { x - 100 ,y + 150 };
-    domek3.typdomku = TypDomku::kZbrojownia;
-    domek3.gracz = &g;
-    domek3.poziom = 1;
-    gra.ZmienLiczebnosc(domek3, 50);
-    domek3.drogi.push_back(&domek);
-
-    gra.domki.push_back(Domek());
-    Domek& domek4 = gra.domki.back();
-    domek4.polozenie = { x + 100 ,y + 150 };
-    domek4.typdomku = TypDomku::kFort;
-    domek4.gracz = &g;
-    domek4.poziom = 1;
-    gra.ZmienLiczebnosc(domek4, 50);
-    domek4.drogi.push_back(&domek);
-
-    gra.domki.push_back(Domek());
-    Domek& domek5 = gra.domki.back();
-    domek5.polozenie = { x + 100 ,y + 250 };
-    domek5.typdomku = TypDomku::kPole;
-    domek5.gracz = &g;
-    domek5.poziom = 0;
-    gra.ZmienLiczebnosc(domek5, 50);
-    domek5.drogi.push_back(&domek);
-    domek5.drogi.push_back(&domek4);
-
-    gra.domki.push_back(Domek());
-    Domek& domek6 = gra.domki.back();
-    domek6.polozenie = { x ,y + 250 };
-    domek6.typdomku = TypDomku::kStajnia;
-    domek6.gracz = &g;
-    domek6.poziom = 4;
-    gra.ZmienLiczebnosc(domek6, 50);
-    domek6.drogi.push_back(&domek);
-    domek6.drogi.push_back(&domek4);
-
-    gra.domki.push_back(Domek());
-    Domek& domek7 = gra.domki.back();
-    domek7.polozenie = { x - 100 ,y + 250 };
-    domek7.typdomku = TypDomku::kWieza;
-    domek7.gracz = &g;
-    domek7.poziom = 4;
-    gra.ZmienLiczebnosc(domek7, 50);
-    domek7.drogi.push_back(&domek);
-    domek7.drogi.push_back(&domek4);
-
-    gra.armie.push_back(Ludek(domek, domek));
-    Ludek & ludek = gra.armie.back();
-    ludek.polozenie = { x + 100,y };
-    ludek.gracz = &g;
-    ludek.wyglad = Wyglad::kWojownik;
-    ludek.tarcza = 0;
-    gra.ZmienLiczebnosc(ludek, 240);
-
-    gra.armie.push_back(Ludek(domek, domek));
-    Ludek & ludek2 = gra.armie.back();
-    ludek2.polozenie = { x - 100,y };
-    ludek2.gracz = &g;
-    ludek2.tarcza = 90;
-    ludek2.wyglad = Wyglad::kWojownik;
-    gra.ZmienLiczebnosc(ludek2, 240);
-
-    gra.armie.push_back(Ludek(domek, domek));
-    Ludek & ludek3 = gra.armie.back();
-    ludek3.polozenie = { x + 100,y + 100 };
-    ludek3.gracz = &g;
-    ludek3.tarcza = 250;
-    ludek3.wyglad = Wyglad::kWojownik;
-    gra.ZmienLiczebnosc(ludek3, 240);
-
-    gra.armie.push_back(Ludek(domek, domek));
-    Ludek & ludek4 = gra.armie.back();
-    ludek4.polozenie = { x - 100,y + 100 };
-    ludek4.gracz = &g;
-    ludek4.tarcza = 250;
-    ludek4.szybkosc_ludka = 3;
-    ludek4.wyglad = Wyglad::kWojownik;
-    gra.ZmienLiczebnosc(ludek4, 240);
-}
-
-void dodaj_konie(Rozgrywka & gra, Gracz& g, double x, double y)
-{
-    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
-    Ludek & ludek = gra.armie.back();
-    ludek.polozenie = { x - 100,y - 100 };
-    ludek.gracz = &g;
-    ludek.wyglad = Wyglad::kWojownik;
-    ludek.tarcza = 0;
-    gra.ZmienLiczebnosc(ludek, 240);
-
-    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
-    Ludek & ludek2 = gra.armie.back();
-    ludek2.polozenie = { x ,y - 100 };
-    ludek2.gracz = &g;
-    ludek2.tarcza = 90;
-    ludek2.wyglad = Wyglad::kWojownik;
-    gra.ZmienLiczebnosc(ludek2, 240);
-
-    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
-    Ludek & ludek3 = gra.armie.back();
-    ludek3.polozenie = { x + 100,y - 100 };
-    ludek3.gracz = &g;
-    ludek3.tarcza = 250;
-    ludek3.wyglad = Wyglad::kWojownik;
-    gra.ZmienLiczebnosc(ludek3, 240);
-
-    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
-    Ludek & ludek4 = gra.armie.back();
-    ludek4.polozenie = { x - 100,y };
-    ludek4.gracz = &g;
-    ludek4.tarcza = 0;
-    ludek4.szybkosc_ludka = 3;
-    ludek4.wyglad = Wyglad::kWojownik;
-    gra.ZmienLiczebnosc(ludek4, 240);
-
-    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
-    Ludek & ludek5 = gra.armie.back();
-    ludek5.polozenie = { x,y };
-    ludek5.gracz = &g;
-    ludek5.tarcza = 150;
-    ludek5.szybkosc_ludka = 3;
-    ludek5.wyglad = Wyglad::kWojownik;
-    gra.ZmienLiczebnosc(ludek5, 240);
-
-    gra.armie.push_back(Ludek(gra.domki.front(), gra.domki.front()));
-    Ludek & ludek6 = gra.armie.back();
-    ludek6.polozenie = { x + 100,y };
-    ludek6.gracz = &g;
-    ludek6.tarcza = 250;
-    ludek6.szybkosc_ludka = 3;
-    ludek6.wyglad = Wyglad::kWojownik;
-    gra.ZmienLiczebnosc(ludek6, 240);
-}
-
-
 Rozgrywka pokazowa_rozgrywka()
 {
     Rozgrywka gra;
     //gracze
-    gra.gracze.push_back(Gracz());
-    Gracz& gracz0 = gra.gracze.back();
-    gracz0.numer = 0; gracz0.nazwa = "NEUTRAL";
-    gracz0.kolor = sf::Color(128, 128, 128);
-    gracz0.aktywny = false;
 
-    gra.gracze.push_back(Gracz());
-    Gracz& gracz1 = gra.gracze.back();
-    gracz1.numer = 1; gracz1.nazwa = "GRACZ1";
-    gracz1.kolor = sf::Color::Red;
+    sf::Color kolory[] = { sf::Color(255,255,255) , sf::Color(255,0,0), sf::Color(0,0,255), sf::Color(0,255,0),      // 0 - bialy, 1 - czerwony, 2 - niebieski, 3 - zielony
+    sf::Color(255,255,0) , sf::Color(255,128,0), sf::Color(0,255,255), sf::Color(127,0,255),                              // 4 - zolty, 5 - pomaranczowy, 6 - jasnoniebieski, 7- fioletowy
+    sf::Color(102,102,0), sf::Color(51,25,0)};                                                                                                                                        // 8 - ciemnozloty 9 - brazowy
 
-    gra.gracze.push_back(Gracz());
-    Gracz& gracz2 = gra.gracze.back();
-    gracz2.numer = 2; gracz2.nazwa = "KOMPUTER2";
-    gracz2.kolor = sf::Color::Blue;
+    string nazwy[] = { "BIALY", "CZERWONY", "NIEBIESKI", "ZIELONY", "ZOLTY", "POMARANCZOWY", "JASNONIEBIESKI", "FIOLETOWY", "CIEMNOZLOTY", "BRAZOWY" };
 
-    gra.gracze.push_back(Gracz());
-    Gracz& gracz3 = gra.gracze.back();
-    gracz3.numer = 3; gracz3.nazwa = "KOMPUTER3";
-    gracz3.kolor = sf::Color::Green;
+    for (int nr = 0; nr <= 9; nr++) {
+        gra.gracze.push_back(Gracz());
+        Gracz& gracz = gra.gracze.back();
+        gracz.numer = nr;
+        gracz.nazwa = nazwy[nr];
+        gracz.kolor = kolory[nr];
+        if (!nr) gracz.aktywny = false;
+    }
 
-    gra.gracze.push_back(Gracz());
-    Gracz& gracz4 = gra.gracze.back();
-    gracz4.numer = 4; gracz4.nazwa = "KOMPUTER4";
-    gracz4.kolor = sf::Color::Yellow;
-
-    dodaj_gracza(gra, gracz0, 500, 100);
-    dodaj_gracza(gra, gracz1, 800, 100);
-    dodaj_gracza(gra, gracz2, 800, 500);
-    dodaj_gracza(gra, gracz3, 1100, 100);
-    dodaj_gracza(gra, gracz4, 1100, 500);
-
-    dodaj_konie(gra, gracz1, 500, 700);
 
     return gra;
 }
@@ -590,7 +427,7 @@ int buduj_mape()
     DecydentEdytor decedek(window, rozgrywka);
 
     auto gujak = interfejs_rozgrywki(nullptr, ustawienia, rozgrywka, wyswietlacz, nullptr, nullptr);
-    sf::View view = wysrodkowany_widok(rozgrywka.domki, gujak->GetAllocation().height);
+    sf::View view = sf::View(sf::FloatRect(0, 0, 1600, 900));
     window.setView(view);
 
     Ruszacz ruszacz;

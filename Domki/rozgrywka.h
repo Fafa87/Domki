@@ -33,6 +33,7 @@ struct Rozgrywka
     int liczba_aktywnych_graczy=0;
 
     void ZniszczLudka(Ludek* ludek);
+    void ZniszczDomek(Domek* domek);
     bool Zyje(Ludek* ludek);
     void ZabierzTwor(const Twor* twor1);
     void PoddajGracza(Gracz& gracz);

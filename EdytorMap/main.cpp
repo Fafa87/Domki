@@ -1,4 +1,4 @@
-﻿#include <SFGUI/SFGUI.hpp>
+#include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Widgets.hpp>
 
 #include <SFML/Graphics.hpp>
@@ -25,6 +25,7 @@ public:
 
 
     bool tworz;
+    std::pair<bool, bool> zapisuj;
 
     int  ladowanie_ludkow;
     
@@ -288,7 +289,18 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
                 if(!ladowanie_ludkow)ladowanie_ludkow = clock();
                 break;
             }
-
+            case sf::Keyboard::S: {
+                zapisuj.first = true;
+                break;
+            }
+            case sf::Keyboard::LControl: {
+                zapisuj.second = true;
+                break;
+            }
+            case sf::Keyboard::RControl: {
+                zapisuj.second = true;
+                break;
+            }
         }
     }
 
@@ -306,7 +318,18 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
             else tworzony.liczebnosc = 0.0;
         }
     }
-  
+
+    else if (zdarzenie.type == sf::Event::KeyReleased && zapisuj.first && zapisuj.second && (zdarzenie.key.code == sf::Keyboard::S || zdarzenie.key.code == sf::Keyboard::LControl || zdarzenie.key.code == sf::Keyboard::RControl )) {
+          znajdz_miejsce_pod_zapis(rozgrywka);
+          zapisuj.first = false;
+          zapisuj.second = false;
+        }
+    else if (zdarzenie.type == sf::Event::KeyReleased && zdarzenie.key.code == sf::Keyboard::S) {
+        zapisuj.first = false;
+    }
+    else if (zdarzenie.type == sf::Event::KeyReleased && (zdarzenie.key.code == sf::Keyboard::LControl || zdarzenie.key.code == sf::Keyboard::RControl)) {
+        zapisuj.second = false;
+    }
 }
 
 void DecydentEdytor::Wykonaj() {

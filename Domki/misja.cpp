@@ -9,6 +9,11 @@
 #include <cstdlib>
 #include <ctime>
 
+#include <locale>
+#include <codecvt>
+#include <string>
+#include <filesystem>
+
 MisjaUstawienia::MisjaUstawienia() : ile_kto_wygranych(16) {}
 
 int MisjaUstawienia::Zwyciezca()
@@ -82,6 +87,95 @@ MisjaUstawienia wczytaj_meta(string sciezka)
     plikmapa.close();
 
     return res;
+}
+
+void znajdz_miejsce_pod_zapis(Rozgrywka konstrukcja) {
+    string miejsce_zapisu = "Plansza\\Edytor\\edytor0.txt";
+    int numer = 1;
+    while (std::experimental::filesystem::exists(miejsce_zapisu)) {
+        miejsce_zapisu = "Plansza\\Edytor\\edytor" + std::to_string(numer++) + ".txt";
+    }
+
+    zapis_mapy(konstrukcja, miejsce_zapisu);
+}
+
+void zapis_mapy(Rozgrywka konstrukcja, string sciezka) {
+    ofstream plikmapy;
+    plikmapy.open(sciezka);
+
+    int liczba_domkow = konstrukcja.domki.size(), nr_domku;
+
+    plikmapy << liczba_domkow << "\n";
+
+    map <Domek*, int> numery_domkow;
+    map <int, Domek*> domki_o_numerach;
+    int nr = 1;
+    for (Domek& domek : konstrukcja.domki) {
+        numery_domkow[&domek] = nr;
+        domki_o_numerach[nr] = &domek;
+        nr++;
+    }
+
+    for (int nr = 1; nr <= liczba_domkow; nr++) {
+        Domek& domek = *domki_o_numerach[nr];
+        
+        int liczba_parametrow = 1;
+        
+        if (domek.drogi.size()) liczba_parametrow++;
+        if (domek.gracz->numer) liczba_parametrow++;
+        if (domek.typdomku != TypDomku::kMiasto) liczba_parametrow++;
+        if (domek.liczebnosc) liczba_parametrow++;
+        if (!domek.przebudowa) liczba_parametrow++;
+        if (!domek.ulepszanie) liczba_parametrow++;
+        if (!domek.kontrola) liczba_parametrow++;
+        if (domek.poziom != 1) liczba_parametrow++;
+
+        plikmapy << nr << " " << liczba_parametrow << "\n"
+             << "koordynaty\n" << domek.polozenie.x << " " << domek.polozenie.y << "\n";
+
+        if (domek.drogi.size()) {
+            plikmapy << "drogi\n" << domek.drogi.size() << "\n";
+            vector<int> numery;
+            for (Domek* polaczony : domek.drogi)
+                numery.push_back(numery_domkow[polaczony]);
+
+            sort(numery.begin(), numery.begin());
+
+             for (int i : numery)
+                    plikmapy << numery[i] << " ";
+            plikmapy << "\n";
+        }
+
+        if (domek.gracz->numer) {
+            plikmapy << "gracz\n" << domek.gracz->numer << "\n";
+        }
+
+        if (domek.typdomku != TypDomku::kMiasto) {
+            plikmapy << "typ\n";
+            switch (domek.typdomku) {
+            case TypDomku::kFort: plikmapy << "fort\n"; break;
+            case TypDomku::kWieza: plikmapy << "wieza\n"; break;
+            case TypDomku::kZbrojownia: plikmapy << "zbrojownia\n"; break;
+            case TypDomku::kStajnia: plikmapy << "fort\n"; break;
+            case TypDomku::kPole: plikmapy << "pole\n"; break;
+            default: plikmapy << "miasto\n";
+            }
+        }
+
+        if (domek.liczebnosc) {
+            plikmapy << "liczebnosc\n" << domek.liczebnosc << "\n";
+        }
+
+        if (!domek.przebudowa) plikmapy << "bez_przebudowy\n";
+        if (!domek.ulepszanie) plikmapy << "bez_ulepszania\n";
+        if (!domek.kontrola) plikmapy << "bez_kontroli\n";
+
+        if(domek.poziom != 1) {
+            plikmapy << "poziom\n" << domek.poziom << "\n";
+        }
+    }
+
+    plikmapy.close();
 }
 
 Rozgrywka zwarcie_rozgrywka(string sciezka)

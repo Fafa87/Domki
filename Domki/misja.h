@@ -9,6 +9,7 @@
 #include "wyswietlacze.h"
 #include "muzyka.h"
 #include "si.h"
+#include "os.h"
 
 #include<windows.h>
 #include<fstream>
@@ -48,6 +49,10 @@ vector<string> wczytaj_liste_plansz(string folder);
 vector<string> wczytaj_liste_folderow(string folder);
 
 MisjaUstawienia wczytaj_meta(string sciezka);
+
+void znajdz_miejsce_pod_zapis(Rozgrywka konstrukcja);
+
+void zapis_mapy(Rozgrywka konstrukcja, string sciezka);
 
 Rozgrywka zwarcie_rozgrywka(string sciezka);
 

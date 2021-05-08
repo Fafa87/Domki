@@ -1,4 +1,4 @@
-version: 0.9.16.{build} # pamietaj aby wersja pasowala do wersji w Domki.rc
+version: 0.9.17.{build} # pamietaj aby wersja pasowala do wersji w Domki.rc
 environment:
   PYTHON: C:\Python35
   MSIProductVersion: "%APPVEYOR_BUILD_VERSION%"

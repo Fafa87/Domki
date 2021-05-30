@@ -21,3 +21,13 @@ artifacts:
   name: Domki
 - path: _Instalka\bin\x64\Deploy\Domcraft.msi
   name: Domcraft
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: 6c07t+w5tD3WwSEONNH93xO6g2DHgoWg0cO9DjhlYidfNyuUne9ude6gRDpBMb7S
+  artifact: _Instalka\bin\Release\Domcraft.msi
+  draft: false
+  prerelease: false
+  on:
+    branch: paczki
+    APPVEYOR_REPO_TAG: true

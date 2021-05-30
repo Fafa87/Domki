@@ -21,10 +21,14 @@ public:
     
     Twor* wybrany;
     Domek tworzony;
+
+    Domek* pierwszy, *drugi;
     sf::Vector2f miejsce_tworzenia;
 
 
-    bool tworz;
+    bool tworz,
+        laczenie_miast;
+    
     std::pair<bool, bool> zapisuj;
 
     int  ladowanie_ludkow;
@@ -43,7 +47,10 @@ DecydentEdytor::DecydentEdytor(sf::RenderWindow& okno, Rozgrywka& rozgrywka) : o
     wybrany = NULL;
     tworzony.liczebnosc = -1;
     tworz = false;
+    laczenie_miast = false;
     ladowanie_ludkow = 0;
+    pierwszy = NULL;
+    drugi = NULL;
 }
 
 sf::Vector2f ustaw_pozycje(sf::Vector2f polozenie_kliku, float szerokosc_podzialu, float wysokosc_podzialu) {
@@ -61,7 +68,11 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
         Twor* klikniety = rozgrywka.Zlokalizuj(miejsce_tworzenia.x, miejsce_tworzenia.y);
 
         if (zdarzenie.mouseButton.button == sf::Mouse::Left) {
-            wybrany = klikniety;
+            if (laczenie_miast && IsType<Domek>(klikniety)) {
+                if (pierwszy == NULL) pierwszy = (Domek*)klikniety;
+                else drugi = (Domek*)klikniety;
+            }
+            else wybrany = klikniety;
         }
 
         else if (tworzony.liczebnosc != -1 && klikniety == NULL && zdarzenie.mouseButton.button == sf::Mouse::Right) {
@@ -301,6 +312,14 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
                 zapisuj.second = true;
                 break;
             }
+            case sf::Keyboard::LAlt: {
+                laczenie_miast = true;
+                break;
+            }
+            case sf::Keyboard::RAlt: {
+                laczenie_miast = true;
+                break;
+            }
         }
     }
 
@@ -330,13 +349,26 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
     else if (zdarzenie.type == sf::Event::KeyReleased && (zdarzenie.key.code == sf::Keyboard::LControl || zdarzenie.key.code == sf::Keyboard::RControl)) {
         zapisuj.second = false;
     }
+    else if (zdarzenie.type == sf::Event::KeyReleased && (zdarzenie.key.code == sf::Keyboard::LAlt || zdarzenie.key.code == sf::Keyboard::RAlt)) {
+     laczenie_miast = false;
+    }
 }
 
 void DecydentEdytor::Wykonaj() {
+    if (pierwszy != NULL && drugi != NULL) {
+        if (laczenie_miast) {
+            pierwszy->drogi.push_back(drugi);
+            drugi->drogi.push_back(pierwszy);
+        }
+
+        pierwszy = NULL;
+        drugi = NULL;
+    }
     if (tworzony.liczebnosc != -1 && tworz) {
 
         tworzony.polozenie.x = miejsce_tworzenia.x;
         tworzony.polozenie.y = miejsce_tworzenia.y;
+        tworzony.uid = tworzony.last_uid++;
         rozgrywka.domki.push_back(tworzony);
 
         tworz = false;

@@ -121,6 +121,8 @@ void Rozgrywka::ZmienPoziom(Domek & domek, int nowy_poziom)
         domek.max_liczebnosc = 0;
     }
     domek.poziom = nowy_poziom;
+    if(domek.max_liczebnosc != -1)domek.rozmiar = 15 + 3 * domek.poziom + 6 * log(domek.liczebnosc + 1.0) / log(1000);
+    else domek.rozmiar = domek.poziom * domek.poziom;
 }
 
 void Rozgrywka::TracLudki(Ludek & ludek, double ile)

@@ -5,27 +5,30 @@ aka Domki
 
 Walka domków o życie!
 
-.. image:: https://img.shields.io/appveyor/ci/fafa87/domki/master.svg
-
-Dostępne na 
-------------
-
-* GameJolt (v.0.9.0): https://gamejolt.com/games/domki/441021 
+.. image:: https://img.shields.io/appveyor/ci/fafa87/domki/master.svg 
+   :target: https://github.com/Fafa87/Domki/commits/master
+.. image:: https://img.shields.io/github/release/Fafa87/domki.svg 
+   :target: https://github.com/Fafa87/Domki/releases
 
 Ściągnij 
 ------------
+* `Instalka (release)
+  <https://github.com/Fafa87/Domki/releases/latest/download/Domcraft.msi>`_
 
-`0.9.x
-<https://ci.appveyor.com/project/Fafa87/domki>`_
+* `ZIP
+  <https://ci.appveyor.com/api/projects/fafa87/domki/artifacts/Domki.zip?branch=paczki&job=Image%3A%20Visual%20Studio%202017>`_
 
-`Instalka
-<https://ci.appveyor.com/api/projects/fafa87/domki/artifacts/_Instalka%2Fbin%2Fx64%2FDeploy%2FDomcraft.msi?branch=master&job=Image%3A%20Visual%20Studio%202017>`_
-
-`ZIP
-<https://ci.appveyor.com/api/projects/fafa87/domki/artifacts/Domki.zip?branch=master&job=Image%3A%20Visual%20Studio%202017>`_
+* `0.9.x
+  <https://ci.appveyor.com/project/Fafa87/domki>`_
  
-`Wypakuj skrypt
-<https://raw.githubusercontent.com/Fafa87/Domki/master/Paczka/Uaktualnij.ps1>`_
+ ..
+   `Wypakuj skrypt
+   <https://raw.githubusercontent.com/Fafa87/Domki/master/Paczka/Uaktualnij.ps1>`_
+ 
+Dostępne także na 
+------------
+
+* GameJolt (v.0.9.0): https://gamejolt.com/games/domki/441021 
  
 Zobacz
 ------------

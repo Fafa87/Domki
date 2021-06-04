@@ -58,7 +58,7 @@ sfg::Image::Ptr utworz_tytulowy_obraz() {
 }
 
 sfg::Label::Ptr utworz_napis_wersji() {
-    auto wersja = sfg::Label::Create("dobra wersja");
+    auto wersja = sfg::Label::Create(opis_wersji());
     wersja->SetClass("GridOpis");
     return wersja;
 }

@@ -498,9 +498,6 @@
             </Component>
           </Directory>
           <Directory Id="owdBF6E5A001868E8DB58BEAAAE6A8B342B" Name="rycerze">
-            <Component Id="owc27C216B6771B763CAE045C738AE5E533" Guid="69723384-f1ad-e1a8-dd3b-7d729b953771">
-              <File Id="owf27C216B6771B763CAE045C738AE5E533" Source="$(var.SourceDir)\Muzyka\rycerze\Dawnosc.ogg" KeyPath="yes" />
-            </Component>
             <Component Id="owcC4E28039F0E947BFE2D9053BCC8E3B6B" Guid="47343209-3668-baa7-a5a1-e3a074580f7c">
               <File Id="owfC4E28039F0E947BFE2D9053BCC8E3B6B" Source="$(var.SourceDir)\Muzyka\rycerze\Marsz.ogg" KeyPath="yes" />
             </Component>

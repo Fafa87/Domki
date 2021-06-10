@@ -430,3 +430,115 @@ void zakonczenie_meczu(MisjaUstawienia &stan, Rozgrywka& rozgrywka)
     okno->Add(box);
     GUI::aplikacja().show_and_wait_for_anything(okno);
 }
+
+shared_ptr<sfg::Table> interfejs_do_opisu_mapy()
+{
+    auto table = sfg::Table::Create();
+
+    auto ludzie_etykieta = sfg::Label::Create();
+    ludzie_etykieta->SetId("Info-etk-ludzie");
+    ludzie_etykieta->SetClass("InfoTekst");
+    ludzie_etykieta->SetAlignment(sf::Vector2f(0.0, 0.5));
+    auto ludzie = sfg::Label::Create();
+    ludzie->SetId("Info-ludzie");
+    ludzie->SetClass("InfoTekst");
+    ludzie->SetAlignment(sf::Vector2f(1.0, 0.5));
+
+    auto domki_etykieta = sfg::Label::Create();
+    domki_etykieta->SetId("Info-etk-domki");
+    domki_etykieta->SetClass("InfoTekst");
+    domki_etykieta->SetAlignment(sf::Vector2f(0.0, 0.5));
+    auto domki = sfg::Label::Create();
+    domki->SetId("Info-domki");
+    domki->SetClass("InfoTekst");
+    domki->SetAlignment(sf::Vector2f(1.0, 0.5));
+
+    auto ludki_etykieta = sfg::Label::Create();
+    ludki_etykieta->SetId("Info-etk-ludki");
+    ludki_etykieta->SetClass("InfoTekst");
+    ludki_etykieta->SetAlignment(sf::Vector2f(0.0, 0.5));
+    auto ludki = sfg::Label::Create();
+    ludki->SetId("Info-ludki");
+    ludki->SetClass("InfoTekst");
+    ludki->SetAlignment(sf::Vector2f(1.0, 0.5));
+
+
+
+    table->Attach(ludzie_etykieta, sf::Rect<sf::Uint32>(1, 0, 1, 1), 0);
+    table->Attach(domki_etykieta, sf::Rect<sf::Uint32>(1, 1, 1, 1), 0);
+    table->Attach(ludki_etykieta, sf::Rect<sf::Uint32>(1, 2, 1, 1), 0);
+
+    table->Attach(ludzie, sf::Rect<sf::Uint32>(2, 0, 1, 1), 3);
+    table->Attach(domki, sf::Rect<sf::Uint32>(2, 1, 1, 1), 3);
+    table->Attach(ludki, sf::Rect<sf::Uint32>(2, 2, 1, 1), 3);
+
+    table->SetRequisition(sf::Vector2f(300, 100));
+    return table;
+}
+
+void interfejs_ustaw_opis_mapy(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka) {
+    auto info_ludzie = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Info-ludzie"));
+    auto info_ludzie_etykieta = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Info-etk-ludzie"));
+
+    auto info_domki = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Info-domki"));
+    auto info_domki_etykieta = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Info-etk-domki"));
+
+    auto info_ludki = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Info-ludki"));
+    auto info_ludki_etykieta = std::static_pointer_cast<sfg::Label>(interfejs->GetWidgetById("Info-etk-ludki"));
+
+    info_ludzie_etykieta->SetText(L"Liczba graczy:");
+    info_domki_etykieta->SetText(L"Domki:");
+    info_ludki_etykieta->SetText(L"Ludki:");
+
+
+
+    info_ludzie->SetText(string_format("%d", rozgrywka.liczba_aktywnych_graczy));
+    info_domki->SetText(string_format("%d", rozgrywka.domki.size()));
+
+    int suma_ludkow = 0;
+    for (Gracz& gracz : rozgrywka.gracze) {
+        suma_ludkow += std::get<0>(rozgrywka.SilaGracza(gracz.numer));
+    }
+    info_ludki->SetText(string_format("%d", suma_ludkow));
+
+}
+
+shared_ptr<sfg::Window> pokazowy_interfejs(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany, Twor* skupiony)
+{
+
+    if (interfejs == nullptr)
+    {
+        if (stan.do_ilu_wygranych > 0)
+        {
+            interfejs = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+            interfejs->SetTitle("Mecz do " + to_string(stan.do_ilu_wygranych) + " wygranych");
+            interfejs->SetRequisition(sf::Vector2f(140, 0));
+
+            auto opis_mapy = interfejs_do_opisu_mapy();
+            interfejs_ustaw_opis_mapy(interfejs, stan, rozgrywka);
+
+            auto pomoc = sfg::Image::Create();
+            sf::Image pomoc_obraz;
+            if (pomoc_obraz.loadFromFile("Grafika\\rycerze_hd\\info.png"))
+                pomoc->SetImage(pomoc_obraz);
+
+            auto info = interfejs_wybrany();
+            interfejs_wybrany_ustaw(interfejs, rozgrywka, wyswietlacz, wybrany, skupiony);
+
+            auto tabela_interfejsu = sfg::Table::Create();
+            tabela_interfejsu->Attach(opis_mapy, sf::Rect<sf::Uint32>(0, 0, 1, 1));
+            tabela_interfejsu->Attach(pomoc, sf::Rect<sf::Uint32>(1, 0, 1, 1));
+            tabela_interfejsu->Attach(info, sf::Rect<sf::Uint32>(2, 0, 1, 1));
+
+            GUI::aplikacja().pulpit.Add(interfejs);
+            interfejs->Add(tabela_interfejsu);
+            GUI::aplikacja().bottom_left_window(interfejs);
+        }
+    }
+    else
+    {
+        interfejs_ustaw_opis_mapy(interfejs, stan, rozgrywka);
+        interfejs_wybrany_ustaw(interfejs, rozgrywka, wyswietlacz, wybrany, skupiony);
+    }
+    return interfejs;
+}

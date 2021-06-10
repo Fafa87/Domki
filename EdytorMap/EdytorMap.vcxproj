@@ -145,7 +145,11 @@ _CRT_SECURE_NO_DEPRECATE;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</Preprocesso
     <ClCompile Include="..\Domki\rozgrywka.cpp" />
     <ClCompile Include="..\Domki\si.cpp" />
     <ClCompile Include="..\Domki\wyswietlacze.cpp" />
+    <ClCompile Include="decydentEdytora.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="decydentEdytora.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

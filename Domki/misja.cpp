@@ -89,16 +89,6 @@ MisjaUstawienia wczytaj_meta(string sciezka)
     return res;
 }
 
-void znajdz_miejsce_pod_zapis(Rozgrywka konstrukcja) {
-    string miejsce_zapisu = "Plansza\\Edytor\\edytor0.txt";
-    int numer = 1;
-    while (std::experimental::filesystem::exists(miejsce_zapisu)) {
-        miejsce_zapisu = "Plansza\\Edytor\\edytor" + std::to_string(numer++) + ".txt";
-    }
-
-    zapis_mapy(konstrukcja, miejsce_zapisu);
-}
-
 void zapis_mapy(Rozgrywka konstrukcja, string sciezka) {
     ofstream plikmapy;
     plikmapy.open(sciezka);

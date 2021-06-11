@@ -9,6 +9,7 @@
 class DecydentEdytor {
 public:
     DecydentEdytor(sf::RenderWindow& okno, Rozgrywka& rozgrywka);
+    void resetuj();
 
     Twor* wybrany;
     Domek tworzony;

@@ -4,6 +4,10 @@ float szerokosc_kraty = 80.0, wysokosc_kraty = 90.0;
 
 DecydentEdytor::DecydentEdytor(sf::RenderWindow& okno, Rozgrywka& rozgrywka) : okno(okno), rozgrywka(rozgrywka)
 {
+    resetuj();
+}
+
+void DecydentEdytor::resetuj() {
     wybrany = NULL;
     tworzony.liczebnosc = -1;
     tworz = false;
@@ -36,7 +40,7 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
     if (zdarzenie.type == sf::Event::MouseButtonPressed) {
 
         sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
-        miejsce_tworzenia = ustaw_pozycje(okno.mapPixelToCoords(pixelPos), 80.0, 90.0);
+        miejsce_tworzenia = ustaw_pozycje(okno.mapPixelToCoords(pixelPos), szerokosc_kraty, wysokosc_kraty);
         Twor* klikniety = rozgrywka.Zlokalizuj(miejsce_tworzenia.x, miejsce_tworzenia.y);
 
         if (zdarzenie.mouseButton.button == sf::Mouse::Left) {
@@ -65,6 +69,7 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
                         }
                     }
                 }
+                rozgrywka.ZabierzTwor(wybrany);
                 if (IsType<Domek>(wybrany))rozgrywka.ZniszczDomek((Domek*)wybrany);
                 wybrany = NULL;
             }
@@ -236,7 +241,7 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
                 tworzony = rozgrywka.stworz_domyslny_domek();
                 rozgrywka.pozostale.push_back(&tworzony);
             }
-            if (rozgrywka.gracze.size() > 8)tworzony.gracz = &rozgrywka.Graczu(8);
+            if (rozgrywka.gracze.size() > 8) tworzony.gracz = &rozgrywka.Graczu(8);
             else tworzony.gracz = &rozgrywka.Graczu(0);
 
             break;
@@ -247,7 +252,7 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
                 tworzony = rozgrywka.stworz_domyslny_domek();
                 rozgrywka.pozostale.push_back(&tworzony);
             }
-            if (rozgrywka.gracze.size() > 9)tworzony.gracz = &rozgrywka.Graczu(9);
+            if (rozgrywka.gracze.size() > 9) tworzony.gracz = &rozgrywka.Graczu(9);
             else tworzony.gracz = &rozgrywka.Graczu(0);
 
             break;
@@ -332,8 +337,11 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
     }
     else if (zdarzenie.type == sf::Event::KeyReleased && otwieraj.first && otwieraj.second && (zdarzenie.key.code == sf::Keyboard::O || zdarzenie.key.code == sf::Keyboard::LControl || zdarzenie.key.code == sf::Keyboard::RControl)) {
         string sciezka = open_file_from_folder("");
-        if (sciezka != "") rozgrywka = zwarcie_rozgrywka(sciezka);
-        rozstaw_domki(rozgrywka);
+        if (sciezka != "") {
+            resetuj();
+            rozgrywka = zwarcie_rozgrywka(sciezka);
+        }
+        rozstaw_domki(rozgrywka); 
         otwieraj.first = false;
         otwieraj.second = false;
     }
@@ -367,6 +375,7 @@ void DecydentEdytor::Wykonaj() {
         tworzony.polozenie.x = miejsce_tworzenia.x;
         tworzony.polozenie.y = miejsce_tworzenia.y;
         tworzony.uid = tworzony.last_uid++;
+        rozgrywka.DajTwor(&tworzony);
         rozgrywka.domki.push_back(tworzony);
 
         tworz = false;

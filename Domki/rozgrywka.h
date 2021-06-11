@@ -36,6 +36,7 @@ struct Rozgrywka
     void ZniszczDomek(Domek* domek);
     bool Zyje(Ludek* ludek);
     void ZabierzTwor(const Twor* twor1);
+    void DajTwor(const Twor* twor1);
     void PoddajGracza(Gracz& gracz);
     void PrzerwijGre();
 
@@ -50,7 +51,7 @@ struct Rozgrywka
     void TracLudki(Ludek& ludek,double ile);
     double Odleglosc(const Twor& twor1, const Twor& twor2);
     Ludek* Spotkanie(Ludek& ludek);
-    Twor* Zlokalizuj(int x, int y);
+    Twor* Zlokalizuj(int x, int y, int z=0);
 
     double PoliczAtakDomku(const Domek& domek, int liczba=-1);
     double PoliczObroneDomku(const Domek& domek);

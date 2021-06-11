@@ -17,8 +17,8 @@ struct CelMisji
 struct Gracz
 {
     int numer,liczba_tworow=0;
-    bool aktywny = true, //aktywny gracz posiada twory i produkuje ludkow
-        istotny = false; //istotny gracz to taki ktory jest uwzgledniony w interfejsie
+    bool aktywny = true, //aktywny gracz posiada twory i produkuje ludkow, czyli nie jest neutralny i nadal ma co najmniej jeden twór
+        istotny = false; //istotny gracz to taki ktory jest uwzgledniony w interfejsie rankingu
     string nazwa;
     sf::Color kolor;
 };

@@ -44,7 +44,7 @@ Rozgrywka pokazowa_rozgrywka()
         gracz.numer = nr;
         gracz.nazwa = nazwy[nr];
         gracz.kolor = kolory[nr];
-        if (!nr) gracz.aktywny = false;
+        gracz.aktywny = false;
     }
 
     return gra;

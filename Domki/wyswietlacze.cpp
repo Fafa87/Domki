@@ -241,7 +241,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
         auto& wyglad = wyglad_tworow[twor];
         auto zestaw_animacja_tworu = obrazek_tworow[twor->wyglad];
         auto animacja_tworu = zestaw_animacja_tworu.PobierzAnimacjePoziomu(twor->wyglad_rodzaj);
-        wyglad.setPosition(twor->polozenie.x, twor->polozenie.y);
+        if(std::find(rozgrywka.pozostale.begin(), rozgrywka.pozostale.end(), twor) == rozgrywka.pozostale.end()) wyglad.setPosition(twor->polozenie.x, twor->polozenie.y);
 
         int liczba_ramek = animacja_tworu.getSize();
         int dlugosc_jednego = 10;

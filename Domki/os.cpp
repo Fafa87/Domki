@@ -105,22 +105,22 @@ string open_folder_from_folder(string folder) {
         COINIT_DISABLE_OLE1DDE);
     if (SUCCEEDED(hr))
     {
-        IFileOpenDialog *pFileOpen;
+        IFileSaveDialog *pFileSave;
 
         // Create the FileOpenDialog object.
-        hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL,
-            IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
+        hr = CoCreateInstance(CLSID_FileSaveDialog, NULL, CLSCTX_ALL,
+            IID_IFileSaveDialog, reinterpret_cast<void**>(&pFileSave));
 
         if (SUCCEEDED(hr))
         {
             // Show the Open dialog box.
-            hr = pFileOpen->Show(NULL);
+            hr = pFileSave->Show(NULL);
 
             // Get the file name from the dialog box.
             if (SUCCEEDED(hr))
             {
                 IShellItem *pItem;
-                hr = pFileOpen->GetResult(&pItem);
+                hr = pFileSave->GetResult(&pItem);
                 if (SUCCEEDED(hr))
                 {
                     PWSTR pszFilePath;
@@ -136,7 +136,7 @@ string open_folder_from_folder(string folder) {
                     pItem->Release();
                 }
             }
-            pFileOpen->Release();
+            pFileSave->Release();
         }
         CoUninitialize();
     }

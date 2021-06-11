@@ -69,6 +69,22 @@ int Rozgrywka::OcenaGracza(int nr_gracza) {
     return suma;
 }
 
+void Rozgrywka::ZniszczDomek(Domek* domek) 
+{
+    auto it = domki.begin();
+    for (; it != domki.end(); it++)
+    {
+        if (&(*it) == domek)
+            break;
+    }
+    if (it != domki.end())
+    {
+        //ZabierzTwor(domek);      NARAZIE NIE ZABIERAMY TWOROW W EDYTORZE BO MOZE WPLYNAC NA AKTYWNOSC GRACZA
+        domki.erase(it);
+    }
+
+}
+
 void Rozgrywka::ZniszczLudka(Ludek* ludek)
 {
     auto it = armie.begin();
@@ -96,11 +112,16 @@ bool Rozgrywka::Zyje(Ludek * ludek)
     return false;
 }
 
+void UaktualnijRozmiar(Domek& domek, double nowa)
+{
+    if (domek.poziom <= 5 && domek.max_liczebnosc != -1)domek.rozmiar = 15 + 3 * domek.poziom + 6 * log(nowa + 1.0) / log(1000);
+    else domek.rozmiar = 36;
+}
+
 void Rozgrywka::ZmienLiczebnosc(Domek & domek, double nowa)
 {
     domek.liczebnosc = nowa;
-    if (domek.poziom <= 5&&domek.max_liczebnosc!=-1)domek.rozmiar = 15 + 3 * domek.poziom +6 * log(nowa + 1.0) / log(1000);
-    else domek.rozmiar = 36;
+    UaktualnijRozmiar(domek, nowa);
 }
 
 void Rozgrywka::ZmienLiczebnosc(Ludek & ludek, double nowa)
@@ -121,8 +142,9 @@ void Rozgrywka::ZmienPoziom(Domek & domek, int nowy_poziom)
         domek.max_liczebnosc = 0;
     }
     domek.poziom = nowy_poziom;
-    if(domek.max_liczebnosc != -1)domek.rozmiar = 15 + 3 * domek.poziom + 6 * log(domek.liczebnosc + 1.0) / log(1000);
-    else domek.rozmiar = domek.poziom * domek.poziom;
+
+    UaktualnijRozmiar(domek, domek.liczebnosc);
+
 }
 
 void Rozgrywka::TracLudki(Ludek & ludek, double ile)
@@ -267,4 +289,14 @@ int Rozgrywka::nr_zwyciezcy(bool same_komputery) {
         return Domku(cel_gry.do_zdobycia - 1).gracz->numer;
     }
     return -1;
+}
+
+Domek Rozgrywka::stworz_domyslny_domek() {
+        Domek nowy;
+        nowy.max_liczebnosc = 100;
+        nowy.gracz = &this->Graczu(0);
+        nowy.produkcja = 1.0;
+        nowy.typdomku = TypDomku::kMiasto;
+        ZmienLiczebnosc(nowy, 50);
+        return nowy;
 }

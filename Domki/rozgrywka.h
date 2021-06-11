@@ -28,9 +28,12 @@ struct Rozgrywka
     list<Gracz> gracze;
     list<Domek> domki;
     list<Ludek> armie;
+
+    list<Twor*> pozostale;
     int liczba_aktywnych_graczy=0;
 
     void ZniszczLudka(Ludek* ludek);
+    void ZniszczDomek(Domek* domek);
     bool Zyje(Ludek* ludek);
     void ZabierzTwor(const Twor* twor1);
     void PoddajGracza(Gracz& gracz);
@@ -54,6 +57,8 @@ struct Rozgrywka
     double PoliczSzybkoscDomku(const Domek& domek);
     std::tuple<int,int,int,int> SilaGracza(int nr_gracza);
     int OcenaGracza(int nr_gracza);
+
+    Domek stworz_domyslny_domek();
     
     Domek* WskaznikDomek(int uid);
     Ludek* WskaznikLudek(int uid);

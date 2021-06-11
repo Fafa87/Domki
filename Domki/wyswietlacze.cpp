@@ -182,26 +182,19 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
     }
 }
 
-void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
-{
-    set<Twor*> wszystkie_obiekty;
-    for (auto& dom : rozgrywka.domki)
-        wszystkie_obiekty.insert(&dom);
-    for (auto& lud : rozgrywka.armie)
-        wszystkie_obiekty.insert(&lud);
+void Wyswietlacz::UaktualnijWyglad(Twor* twor) {
 
-    // usuń wyglądy których już nie ma
-    vector<Twor*> do_usuniecia;
-    for (auto& wyg_map : wyglad_tworow)
-        if (!wszystkie_obiekty.count(wyg_map.first))
-            do_usuniecia.push_back(wyg_map.first);
+    if (IsType<Ludek>(twor)) {
+        Ludek& ludek = *((Ludek*)twor);
 
-    for (auto twor : do_usuniecia)
-        wyglad_tworow.erase(twor);
+        double procent_tarczy = ludek.tarcza / (double)ludek.liczebnosc;
+        ludek.wyglad_rodzaj = procent_tarczy > 1.0 ? 3 : (procent_tarczy > 0.25 ? 2 : 1);
+        ludek.wyglad_rodzaj += ludek.szybkosc_ludka > 2 ? 3 : 0;
+    }
 
-    // uaktualnij wyglądy domków
-    for (auto& dom : rozgrywka.domki)
-    {
+    else if (IsType<Domek>(twor)) {
+        Domek& dom = *((Domek*)twor);
+
         dom.wyglad_rodzaj = dom.poziom;
 
         if (dom.typdomku == TypDomku::kMiasto)
@@ -218,18 +211,33 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
             dom.wyglad = Wyglad::kPole;
         else dom.wyglad = Wyglad::kNieznany;
     }
+}
 
-    // uaktualnij wyglądu ludków
-    for (auto& ludek : rozgrywka.armie)
-    {
-        double procent_tarczy = ludek.tarcza / (double)ludek.liczebnosc;
-        ludek.wyglad_rodzaj = procent_tarczy > 1.0 ? 3 : (procent_tarczy > 0.25 ? 2 : 1);
-        ludek.wyglad_rodzaj += ludek.szybkosc_ludka > 2 ? 3 : 0;
-    }
+void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
+{
+    set<Twor*> wszystkie_obiekty;
+    for (auto& dom : rozgrywka.domki)
+        wszystkie_obiekty.insert(&dom);
+    for (auto& lud : rozgrywka.armie)
+        wszystkie_obiekty.insert(&lud);
+    for (auto& pozos : rozgrywka.pozostale)
+        wszystkie_obiekty.insert(pozos);
+
+    // usuń wyglądy których już nie ma
+    vector<Twor*> do_usuniecia;
+    for (auto& wyg_map : wyglad_tworow)
+        if (!wszystkie_obiekty.count(wyg_map.first))
+            do_usuniecia.push_back(wyg_map.first);
+
+    for (auto twor : do_usuniecia)
+        wyglad_tworow.erase(twor);
+
 
     // uaktualnijmy ich stan
     for (auto& twor : wszystkie_obiekty)
     {
+        UaktualnijWyglad(twor);
+
         auto& wyglad = wyglad_tworow[twor];
         auto zestaw_animacja_tworu = obrazek_tworow[twor->wyglad];
         auto animacja_tworu = zestaw_animacja_tworu.PobierzAnimacjePoziomu(twor->wyglad_rodzaj);

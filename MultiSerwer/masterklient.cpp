@@ -153,27 +153,39 @@ void mastery::Klient::PrzeanalizujOdebrane(string tekst)
     {
         auto nazwa = tekst.substr(0, tekst.find(" wchodzi"));
         //this->ludzie_obok.push_back(nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
-        odebrane.add(nazwa + " wkroczyl do pokoju");
+        odebrane.add(mastery::Sygnal(mastery::SygnalTyp::SERWER, nazwa + " wkroczyl do pokoju"));
     }
     else if (tekst.find(" opuszcza") != -1)
     {
         auto nazwa = tekst.substr(0, tekst.find(" opuszcza"));
         //remove_item(this->ludzie_obok, nazwa); // TMP miejmy nadzieje ze to sie z nikim nie zderzy
-        odebrane.add(nazwa + " opuscil pokoj");
+        odebrane.add(mastery::Sygnal(mastery::SygnalTyp::SERWER, nazwa + " opuscil pokoj"));
     }
     else if (tekst.find("na porcie ") != -1)
     {
         auto port = stoi(tekst.substr(tekst.find(" na porcie ")+11));
         this->rozgrywka_pokoju = Adres(this->adres_serwer.ip, port);
-        odebrane.add("Odpalono rozgrywke!");
+        odebrane.add(mastery::Sygnal(mastery::SygnalTyp::SERWER, "Odpalono rozgrywke!"));
     }
     else if (tekst.find("Gra skonczona...") != -1)
     {
         this->rozgrywka_pokoju = Adres();
-        odebrane.add(tekst);
+        odebrane.add(mastery::Sygnal(mastery::SygnalTyp::SERWER, tekst));
     }
     else
-        odebrane.add(tekst);
+    {
+        // TMP to powinno byc przesylane w sensownym formacie (sygnal) z serwera, a nie robione tak
+        int pos = tekst.find(": ");
+        int nowa_linia = tekst.find("\n");
+        if (pos != -1 && (nowa_linia == -1 || pos < nowa_linia))
+        {
+            string kto = tekst.substr(0, pos);
+            string co = tekst.substr(pos + 2);
+            odebrane.add(mastery::Sygnal(kto, co));
+        }
+        else
+            odebrane.add(mastery::Sygnal(mastery::SygnalTyp::INTRO, tekst));
+    }
 }
 
 void mastery::Klient::Podlacz(multi::Adres adres)

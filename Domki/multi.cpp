@@ -214,7 +214,8 @@ multi::Klient::Klient(string nazwa)
 
 void multi::Klient::Podlacz(Adres serwer)
 {
-    wtyk = new sf::TcpSocket();
+    if (wtyk == nullptr)
+        wtyk = new sf::TcpSocket();
     sf::Socket::Status status = wtyk->connect(serwer.ip, serwer.port);
     if (status != sf::Socket::Done)
     {

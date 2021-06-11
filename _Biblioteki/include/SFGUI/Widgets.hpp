@@ -37,3 +37,4 @@
 #include <SFGUI/ToggleButton.hpp>
 #include <SFGUI/Viewport.hpp>
 #include <SFGUI/Window.hpp>
+#include <SFGUI/RichText.hpp>

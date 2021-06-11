@@ -70,6 +70,23 @@ std::shared_ptr<sfg::Window> start_serwer_menu(std::shared_ptr<sfg::Window> glow
     return okno;
 }
 
+void PokazSygnal(std::shared_ptr<sfg::RichText> chat, mastery::Sygnal sygnal)
+{
+    if (sygnal.typ == mastery::SygnalTyp::INTRO)
+    {
+        *chat << sf::Color::Yellow << sf::Text::Style::Italic << sygnal.tekst;
+    }
+    else if (sygnal.typ == mastery::SygnalTyp::SERWER)
+    {
+        *chat << sf::Color::Cyan << sf::Text::Style::Bold << sygnal.tekst;
+    }
+    else
+    {
+        *chat << sf::Color::Green << sf::Text::Style::Bold << sygnal.nadawca + ": "
+            << sf::Color::White << sf::Text::Style::Regular << sygnal.tekst;
+    }
+}
+
 std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka, mastery::Klient* master_klient)
 {
     auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
@@ -103,8 +120,12 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
     gorny_panel->Pack(prawe_skrzydlo, false, false);
 
     // CENTRUM
-    auto chat = sfg::Label::Create("");
-    chat->SetAlignment(sf::Vector2f(0, 0));
+    auto font = sf::Font();
+    font.loadFromFile("Grafika/BuxtonSketch.ttf");
+    auto chat = sfg::RichText::Create(); //sfg::Label::Create("");
+    chat->setFont(font);
+    chat->setCharacterSize(14);
+    //chat->SetAlignment(sf::Vector2f(0, 0));
     chat->SetClass("Razem");
     auto chat_z_paskiem = sfg::ScrolledWindow::Create();
     chat_z_paskiem->SetScrollbarPolicy(sfg::ScrolledWindow::VERTICAL_ALWAYS);
@@ -191,13 +212,13 @@ std::shared_ptr<sfg::Window> planeta_okno(std::shared_ptr<sfg::Window> glowne, s
         return !master_klient->polaczony;
     },
     [odpal, dolacz, chat_z_paskiem, chat, ludki, pokoj, master_klient]() {
-        string tekst;
-        if (master_klient->odebrane.try_take(tekst) == code_machina::BlockingCollectionStatus::Ok)
+        mastery::Sygnal sygnal;
+        if (master_klient->odebrane.try_take(sygnal) == code_machina::BlockingCollectionStatus::Ok)
         {
-            if (chat->GetText().getSize())
-                chat->SetText(chat->GetText() + "\n" + tekst);
-            else
-                chat->SetText(tekst);
+            if (chat->getLines().size())
+                *chat << "\n";
+            
+            PokazSygnal(chat, sygnal);
         }
         ludki->SetText(join(master_klient->KtoJestNaPlanecie(), "\n"));
         if (master_klient->rozgrywka_pokoju.ip.size())

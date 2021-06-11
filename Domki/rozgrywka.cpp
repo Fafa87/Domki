@@ -142,7 +142,9 @@ void Rozgrywka::ZmienPoziom(Domek & domek, int nowy_poziom)
         domek.max_liczebnosc = 0;
     }
     domek.poziom = nowy_poziom;
+
     UaktualnijRozmiar(domek, domek.liczebnosc);
+
 }
 
 void Rozgrywka::TracLudki(Ludek & ludek, double ile)

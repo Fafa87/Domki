@@ -55,7 +55,7 @@ void KlientowyRuszacz::Ruszaj(double czas)
         LOG(WARNING) << "Wyslij rozkazy: wyslane=false, cicho sza! Status: " << wyslane;
     }
 
-    kolejka_do_wykonania.clear();
+    WyczyscKolejkeRuchow();
     Ruszacz::Ruszaj(czas);
 
     auto& res = klient.Odbierz();

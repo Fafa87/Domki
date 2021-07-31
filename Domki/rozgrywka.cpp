@@ -186,9 +186,9 @@ double Rozgrywka::Odleglosc(const Twor& twor1, const Twor& twor2)
 
 Ludek * Rozgrywka::Spotkanie(Ludek & ludek)
 {
-    if (walka_w_polu)
+    if (walka_w_polu && ludek.liczebnosc > 0)
     {
-        for (auto& armia : armie) if (&armia != &ludek)
+        for (auto& armia : armie) if (&armia != &ludek && armia.liczebnosc > 0)
         {
             double odl = Odleglosc(ludek, armia);
             if (odl < (armia.rozmiar + ludek.rozmiar) / 2)

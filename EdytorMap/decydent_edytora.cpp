@@ -1,4 +1,4 @@
-#include "decydentEdytora.h"
+#include "decydent_edytora.h"
 
 float szerokosc_kraty = 80.0, wysokosc_kraty = 90.0;
 
@@ -69,8 +69,7 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
                         }
                     }
                 }
-                rozgrywka.ZabierzTwor(wybrany);
-                if (IsType<Domek>(wybrany))rozgrywka.ZniszczDomek((Domek*)wybrany);
+                rozgrywka.ZniszczTwor(wybrany);
                 wybrany = NULL;
             }
             break;

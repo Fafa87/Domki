@@ -9,7 +9,7 @@ INITIALIZE_EASYLOGGINGPP
 #include "../Domki/gui.h"
 #include "../Domki/misja.h"
 #include "../Domki/os.h"
-#include "decydentEdytora.h"
+#include "decydent_edytora.h"
 
 
 using namespace std;

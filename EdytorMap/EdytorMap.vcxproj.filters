@@ -57,12 +57,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="decydentEdytora.cpp">
+    <ClCompile Include="decydent_edytora.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="decydentEdytora.h">
+    <ClInclude Include="decydent_edytora.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

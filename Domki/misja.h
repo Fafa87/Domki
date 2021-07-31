@@ -50,7 +50,7 @@ vector<string> wczytaj_liste_folderow(string folder);
 
 MisjaUstawienia wczytaj_meta(string sciezka);
 
-void zapis_mapy(Rozgrywka konstrukcja, string sciezka);
+void zapis_mapy(const Rozgrywka& konstrukcja, string sciezka);
 
 Rozgrywka zwarcie_rozgrywka(string sciezka);
 

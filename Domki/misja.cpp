@@ -89,7 +89,7 @@ MisjaUstawienia wczytaj_meta(string sciezka)
     return res;
 }
 
-void zapis_mapy(Rozgrywka konstrukcja, string sciezka) {
+void zapis_mapy(const Rozgrywka& konstrukcja, string sciezka) {
     ofstream plikmapy;
     plikmapy.open(sciezka);
 
@@ -100,7 +100,7 @@ void zapis_mapy(Rozgrywka konstrukcja, string sciezka) {
     map <Domek*, int> numery_domkow;
     map <int, Domek*> domki_o_numerach;
     int nr = 1;
-    for (Domek& domek : konstrukcja.domki) {
+    for (Domek domek : konstrukcja.domki) {
         numery_domkow[&domek] = nr;
         domki_o_numerach[nr] = &domek;
         nr++;

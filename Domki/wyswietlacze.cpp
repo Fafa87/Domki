@@ -238,10 +238,12 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
     {
         UaktualnijWyglad(twor);
 
+        bool rysuj = (std::find(rozgrywka.pozostale.begin(), rozgrywka.pozostale.end(), twor) == rozgrywka.pozostale.end());
+
         auto& wyglad = wyglad_tworow[twor];
         auto zestaw_animacja_tworu = obrazek_tworow[twor->wyglad];
         auto animacja_tworu = zestaw_animacja_tworu.PobierzAnimacjePoziomu(twor->wyglad_rodzaj);
-        if(std::find(rozgrywka.pozostale.begin(), rozgrywka.pozostale.end(), twor) == rozgrywka.pozostale.end()) wyglad.setPosition(twor->polozenie.x, twor->polozenie.y);
+        wyglad.setPosition(twor->polozenie.x, twor->polozenie.y);
 
         int liczba_ramek = animacja_tworu.getSize();
         int dlugosc_jednego = 10;
@@ -288,7 +290,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
         podpis.setFillColor(twor->gracz->kolor);
         podpis.move(twor->polozenie.x - 15 * podpis.getString().getSize() / 2, twor->polozenie.y + wysokosc);
 
-        okno.draw(podpis);
+        if(rysuj) okno.draw(podpis);
 
         // nie potrzebne już! rysuj poziom domku
         /*if (IsType<Domek>(twor))
@@ -314,7 +316,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
                 podpis.setOutlineColor(twor->gracz->kolor);
                 podpis.setString(std::to_string(tarcza));
                 podpis.setPosition(twor->polozenie.x - 10 * podpis.getString().getSize() / 2, twor->polozenie.y - wysokosc * 1.8);
-                okno.draw(podpis);
+                if (rysuj) okno.draw(podpis);
             }
 
             bool lustro = ((Ludek*)twor)->cel->polozenie.x < ((Ludek*)twor)->polozenie.x;
@@ -323,7 +325,7 @@ void Wyswietlacz::Wyswietlaj(sf::RenderWindow & okno)
             else wyglad.setScale(1, 1);
         }
 
-        okno.draw(wyglad);
+        if (rysuj) okno.draw(wyglad);
     }
 }
 

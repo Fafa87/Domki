@@ -32,11 +32,10 @@ struct Rozgrywka
     list<Twor*> pozostale;
     int liczba_aktywnych_graczy=0;
 
-    void ZniszczLudka(Ludek* ludek);
-    void ZniszczDomek(Domek* domek);
+    void ZniszczTwor(Twor* twor);
     bool Zyje(Ludek* ludek);
-    void ZabierzTwor(const Twor* twor1);
-    void DajTwor(const Twor* twor1);
+    void ZabierzTwor(const Twor* twor);
+    void DajTwor(const Twor* twor);
     void PoddajGracza(Gracz& gracz);
     void PrzerwijGre();
 

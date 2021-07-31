@@ -69,36 +69,37 @@ int Rozgrywka::OcenaGracza(int nr_gracza) {
     return suma;
 }
 
-void Rozgrywka::ZniszczDomek(Domek* domek) 
+void Rozgrywka::ZniszczTwor(Twor* twor) 
 {
-    auto it = domki.begin();
-    for (; it != domki.end(); it++)
-    {
-        if (&(*it) == domek)
-            break;
+    if (IsType<Domek>(twor)) {
+        Domek* domek = (Domek*)twor;
+        auto it = domki.begin();
+        for (; it != domki.end(); it++)
+        {
+            if (&(*it) == domek)
+                break;
+        }
+        if (it != domki.end())
+        {
+            ZabierzTwor(domek);
+            domki.erase(it);
+        }
     }
-    if (it != domki.end())
-    {
-        //ZabierzTwor(domek);      NARAZIE NIE ZABIERAMY TWOROW W EDYTORZE BO MOZE WPLYNAC NA AKTYWNOSC GRACZA
-        domki.erase(it);
+    else if (IsType<Ludek>(twor)) {
+        Ludek* armia = (Ludek*)twor;
+        auto it = armie.begin();
+        for (; it != armie.end(); it++)
+        {
+            if (&(*it) == armia)
+                break;
+        }
+        if (it != armie.end())
+        {
+            ZabierzTwor(armia);
+            armie.erase(it);
+        }
     }
 
-}
-
-void Rozgrywka::ZniszczLudka(Ludek* ludek)
-{
-    auto it = armie.begin();
-    for (; it != armie.end(); it++)
-    {
-        if (&(*it) == ludek)
-            break;
-    }
-
-    if (it != armie.end())
-    {
-        ZabierzTwor(ludek);
-        armie.erase(it);
-    }
 }
 
 bool Rozgrywka::Zyje(Ludek * ludek)

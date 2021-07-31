@@ -601,7 +601,7 @@ void Ruszacz::WalczLudkami(double czas)
 
     for (auto usunieta : do_usuniecia)
     {
-        rozgrywka->ZniszczLudka(usunieta);
+        rozgrywka->ZniszczTwor(usunieta);
     }
 }
 
@@ -641,7 +641,7 @@ void Ruszacz::Strzelaj()
    }
     for (auto usunieta : do_usuniecia)
     {
-        rozgrywka->ZniszczLudka(usunieta);
+        rozgrywka->ZniszczTwor(usunieta);
     }
 }
 

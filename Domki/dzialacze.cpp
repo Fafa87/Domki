@@ -522,6 +522,9 @@ void Ruszacz::WalczLudkami(double czas)
         Ludek& armia = *it;
         double odleglosc = rozgrywka->Odleglosc(armia, *armia.cel);
         auto spotkanie = rozgrywka->Spotkanie(armia);
+        if (spotkanie != NULL && armia.uid >= spotkanie->uid)
+            continue;
+
         if (spotkanie != NULL && spotkanie->gracz == armia.gracz)
         {
             if (spotkanie->liczebnosc <= armia.liczebnosc)
@@ -601,7 +604,7 @@ void Ruszacz::WalczLudkami(double czas)
 
     for (auto usunieta : do_usuniecia)
     {
-        rozgrywka->ZniszczLudka(usunieta);
+        rozgrywka->ZniszczTwor(usunieta);
     }
 }
 
@@ -641,7 +644,7 @@ void Ruszacz::Strzelaj()
    }
     for (auto usunieta : do_usuniecia)
     {
-        rozgrywka->ZniszczLudka(usunieta);
+        rozgrywka->ZniszczTwor(usunieta);
     }
 }
 

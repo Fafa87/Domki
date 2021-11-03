@@ -28,11 +28,14 @@ struct Rozgrywka
     list<Gracz> gracze;
     list<Domek> domki;
     list<Ludek> armie;
+
+    list<Twor*> pozostale;
     int liczba_aktywnych_graczy=0;
 
-    void ZniszczLudka(Ludek* ludek);
+    void ZniszczTwor(Twor* twor);
     bool Zyje(Ludek* ludek);
-    void ZabierzTwor(const Twor* twor1);
+    void ZabierzTwor(const Twor* twor);
+    void DajTwor(const Twor* twor);
     void PoddajGracza(Gracz& gracz);
     void PrzerwijGre();
 
@@ -47,13 +50,15 @@ struct Rozgrywka
     void TracLudki(Ludek& ludek,double ile);
     double Odleglosc(const Twor& twor1, const Twor& twor2);
     Ludek* Spotkanie(Ludek& ludek);
-    Twor* Zlokalizuj(int x, int y);
+    Twor* Zlokalizuj(int x, int y, int z=0);
 
     double PoliczAtakDomku(const Domek& domek, int liczba=-1);
     double PoliczObroneDomku(const Domek& domek);
     double PoliczSzybkoscDomku(const Domek& domek);
     std::tuple<int,int,int,int> SilaGracza(int nr_gracza);
     int OcenaGracza(int nr_gracza);
+
+    Domek stworz_domyslny_domek();
     
     Domek* WskaznikDomek(int uid);
     Ludek* WskaznikLudek(int uid);

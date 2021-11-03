@@ -69,20 +69,37 @@ int Rozgrywka::OcenaGracza(int nr_gracza) {
     return suma;
 }
 
-void Rozgrywka::ZniszczLudka(Ludek* ludek)
+void Rozgrywka::ZniszczTwor(Twor* twor) 
 {
-    auto it = armie.begin();
-    for (; it != armie.end(); it++)
-    {
-        if (&(*it) == ludek)
-            break;
+    if (IsType<Domek>(twor)) {
+        Domek* domek = (Domek*)twor;
+        auto it = domki.begin();
+        for (; it != domki.end(); it++)
+        {
+            if (&(*it) == domek)
+                break;
+        }
+        if (it != domki.end())
+        {
+            ZabierzTwor(domek);
+            domki.erase(it);
+        }
+    }
+    else if (IsType<Ludek>(twor)) {
+        Ludek* armia = (Ludek*)twor;
+        auto it = armie.begin();
+        for (; it != armie.end(); it++)
+        {
+            if (&(*it) == armia)
+                break;
+        }
+        if (it != armie.end())
+        {
+            ZabierzTwor(armia);
+            armie.erase(it);
+        }
     }
 
-    if (it != armie.end())
-    {
-        ZabierzTwor(ludek);
-        armie.erase(it);
-    }
 }
 
 bool Rozgrywka::Zyje(Ludek * ludek)
@@ -96,11 +113,16 @@ bool Rozgrywka::Zyje(Ludek * ludek)
     return false;
 }
 
+void UaktualnijRozmiar(Domek& domek, double nowa)
+{
+    if (domek.poziom <= 5 && domek.max_liczebnosc != -1)domek.rozmiar = 15 + 3 * domek.poziom + 6 * log(nowa + 1.0) / log(1000);
+    else domek.rozmiar = 36;
+}
+
 void Rozgrywka::ZmienLiczebnosc(Domek & domek, double nowa)
 {
     domek.liczebnosc = nowa;
-    if (domek.poziom <= 5&&domek.max_liczebnosc!=-1)domek.rozmiar = 15 + 3 * domek.poziom +6 * log(nowa + 1.0) / log(1000);
-    else domek.rozmiar = 36;
+    UaktualnijRozmiar(domek, nowa);
 }
 
 void Rozgrywka::ZmienLiczebnosc(Ludek & ludek, double nowa)
@@ -121,8 +143,9 @@ void Rozgrywka::ZmienPoziom(Domek & domek, int nowy_poziom)
         domek.max_liczebnosc = 0;
     }
     domek.poziom = nowy_poziom;
-    if(domek.max_liczebnosc != -1)domek.rozmiar = 15 + 3 * domek.poziom + 6 * log(domek.liczebnosc + 1.0) / log(1000);
-    else domek.rozmiar = domek.poziom * domek.poziom;
+
+    UaktualnijRozmiar(domek, domek.liczebnosc);
+
 }
 
 void Rozgrywka::TracLudki(Ludek & ludek, double ile)
@@ -142,6 +165,16 @@ void Rozgrywka::ZabierzTwor(const Twor* twor)
     }
 }
 
+void Rozgrywka::DajTwor(const Twor* twor)
+{
+    twor->gracz->liczba_tworow++;
+    if (twor->gracz->liczba_tworow && !twor->gracz->aktywny && twor->gracz->numer)
+    {
+        liczba_aktywnych_graczy++;
+        twor->gracz->aktywny = true;
+    }
+}
+
 double Rozgrywka::Odleglosc(const Twor& twor1, const Twor& twor2)
 {
     PD polozenie_1 = twor1.polozenie;
@@ -153,9 +186,9 @@ double Rozgrywka::Odleglosc(const Twor& twor1, const Twor& twor2)
 
 Ludek * Rozgrywka::Spotkanie(Ludek & ludek)
 {
-    if (walka_w_polu)
+    if (walka_w_polu && ludek.liczebnosc > 0)
     {
-        for (auto& armia : armie) if (&armia != &ludek)
+        for (auto& armia : armie) if (&armia != &ludek && armia.liczebnosc > 0)
         {
             double odl = Odleglosc(ludek, armia);
             if (odl < (armia.rozmiar + ludek.rozmiar) / 2)
@@ -165,23 +198,34 @@ Ludek * Rozgrywka::Spotkanie(Ludek & ludek)
     return nullptr;
 }
 
-Twor * Rozgrywka::Zlokalizuj(int x, int y)
+Twor * Rozgrywka::Zlokalizuj(int x, int y, int z)
 {
+    double min_odleglosc;
+    Twor* najblizszy = nullptr;
     for (auto& dom : domki)
     {
         PD punkt(x, y);
         PD roz = punkt - dom.polozenie;
-        if (sqrt(roz.x * roz.x + roz.y * roz.y) < 1.5 * dom.rozmiar)
-            return &dom;
+        double odleglosc = sqrt(roz.x * roz.x + roz.y * roz.y);
+        if (odleglosc < 1.5 * dom.rozmiar + z) {
+            if (najblizszy == nullptr || odleglosc < min_odleglosc) {
+                najblizszy = &dom;
+                min_odleglosc = odleglosc;
+            }
+        }
     }
 	for (auto& armia : armie)
 	{
 		PD punkt(x, y);
 		PD roz = punkt - armia.polozenie;
-		if (sqrt(roz.x * roz.x + roz.y * roz.y) < 1.5 * armia.rozmiar)
-			return &armia;
+        double odleglosc = sqrt(roz.x * roz.x + roz.y * roz.y);
+		if (odleglosc < 1.5 * armia.rozmiar + z)
+            if (najblizszy == nullptr || odleglosc < min_odleglosc) {
+                najblizszy = &armia;
+                min_odleglosc = odleglosc;
+            }
 	}
-    return nullptr;
+    return najblizszy;
 }
 
 double Rozgrywka::PoliczAtakDomku(const Domek & domek, int liczba)
@@ -267,4 +311,14 @@ int Rozgrywka::nr_zwyciezcy(bool same_komputery) {
         return Domku(cel_gry.do_zdobycia - 1).gracz->numer;
     }
     return -1;
+}
+
+Domek Rozgrywka::stworz_domyslny_domek() {
+        Domek nowy;
+        nowy.max_liczebnosc = 100;
+        nowy.gracz = &this->Graczu(0);
+        nowy.produkcja = 1.0;
+        nowy.typdomku = TypDomku::kMiasto;
+        ZmienLiczebnosc(nowy, 50);
+        return nowy;
 }

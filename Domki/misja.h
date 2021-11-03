@@ -9,6 +9,7 @@
 #include "wyswietlacze.h"
 #include "muzyka.h"
 #include "si.h"
+#include "os.h"
 
 #include<windows.h>
 #include<fstream>
@@ -49,6 +50,8 @@ vector<string> wczytaj_liste_folderow(string folder);
 
 MisjaUstawienia wczytaj_meta(string sciezka);
 
+void zapis_mapy(const Rozgrywka& konstrukcja, string sciezka);
+
 Rozgrywka zwarcie_rozgrywka(string sciezka);
 
 int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz);
@@ -59,6 +62,8 @@ int misja(MisjaUstawienia& misja_ustawienia);
 sf::View wysrodkowany_widok(list<Domek> &domki, int bottom_space = 0);
 
 shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany, Twor* skupiony);
+
+shared_ptr<sfg::Window> pokazowy_interfejs(shared_ptr<sfg::Window> interfejs, MisjaUstawienia &stan, Rozgrywka& rozgrywka, Wyswietlacz& wyswietlacz, Domek* wybrany, Twor* skupiony);
 
 shared_ptr<sfg::Table> interfejs_ranking(MisjaUstawienia &stan, Rozgrywka& rozgrywka, int instance);
 

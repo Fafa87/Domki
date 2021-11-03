@@ -34,6 +34,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\EdytorMap\EdytorMap.vcxproj">
+      <Name>EdytorMap</Name>
+      <Project>{742dc261-4e3b-4d7a-9d29-17b8ddb939f7}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\MultiSerwer\Serwer.vcxproj">
       <Name>MultiSerwer</Name>
       <Project>{315af451-80c1-47dc-ba55-aec9c2407e34}</Project>

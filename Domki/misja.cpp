@@ -99,15 +99,18 @@ void zapis_mapy(const Rozgrywka& konstrukcja, string sciezka) {
 
     map <Domek*, int> numery_domkow;
     map <int, Domek*> domki_o_numerach;
+
+	map <int, int> numerki;
     int nr = 1;
     for (Domek domek : konstrukcja.domki) {
-        numery_domkow[&domek] = nr;
-        domki_o_numerach[nr] = &domek;
+        //numery_domkow[&domek] = nr;
+        //domki_o_numerach[nr] = &domek;
+		numerki[domek.uid] = nr;
         nr++;
     }
 
-    for (int nr = 1; nr <= liczba_domkow; nr++) {
-        Domek& domek = *domki_o_numerach[nr];
+    //for (int nr = 1; nr <= liczba_domkow; nr++) {
+	for(Domek domek : konstrukcja.domki){
         
         int liczba_parametrow = 1;
         
@@ -124,24 +127,25 @@ void zapis_mapy(const Rozgrywka& konstrukcja, string sciezka) {
              << "koordynaty\n" << domek.polozenie.x << " " << domek.polozenie.y << "\n";
 
         if (domek.drogi.size()) {
-            plikmapy << "drogi\n" << domek.drogi.size() << "\n";
+            plikmapy << "drogi " << domek.drogi.size() << " ";
             vector<int> numery;
-            for (Domek* polaczony : domek.drogi)
-                numery.push_back(numery_domkow[polaczony]);
+			for (Domek* polaczony : domek.drogi)
+				//numery.push_back(numery_domkow[polaczony]);
+				numery.push_back(numerki[polaczony->uid]);
 
             sort(numery.begin(), numery.begin());
 
              for (int i : numery)
-                    plikmapy << numery[i] << " ";
+                    plikmapy << i << " ";
             plikmapy << "\n";
         }
 
         if (domek.gracz->numer) {
-            plikmapy << "gracz\n" << domek.gracz->numer << "\n";
+            plikmapy << "gracz " << domek.gracz->numer << "\n";
         }
 
         if (domek.typdomku != TypDomku::kMiasto) {
-            plikmapy << "typ\n";
+            plikmapy << "typ ";
             switch (domek.typdomku) {
             case TypDomku::kFort: plikmapy << "fort\n"; break;
             case TypDomku::kWieza: plikmapy << "wieza\n"; break;
@@ -153,7 +157,7 @@ void zapis_mapy(const Rozgrywka& konstrukcja, string sciezka) {
         }
 
         if (domek.liczebnosc) {
-            plikmapy << "liczebnosc\n" << domek.liczebnosc << "\n";
+            plikmapy << "liczebnosc " << domek.liczebnosc << "\n";
         }
 
         if (!domek.przebudowa) plikmapy << "bez_przebudowy\n";
@@ -161,7 +165,7 @@ void zapis_mapy(const Rozgrywka& konstrukcja, string sciezka) {
         if (!domek.kontrola) plikmapy << "bez_kontroli\n";
 
         if(domek.poziom != 1) {
-            plikmapy << "poziom\n" << domek.poziom << "\n";
+            plikmapy << "poziom " << domek.poziom << "\n";
         }
     }
 

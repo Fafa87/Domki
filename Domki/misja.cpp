@@ -123,8 +123,8 @@ void zapis_mapy(const Rozgrywka& konstrukcja, string sciezka) {
         if (!domek.kontrola) liczba_parametrow++;
         if (domek.poziom != 1) liczba_parametrow++;
 
-        plikmapy << nr << " " << liczba_parametrow << "\n"
-             << "koordynaty\n" << domek.polozenie.x << " " << domek.polozenie.y << "\n";
+        plikmapy << numerki[domek.uid] << " " << liczba_parametrow << "\n"
+             << "koordynaty " << domek.polozenie.x << " " << domek.polozenie.y << "\n";
 
         if (domek.drogi.size()) {
             plikmapy << "drogi " << domek.drogi.size() << " ";

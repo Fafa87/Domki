@@ -142,5 +142,5 @@ string open_folder_from_folder(string folder) {
     }
 
 
-    return sciezka;
+    return sciezka + ".txt";
 }

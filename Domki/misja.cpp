@@ -323,6 +323,9 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
         Domek   *wksslask1,*wksslask2;
         wksslask1 = domki_po_numerze[para.first];
         wksslask2 = domki_po_numerze[para.second];
+		if(find(wksslask1->drogi.begin(), wksslask1->drogi.end(), wksslask2) != wksslask1->drogi.end() || 
+		   find(wksslask2->drogi.begin(), wksslask2->drogi.end(), wksslask1) != wksslask2->drogi.end()) //droga wczytywana wystepuje 2 razy
+			continue;
         wksslask1->drogi.push_back(wksslask2);
         wksslask2->drogi.push_back(wksslask1);
     }

@@ -361,9 +361,16 @@ void DecydentEdytor::Przetworz(sf::Event zdarzenie) {
 
 void DecydentEdytor::Wykonaj() {
     if (pierwszy != NULL && drugi != NULL) {
-        if (laczenie_miast) {
-            pierwszy->drogi.push_back(drugi);
-            drugi->drogi.push_back(pierwszy);
+        if (pierwszy != drugi && laczenie_miast) {
+			Domek* P = NULL, *D = NULL;
+			for (Domek* drogowy : pierwszy->drogi)
+				if (drogowy == drugi) P = drugi;
+			for (Domek* drogowy : drugi->drogi)
+				if (drogowy == pierwszy) D = pierwszy;
+			if (P == NULL && D == NULL) {
+				pierwszy->drogi.push_back(drugi);
+				drugi->drogi.push_back(pierwszy);
+			}
         }
 
         pierwszy = NULL;

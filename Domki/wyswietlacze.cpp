@@ -200,13 +200,6 @@ void Wyswietlacz::WyswietlObrazMapyRozgrywki(sf::RenderWindow& okno, PD polozeni
     for (auto dom : rozgrywka.domki)
     {
         PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc, polozenie);
-        sf::RectangleShape kwadrat(sf::Vector2f(10, 10));
-
-        kwadrat.setPosition(dom_poz.x, dom_poz.y);
-        kwadrat.setFillColor(dom.gracz->kolor);
-        kwadrat.setOutlineColor(dom.gracz->kolor);
-        kwadrat.setOutlineThickness(5);
-        okno.draw(kwadrat);
         for (auto dokad : dom.drogi) if (dokad->uid < dom.uid) // maluj tylko w jedną stronę
         {
             PD dokad_poz = translacja_pozycji(dokad->polozenie, rozrzut, min, wielkosc, polozenie);
@@ -226,6 +219,26 @@ void Wyswietlacz::WyswietlObrazMapyRozgrywki(sf::RenderWindow& okno, PD polozeni
 
             okno.draw(linijka);
         }
+    }
+    for (auto dom : rozgrywka.domki) {
+        PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc, polozenie);
+        sf::RectangleShape kwadrat(sf::Vector2f(10, 10));
+
+        kwadrat.setPosition(dom_poz.x, dom_poz.y + 10);
+        kwadrat.setFillColor(dom.gracz->kolor);
+        kwadrat.setOutlineColor(dom.gracz->kolor);
+        kwadrat.setOutlineThickness(1);
+        okno.draw(kwadrat);
+    }
+    for (auto ludek : rozgrywka.armie) {
+        PD ludek_poz = translacja_pozycji(ludek.polozenie, rozrzut, min, wielkosc, polozenie);
+        sf::CircleShape kolko(4, 100);
+
+        kolko.setPosition(ludek_poz.x, ludek_poz.y + 10);
+        kolko.setFillColor(ludek.gracz->kolor);
+        kolko.setOutlineColor(ludek.gracz->kolor);
+        kolko.setOutlineThickness(1);
+        okno.draw(kolko);
     }
     //wyswietl minimape
 }

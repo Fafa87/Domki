@@ -180,6 +180,54 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
             okno.draw(linijka);
         }
     }
+    WyswietlObrazMapyRozgrywki(okno, { 400, 200 }, {160, 90});
+}
+
+inline PD translacja_pozycji(PD polozenie, PD wielkosc_mapy, PD min, PD wielkosc_minimapy, PD pocz_minimapy) {
+    PD wynikowe = {pocz_minimapy.x + wielkosc_minimapy.x * (polozenie.x - min.x) / wielkosc_mapy.x, pocz_minimapy.y + wielkosc_minimapy.y * (polozenie.y - min.y) / wielkosc_mapy.y };
+    return wynikowe;
+}
+
+void Wyswietlacz::WyswietlObrazMapyRozgrywki(sf::RenderWindow& okno, PD polozenie, PD wielkosc){
+    PD rozrzut, min = { 10000,10000 }, max = { 0, 0 };
+    for (auto dom : rozgrywka.domki) {
+        if (dom.polozenie.x < min.x) min.x = dom.polozenie.x;
+        if (dom.polozenie.x > max.x) max.x = dom.polozenie.x;
+        if (dom.polozenie.y < min.y) min.y = dom.polozenie.y;
+        if (dom.polozenie.y > max.y) max.y = dom.polozenie.y;
+    }
+    rozrzut = { max.x - min.x, max.y - min.y };
+    for (auto dom : rozgrywka.domki)
+    {
+        PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc, polozenie);
+        sf::RectangleShape kwadrat(sf::Vector2f(10, 10));
+
+        kwadrat.setPosition(dom_poz.x, dom_poz.y);
+        kwadrat.setFillColor(dom.gracz->kolor);
+        kwadrat.setOutlineColor(dom.gracz->kolor);
+        kwadrat.setOutlineThickness(5);
+        okno.draw(kwadrat);
+        for (auto dokad : dom.drogi) if (dokad->uid < dom.uid) // maluj tylko w jedną stronę
+        {
+            PD dokad_poz = translacja_pozycji(dokad->polozenie, rozrzut, min, wielkosc, polozenie);
+            sf::Vertex linia[] =
+            {
+                sf::Vertex(sf::Vector2f(dom_poz.x, dom_poz.y + 15), sf::Color(70, 40, 0)),
+                sf::Vertex(sf::Vector2f(dokad_poz.x, dokad_poz.y + 15), sf::Color(70, 40, 0))
+            };
+            int odleglosc = sqrt(pow(dokad_poz.x - dom_poz.x, 2) + pow(dokad_poz.y - dom_poz.y, 2));
+            sf::RectangleShape linijka(sf::Vector2f(odleglosc, 3));
+            linijka.setPosition(linia[0].position);
+
+            linijka.setRotation(atan2(linia[1].position.y - linia[0].position.y, linia[1].position.x - linia[0].position.x) / M_PI * 180);
+            linijka.setFillColor(sf::Color(150, 75, 0));
+            linijka.setOutlineColor(sf::Color(70, 40, 0));
+            linijka.setOutlineThickness(1);
+
+            okno.draw(linijka);
+        }
+    }
+    //wyswietl minimape
 }
 
 void Wyswietlacz::UaktualnijWyglad(Twor* twor) {

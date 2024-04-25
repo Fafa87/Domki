@@ -207,11 +207,12 @@ sf::Image Wyswietlacz::StworzMinimape(PD wielkosc) {
         for (auto dokad : dom.drogi) if (dokad->uid < dom.uid) // maluj tylko w jedną stronę
         {
             PD dokad_poz = translacja_pozycji(dokad->polozenie, rozrzut, min, wielkosc);
-            for (int i = dom_poz.x, j = dom_poz.y, i_delta = (dom_poz.x < dokad_poz.x ? 1 : -1), j_delta = (dom_poz.y < dokad_poz.y ? 1 : -1); abs(dokad_poz.x - i) > 3 || abs(dokad_poz.y - j) > 3;) {
-                minimapa.setPixel(i, j, sf::Color(150, 75, 0));
-                int width = abs(dokad_poz.x - i), height = abs(dokad_poz.y - j);
+            for (double i = dom_poz.x, j = dom_poz.y, i_delta = dokad_poz.x - dom_poz.x, j_delta = dokad_poz.y - dom_poz.y, dist = sqrt(i_delta * i_delta + j_delta * j_delta); (abs(dokad_poz.x - i) > 3.0 || abs(dokad_poz.y - j) > 3.0);) {
+                minimapa.setPixel((int)i, (int)j, sf::Color(150, 75, 0));
+                i += i_delta / dist; j += j_delta / dist;
+                /*int width = abs(dokad_poz.x - i), height = abs(dokad_poz.y - j);
                 if (width >= height) i += i_delta;
-                if (width <= height) j += j_delta;
+                if (width <= height) j += j_delta;*/
             }
 
         }

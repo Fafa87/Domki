@@ -445,12 +445,12 @@ int main() {
                     switch (event.key.code)
                     {
                     case sf::Keyboard::Escape:
-                        GUI::aplikacja().close_all_windows();
+                        //GUI::aplikacja().close_all_windows();
                         return EXIT_SUCCESS;
                     }
                     break;
                 case sf::Event::Closed:
-                    GUI::aplikacja().close_all_windows();
+                    //GUI::aplikacja().close_all_windows();
                     return EXIT_SUCCESS;
                 //case sf::Event::Resized:
                     //GUI::aplikacja().put_right_to(okno, background.getGlobalBounds().width);

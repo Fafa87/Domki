@@ -64,6 +64,9 @@ MisjaUstawienia wczytaj_meta(string sciezka)
 
     ifstream plikmapa;
     plikmapa.open(sciezka);
+    plikmapa.clear();
+    plikmapa.seekg(0, ios::beg);
+
     int liczba_domkow, numer_domku, liczba_parametrow;
     string parametr;
     plikmapa >> liczba_domkow;
@@ -195,6 +198,9 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
     //domki
     ifstream plikmapa;
     plikmapa.open(sciezka);
+    plikmapa.clear();
+    plikmapa.seekg(0, ios::beg);
+
     int liczba_domkow, numer_domku, liczba_parametrow;
     string parametr;
     plikmapa >> liczba_domkow;
@@ -339,6 +345,16 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
     }
     plikmapa.close();
     return gra;
+}
+
+string map_generator(int liczba_graczy) {
+    //zwroc rozgrywke a uprzednio ja zapisz z uzyciem funkcji zapis_mapy
+    Rozgrywka gra;
+    string sciezka_gry = "Plansza\\Kampania\\misja_03 - Bigos Bigoes(Demo3).txt";
+
+
+    //zapis_mapy(gra, sciezka_gry);
+    return sciezka_gry;
 }
 
 bool odliczanie(int czas)

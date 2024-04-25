@@ -265,13 +265,19 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
             if (pomoc_obraz.loadFromFile("Grafika\\rycerze_hd\\info.png"))
                 pomoc->SetImage(pomoc_obraz);
 
+            auto minimapa = sfg::Image::Create();
+            sf::Image minimapa_obraz = wyswietlacz.StworzMinimape({ 160, 90 }); // ustaw odpowiednia wielkkosc obrazu 
+            minimapa->SetImage(minimapa_obraz);
+            minimapa->SetId("minimapa");
+
             auto info = interfejs_wybrany();
             interfejs_wybrany_ustaw(interfejs, rozgrywka, wyswietlacz, wybrany, skupiony);
 
             auto tabela_interfejsu = sfg::Table::Create();
             tabela_interfejsu->Attach(ranking, sf::Rect<sf::Uint32>(0, 0, 1, 1));
-            tabela_interfejsu->Attach(pomoc, sf::Rect<sf::Uint32>(1, 0, 1, 1));
-            tabela_interfejsu->Attach(info, sf::Rect<sf::Uint32>(2, 0, 1, 1));
+            tabela_interfejsu->Attach(minimapa, sf::Rect<sf::Uint32>(1, 0, 1, 1));
+            tabela_interfejsu->Attach(pomoc, sf::Rect<sf::Uint32>(2, 0, 1, 1));
+            tabela_interfejsu->Attach(info, sf::Rect<sf::Uint32>(3, 0, 1, 1));
 
             GUI::aplikacja().pulpit.Add(interfejs);
             interfejs->Add(tabela_interfejsu);
@@ -299,8 +305,11 @@ shared_ptr<sfg::Window> interfejs_rozgrywki(shared_ptr<sfg::Window> interfejs, M
                 szybkosc_label->SetText((to_string(std::get<3>(sila_gracza))));
             }
         }
-
+        //dodaj obrazki interfejsu
         interfejs_wybrany_ustaw(interfejs, rozgrywka, wyswietlacz, wybrany, skupiony);
+        //rysuj_nowa_minimape
+        sf::Image minimapa_obraz = wyswietlacz.StworzMinimape({ 160, 90 });
+        std::static_pointer_cast<sfg::Image>(interfejs->GetWidgetById("minimapa"))->SetImage(minimapa_obraz);
     }
     return interfejs;
 }

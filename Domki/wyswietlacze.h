@@ -32,7 +32,7 @@ public:
     void Wyswietlaj(sf::RenderWindow& okno);
     void WyswietlTlo(sf::RenderWindow& okno);
 
-    void WyswietlObrazMapyRozgrywki(sf::RenderWindow& okno, PD polozenie, PD wielkosc);
+    sf::Image StworzMinimape(PD wielkosc);
 
     void UaktualnijWyglad(Twor*);
 

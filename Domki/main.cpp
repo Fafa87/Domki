@@ -20,6 +20,85 @@ INITIALIZE_EASYLOGGINGPP
 #include "multi_dzialacze.h"
 #include "razem.h"
 
+std::shared_ptr<sfg::Window> generator_menu(std::shared_ptr<sfg::Window> glowne, sf::Music& muzyka)
+{
+    auto okno = sfg::Window::Create(sfg::Window::Style::BACKGROUND | sfg::Window::Style::SHADOW);
+
+    okno->SetRequisition(sf::Vector2f(glowne->GetAllocation().width, 0));
+    okno->SetAllocation(glowne->GetAllocation());
+
+    auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+    box->SetSpacing(10);
+    box->Pack(utworz_tytulowy_obraz(), false, false);
+
+    string sciezka_gry = map_generator(2);
+    Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
+    Wyswietlacz rysownik(gra);
+
+    box->Pack(sfg::Image::Create(rysownik.StworzMinimape({ 300, 300 })), false, false); // tworzymy obraz sf::Image i go wyswietlamy w sfgui
+
+    auto ile_ludzi_etykieta = sfg::Label::Create("Ile graczy: ");
+    auto tabelka = sfg::Table::Create();
+    auto ile_ludzi_wartosc = sfg::Label::Create("2");
+    auto ile_ludzi_pasek = sfg::Scale::Create(2, 8, 1);
+    ile_ludzi_pasek->SetValue(2);
+    ile_ludzi_pasek->SetIncrements(1, 2);
+    ile_ludzi_pasek->GetAdjustment()->GetSignal(sfg::Adjustment::OnChange).Connect(
+        [ile_ludzi_wartosc, ile_ludzi_pasek] {
+        ile_ludzi_wartosc->SetText(to_string((int)ile_ludzi_pasek->GetValue()));
+    });
+    tabelka->Attach(ile_ludzi_etykieta, sf::Rect<sf::Uint32>(0, 0, 1, 1));
+    tabelka->Attach(ile_ludzi_pasek, sf::Rect<sf::Uint32>(1, 0, 1, 1));
+    tabelka->Attach(ile_ludzi_wartosc, sf::Rect<sf::Uint32>(2, 0, 1, 1));
+    box->Pack(tabelka, false, false);
+
+    GUI::aplikacja().okno.display();
+    //narysuj mape
+
+    auto uruchom = sfg::Button::Create("Uruchom");
+    uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [ile_ludzi_pasek, okno, &muzyka, sciezka_gry] {
+        MisjaUstawienia ustawienia = wczytaj_meta(sciezka_gry);
+
+        muzyka.stop();
+        GUI::aplikacja().hide_all_windows();
+        while (ustawienia.Zwyciezca() == -1)
+        {
+            misja(ustawienia);
+        }
+        muzyka.play();
+        GUI::aplikacja().set_active_window(okno);
+    });
+
+    auto generuj = sfg::Button::Create("Generuj ponownie");
+    generuj->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [ile_ludzi_pasek, &muzyka, okno]
+    {
+        string sciezka_gry = map_generator((int)ile_ludzi_pasek->GetValue());
+        Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
+        Wyswietlacz rysownik(gra);
+
+        sf::Image minimapa_obraz = rysownik.StworzMinimape({ 300, 300 });
+        std::static_pointer_cast<sfg::Image>(okno->GetWidgetById("minimapa"))->SetImage(minimapa_obraz);
+    });
+
+    auto powrot = sfg::Button::Create(L"Powrót");
+    powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [okno] {
+        GUI::aplikacja().pop_active_window(okno);
+    });
+    box->Pack(sfg::Separator::Create(), false, false);
+
+    box->Pack(uruchom, false, false);
+    box->Pack(generuj, false, false);
+    box->Pack(powrot, false, false);
+    okno->Add(box);
+
+    GUI::aplikacja().stretch_up_down(okno);
+
+    return okno;
+}
+
 std::shared_ptr<sfg::Window> kampania_menu(sf::Music& muzyka, string grupa, double poziom, double szybkosc, bool walka_w_polu)
 {
     Kampania kampania("Kampanie\\"+grupa);
@@ -128,6 +207,34 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
         true, true, true);
     kontrolki->DodajZestaw(box);
 
+    string sciezka_gry = "Plansza\\" + kontrolki->MisjaGrupa() + "\\" + kontrolki->MisjaNazwa();
+    Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
+    Wyswietlacz rysownik(gra);
+
+    sf::Image minimapa_obraz = rysownik.StworzMinimape({ 160, 90 });
+    std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa"))->SetImage(minimapa_obraz);
+
+    box->GetWidgetById("misja-nazwa")->GetSignal(sfg::ComboBox::OnSelect).Connect([kontrolki, box]
+    {
+        string sciezka_gry = "Plansza\\" + kontrolki->MisjaGrupa() + "\\" + kontrolki->MisjaNazwa();
+        Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
+        Wyswietlacz rysownik(gra);
+
+        sf::Image minimapa_obraz = rysownik.StworzMinimape({ 160, 90 });
+        std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa"))->SetImage(minimapa_obraz);
+    });
+
+    box->GetWidgetById("misja-grupa")->GetSignal(sfg::ComboBox::OnSelect).Connect(
+        [kontrolki, box] {
+        string sciezka_gry = "Plansza\\" + kontrolki->MisjaGrupa() + "\\" + kontrolki->MisjaNazwa();
+        Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
+        Wyswietlacz rysownik(gra);
+
+        sf::Image minimapa_obraz = rysownik.StworzMinimape({ 160, 90 });
+        std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa"))->SetImage(minimapa_obraz);
+    });
+
+
     auto uruchom = sfg::Button::Create("Uruchom");
     uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [kontrolki, okno, &muzyka] {
@@ -212,6 +319,14 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 10.0f);
     auto tabelka = sfg::Table::Create();
 
+    auto generator = sfg::Button::Create("Generator");
+    generator->GetSignal(sfg::Widget::OnLeftClick).Connect(
+        [&muzyka, okno]
+    {
+        auto okno_generator = generator_menu(okno, muzyka);
+        GUI::aplikacja().set_active_window(okno_generator);
+    });
+
     auto kampania = sfg::Button::Create("Kampania");
     kampania->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [&muzyka, okno]
@@ -248,10 +363,11 @@ std::shared_ptr<sfg::Window> grand_menu(sf::Music& muzyka)
         [&muzyka, okno]
     {
         system("start powershell -ExecutionPolicy Bypass -F Uaktualnij.ps1");
-        exit(0);
+        return okno;
     });
 
     tabelka->SetRowSpacings(10);
+    tabelka->Attach(generator, sf::Rect<sf::Uint32>(1, 1, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(kampania, sf::Rect<sf::Uint32>(1, 2, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(pojedynczy, sf::Rect<sf::Uint32>(1, 6, 12, 1), 3, sfg::Table::FILL);
     tabelka->Attach(razem, sf::Rect<sf::Uint32>(1, 8, 12, 1), 3, sfg::Table::FILL);
@@ -329,14 +445,16 @@ int main() {
                     switch (event.key.code)
                     {
                     case sf::Keyboard::Escape:
-                        return 0;
+                        GUI::aplikacja().close_all_windows();
+                        return EXIT_SUCCESS;
                     }
                     break;
                 case sf::Event::Closed:
-                    return 0;
-                case sf::Event::Resized:
-                    GUI::aplikacja().put_right_to(okno, background.getGlobalBounds().width);
-                    GUI::aplikacja().stretch_up_down(okno);
+                    GUI::aplikacja().close_all_windows();
+                    return EXIT_SUCCESS;
+                //case sf::Event::Resized:
+                    //GUI::aplikacja().put_right_to(okno, background.getGlobalBounds().width);
+                    //GUI::aplikacja().stretch_up_down(okno);
                 }
             }
 

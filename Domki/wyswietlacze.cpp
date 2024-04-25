@@ -180,15 +180,17 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
             okno.draw(linijka);
         }
     }
-    WyswietlObrazMapyRozgrywki(okno, { 400, 200 }, {160, 90});
 }
 
-inline PD translacja_pozycji(PD polozenie, PD wielkosc_mapy, PD min, PD wielkosc_minimapy, PD pocz_minimapy) {
-    PD wynikowe = {pocz_minimapy.x + wielkosc_minimapy.x * (polozenie.x - min.x) / wielkosc_mapy.x, pocz_minimapy.y + wielkosc_minimapy.y * (polozenie.y - min.y) / wielkosc_mapy.y };
+inline PD translacja_pozycji(PD polozenie, PD wielkosc_mapy, PD min, PD wielkosc_minimapy) {
+    wielkosc_minimapy = { wielkosc_minimapy.x * 9.0 / 10.0, wielkosc_minimapy.y * 9.0 / 10.0 };
+    PD wynikowe = {wielkosc_minimapy.x / 9.0 + wielkosc_minimapy.x * 8.0 / 9.0 * (polozenie.x - min.x) / wielkosc_mapy.x, wielkosc_minimapy.y / 9.0 + wielkosc_minimapy.y * 8.0 / 9.0 * (polozenie.y - min.y) / wielkosc_mapy.y };
     return wynikowe;
 }
 
-void Wyswietlacz::WyswietlObrazMapyRozgrywki(sf::RenderWindow& okno, PD polozenie, PD wielkosc){
+sf::Image Wyswietlacz::StworzMinimape(PD wielkosc) {
+    sf::Image minimapa;
+    minimapa.create(wielkosc.x, wielkosc.y);
     PD rozrzut, min = { 10000,10000 }, max = { 0, 0 };
     for (auto dom : rozgrywka.domki) {
         if (dom.polozenie.x < min.x) min.x = dom.polozenie.x;
@@ -196,51 +198,37 @@ void Wyswietlacz::WyswietlObrazMapyRozgrywki(sf::RenderWindow& okno, PD polozeni
         if (dom.polozenie.y < min.y) min.y = dom.polozenie.y;
         if (dom.polozenie.y > max.y) max.y = dom.polozenie.y;
     }
+    PD korekta = { 10 , 10 };
     rozrzut = { max.x - min.x, max.y - min.y };
+    rozrzut += korekta;
     for (auto dom : rozgrywka.domki)
     {
-        PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc, polozenie);
+        PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc);
         for (auto dokad : dom.drogi) if (dokad->uid < dom.uid) // maluj tylko w jedną stronę
         {
-            PD dokad_poz = translacja_pozycji(dokad->polozenie, rozrzut, min, wielkosc, polozenie);
-            sf::Vertex linia[] =
-            {
-                sf::Vertex(sf::Vector2f(dom_poz.x, dom_poz.y + 15), sf::Color(70, 40, 0)),
-                sf::Vertex(sf::Vector2f(dokad_poz.x, dokad_poz.y + 15), sf::Color(70, 40, 0))
-            };
-            int odleglosc = sqrt(pow(dokad_poz.x - dom_poz.x, 2) + pow(dokad_poz.y - dom_poz.y, 2));
-            sf::RectangleShape linijka(sf::Vector2f(odleglosc, 3));
-            linijka.setPosition(linia[0].position);
+            PD dokad_poz = translacja_pozycji(dokad->polozenie, rozrzut, min, wielkosc);
+            for (int i = dom_poz.x, j = dom_poz.y, i_delta = (dom_poz.x < dokad_poz.x ? 1 : -1), j_delta = (dom_poz.y < dokad_poz.y ? 1 : -1); abs(dokad_poz.x - i) > 3 || abs(dokad_poz.y - j) > 3;) {
+                minimapa.setPixel(i, j, sf::Color(150, 75, 0));
+                int width = abs(dokad_poz.x - i), height = abs(dokad_poz.y - j);
+                if (width >= height) i += i_delta;
+                if (width <= height) j += j_delta;
+            }
 
-            linijka.setRotation(atan2(linia[1].position.y - linia[0].position.y, linia[1].position.x - linia[0].position.x) / M_PI * 180);
-            linijka.setFillColor(sf::Color(150, 75, 0));
-            linijka.setOutlineColor(sf::Color(70, 40, 0));
-            linijka.setOutlineThickness(1);
-
-            okno.draw(linijka);
         }
     }
     for (auto dom : rozgrywka.domki) {
-        PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc, polozenie);
-        sf::RectangleShape kwadrat(sf::Vector2f(10, 10));
-
-        kwadrat.setPosition(dom_poz.x, dom_poz.y + 10);
-        kwadrat.setFillColor(dom.gracz->kolor);
-        kwadrat.setOutlineColor(dom.gracz->kolor);
-        kwadrat.setOutlineThickness(1);
-        okno.draw(kwadrat);
+        PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc);
+        for(int i = -3; i <= 3; i++)
+           for(int j = -3; j <= 3; j++)
+               minimapa.setPixel(dom_poz.x + i, dom_poz.y + j, dom.gracz->kolor);
     }
     for (auto ludek : rozgrywka.armie) {
-        PD ludek_poz = translacja_pozycji(ludek.polozenie, rozrzut, min, wielkosc, polozenie);
-        sf::CircleShape kolko(4, 100);
+        PD ludek_poz = translacja_pozycji(ludek.polozenie, rozrzut, min, wielkosc);
 
-        kolko.setPosition(ludek_poz.x, ludek_poz.y + 10);
-        kolko.setFillColor(ludek.gracz->kolor);
-        kolko.setOutlineColor(ludek.gracz->kolor);
-        kolko.setOutlineThickness(1);
-        okno.draw(kolko);
+        minimapa.setPixel(ludek_poz.x, ludek_poz.y, ludek.gracz->kolor);
     }
-    //wyswietl minimape
+
+    return minimapa;
 }
 
 void Wyswietlacz::UaktualnijWyglad(Twor* twor) {

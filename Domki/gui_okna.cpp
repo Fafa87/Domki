@@ -137,7 +137,7 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
         auto minimapa = sfg::Image::Create();
         sf::Image minimapa_obraz;
         minimapa->SetImage(minimapa_obraz);
-        minimapa->SetId("minimapa");
+        minimapa->SetId("minimapa-menu");
         tabelka->Attach(minimapa, sf::Rect<sf::Uint32>(1, row_top++, 2, 1));
     }
     if (opcja_kampania)

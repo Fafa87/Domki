@@ -190,7 +190,7 @@ inline PD translacja_pozycji(PD polozenie, PD wielkosc_mapy, PD min, PD wielkosc
 
 sf::Image Wyswietlacz::StworzMinimape(PD wielkosc) {
     sf::Image minimapa;
-    minimapa.create(wielkosc.x, wielkosc.y);
+    minimapa.create(wielkosc.x, wielkosc.y, sf::Color(140, 255, 140));
     PD rozrzut, min = { 10000,10000 }, max = { 0, 0 };
     for (auto dom : rozgrywka.domki) {
         if (dom.polozenie.x < min.x) min.x = dom.polozenie.x;
@@ -225,8 +225,11 @@ sf::Image Wyswietlacz::StworzMinimape(PD wielkosc) {
     }
     for (auto ludek : rozgrywka.armie) {
         PD ludek_poz = translacja_pozycji(ludek.polozenie, rozrzut, min, wielkosc);
-
-        minimapa.setPixel(ludek_poz.x, ludek_poz.y, ludek.gracz->kolor);
+        float stosunek_ludka_do_domku = ludek.liczebnosc / dynamic_cast<Domek&>(*ludek.skad).liczebnosc;
+        int sila_ludka = (stosunek_ludka_do_domku >= 0.5 ? 2 : 1);
+        for (int i = -sila_ludka; i <= sila_ludka; i++)
+            for (int j = -sila_ludka; j <= sila_ludka; j++)
+                minimapa.setPixel(ludek_poz.x + i, ludek_poz.y + j, ludek.gracz->kolor);
     }
 
     return minimapa;

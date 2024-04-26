@@ -31,12 +31,17 @@ std::shared_ptr<sfg::Window> generator_menu(std::shared_ptr<sfg::Window> glowne,
     box->SetSpacing(10);
     box->Pack(utworz_tytulowy_obraz(), false, false);
 
-    string sciezka_gry = map_generator(2);
+    string nazwa, sciezka_gry = map_generator(2, nazwa);
     Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
     Wyswietlacz rysownik(gra);
 
-    box->Pack(sfg::Image::Create(rysownik.StworzMinimape({ 300, 300 })), false, false); // tworzymy obraz sf::Image i go wyswietlamy w sfgui
+    auto minimapa = sfg::Image::Create(rysownik.StworzMinimape({ 320, 180 }));
+    minimapa->SetId("minimapa-menu");
+    box->Pack(minimapa, false, false); // tworzymy obraz sf::Image i go wyswietlamy w sfgui
 
+
+    auto nazwa_mapy = sfg::Label::Create(nazwa);
+    nazwa_mapy->SetId("nazwa-mapy");
     auto ile_ludzi_etykieta = sfg::Label::Create("Ile graczy: ");
     auto tabelka = sfg::Table::Create();
     auto ile_ludzi_wartosc = sfg::Label::Create("2");
@@ -47,9 +52,10 @@ std::shared_ptr<sfg::Window> generator_menu(std::shared_ptr<sfg::Window> glowne,
         [ile_ludzi_wartosc, ile_ludzi_pasek] {
         ile_ludzi_wartosc->SetText(to_string((int)ile_ludzi_pasek->GetValue()));
     });
-    tabelka->Attach(ile_ludzi_etykieta, sf::Rect<sf::Uint32>(0, 0, 1, 1));
-    tabelka->Attach(ile_ludzi_pasek, sf::Rect<sf::Uint32>(1, 0, 1, 1));
-    tabelka->Attach(ile_ludzi_wartosc, sf::Rect<sf::Uint32>(2, 0, 1, 1));
+    tabelka->Attach(nazwa_mapy, sf::Rect<sf::Uint32>(1, 0, 2, 1));
+    tabelka->Attach(ile_ludzi_etykieta, sf::Rect<sf::Uint32>(0, 1, 1, 1));
+    tabelka->Attach(ile_ludzi_pasek, sf::Rect<sf::Uint32>(1, 1, 2, 1));
+    tabelka->Attach(ile_ludzi_wartosc, sf::Rect<sf::Uint32>(3, 1, 1, 1));
     box->Pack(tabelka, false, false);
 
     GUI::aplikacja().okno.display();
@@ -74,12 +80,14 @@ std::shared_ptr<sfg::Window> generator_menu(std::shared_ptr<sfg::Window> glowne,
     generuj->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [ile_ludzi_pasek, &muzyka, okno]
     {
-        string sciezka_gry = map_generator((int)ile_ludzi_pasek->GetValue());
+        string nazwa, sciezka_gry = map_generator((int)ile_ludzi_pasek->GetValue(), nazwa);
         Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
         Wyswietlacz rysownik(gra);
 
-        sf::Image minimapa_obraz = rysownik.StworzMinimape({ 300, 300 });
-        std::static_pointer_cast<sfg::Image>(okno->GetWidgetById("minimapa"))->SetImage(minimapa_obraz);
+        sf::Image minimapa_obraz = rysownik.StworzMinimape({ 320, 180 });
+        std::static_pointer_cast<sfg::Image>(okno->GetWidgetById("minimapa-menu"))->SetImage(minimapa_obraz);
+
+        std::static_pointer_cast<sfg::Label>(okno->GetWidgetById("nazwa-mapy"))->SetText(nazwa);
     });
 
     auto powrot = sfg::Button::Create(L"Powrót");
@@ -211,8 +219,8 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
     Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
     Wyswietlacz rysownik(gra);
 
-    sf::Image minimapa_obraz = rysownik.StworzMinimape({ 160, 90 });
-    std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa"))->SetImage(minimapa_obraz);
+    sf::Image minimapa_obraz = rysownik.StworzMinimape({ 320, 180 });
+    std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa-menu"))->SetImage(minimapa_obraz);
 
     box->GetWidgetById("misja-nazwa")->GetSignal(sfg::ComboBox::OnSelect).Connect([kontrolki, box]
     {
@@ -220,8 +228,8 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
         Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
         Wyswietlacz rysownik(gra);
 
-        sf::Image minimapa_obraz = rysownik.StworzMinimape({ 160, 90 });
-        std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa"))->SetImage(minimapa_obraz);
+        sf::Image minimapa_obraz = rysownik.StworzMinimape({ 320, 180 });
+        std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa-menu"))->SetImage(minimapa_obraz);
     });
 
     box->GetWidgetById("misja-grupa")->GetSignal(sfg::ComboBox::OnSelect).Connect(
@@ -230,8 +238,8 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
         Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
         Wyswietlacz rysownik(gra);
 
-        sf::Image minimapa_obraz = rysownik.StworzMinimape({ 160, 90 });
-        std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa"))->SetImage(minimapa_obraz);
+        sf::Image minimapa_obraz = rysownik.StworzMinimape({ 320, 180 });
+        std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa-menu"))->SetImage(minimapa_obraz);
     });
 
 

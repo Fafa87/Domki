@@ -198,8 +198,6 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
     //domki
     ifstream plikmapa;
     plikmapa.open(sciezka);
-    plikmapa.clear();
-    plikmapa.seekg(0, ios::beg);
 
     int liczba_domkow, numer_domku, liczba_parametrow;
     string parametr;
@@ -347,13 +345,24 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
     return gra;
 }
 
-string map_generator(int liczba_graczy) {
-    //zwroc rozgrywke a uprzednio ja zapisz z uzyciem funkcji zapis_mapy
+string map_generator(int liczba_graczy, string &name) {
+    const string names[3][10] = { {"Super", "Ekstra", "SuperDuper", "Superb", "Hoho", "Okazjonalne", "Zachlanne", "Uknute", "Totalne", "Ostre"},
+                                {"Starcie", "Miazgi", "Kupy", "Masy", "Pojedynki", "Walki", "Maskarady", "Cyrki", "Mordobicie", "Konfrontacje"},
+                                {"Tytanow", "Kozakow", "Krolow", "Leszczy", "Szefow", "Kup", "Szczawi", "Szczurkow", "Bykow", "Czeresniakow"}};
     Rozgrywka gra;
-    string sciezka_gry = "Plansza\\Kampania\\misja_03 - Bigos Bigoes(Demo3).txt";
+    string sciezka_gry, date;
+    ifstream test;
+    srand(time(NULL));
+    do {
+        int name1 = rand() % 10, name2 = name1 * rand() % 10, name3 = name2 * rand() % 10;
+        name = "'" + names[0][name1] + " " + names[1][name2] + " " + names[2][name3] + "'";
+        sciezka_gry = "Plansza\\Generator\\" + date + " - " + name + ".txt";
+        test.open(sciezka_gry);
+    }while (test.good());
 
 
-    //zapis_mapy(gra, sciezka_gry);
+
+    zapis_mapy(gra, sciezka_gry);
     return sciezka_gry;
 }
 

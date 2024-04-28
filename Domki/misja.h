@@ -54,7 +54,7 @@ void zapis_mapy(const Rozgrywka& konstrukcja, string sciezka);
 
 Rozgrywka zwarcie_rozgrywka(string sciezka);
 
-string map_generator(int liczba_graczy, string& name);
+string map_generator(int liczba_graczy, string& name, string &date);
 
 int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz);
 

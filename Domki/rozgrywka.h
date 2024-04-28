@@ -52,6 +52,9 @@ struct Rozgrywka
     Ludek* Spotkanie(Ludek& ludek);
     Twor* Zlokalizuj(int x, int y, int z=0);
 
+    bool CzyTamJestDroga(int x, int y, double odleglosc=0.0);
+    bool CzyMoznaPolaczycDomki(Domek& domek1, Domek& domek2);
+
     double PoliczAtakDomku(const Domek& domek, int liczba=-1);
     double PoliczObroneDomku(const Domek& domek);
     double PoliczSzybkoscDomku(const Domek& domek);

@@ -31,7 +31,7 @@ std::shared_ptr<sfg::Window> generator_menu(std::shared_ptr<sfg::Window> glowne,
     box->SetSpacing(10);
     box->Pack(utworz_tytulowy_obraz(), false, false);
 
-    string nazwa, sciezka_gry = map_generator(2, nazwa);
+    string nazwa, date, sciezka_gry = map_generator(2, nazwa, date);
     Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
     Wyswietlacz rysownik(gra);
 
@@ -63,8 +63,11 @@ std::shared_ptr<sfg::Window> generator_menu(std::shared_ptr<sfg::Window> glowne,
 
     auto uruchom = sfg::Button::Create("Uruchom");
     uruchom->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [ile_ludzi_pasek, okno, &muzyka, sciezka_gry] {
+        [ile_ludzi_pasek, okno, &muzyka, sciezka_gry, nazwa, date] {
         MisjaUstawienia ustawienia = wczytaj_meta(sciezka_gry);
+        ustawienia.grupa = "Plansza\\Generator";
+        ustawienia.nazwa = date + " - " + nazwa + ".txt";
+        ustawienia.do_ilu_wygranych = 1;
 
         muzyka.stop();
         GUI::aplikacja().hide_all_windows();
@@ -80,7 +83,7 @@ std::shared_ptr<sfg::Window> generator_menu(std::shared_ptr<sfg::Window> glowne,
     generuj->GetSignal(sfg::Widget::OnLeftClick).Connect(
         [ile_ludzi_pasek, &muzyka, okno]
     {
-        string nazwa, sciezka_gry = map_generator((int)ile_ludzi_pasek->GetValue(), nazwa);
+        string nazwa, date, sciezka_gry = map_generator((int)ile_ludzi_pasek->GetValue(), nazwa, date);
         Rozgrywka gra = zwarcie_rozgrywka(sciezka_gry);
         Wyswietlacz rysownik(gra);
 

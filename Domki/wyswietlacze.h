@@ -32,6 +32,8 @@ public:
     void Wyswietlaj(sf::RenderWindow& okno);
     void WyswietlTlo(sf::RenderWindow& okno);
 
+    sf::Image StworzMinimape(PD wielkosc);
+
     void UaktualnijWyglad(Twor*);
 
     void Zaladuj(string wybrana_skora);

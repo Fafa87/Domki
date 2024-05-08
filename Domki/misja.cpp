@@ -64,7 +64,8 @@ MisjaUstawienia wczytaj_meta(string sciezka)
 
     ifstream plikmapa;
     plikmapa.open(sciezka);
-    int liczba_domkow, numer_domku, liczba_parametrow;
+
+    int liczba_domkow; // , numer_domku, liczba_parametrow;
     string parametr;
     plikmapa >> liczba_domkow;
 
@@ -93,7 +94,7 @@ void zapis_mapy(const Rozgrywka& konstrukcja, string sciezka) {
     ofstream plikmapy;
     plikmapy.open(sciezka);
 
-    int liczba_domkow = konstrukcja.domki.size(), nr_domku;
+    int liczba_domkow = (int)konstrukcja.domki.size(); // , nr_domku;
 
     plikmapy << liczba_domkow << "\n";
 
@@ -195,6 +196,7 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
     //domki
     ifstream plikmapa;
     plikmapa.open(sciezka);
+
     int liczba_domkow, numer_domku, liczba_parametrow;
     string parametr;
     plikmapa >> liczba_domkow;
@@ -339,6 +341,104 @@ Rozgrywka zwarcie_rozgrywka(string sciezka)
     }
     plikmapa.close();
     return gra;
+}
+
+string map_generator(int liczba_graczy, string &name, string &date) {
+    const string names[3][10] = { {"Super", "Ekstra", "SuperDuper", "Superb", "Hoho", "Okazjonalne", "Zachlanne", "Uknute", "Totalne", "Ostre"},
+                                {"Starcie", "Miazgi", "Kupy", "Masy", "Pojedynki", "Walki", "Maskarady", "Cyrki", "Mordobicie", "Konfrontacje"},
+                                {"Tytanow", "Kozakow", "Krolow", "Leszczy", "Szefow", "Kup", "Szczawi", "Szczurkow", "Bykow", "Czeresniakow"}};
+    Rozgrywka gra;
+    time_t currentTime = time(0);
+    tm* timer = localtime(&currentTime);
+    string sciezka_gry;
+    date = to_string(timer->tm_mday) + "-" + to_string(timer->tm_mon + 1) + "-" + to_string(timer->tm_year + 1900) + " " + to_string(timer->tm_hour) + to_string(timer->tm_min) + to_string(timer->tm_sec);
+    //system(("new-item " + date + " -ItemType Directory").c_str());
+    ifstream test;
+    srand(time(NULL));
+    int name1 = rand() % 10, name2 = name1 * rand() % 10, name3 = name2 * rand() % 10;
+    do {
+        name1 = (name1 + 1) % 10, name2 = (name2 + 3) % 10, name3 = (name3 + 5) % 10;
+        name = "'" + names[0][name1] + " " + names[1][name2] + " " + names[2][name3] + "'";
+        sciezka_gry = "Plansza\\Generator\\" + date + " - " + name + ".txt";
+        test.open(sciezka_gry);
+    }while (test.good());
+
+    sf::Color kolory[] = { sf::Color(255,255,255) , sf::Color(255,0,0), sf::Color(0,0,255), sf::Color(0,255,0),      // 0 - bialy, 1 - czerwony, 2 - niebieski, 3 - zielony
+    sf::Color(255,255,0) , sf::Color(255,128,0), sf::Color(0,255,255), sf::Color(127,0,255),                              // 4 - zolty, 5 - pomaranczowy, 6 - jasnoniebieski, 7- fioletowy
+    sf::Color(255,0,255) , sf::Color(102,0,51), sf::Color(102,102,0), sf::Color(51,25,0),                        // 8 - rozowy, 9 - bordowy, 10 - ciemnozloty, 11 - brazowy
+    sf::Color(255,255,255), };                                                                                                                             // 12 - bialy
+
+    for (int a = 0; a <= 12; a++)
+    {
+        gra.gracze.push_back(Gracz());
+        Gracz& gracz = gra.gracze.back();
+        gracz.numer = a;
+        if (a == 0)gracz.aktywny = false;
+        else if (a == 1)gracz.nazwa = "GRACZ";
+        gracz.kolor = kolory[a];
+    }
+
+
+    const int liczba_domkow_do_wygenerowania = 25;
+    int wygenerowane = 0;
+
+    srand(time(NULL));
+    double x = rand() % 13 + 1, y = (int)x * rand() % 8 + 1;
+    while (wygenerowane < liczba_domkow_do_wygenerowania) {
+        
+        gra.domki.push_back(Domek());
+        Domek& domek = gra.domki.back();
+        domek.produkcja = 2;
+        domek.max_liczebnosc = 100;
+        domek.wyglad = Wyglad::kMiasto;
+        gra.ZmienLiczebnosc(domek, 50);
+        gra.ZmienPoziom(domek, 1);
+        do {
+            x = (int)y * rand() % 13 + 1, y = (int)x * rand() % 8 + 1;
+        } while (gra.Zlokalizuj(100.0 * x, 100.0 * y) != nullptr || gra.CzyTamJestDroga(100.0 * x, 100.0 * y, domek.rozmiar));
+        domek.polozenie = { x * 100.0, y * 100.0};
+        
+        wygenerowane++;
+        domek.gracz = &gra.Graczu(0);
+
+        if (wygenerowane > 1) {
+            auto iterator = gra.domki.end();
+            iterator--;
+            while(iterator != gra.domki.begin() && !gra.CzyMoznaPolaczycDomki(domek, (*iterator))) iterator--;
+            if (iterator == gra.domki.begin() && !gra.CzyMoznaPolaczycDomki(domek, (*iterator))) continue;
+            domek.drogi.push_back(&*iterator);
+            (*iterator).drogi.push_back(&domek);
+        }
+    }
+
+    for (int gracz = 1; gracz <= liczba_graczy; gracz++) {
+        int liczba_domkow_gracza = (liczba_graczy > 7 ? 1 : liczba_graczy > 3 ? 2 : 3), nr_domku = (int)x * rand() % gra.domki.size();
+        while (liczba_domkow_gracza > 0) {
+            while (gra.Domku(nr_domku).gracz != &gra.Graczu(0)) nr_domku = (nr_domku + 1) * rand() % gra.domki.size();
+            gra.Domku(nr_domku).gracz = &gra.Graczu(gracz);
+            gra.Graczu(gracz).liczba_tworow++;
+            liczba_domkow_gracza--;
+        }
+    }
+
+    for (auto& domek : gra.domki) {
+        do {
+            int domek_nr = rand() % gra.domki.size();
+            auto iterator = gra.domki.begin();
+            while (domek_nr) {
+                iterator++;
+                domek_nr--;
+            }
+            if ((*iterator).uid != domek.uid && gra.CzyMoznaPolaczycDomki(domek, (*iterator))) {
+                domek.drogi.push_back(&*iterator);
+                (*iterator).drogi.push_back(&domek);
+            }
+        } while (domek.drogi.size() == 0);
+    }
+
+
+    zapis_mapy(gra, sciezka_gry);
+    return sciezka_gry;
 }
 
 bool odliczanie(int czas)
@@ -544,7 +644,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         {
             printf("FPS: %d\n", fpsy);
             LOG(INFO) << "FPS: " << fpsy;
-            ostatni_pokaz_fps = czas_gry;
+            ostatni_pokaz_fps = (int)czas_gry;
         }
 
         czasomierz = clock();

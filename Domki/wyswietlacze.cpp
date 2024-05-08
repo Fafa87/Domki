@@ -182,6 +182,59 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
     }
 }
 
+inline PD translacja_pozycji(PD polozenie, PD wielkosc_mapy, PD min, PD wielkosc_minimapy) {
+    wielkosc_minimapy = { wielkosc_minimapy.x * 9.0 / 10.0, wielkosc_minimapy.y * 9.0 / 10.0 };
+    PD wynikowe = {wielkosc_minimapy.x / 9.0 + wielkosc_minimapy.x * 8.0 / 9.0 * (polozenie.x - min.x) / wielkosc_mapy.x, wielkosc_minimapy.y / 9.0 + wielkosc_minimapy.y * 8.0 / 9.0 * (polozenie.y - min.y) / wielkosc_mapy.y };
+    return wynikowe;
+}
+
+sf::Image Wyswietlacz::StworzMinimape(PD wielkosc) {
+    sf::Image minimapa;
+    minimapa.create(wielkosc.x, wielkosc.y, sf::Color(140, 255, 140));
+    PD rozrzut, min = { 10000,10000 }, max = { 0, 0 };
+    for (auto dom : rozgrywka.domki) {
+        if (dom.polozenie.x < min.x) min.x = dom.polozenie.x;
+        if (dom.polozenie.x > max.x) max.x = dom.polozenie.x;
+        if (dom.polozenie.y < min.y) min.y = dom.polozenie.y;
+        if (dom.polozenie.y > max.y) max.y = dom.polozenie.y;
+    }
+    PD korekta = { 10 , 10 };
+    rozrzut = { max.x - min.x, max.y - min.y };
+    rozrzut += korekta;
+    for (auto dom : rozgrywka.domki)
+    {
+        PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc);
+        for (auto dokad : dom.drogi) if (dokad->uid < dom.uid) // maluj tylko w jedną stronę
+        {
+            PD dokad_poz = translacja_pozycji(dokad->polozenie, rozrzut, min, wielkosc);
+            for (double i = dom_poz.x, j = dom_poz.y, i_delta = dokad_poz.x - dom_poz.x, j_delta = dokad_poz.y - dom_poz.y, dist = sqrt(i_delta * i_delta + j_delta * j_delta); (abs(dokad_poz.x - i) > 3.0 || abs(dokad_poz.y - j) > 3.0);) {
+                minimapa.setPixel((int)i, (int)j, sf::Color(150, 75, 0));
+                i += i_delta / dist; j += j_delta / dist;
+                /*int width = abs(dokad_poz.x - i), height = abs(dokad_poz.y - j);
+                if (width >= height) i += i_delta;
+                if (width <= height) j += j_delta;*/
+            }
+
+        }
+    }
+    for (auto dom : rozgrywka.domki) {
+        PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc);
+        for(int i = -3; i <= 3; i++)
+           for(int j = -3; j <= 3; j++)
+               minimapa.setPixel(dom_poz.x + i, dom_poz.y + j, dom.gracz->kolor);
+    }
+    for (auto ludek : rozgrywka.armie) {
+        PD ludek_poz = translacja_pozycji(ludek.polozenie, rozrzut, min, wielkosc);
+        float stosunek_ludka_do_domku = ludek.liczebnosc / dynamic_cast<Domek&>(*ludek.skad).liczebnosc;
+        int sila_ludka = (stosunek_ludka_do_domku >= 0.5 ? 2 : 1);
+        for (int i = -sila_ludka; i <= sila_ludka; i++)
+            for (int j = -sila_ludka; j <= sila_ludka; j++)
+                minimapa.setPixel(ludek_poz.x + i, ludek_poz.y + j, ludek.gracz->kolor);
+    }
+
+    return minimapa;
+}
+
 void Wyswietlacz::UaktualnijWyglad(Twor* twor) {
 
     if (IsType<Ludek>(twor)) {

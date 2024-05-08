@@ -228,6 +228,117 @@ Twor * Rozgrywka::Zlokalizuj(int x, int y, int z)
     return najblizszy;
 }
 
+void wyznaczProsta(PD punkt1, PD punkt2, double &A, double &B, double &C) {
+    if (punkt1.x == punkt2.x && punkt1.y == punkt2.y) return;
+    double x_y = punkt1.x - punkt2.x, y_x = punkt1.y - punkt2.y, t, s1, s2;
+    if (x_y != 0.0) {
+        t = -y_x / x_y;
+        s1 = punkt1.x * t + punkt1.y;
+        s2 = punkt2.x * t + punkt2.y;
+        if (abs(s1 - s2) < 0.000001) {
+            B = 1.0;
+            C = -s1;
+            A = B * t;
+        }
+    }
+    else {
+        A = 1.0;
+        B = 0.0;
+        C = -punkt1.x;
+    }
+}
+
+bool wyznaczPrzeciecie(double A, double B, double C, double D, double E, double F, PD& punkt, PD middlePoint = {0, 0}) {
+    if (B * E == 0.0) {
+        if (B == 0.0 && E == 0.0) {
+            punkt.x = -C / A;
+            if (-F / D != punkt.x) return false;
+            else punkt.y = middlePoint.y;
+        }
+        else if (B == 0.0) {
+            punkt.x = -C / A;
+            punkt.y = (-F - D * punkt.x) / E;
+        }
+        else if (E == 0.0) {
+            punkt.x = -F / D;
+            punkt.y = (-C - A * punkt.x) / B;
+        }
+    }
+    else {
+        double t = D / E - A / B, u = C / B - F / E;
+        if (t == 0.0) {
+            if (u == 0.0)
+                punkt.x = middlePoint.x;
+            else return false;
+        }
+        else punkt.x = u / t;
+        punkt.y = -(C / B + A / B * punkt.x);
+    }
+}
+
+bool Rozgrywka::CzyTamJestDroga(int x, int y, double odleglosc) {
+    for(auto &domek1 : domki)
+        for (auto& domek2 : domek1.drogi) {
+            double A, B, C, D, E, F;
+            PD punktX;
+            wyznaczProsta(domek1.polozenie, domek2->polozenie, A, B, C);
+
+            if (B == 0.0) {
+                D = 0.0;
+                E = 1.0;
+                F = -(double)y;
+            }
+            else if(A == 0.0){
+                D = 1.0;
+                E = 0.0;
+                F = -(double)x;
+            }
+            else {
+                D = - B / A;
+                E = 1.0;
+                F = -(D * (double)x + E * (double)y);
+            }
+
+            wyznaczPrzeciecie(A, B, C, D, E, F, punktX);
+
+            double odleglosc_od_drogi = sqrt((punktX.x - (double)x) * (punktX.x - (double)x) + (punktX.y - (double)y) * (punktX.y - (double)y));
+            
+            if (odleglosc_od_drogi <= odleglosc) return true;
+       }
+    return false;
+}
+
+bool Rozgrywka::CzyMoznaPolaczycDomki(Domek& domek1, Domek& domek2) {
+    if (&domek1 == &domek2) return false;
+    for (auto domek : domek1.drogi) {
+        if (domek == &domek2) return false;
+    }
+    PD pointA = domek1.polozenie, pointB = domek2.polozenie, pointX;
+    double A, B, C, D, E, F;
+    if (pointA.x == pointB.y && pointA.y == pointB.y) return false;
+    wyznaczProsta(pointA, pointB, A, B, C);
+
+    for (auto& domek3 : domki) {
+        for(auto& domek4: domek3.drogi)
+            if (domek3.uid < domek4->uid) {
+                PD pointC = domek3.polozenie, pointD = domek4->polozenie;
+
+                wyznaczProsta(pointC, pointD, D, E, F);
+
+                if (!wyznaczPrzeciecie(A, B, C, D, E, F, pointX, {min(max(pointA.y, pointB.y), max(pointC.y, pointD.y)), min(max(pointA.y, pointB.y), max(pointC.y, pointD.y))})) continue;
+
+                if ((pointX == pointA || pointX == pointB) && (pointX == pointC || pointX == pointD)) continue;
+                if (pointX.x >= min(pointA.x, pointB.x) - domek1.rozmiar && pointX.y >= min(pointA.y, pointB.y) - domek1.rozmiar &&
+                    pointX.x <= max(pointA.x, pointB.x) + domek1.rozmiar && pointX.y <= max(pointA.y, pointB.y) + domek1.rozmiar &&
+                    pointX.x >= min(pointC.x, pointD.x) - domek1.rozmiar && pointX.y >= min(pointC.y, pointD.y) - domek1.rozmiar &&
+                    pointX.x <= max(pointC.x, pointD.x) + domek1.rozmiar && pointX.y <= max(pointC.y, pointD.y) + domek1.rozmiar) return false;
+                
+               }
+    }
+
+    return true;
+}
+
 double Rozgrywka::PoliczAtakDomku(const Domek & domek, int liczba)
 {
     if (liczba == -1)

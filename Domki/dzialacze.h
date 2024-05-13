@@ -89,7 +89,7 @@ public:
 class MyszDecydent : public Decydent
 {
 public:
-    MyszDecydent(sf::RenderWindow& okno, Rozgrywka& rozgrywka, Gracz& gracz);
+    MyszDecydent(sf::RenderWindow& okno, Rozgrywka& rozgrywka, Gracz& gracz, sf::View& defaultView);
     void Klik(double x, double y);
 
     virtual void Przetworz() {}
@@ -97,6 +97,8 @@ public:
     void Skupienie();
 
     virtual vector<Rozkaz*> WykonajRuch();
+
+    sf::View widok;
 
     bool kontrola = false;
     map<Domek*, Domek*> punkty_kontrolne;

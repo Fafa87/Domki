@@ -4,7 +4,7 @@
 #include<ctime>
 #include<cmath>
 
-MyszDecydent::MyszDecydent(sf::RenderWindow & okno, Rozgrywka & rozgrywka, Gracz & gracz) : okno(okno), rozgrywka(rozgrywka), gracz(gracz)
+MyszDecydent::MyszDecydent(sf::RenderWindow & okno, Rozgrywka & rozgrywka, Gracz & gracz, sf::View& defaultView) : okno(okno), rozgrywka(rozgrywka), gracz(gracz), widok(defaultView)
 {
 }
 

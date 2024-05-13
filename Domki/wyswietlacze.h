@@ -30,9 +30,10 @@ class Wyswietlacz
 public:
     Wyswietlacz(Rozgrywka& rozgrywka);
     void Wyswietlaj(sf::RenderWindow& okno);
-    void WyswietlTlo(sf::RenderWindow& okno);
+    void WyswietlTlo(sf::RenderWindow& okno, sf::View& widok);
 
     sf::Image StworzMinimape(PD wielkosc);
+    sf::View ProstyWidokMapy();
 
     void UaktualnijWyglad(Twor*);
 

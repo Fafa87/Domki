@@ -518,7 +518,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     Wyswietlacz wyswietlacz(rozgrywka);
     if (!to_serwer)
         wyswietlacz.Zaladuj(misja_ustawienia.skorka);
-    MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Graczu(nr_gracza));
+    MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Graczu(nr_gracza), wyswietlacz.ProstyWidokMapy());
     OznaczaczWyborow ruchGracza(myszkaGracza);
     Muzykant muzykant(rozgrywka);
     muzykant.Zaladuj(misja_ustawienia.skorka);
@@ -554,7 +554,6 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     ruszacz.szybkosc *= predkosc;
     
     shared_ptr<sfg::Window> interfejs;
-    sf::View view;
     if (!to_serwer)
     {
         interfejs = interfejs_rozgrywki(nullptr, misja_ustawienia, rozgrywka, wyswietlacz, nullptr, nullptr);
@@ -565,11 +564,11 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         }
         else
         {
-            view = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
-            window.setView(view);
+            myszkaGracza.widok = wysrodkowany_widok(rozgrywka.domki, interfejs->GetAllocation().height);
+            window.setView(myszkaGracza.widok);
             if (!GUI::aplikacja().ini.GetBoolean("przelaczniki", "pomin_odliczanie", true))
             {
-                gotowe_do_rozpoczecia = odliczanie(4, wyswietlacz, view, interfejs, ruszacz);
+                gotowe_do_rozpoczecia = odliczanie(4, wyswietlacz, myszkaGracza.widok, interfejs, ruszacz);
                 if (!gotowe_do_rozpoczecia)
                     LOG(WARNING) << "Nie doczekal sie rozpoczecia na serwerze.";
             }
@@ -667,8 +666,8 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         if (!to_serwer)
         {
             interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek(), myszkaGracza.skupiony);
-            GUI::aplikacja().show_bottom_gui(view, interfejs);
-            wyswietlacz.WyswietlTlo(window);
+            GUI::aplikacja().show_bottom_gui(myszkaGracza.widok, interfejs);
+            wyswietlacz.WyswietlTlo(window, myszkaGracza.widok);
         }
 
         czas_gry = (double)(clock() - start_gry) / CLOCKS_PER_SEC;
@@ -687,7 +686,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
 
             if (!to_serwer)
             {
-                GUI::aplikacja().finish_viewport_render(view);
+                GUI::aplikacja().finish_viewport_render(myszkaGracza.widok);
                 if (interfejs != nullptr)
                     GUI::aplikacja().remove_active_window(interfejs);
             }
@@ -714,7 +713,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
     }
 
     if (!to_serwer)
-        GUI::aplikacja().finish_viewport_render(view);
+        GUI::aplikacja().finish_viewport_render(myszkaGracza.widok);
 
     GUI::aplikacja().reset_view();
 

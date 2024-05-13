@@ -152,10 +152,12 @@ sf::RectangleShape Wyswietlacz::PobierzWyglad(Twor * twor)
     return sf::RectangleShape();
 }
 
-void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
+void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno, sf::View& widok)
 {
     sf::Sprite wyglad_tlo(obrazek_tla);
-    wyglad_tlo.setTextureRect({ 0, 0, 1600, 900 });
+    sf::Vector2f widok_center = widok.getCenter(), widok_size = widok.getSize();
+
+    wyglad_tlo.setTextureRect({(int)(widok_center.x - widok_size.x/2.0), (int)(widok_center.y-widok_size.y/2.0), (int)(widok_size.x), (int)(widok_size.y)});
     okno.draw(wyglad_tlo);
 
     // namaluj drogi
@@ -233,6 +235,10 @@ sf::Image Wyswietlacz::StworzMinimape(PD wielkosc) {
     }
 
     return minimapa;
+}
+
+sf::View Wyswietlacz::ProstyWidokMapy() {
+    return sf::View({ 0, 0, 1600, 900 });
 }
 
 void Wyswietlacz::UaktualnijWyglad(Twor* twor) {

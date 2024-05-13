@@ -383,7 +383,12 @@ string map_generator(int liczba_graczy, string &name, string &date) {
     int wygenerowane = 0;
 
     srand(time(NULL));
-    double x = rand() % 13 + 1, y = (int)x * rand() % 8 + 1;
+    int nr_pozycji = rand() % 13 * 8, x, y;
+    list<pair<int, int>> pozycje;
+    for (int i = 1; i <= 13; i++)
+        for (int j = 1; j <= 8; j++)
+            pozycje.push_back(make_pair(i, j));
+
     while (wygenerowane < liczba_domkow_do_wygenerowania) {
         
         gra.domki.push_back(Domek());
@@ -394,20 +399,46 @@ string map_generator(int liczba_graczy, string &name, string &date) {
         gra.ZmienLiczebnosc(domek, 50);
         gra.ZmienPoziom(domek, 1);
         do {
-            x = (int)y * rand() % 13 + 1, y = (int)x * rand() % 8 + 1;
+            nr_pozycji = (nr_pozycji * rand() + 3) % pozycje.size();
+            x = (*next(pozycje.begin(), nr_pozycji)).first;
+            y = (*next(pozycje.begin(), nr_pozycji)).second;
         } while (gra.Zlokalizuj(100.0 * x, 100.0 * y) != nullptr || gra.CzyTamJestDroga(100.0 * x, 100.0 * y, domek.rozmiar));
         domek.polozenie = { x * 100.0, y * 100.0};
+
+        pozycje.erase(next(pozycje.begin(), nr_pozycji));
         
         wygenerowane++;
         domek.gracz = &gra.Graczu(0);
 
         if (wygenerowane > 1) {
-            auto iterator = gra.domki.end();
-            iterator--;
-            while(iterator != gra.domki.begin() && !gra.CzyMoznaPolaczycDomki(domek, (*iterator))) iterator--;
-            if (iterator == gra.domki.begin() && !gra.CzyMoznaPolaczycDomki(domek, (*iterator))) continue;
-            domek.drogi.push_back(&*iterator);
-            (*iterator).drogi.push_back(&domek);
+            list<Domek*> potencjalne_polaczenia;
+            for (auto iterator = gra.domki.begin(); iterator != gra.domki.end(); iterator++) {
+                if (gra.CzyMoznaPolaczycDomki(domek, *iterator)) potencjalne_polaczenia.push_back(&*iterator);
+            }
+
+            if (potencjalne_polaczenia.size() == 0) continue;
+            Domek* laczony = potencjalne_polaczenia.front();
+            double minimalna_odleglosc = gra.Odleglosc(*laczony, domek);
+
+            for (auto iterator = potencjalne_polaczenia.begin(); iterator != potencjalne_polaczenia.end(); iterator++) {
+                if (gra.Odleglosc(**iterator, domek) < minimalna_odleglosc) {
+                    minimalna_odleglosc = gra.Odleglosc(**iterator, domek);
+                    laczony = *iterator;
+                }
+            }
+
+            gra.PolaczDomki(domek, *laczony);
+
+            for (auto iterator = pozycje.begin(); iterator != pozycje.end();) {
+                x = (*iterator).first;
+                y = (*iterator).second;
+                if (gra.CzyTamJestDroga(100.0 * x, 100.0 * y, domek.rozmiar)) {
+                    auto del = iterator;
+                    iterator++;
+                    pozycje.erase(del);
+                }
+                else iterator++;
+            }
         }
     }
 
@@ -422,18 +453,23 @@ string map_generator(int liczba_graczy, string &name, string &date) {
     }
 
     for (auto& domek : gra.domki) {
-        do {
-            int domek_nr = rand() % gra.domki.size();
-            auto iterator = gra.domki.begin();
-            while (domek_nr) {
-                iterator++;
-                domek_nr--;
+        list<Domek*> potencjalne_polaczenia;
+        for (auto iterator = gra.domki.begin(); iterator != gra.domki.end(); iterator++) {
+            if (gra.CzyMoznaPolaczycDomki(domek, *iterator)) potencjalne_polaczenia.push_back(&*iterator);
+        }
+
+        if (potencjalne_polaczenia.size() == 0) continue;
+        Domek* laczony = potencjalne_polaczenia.front();
+        double minimalna_odleglosc = gra.Odleglosc(*laczony, domek);
+
+        for (auto iterator = potencjalne_polaczenia.begin(); iterator != potencjalne_polaczenia.end(); iterator++) {
+            if (gra.Odleglosc(**iterator, domek) < minimalna_odleglosc) {
+                minimalna_odleglosc = gra.Odleglosc(**iterator, domek);
+                laczony = *iterator;
             }
-            if ((*iterator).uid != domek.uid && gra.CzyMoznaPolaczycDomki(domek, (*iterator))) {
-                domek.drogi.push_back(&*iterator);
-                (*iterator).drogi.push_back(&domek);
-            }
-        } while (domek.drogi.size() == 0);
+        }
+
+        gra.PolaczDomki(domek, *laczony);
     }
 
 

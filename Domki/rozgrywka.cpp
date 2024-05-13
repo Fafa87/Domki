@@ -276,6 +276,15 @@ bool wyznaczPrzeciecie(double A, double B, double C, double D, double E, double 
     }
 }
 
+bool Rozgrywka::PolaczDomki(Domek& domek1, Domek& domek2) {
+    if (CzyMoznaPolaczycDomki(domek1, domek2)) {
+        domek1.drogi.push_back(&domek2);
+        domek2.drogi.push_back(&domek1);
+        return true;
+    }
+    return false;
+}
+
 bool Rozgrywka::CzyTamJestDroga(int x, int y, double odleglosc) {
     for(auto &domek1 : domki)
         for (auto& domek2 : domek1.drogi) {

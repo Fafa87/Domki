@@ -367,10 +367,7 @@ void DecydentEdytor::Wykonaj() {
 				if (drogowy == drugi) P = drugi;
 			for (Domek* drogowy : drugi->drogi)
 				if (drogowy == pierwszy) D = pierwszy;
-			if (P == NULL && D == NULL) {
-				pierwszy->drogi.push_back(drugi);
-				drugi->drogi.push_back(pierwszy);
-			}
+            if (P == NULL && D == NULL) rozgrywka.PolaczDomki(*pierwszy, *drugi);
         }
 
         pierwszy = NULL;

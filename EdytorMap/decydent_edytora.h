@@ -4,6 +4,8 @@
 #include "../Domki/misja.h"
 #include "../Domki/os.h"
 
+#include "Thor/Shapes/Arrow.hpp"
+
 #include <iterator>
 
 class DecydentEdytor {
@@ -28,6 +30,8 @@ public:
 
     void Przetworz(sf::Event zdarzenie);
     void Wykonaj();
+
+    void rysuj_strzalke(sf::View widok);
 
 private:
     sf::RenderWindow & okno;

@@ -207,6 +207,7 @@ void GUI::remove_active_window(shared_ptr<sfg::Window> window)
     pulpit.Remove(window);
     window->Show(false);
     remove_item(windows, window);
+    window.reset();
 }
 
 void GUI::show_all_windows()

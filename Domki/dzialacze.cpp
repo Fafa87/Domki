@@ -4,7 +4,7 @@
 #include<ctime>
 #include<cmath>
 
-MyszDecydent::MyszDecydent(sf::RenderWindow & okno, Rozgrywka & rozgrywka, Gracz & gracz, sf::View& defaultView) : okno(okno), rozgrywka(rozgrywka), gracz(gracz), widok(defaultView)
+MyszDecydent::MyszDecydent(sf::RenderWindow & okno, Rozgrywka & rozgrywka, Gracz & gracz) : okno(okno), rozgrywka(rozgrywka), gracz(gracz)
 {
 }
 
@@ -132,8 +132,16 @@ void MyszDecydent::Przetworz(sf::Event zdarzenie)
         }
         else if (zdarzenie.key.code == sf::Keyboard::Add)nacisniety = '+';
         else if (zdarzenie.key.code == sf::Keyboard::Subtract)nacisniety = '-';
+
+        if (zdarzenie.key.code == sf::Keyboard::Up) nacisniety = 'W';
+        else if (zdarzenie.key.code == sf::Keyboard::Down) nacisniety = 'S';
+        else if (zdarzenie.key.code == sf::Keyboard::Left) nacisniety = 'A';
+        else if (zdarzenie.key.code == sf::Keyboard::Right) nacisniety = 'D';
     }
-    
+    else if (zdarzenie.type == sf::Event::MouseWheelMoved) {
+        nacisniety = 'X';
+        tykiKolaMyszy = zdarzenie.mouseWheel.delta;
+    }
 }
 
 void MyszDecydent::Skupienie() {
@@ -304,6 +312,7 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         }
     }
 
+
     if (nacisniety != 0 && wybrany != nullptr)
     {
         switch (nacisniety)
@@ -334,7 +343,8 @@ vector<Rozkaz*> MyszDecydent::WykonajRuch()
         nacisniety = 0;
     }
     else if (nacisniety != 0) {
-        res.push_back(new AktualizujPredkosc(nacisniety, gracz));
+        if(nacisniety != '+' && nacisniety != '-') res.push_back(new ZmianaWidoku(nacisniety, gracz, widok, bazowy, okno.mapPixelToCoords(sf::Mouse::getPosition(okno)), tykiKolaMyszy));
+        else res.push_back(new AktualizujPredkosc(nacisniety, gracz));
         nacisniety = 0;
     }
     return res;
@@ -455,6 +465,52 @@ void Ruszacz::WykonajRuchy()
             if (aktualizuj->wteczywewte == '+')szybkosc+=1.0;
             else if(szybkosc>1.0)szybkosc -= 1.0;
 
+        }
+        else if (IsType<ZmianaWidoku>(r)) {
+            auto zmiana = (ZmianaWidoku*)r;
+            sf::View& widok = zmiana->widok, & bazowy = zmiana->bazowy;
+            sf::Vector2f dziesiata_czesc = { (float)(bazowy.getSize().x / 10.0), (float)(bazowy.getSize().y / 10.0) }, kursor = zmiana->kursor,
+                minimalny = widok.getSize(), maksymalny = bazowy.getSize() - widok.getSize();
+            kursor.x = max(min(bazowy.getSize().x - widok.getSize().x / 2.f, kursor.x), widok.getSize().x / 2.f);
+            kursor.y = max(min(bazowy.getSize().y - widok.getSize().y / 2.f, kursor.y), widok.getSize().y / 2.f);
+            if (zmiana->kierunek == 'X') {
+                int tikiKola = zmiana->liczba_klikow_kola;
+
+                int czesc_widoku = (int)(widok.getSize().x / dziesiata_czesc.x);
+                tikiKola = (tikiKola >= 0 ? min(10 - czesc_widoku, tikiKola) : max(1 - czesc_widoku, tikiKola));
+
+                sf::Vector2f przesuniecie = (tikiKola >= 0 ? bazowy.getCenter() : kursor) - widok.getCenter(), zmiana_rozmiaru = dziesiata_czesc * (float)tikiKola;
+
+                int x = (signbit(przesuniecie.x) ? -1 : 1), y = (signbit(przesuniecie.y) ? -1 : 1);
+
+                if (sqrt(przesuniecie.x * przesuniecie.x + przesuniecie.y * przesuniecie.y) > abs((float)tikiKola) * sqrt(dziesiata_czesc.x * dziesiata_czesc.x + dziesiata_czesc.y * dziesiata_czesc.y)) {
+                    przesuniecie = { (signbit(przesuniecie.x) ? -1 : 1) * dziesiata_czesc.x, (signbit(przesuniecie.y) ? -1 : 1) * dziesiata_czesc.y };
+                    przesuniecie *= abs((float)tikiKola);
+                }
+
+                widok.setSize(widok.getSize() + zmiana_rozmiaru);
+                widok.move(przesuniecie);
+            }
+            else {
+                sf::Vector2f minimalny = widok.getSize() / 2.f, maxymalny = bazowy.getSize() - widok.getSize() / 2.f;
+                if (zmiana->kierunek == 'W') {
+                    if (widok.getCenter().y - dziesiata_czesc.y <= minimalny.y) widok.setCenter(widok.getCenter().x, minimalny.y);
+                    else widok.move({ 0.f, -dziesiata_czesc.y });
+                }
+                if (zmiana->kierunek == 'S') {
+                    if (widok.getCenter().y + dziesiata_czesc.y >= maxymalny.y) widok.setCenter(widok.getCenter().x, maxymalny.y);
+                    else widok.move({ 0.f, dziesiata_czesc.y });
+                    }
+                if (zmiana->kierunek == 'A') {
+                    if (widok.getCenter().x - dziesiata_czesc.x <= minimalny.x) widok.setCenter(minimalny.x, widok.getCenter().y);
+                    else widok.move({ -dziesiata_czesc.x, 0.f });
+                    }
+                if (zmiana->kierunek == 'D' ) {
+                    if (widok.getCenter().x + dziesiata_czesc.x >= maxymalny.x) widok.setCenter(maxymalny.x, widok.getCenter().y);
+                    else widok.move({ dziesiata_czesc.x, 0.f });
+                    }
+                
+            }
         }
         else if (IsType<CofajLudka>(r))//rozkaz cofania
         {
@@ -716,6 +772,10 @@ CofajLudka::CofajLudka()
 }
 
 CofajLudka::CofajLudka(Ludek* cofany, Gracz& cofajacy) : Rozkaz(&cofajacy), cofany(cofany)
+{
+}
+
+ZmianaWidoku::ZmianaWidoku(char kierunek, Gracz& kto_taki_cwany, sf::View& widok, sf::View& bazowy, sf::Vector2f kursor, int liczba_klikow) : Rozkaz(&kto_taki_cwany), kierunek(kierunek), widok(widok), bazowy(bazowy), kursor(kursor), liczba_klikow_kola(liczba_klikow)
 {
 }
 

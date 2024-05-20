@@ -355,7 +355,7 @@ bool odliczanie(int czas, Wyswietlacz& wyswietlacz, sf::View widok, std::shared_
 
         okno.clear();
 
-        wyswietlacz.WyswietlTlo(okno, widok);
+        wyswietlacz.WyswietlTlo(okno, widok, &widok);
         int sekundy = (int)czas_pozostaly;
         if (czas_pozostaly > 1.0) odliczanie_etykieta->SetText(std::to_string(sekundy));
         else if (czas_pozostaly >= 0.0) odliczanie_etykieta->SetText("RUSZAJ!");

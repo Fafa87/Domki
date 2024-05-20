@@ -154,7 +154,24 @@ void MyszDecydent::Skupienie() {
 vector<Rozkaz*> MyszDecydent::WykonajRuch()
 {
     vector<Rozkaz*> res;
+    //PRZESUWANIE MAPY KURSOREM
+    sf::Vector2i pixelPos = sf::Mouse::getPosition(okno);
+    auto polozenie_kursora = okno.mapPixelToCoords(pixelPos);
 
+    sf::Vector2f min_rog = widok.getCenter() - widok.getSize() / 2.f, max_rog = widok.getCenter() + widok.getSize() / 2.f, dziesiata_czesc = { (float)(widok.getSize().x / 10.0), (float)(widok.getSize().y / 10.0) };
+
+    static clock_t clocker = clock();
+
+    double x_time = ((double)(clock() - clocker)) / CLOCKS_PER_SEC;
+
+    if (x_time >= 0.2) {
+        if (abs(polozenie_kursora.y - min_rog.y) < dziesiata_czesc.y) res.push_back(new ZmianaWidoku('W', gracz, widok, bazowy, polozenie_kursora));
+        if (abs(polozenie_kursora.y - max_rog.y) < dziesiata_czesc.y) res.push_back(new ZmianaWidoku('S', gracz, widok, bazowy, polozenie_kursora));
+        if (abs(polozenie_kursora.x - min_rog.x) < dziesiata_czesc.x) res.push_back(new ZmianaWidoku('A', gracz, widok, bazowy, polozenie_kursora));
+        if (abs(polozenie_kursora.x - max_rog.x) < dziesiata_czesc.x) res.push_back(new ZmianaWidoku('D', gracz, widok, bazowy, polozenie_kursora));
+        clocker = clock();
+    }
+    //
     if (rozgrywka.punkty_kontrolne&&wybrany != nullptr) {
         for (auto punkt = punkty_kontrolne.begin(); punkt != punkty_kontrolne.end();punkt++) {
             if (wybrany == (*punkt).first) {
@@ -469,17 +486,17 @@ void Ruszacz::WykonajRuchy()
         else if (IsType<ZmianaWidoku>(r)) {
             auto zmiana = (ZmianaWidoku*)r;
             sf::View& widok = zmiana->widok, & bazowy = zmiana->bazowy;
-            sf::Vector2f dziesiata_czesc = { (float)(bazowy.getSize().x / 10.0), (float)(bazowy.getSize().y / 10.0) }, kursor = zmiana->kursor,
+            sf::Vector2f dziesiata_czesc = { (float)(widok.getSize().x / 10.0), (float)(widok.getSize().y / 10.0) }, kursor = zmiana->kursor,
                 minimalny = widok.getSize(), maksymalny = bazowy.getSize() - widok.getSize();
             kursor.x = max(min(bazowy.getSize().x - widok.getSize().x / 2.f, kursor.x), widok.getSize().x / 2.f);
             kursor.y = max(min(bazowy.getSize().y - widok.getSize().y / 2.f, kursor.y), widok.getSize().y / 2.f);
             if (zmiana->kierunek == 'X') {
                 int tikiKola = zmiana->liczba_klikow_kola;
 
-                int czesc_widoku = (int)(widok.getSize().x / dziesiata_czesc.x);
+                int czesc_widoku = (int)(widok.getSize().x / (bazowy.getSize().x / 10.f));
                 tikiKola = (tikiKola >= 0 ? min(10 - czesc_widoku, tikiKola) : max(1 - czesc_widoku, tikiKola));
 
-                sf::Vector2f przesuniecie = (tikiKola >= 0 ? bazowy.getCenter() : kursor) - widok.getCenter(), zmiana_rozmiaru = dziesiata_czesc * (float)tikiKola;
+                sf::Vector2f przesuniecie = (tikiKola < 0 ? kursor : bazowy.getCenter()) - widok.getCenter(), zmiana_rozmiaru = (bazowy.getSize() / 10.f) * (float)tikiKola;
 
                 int x = (signbit(przesuniecie.x) ? -1 : 1), y = (signbit(przesuniecie.y) ? -1 : 1);
 

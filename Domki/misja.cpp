@@ -705,7 +705,7 @@ int misja(MisjaUstawienia& misja_ustawienia, Ruszacz& ruszacz)
         {
             interfejs = interfejs_rozgrywki(interfejs, misja_ustawienia, rozgrywka, wyswietlacz, ruchGracza.WybranyDomek(), myszkaGracza.skupiony);
             GUI::aplikacja().show_bottom_gui(myszkaGracza.widok, interfejs);
-            wyswietlacz.WyswietlTlo(window, myszkaGracza.bazowy);
+            wyswietlacz.WyswietlTlo(window, myszkaGracza.bazowy, &myszkaGracza.widok);
         }
 
         czas_gry = (double)(clock() - start_gry) / CLOCKS_PER_SEC;

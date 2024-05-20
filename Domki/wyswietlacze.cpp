@@ -154,11 +154,12 @@ sf::RectangleShape Wyswietlacz::PobierzWyglad(Twor * twor)
     return sf::RectangleShape();
 }
 
-void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno, sf::View& nowy_widok)
+void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno, sf::View& tlo, sf::View* nowy_widok = nullptr)
 {
     sf::Sprite wyglad_tlo(obrazek_tla);
-    widok = &nowy_widok;
-    sf::Vector2f widok_center = widok->getCenter(), widok_size = widok->getSize();
+    if(nowy_widok != nullptr)
+        widok = nowy_widok;
+    sf::Vector2f widok_center = tlo.getCenter(), widok_size = tlo.getSize();
     
     wyglad_tlo.setTextureRect({ (int)(widok_center.x - widok_size.x / 2.0), (int)(widok_center.y - widok_size.y / 2.0), (int)(widok_size.x), (int)(widok_size.y) });
     okno.draw(wyglad_tlo);
@@ -239,7 +240,7 @@ sf::Image Wyswietlacz::StworzMinimape(PD wielkosc) {
         for (int i = min_rog.x, j = min_rog.y; i <= max_rog.x; i++) minimapa.setPixel(std::max(std::min((int)wielkosc.x - 1, i), 0), std::max(std::min((int)wielkosc.y - 1, j), 0),  sf::Color(213, 181, 110));
         for (int i = max_rog.x, j = min_rog.y; j <= max_rog.y; j++) minimapa.setPixel(std::max(std::min((int)wielkosc.x - 1, i), 0), std::max(std::min((int)wielkosc.y - 1, j), 0), sf::Color(213, 181, 110));
         for (int i = max_rog.x, j = max_rog.y; i >= min_rog.x; i--) minimapa.setPixel(std::max(std::min((int)wielkosc.x - 1, i), 0), std::max(std::min((int)wielkosc.y - 1, j), 0), sf::Color(213, 181, 110));
-        for (int i = min_rog.x, j = max_rog.y; j >= min_rog.x; j--) minimapa.setPixel(std::max(std::min((int)wielkosc.x - 1, i), 0), std::max(std::min((int)wielkosc.y - 1, j), 0), sf::Color(213, 181, 110));
+        for (int i = min_rog.x, j = max_rog.y; j >= min_rog.y; j--) minimapa.setPixel(std::max(std::min((int)wielkosc.x - 1, i), 0), std::max(std::min((int)wielkosc.y - 1, j), 0), sf::Color(213, 181, 110));
     }
 
     return minimapa;

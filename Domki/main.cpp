@@ -224,6 +224,10 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
 
     sf::Image minimapa_obraz = rysownik.StworzMinimape({ 320, 180 });
     std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa-menu"))->SetImage(minimapa_obraz);
+    auto lista_map = box->GetWidgetsByClass("minimapa-menu");
+    for (auto iter = lista_map.begin(); iter != lista_map.end(); iter++) {
+        std::static_pointer_cast<sfg::Image>(*iter)->SetImage(minimapa_obraz);
+    }
 
     box->GetWidgetById("misja-nazwa")->GetSignal(sfg::ComboBox::OnSelect).Connect([kontrolki, box]
     {
@@ -233,6 +237,10 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
 
         sf::Image minimapa_obraz = rysownik.StworzMinimape({ 320, 180 });
         std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa-menu"))->SetImage(minimapa_obraz);
+        auto lista_map = box->GetWidgetsByClass("minimapa-menu");
+        for (auto iter = lista_map.begin(); iter != lista_map.end(); iter++) {
+            std::static_pointer_cast<sfg::Image>(*iter)->SetImage(minimapa_obraz);
+        }
     });
 
     box->GetWidgetById("misja-grupa")->GetSignal(sfg::ComboBox::OnSelect).Connect(
@@ -243,6 +251,10 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
 
         sf::Image minimapa_obraz = rysownik.StworzMinimape({ 320, 180 });
         std::static_pointer_cast<sfg::Image>(box->GetWidgetById("minimapa-menu"))->SetImage(minimapa_obraz);
+        auto lista_map = box->GetWidgetsByClass("minimapa-menu");
+        for (auto iter = lista_map.begin(); iter != lista_map.end(); iter++) {
+            std::static_pointer_cast<sfg::Image>(*iter)->SetImage(minimapa_obraz);
+        }
     });
 
 
@@ -271,8 +283,9 @@ std::shared_ptr<sfg::Window> pojedynczy_gracz_menu(std::shared_ptr<sfg::Window> 
     
     auto powrot = sfg::Button::Create(L"Powrót");
     powrot->GetSignal(sfg::Widget::OnLeftClick).Connect(
-        [okno] {
+        [okno, box] {
         GUI::aplikacja().pop_active_window(okno);
+        //(box->GetWidgetById("minimapa-menu"))->SetId("suckIT");
     });
     box->Pack(sfg::Separator::Create(), false, false);
     box->Pack(uruchom, false, false);

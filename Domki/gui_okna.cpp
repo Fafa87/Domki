@@ -50,13 +50,13 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
         this->misja_grupa->SetId("misja-grupa");
         for (auto l : wczytaj_liste_folderow("Plansza"))
             this->misja_grupa->AppendItem(l);
-        this->misja_grupa->SelectItem(2);
+        this->misja_grupa->SelectItem(0);
 
         this->misja_nazwa = sfg::ComboBox::Create();
         this->misja_nazwa->SetId("misja-nazwa");
         for (auto l : wczytaj_liste_plansz("Plansza\\" + this->misja_grupa->GetSelectedText()))
             this->misja_nazwa->AppendItem(l);
-        this->misja_nazwa->SelectItem(2);
+        this->misja_nazwa->SelectItem(0);
 
         this->misja_grupa->GetSignal(sfg::ComboBox::OnSelect).Connect([this]
         {
@@ -138,6 +138,7 @@ void WyborMisjiKontrolki::DodajZestaw(shared_ptr<sfg::Box> box)
         sf::Image minimapa_obraz;
         minimapa->SetImage(minimapa_obraz);
         minimapa->SetId("minimapa-menu");
+        minimapa->SetClass("minimapa-menu");
         tabelka->Attach(minimapa, sf::Rect<sf::Uint32>(1, row_top++, 2, 1));
     }
     if (opcja_kampania)

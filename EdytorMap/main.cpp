@@ -69,17 +69,11 @@ int buduj_mape()
     Wyswietlacz wyswietlacz(rozgrywka);
     wyswietlacz.Zaladuj("rycerze_hd");
 
-    MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Graczu(1));//ZMIANA KLIKACZ
+    MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Graczu(1), wyswietlacz.ProstyWidokMapy());//ZMIANA KLIKACZ
 
     DecydentEdytor decedek(window, rozgrywka);
 
     std::shared_ptr<sfg::Window> gujak = pokazowy_interfejs(nullptr, ustawienia, rozgrywka, wyswietlacz, nullptr, nullptr);
-    sf::View view = sf::View(sf::FloatRect(0, 0, 1600, 900));
-    window.setView(view);
-
-    Ruszacz ruszacz;
-    ruszacz.rozgrywka = &rozgrywka;
-    ruszacz.szybkosc *= 0.0001;
 
     //czasomierz
     auto czasomierz = clock();
@@ -118,15 +112,16 @@ int buduj_mape()
                 window.close();
         }
 
-        ruszacz.Ruszaj(0.0001);
-
         window.clear();
 
         pokazowy_interfejs(gujak, ustawienia, rozgrywka, wyswietlacz, (decedek.tworzony.liczebnosc > -1 ? &decedek.tworzony : NULL) , decedek.wybrany);
 
-        GUI::aplikacja().show_bottom_gui(view, gujak);
+        GUI::aplikacja().show_bottom_gui(myszkaGracza.widok, gujak);
 
-        wyswietlacz.WyswietlTlo(window);
+        wyswietlacz.WyswietlTlo(window, myszkaGracza.widok);
+
+        decedek.rysuj_strzalke(myszkaGracza.widok);
+
         wyswietlacz.Wyswietlaj(window);
 
         GUI::aplikacja().okno.display();

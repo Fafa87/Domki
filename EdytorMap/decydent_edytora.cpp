@@ -367,13 +367,10 @@ void DecydentEdytor::Wykonaj() {
 				if (drogowy == drugi) P = drugi;
 			for (Domek* drogowy : drugi->drogi)
 				if (drogowy == pierwszy) D = pierwszy;
-			if (P == NULL && D == NULL) {
-				pierwszy->drogi.push_back(drugi);
-				drugi->drogi.push_back(pierwszy);
-			}
+            if (P == NULL && D == NULL) rozgrywka.PolaczDomki(*pierwszy, *drugi);
         }
 
-        pierwszy = NULL;
+        pierwszy = drugi;
         drugi = NULL;
     }
     if (tworzony.liczebnosc != -1 && tworz) {
@@ -387,5 +384,16 @@ void DecydentEdytor::Wykonaj() {
         tworz = false;
     }
     else if (tworzony.liczebnosc != -1 && ladowanie_ludkow && (double)(clock() - ladowanie_ludkow) / CLOCKS_PER_SEC > 0.5) tworzony.liczebnosc += ((double)(clock() - ladowanie_ludkow) / CLOCKS_PER_SEC - 0.5) * tworzony.max_liczebnosc;
+}
+
+void DecydentEdytor::rysuj_strzalke(sf::View widok) {
+    if (pierwszy != NULL && laczenie_miast) {
+        auto pixelPos = sf::Mouse::getPosition(okno);
+        auto start = sf::Vector2f(pierwszy->polozenie.x, pierwszy->polozenie.y + 15);
+        auto koniec = sf::Vector2f(okno.mapPixelToCoords(pixelPos).x, okno.mapPixelToCoords(pixelPos).y);
+
+        thor::Arrow strzala(start, koniec - start, sf::Color(70, 40, 0), 3);
+        okno.draw(strzala);
+    }
 }
 

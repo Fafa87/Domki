@@ -281,7 +281,7 @@ int pokazowa_misja()
     // przygotowujemy dzialaczy
     Wyswietlacz wyswietlacz(rozgrywka);
     wyswietlacz.Zaladuj("rycerze_hd");
-    MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Graczu(1));
+    MyszDecydent myszkaGracza(window, rozgrywka, rozgrywka.Graczu(1), wyswietlacz.ProstyWidokMapy());
 
     // przygotuj punkty kontrolne
     myszkaGracza.punkty_kontrolne[rozgrywka.WskaznikDomek(23)] = rozgrywka.WskaznikDomek(23);
@@ -344,7 +344,7 @@ int pokazowa_misja()
 
         GUI::aplikacja().show_bottom_gui(view, gujak);
 
-        wyswietlacz.WyswietlTlo(window);
+        wyswietlacz.WyswietlTlo(window, myszkaGracza.bazowy);
         ruchGracza.Wyswietlaj(window);
         wyswietlacz.Wyswietlaj(window);
 

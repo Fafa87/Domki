@@ -24,6 +24,16 @@ struct CofajLudka : Rozkaz
     int ser_kogo;
 };
 
+struct ZmianaWidoku : Rozkaz
+{
+    ZmianaWidoku(char kierunek, Gracz& kto_taki_cwany, sf::View& widok, sf::View& bazowy, sf::Vector2f kursor, int liczba_klikow = 0);
+
+    char kierunek;
+    int liczba_klikow_kola;
+    sf::View& widok, & bazowy;
+    sf::Vector2f kursor;
+};
+
 struct AktualizujPredkosc : Rozkaz
 {
     AktualizujPredkosc(char wteczywewte, Gracz& kto_taki_cwany);
@@ -98,6 +108,8 @@ public:
 
     virtual vector<Rozkaz*> WykonajRuch();
 
+    sf::View widok, bazowy;
+
     bool kontrola = false;
     map<Domek*, Domek*> punkty_kontrolne;
     Domek *wybrany = nullptr,*kontrolowany = nullptr;
@@ -105,6 +117,8 @@ public:
     Ludek* cofany = nullptr;
     char nacisniety = 0;
     Gracz& gracz;
+
+    int tykiKolaMyszy;
 
 private:
     sf::RenderWindow & okno;

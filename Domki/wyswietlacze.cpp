@@ -1,4 +1,4 @@
-﻿#include "Narzedzia\AnimatedSprite.hpp"
+#include "Narzedzia\AnimatedSprite.hpp"
 #include "wyswietlacze.h"
 
 #include "Thor/Shapes/Arrow.hpp"
@@ -116,6 +116,8 @@ ZestawAnimacji ZestawAnimacji::ZaladujZPliku(string & sciezka_szablon)
 Wyswietlacz::Wyswietlacz(Rozgrywka & rozgrywka) : rozgrywka(rozgrywka)
 {
     czcionka.loadFromFile("Grafika\\waltographUI.ttf");
+
+    widok = nullptr;
 }
 
 
@@ -152,10 +154,14 @@ sf::RectangleShape Wyswietlacz::PobierzWyglad(Twor * twor)
     return sf::RectangleShape();
 }
 
-void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
+void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno, sf::View& tlo, sf::View* nowy_widok = nullptr)
 {
     sf::Sprite wyglad_tlo(obrazek_tla);
-    wyglad_tlo.setTextureRect({ 0, 0, 1600, 900 });
+    if(nowy_widok != nullptr)
+        widok = nowy_widok;
+    sf::Vector2f widok_center = tlo.getCenter(), widok_size = tlo.getSize();
+    
+    wyglad_tlo.setTextureRect({ (int)(widok_center.x - widok_size.x / 2.0), (int)(widok_center.y - widok_size.y / 2.0), (int)(widok_size.x), (int)(widok_size.y) });
     okno.draw(wyglad_tlo);
 
     // namaluj drogi
@@ -182,49 +188,45 @@ void Wyswietlacz::WyswietlTlo(sf::RenderWindow& okno)
     }
 }
 
-inline PD translacja_pozycji(PD polozenie, PD wielkosc_mapy, PD min, PD wielkosc_minimapy) {
-    wielkosc_minimapy = { wielkosc_minimapy.x * 9.0 / 10.0, wielkosc_minimapy.y * 9.0 / 10.0 };
-    PD wynikowe = {wielkosc_minimapy.x / 9.0 + wielkosc_minimapy.x * 8.0 / 9.0 * (polozenie.x - min.x) / wielkosc_mapy.x, wielkosc_minimapy.y / 9.0 + wielkosc_minimapy.y * 8.0 / 9.0 * (polozenie.y - min.y) / wielkosc_mapy.y };
+inline PD translacja_pozycji(PD polozenie, PD korekta, PD min, PD max, PD wielkosc_docelowa) {
+    PD rozrzut = max - min;
+    wielkosc_docelowa -= korekta * 2.0;
+    PD wynikowe = { (rozrzut.x > 0 ? wielkosc_docelowa.x * (polozenie.x - min.x) / rozrzut.x : 0) , (rozrzut.y > 0 ? wielkosc_docelowa.y * (polozenie.y - min.y) / rozrzut.y : 0) };
+    wynikowe += korekta;
     return wynikowe;
 }
 
 sf::Image Wyswietlacz::StworzMinimape(PD wielkosc) {
     sf::Image minimapa;
     minimapa.create(wielkosc.x, wielkosc.y, sf::Color(140, 255, 140));
-    PD rozrzut, min = { 10000,10000 }, max = { 0, 0 };
-    for (auto dom : rozgrywka.domki) {
-        if (dom.polozenie.x < min.x) min.x = dom.polozenie.x;
-        if (dom.polozenie.x > max.x) max.x = dom.polozenie.x;
-        if (dom.polozenie.y < min.y) min.y = dom.polozenie.y;
-        if (dom.polozenie.y > max.y) max.y = dom.polozenie.y;
-    }
-    PD korekta = { 10 , 10 };
-    rozrzut = { max.x - min.x, max.y - min.y };
-    rozrzut += korekta;
+
+    rozgrywka.UstalRozrzutDomkow();
+    PD  min = rozgrywka.min_rog, max = rozgrywka.max_rog;
+    PD korekta = { wielkosc.x / 10.0 , wielkosc.y / 10.0 };
+    if (min.x == max.x) korekta.x = wielkosc.x / 2;
+    if (min.y == max.y) korekta.y = wielkosc.y / 2;
+
     for (auto dom : rozgrywka.domki)
     {
-        PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc);
-        for (auto dokad : dom.drogi) if (dokad->uid < dom.uid) // maluj tylko w jedną stronę
+        PD dom_poz = translacja_pozycji(dom.polozenie, korekta, min, max, wielkosc);
+        for (auto dokad : dom.drogi) if (dokad->uid < dom.uid)
         {
-            PD dokad_poz = translacja_pozycji(dokad->polozenie, rozrzut, min, wielkosc);
+            PD dokad_poz = translacja_pozycji(dokad->polozenie, korekta, min, max, wielkosc);
             for (double i = dom_poz.x, j = dom_poz.y, i_delta = dokad_poz.x - dom_poz.x, j_delta = dokad_poz.y - dom_poz.y, dist = sqrt(i_delta * i_delta + j_delta * j_delta); (abs(dokad_poz.x - i) > 3.0 || abs(dokad_poz.y - j) > 3.0);) {
                 minimapa.setPixel((int)i, (int)j, sf::Color(150, 75, 0));
                 i += i_delta / dist; j += j_delta / dist;
-                /*int width = abs(dokad_poz.x - i), height = abs(dokad_poz.y - j);
-                if (width >= height) i += i_delta;
-                if (width <= height) j += j_delta;*/
             }
 
         }
     }
     for (auto dom : rozgrywka.domki) {
-        PD dom_poz = translacja_pozycji(dom.polozenie, rozrzut, min, wielkosc);
+        PD dom_poz = translacja_pozycji(dom.polozenie, korekta, min, max, wielkosc);
         for(int i = -3; i <= 3; i++)
            for(int j = -3; j <= 3; j++)
                minimapa.setPixel(dom_poz.x + i, dom_poz.y + j, dom.gracz->kolor);
     }
     for (auto ludek : rozgrywka.armie) {
-        PD ludek_poz = translacja_pozycji(ludek.polozenie, rozrzut, min, wielkosc);
+        PD ludek_poz = translacja_pozycji(ludek.polozenie, korekta, min, max, wielkosc);
         float stosunek_ludka_do_domku = ludek.liczebnosc / dynamic_cast<Domek&>(*ludek.skad).liczebnosc;
         int sila_ludka = (stosunek_ludka_do_domku >= 0.5 ? 2 : 1);
         for (int i = -sila_ludka; i <= sila_ludka; i++)
@@ -232,7 +234,22 @@ sf::Image Wyswietlacz::StworzMinimape(PD wielkosc) {
                 minimapa.setPixel(ludek_poz.x + i, ludek_poz.y + j, ludek.gracz->kolor);
     }
 
+    if (widok != nullptr) {
+        PD centrum = translacja_pozycji({ widok->getCenter().x, widok->getCenter().y }, korekta, min, max, wielkosc), rozmiar = translacja_pozycji({ widok->getSize().x, widok->getSize().y }, korekta, min, max, wielkosc);
+        PD min_rog = centrum - rozmiar / 2.0, max_rog = centrum + rozmiar / 2.0;
+        for (int i = min_rog.x, j = min_rog.y; i <= max_rog.x; i++) minimapa.setPixel(std::max(std::min((int)wielkosc.x - 1, i), 0), std::max(std::min((int)wielkosc.y - 1, j), 0),  sf::Color(213, 181, 110));
+        for (int i = max_rog.x, j = min_rog.y; j <= max_rog.y; j++) minimapa.setPixel(std::max(std::min((int)wielkosc.x - 1, i), 0), std::max(std::min((int)wielkosc.y - 1, j), 0), sf::Color(213, 181, 110));
+        for (int i = max_rog.x, j = max_rog.y; i >= min_rog.x; i--) minimapa.setPixel(std::max(std::min((int)wielkosc.x - 1, i), 0), std::max(std::min((int)wielkosc.y - 1, j), 0), sf::Color(213, 181, 110));
+        for (int i = min_rog.x, j = max_rog.y; j >= min_rog.y; j--) minimapa.setPixel(std::max(std::min((int)wielkosc.x - 1, i), 0), std::max(std::min((int)wielkosc.y - 1, j), 0), sf::Color(213, 181, 110));
+    }
+
     return minimapa;
+}
+
+sf::View Wyswietlacz::ProstyWidokMapy(int wysokosc) {
+    for (Domek& domek : rozgrywka.domki)
+        domek.polozenie = translacja_pozycji(domek.polozenie, { 160.0, (900.0 - (double)wysokosc) / 10.0 }, rozgrywka.min_rog, rozgrywka.max_rog, { 1600.0, (900.0 - (double)wysokosc)});
+    return sf::View({ 0, 0, 1600, 900 });
 }
 
 void Wyswietlacz::UaktualnijWyglad(Twor* twor) {

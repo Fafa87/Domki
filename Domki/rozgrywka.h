@@ -26,7 +26,7 @@ struct Rozgrywka
     int nr_zwyciezcy(bool same_komputery);
 
     list<Gracz> gracze;
-    list<Domek> domki;
+    list<Domek> domki; PD min_rog, max_rog; // parametry do obs³ugi mapy
     list<Ludek> armie;
 
     list<Twor*> pozostale;
@@ -52,6 +52,8 @@ struct Rozgrywka
     Ludek* Spotkanie(Ludek& ludek);
     Twor* Zlokalizuj(int x, int y, int z=0);
 
+    void UstalRozrzutDomkow();
+    bool PolaczDomki(Domek& domek1, Domek& domek2);
     bool CzyTamJestDroga(int x, int y, double odleglosc=0.0);
     bool CzyMoznaPolaczycDomki(Domek& domek1, Domek& domek2);
 

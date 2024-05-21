@@ -228,6 +228,17 @@ Twor * Rozgrywka::Zlokalizuj(int x, int y, int z)
     return najblizszy;
 }
 
+void Rozgrywka::UstalRozrzutDomkow() {
+    min_rog = domki.front().polozenie;
+    max_rog = min_rog;
+    for (Domek& domek : domki) {
+        min_rog.x = min(min_rog.x, domek.polozenie.x);
+        min_rog.y = min(min_rog.y, domek.polozenie.y);
+        max_rog.x = max(max_rog.x, domek.polozenie.x);
+        max_rog.y = max(max_rog.y, domek.polozenie.y);
+    }
+}
+
 void wyznaczProsta(PD punkt1, PD punkt2, double &A, double &B, double &C) {
     if (punkt1.x == punkt2.x && punkt1.y == punkt2.y) return;
     double x_y = punkt1.x - punkt2.x, y_x = punkt1.y - punkt2.y, t, s1, s2;
@@ -274,6 +285,15 @@ bool wyznaczPrzeciecie(double A, double B, double C, double D, double E, double 
         else punkt.x = u / t;
         punkt.y = -(C / B + A / B * punkt.x);
     }
+}
+
+bool Rozgrywka::PolaczDomki(Domek& domek1, Domek& domek2) {
+    if (CzyMoznaPolaczycDomki(domek1, domek2)) {
+        domek1.drogi.push_back(&domek2);
+        domek2.drogi.push_back(&domek1);
+        return true;
+    }
+    return false;
 }
 
 bool Rozgrywka::CzyTamJestDroga(int x, int y, double odleglosc) {
